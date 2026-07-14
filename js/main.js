@@ -20,12 +20,12 @@ function setTheme(theme) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  var saved = "en";
-  try { saved = localStorage.getItem("site-lang") || "en"; } catch (e) {}
+  var saved = "ja";
+  try { saved = localStorage.getItem("site-lang") || "ja"; } catch (e) {}
   setLang(saved);
 
-  var savedTheme = "dark";
-  try { savedTheme = localStorage.getItem("site-theme") || "dark"; } catch (e) {}
+  var savedTheme = "light";
+  try { savedTheme = localStorage.getItem("site-theme") || "light"; } catch (e) {}
   setTheme(savedTheme);
 
   var themeBtn = document.getElementById("themeBtn");
