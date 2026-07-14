@@ -1,0 +1,262 @@
+/* ===== Sasamoto Daiki — Personal Homepage ===== */
+:root {
+  --bg: #0b0f1a;
+  --bg-soft: #111827;
+  --card: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.09);
+  --text: #e5e9f0;
+  --text-dim: #9aa5b5;
+  --accent1: #7c6cf6;
+  --accent2: #38cfe0;
+  --grad: linear-gradient(120deg, var(--accent1), var(--accent2));
+  --radius: 16px;
+  --maxw: 960px;
+}
+
+/* ===== Light theme ===== */
+body.light {
+  --bg: #f4f6fa;
+  --bg-soft: #e9edf5;
+  --card: rgba(15, 26, 55, 0.04);
+  --border: rgba(15, 26, 55, 0.13);
+  --text: #1c2433;
+  --text-dim: #5b6678;
+  --accent1: #6b5ce0;
+  --accent2: #0d94a8;
+}
+body.light header { background: rgba(244, 246, 250, 0.78); }
+body.light .bg-glow {
+  background:
+    radial-gradient(600px 400px at 15% 0%, rgba(107, 92, 224, 0.10), transparent 70%),
+    radial-gradient(700px 500px at 90% 20%, rgba(13, 148, 168, 0.08), transparent 70%);
+}
+body.light details.book-group .group-body .card { background: rgba(15, 26, 55, 0.03); }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Inter", "Noto Sans JP", -apple-system, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- Language toggle visibility --- */
+body.lang-ja .en { display: none !important; }
+body.lang-en .ja { display: none !important; }
+
+/* --- Background glow --- */
+.bg-glow {
+  position: fixed; inset: 0; z-index: -1;
+  background:
+    radial-gradient(600px 400px at 15% 0%, rgba(124, 108, 246, 0.16), transparent 70%),
+    radial-gradient(700px 500px at 90% 20%, rgba(56, 207, 224, 0.10), transparent 70%);
+}
+
+/* --- Header / Nav --- */
+header {
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(14px);
+  background: rgba(11, 15, 26, 0.7);
+  border-bottom: 1px solid var(--border);
+}
+.nav {
+  max-width: var(--maxw); margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+}
+.nav-logo {
+  font-weight: 700; letter-spacing: 0.02em;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-decoration: none; font-size: 1.05rem;
+}
+.nav-links { display: flex; align-items: center; gap: 1.4rem; list-style: none; }
+.nav-links a {
+  color: var(--text-dim); text-decoration: none; font-size: 0.92rem;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+
+.lang-btn {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.35rem 0.95rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.lang-btn:hover { border-color: var(--accent2); }
+
+/* --- Layout --- */
+main { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 4.5rem 0 1rem; }
+
+.section-title {
+  font-size: 1.5rem; font-weight: 700; margin-bottom: 1.6rem;
+  display: flex; align-items: center; gap: 0.7rem;
+}
+.section-title::before {
+  content: ""; width: 26px; height: 3px; border-radius: 2px;
+  background: var(--grad);
+}
+
+/* --- Hero --- */
+.hero { padding: 6.5rem 0 3rem; }
+.hero-kicker {
+  color: var(--accent2); font-size: 0.9rem; letter-spacing: 0.18em;
+  text-transform: uppercase; margin-bottom: 1rem;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 800; line-height: 1.2; margin-bottom: 1.1rem;
+}
+.hero h1 .grad {
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-sub { color: var(--text-dim); font-size: 1.05rem; max-width: 620px; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.6rem; }
+.tag {
+  font-size: 0.8rem; color: var(--text);
+  border: 1px solid var(--border); background: var(--card);
+  padding: 0.3rem 0.85rem; border-radius: 999px;
+}
+
+/* --- Cards --- */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.6rem 1.8rem;
+  margin-bottom: 1.2rem;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.card:hover { transform: translateY(-3px); border-color: rgba(124, 108, 246, 0.5); }
+.card h3 { font-size: 1.05rem; margin-bottom: 0.4rem; }
+.card p { color: var(--text-dim); font-size: 0.95rem; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+
+/* --- Timeline (CV) --- */
+.timeline { list-style: none; border-left: 2px solid var(--border); padding-left: 1.5rem; }
+.timeline li { position: relative; padding-bottom: 1.4rem; }
+.timeline li::before {
+  content: ""; position: absolute; left: -1.85rem; top: 0.5em;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--grad);
+}
+.timeline .when { color: var(--accent2); font-size: 0.85rem; display: block; }
+
+/* --- Publications --- */
+.pub-list { list-style: none; counter-reset: pub; }
+.pub-list li {
+  padding: 1rem 0; border-bottom: 1px solid var(--border);
+  color: var(--text-dim); font-size: 0.95rem;
+}
+.placeholder-note {
+  color: var(--text-dim); font-style: italic; font-size: 0.92rem;
+  border: 1px dashed var(--border); border-radius: var(--radius);
+  padding: 1.2rem 1.5rem;
+}
+
+/* --- Blog list --- */
+.post-list { list-style: none; }
+.post-list li { margin-bottom: 1rem; }
+.post-list a {
+  display: block; text-decoration: none;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.2rem 1.5rem;
+  transition: transform 0.25s, border-color 0.25s;
+}
+.post-list a:hover { transform: translateY(-3px); border-color: rgba(56, 207, 224, 0.5); }
+.post-date { color: var(--accent2); font-size: 0.82rem; }
+.post-title { color: var(--text); font-weight: 600; margin-top: 0.15rem; }
+.post-excerpt { color: var(--text-dim); font-size: 0.9rem; margin-top: 0.3rem; }
+
+/* --- Contact --- */
+.contact-box { text-align: center; padding: 2.4rem 1.5rem; }
+.email-link {
+  font-size: 1.1rem; font-weight: 600; text-decoration: none;
+  background: var(--grad);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* --- Article --- */
+.article { padding-top: 4rem; max-width: 720px; margin: 0 auto; }
+.article h1 { font-size: 1.9rem; line-height: 1.4; margin: 0.4rem 0 1.6rem; }
+.article p { margin-bottom: 1.2rem; color: var(--text); }
+.back-link { color: var(--accent2); text-decoration: none; font-size: 0.9rem; }
+
+/* --- Footer --- */
+footer {
+  margin-top: 5rem; padding: 2rem 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center; color: var(--text-dim); font-size: 0.85rem;
+}
+
+/* --- Reveal animation --- */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s, transform 0.7s; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* --- Collapsible book groups (Textbooks tab) --- */
+details.book-group {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  margin-bottom: 1rem;
+}
+details.book-group summary {
+  cursor: pointer;
+  padding: 1.2rem 1.6rem;
+  font-weight: 600;
+  font-size: 1.02rem;
+  list-style: none;
+  display: flex; justify-content: space-between; align-items: center;
+  transition: color 0.2s;
+}
+details.book-group summary::-webkit-details-marker { display: none; }
+details.book-group summary::after {
+  content: "+";
+  color: var(--accent2);
+  font-size: 1.3rem; font-weight: 400;
+  transition: transform 0.25s;
+}
+details.book-group[open] summary::after { transform: rotate(45deg); }
+details.book-group summary:hover { color: var(--accent2); }
+details.book-group .group-body { padding: 0.2rem 1.2rem 1.2rem; }
+details.book-group .group-body .card { background: rgba(255,255,255,0.03); }
+
+/* --- Book cards (cover image + text) --- */
+.book-card { display: flex; gap: 1.5rem; align-items: flex-start; }
+.book-cover {
+  width: 110px; flex-shrink: 0; border-radius: 8px;
+  border: 1px solid var(--border);
+}
+@media (max-width: 600px) { .book-card { flex-direction: column; } }
+
+/* --- News list (Home) --- */
+.news-list { list-style: none; margin-top: 1rem; }
+.news-list li {
+  display: flex; gap: 1.2rem; align-items: baseline;
+  padding: 0.7rem 0.2rem; border-bottom: 1px solid var(--border);
+  font-size: 0.93rem;
+}
+.news-list .news-date { color: var(--accent2); white-space: nowrap; font-size: 0.85rem; }
+.news-list .news-body { color: var(--text-dim); }
+
+/* --- Panel switching (tab-style sections) --- */
+.panel { display: none; }
+.panel.active { display: block; animation: fadeUp 0.45s ease both; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.nav-links a.current { color: var(--text); }
+body.has-panels section.panel { padding-top: 3.5rem; min-height: 55vh; }
