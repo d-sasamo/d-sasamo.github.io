@@ -64,10 +64,6 @@
     <!-- ★ 新しいお知らせはリストの一番上に <li> を追加してください -->
     <ul class="news-list">
       <li>
-        <span class="news-date">2026.07.13</span>
-        <span class="news-body"><span class="ja">ホームページを開設しました。</span><span class="en">Launched this homepage.</span></span>
-      </li>
-      <li>
         <span class="news-date">2026.06.19</span>
         <span class="news-body"><span class="ja">物性理論合同セミナー（東北大学）で "Spin dynamics in kagome spin liquids" について発表しました。</span><span class="en">Gave a talk "Spin dynamics in kagome spin liquids" at the Condensed Matter Theory Joint Seminar, Tohoku University.</span></span>
       </li>
@@ -80,6 +76,10 @@
         <span class="news-body"><span class="ja">ケルン大学の CMT Group Seminar で発表しました。</span><span class="en">Gave a talk at the CMT Group Seminar, University of Cologne.</span></span>
       </li>
       <li>
+        <span class="news-date">2026.03.23</span>
+        <span class="news-body"><span class="ja">プレプリント "Dynamical spin correlations in kagome antiferromagnets: comparison of Abrikosov fermion and Schwinger boson approaches beyond mean field" を <a href="https://arxiv.org/abs/2603.21513" target="_blank" rel="noopener" style="color:var(--accent2);">arXiv:2603.21513</a> として公開しました。</span><span class="en">Posted a preprint "Dynamical spin correlations in kagome antiferromagnets: comparison of Abrikosov fermion and Schwinger boson approaches beyond mean field" as <a href="https://arxiv.org/abs/2603.21513" target="_blank" rel="noopener" style="color:var(--accent2);">arXiv:2603.21513</a>.</span></span>
+      </li>
+      <li>
         <span class="news-date">2026.03</span>
         <span class="news-body"><span class="ja">日本物理学会 2026年春季大会で口頭発表を2件行いました。</span><span class="en">Gave two oral presentations at the JPS 2026 Spring Meeting.</span></span>
       </li>
@@ -90,6 +90,10 @@
       <li>
         <span class="news-date">2025.10</span>
         <span class="news-body"><span class="ja">国際ワークショップ TTQM2025（埼玉大学）でポスター発表を行いました。</span><span class="en">Presented a poster at TTQM2025, Saitama University.</span></span>
+      </li>
+      <li>
+        <span class="news-date">2025.09.30</span>
+        <span class="news-body"><span class="ja">プレプリント "Schwinger boson theory for <i>S</i>=1 Kitaev quantum spin liquids" を <a href="https://arxiv.org/abs/2509.25761" target="_blank" rel="noopener" style="color:var(--accent2);">arXiv:2509.25761</a> として公開しました。</span><span class="en">Posted a preprint "Schwinger boson theory for <i>S</i>=1 Kitaev quantum spin liquids" as <a href="https://arxiv.org/abs/2509.25761" target="_blank" rel="noopener" style="color:var(--accent2);">arXiv:2509.25761</a>.</span></span>
       </li>
       <li>
         <span class="news-date">2025.09</span>
@@ -118,6 +122,10 @@
       <li>
         <span class="news-date">2025.03</span>
         <span class="news-body"><span class="ja">ISSP Workshop「カゴメフラストレート磁性研究の進展」（東京大学物性研究所）でポスター発表を行いました。</span><span class="en">Presented a poster at the ISSP Workshop on kagome frustrated magnetism, University of Tokyo.</span></span>
+      </li>
+      <li>
+        <span class="news-date">2024.11.20</span>
+        <span class="news-body"><span class="ja">国際シンポジウム <a href="https://gp-spin.tohoku.ac.jp/en/kyotensympo24/" target="_blank" rel="noopener" style="color:var(--accent2);">The 8th Symposium for the Core Research Clusters for Materials Science and Spintronics</a> をオーガナイズしました。</span><span class="en">Organized the international symposium <a href="https://gp-spin.tohoku.ac.jp/en/kyotensympo24/" target="_blank" rel="noopener" style="color:var(--accent2);">The 8th Symposium for the Core Research Clusters for Materials Science and Spintronics</a>.</span></span>
       </li>
       <li>
         <span class="news-date">2024.08</span>
@@ -1411,7 +1419,7 @@
     <details class="book-group">
       <summary><span class="ja">トポロジカル物性</span><span class="en">Topological Phases of Matter</span></summary>
       <div class="group-body">
-    <div class="card book-card">
+    <div class="card book-card" id="book-koshino">
       <img class="book-cover" src="images/koshino_graphene.jpg" alt="グラフェンの物理学 表紙" onerror="this.style.display='none'">
       <div>
         <h3><span class="ja">グラフェンの物理学 —ディラック電子とトポロジカル物性の基礎—</span><span class="en">グラフェンの物理学 (Physics of Graphene: Dirac Electrons and the Basics of Topological Phases)</span></h3>
@@ -1498,7 +1506,7 @@
         </p>
       </div>
     </div>
-    <div class="card book-card">
+    <div class="card book-card" id="book-asboth">
       <img class="book-cover" src="images/asboth_ti.jpg" alt="A Short Course on Topological Insulators 表紙" onerror="this.style.display='none'">
       <div>
         <h3>A Short Course on Topological Insulators</h3>
@@ -1604,7 +1612,7 @@
         </p>
       </div>
     </div>
-    <div class="card book-card">
+    <div class="card book-card" id="book-kardar-spf">
       <img class="book-cover" src="images/kardar_particles.jpg" alt="Statistical Physics of Particles 表紙" onerror="this.style.display='none'">
       <div>
         <h3>Statistical Physics of Particles</h3>
@@ -1797,13 +1805,12 @@
           <h3><a href="sim/ising.html" style="color:var(--text); text-decoration:none;"><span class="ja">2次元 Ising 模型のモンテカルロシミュレーション</span><span class="en">Monte Carlo Simulation of the 2D Ising Model</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              正方格子 Ising 模型の Metropolis シミュレーションをブラウザ上で動かせます。
+              正方格子 Ising 模型の Metropolis シミュレーションです。
               温度 <i>T</i> と結合定数 <i>J</i> をスライダーで動かして、強磁性秩序（<i>J</i>&gt;0）や
               Néel 秩序（<i>J</i>&lt;0）、そして <i>T</i><sub>c</sub> 付近の臨界揺らぎを観察してみてください。
             </span>
             <span class="en">
-              A Metropolis simulation of the square-lattice Ising model, running live in your
-              browser. Drag the temperature <i>T</i> and coupling <i>J</i> to watch
+              A Metropolis simulation of the square-lattice Ising model. Drag the temperature <i>T</i> and coupling <i>J</i> to watch
               ferromagnetic order (<i>J</i>&gt;0), Néel order (<i>J</i>&lt;0), and critical
               fluctuations near <i>T</i><sub>c</sub>.
             </span>
@@ -1862,15 +1869,14 @@
           <h3><a href="sim/tebd.html" style="color:var(--text); text-decoration:none;"><span class="ja">MPS/TEBD による量子スピン鎖の実時間ダイナミクス</span><span class="en">Quantum Spin-Chain Dynamics with MPS/TEBD</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              行列積状態（MPS）を TEBD で時間発展させる本物のテンソルネットワーク計算が
-              ブラウザ内で走ります。横磁場 Ising・XXZ 鎖のクエンチで光円錐の広がりを見ながら、
+              行列積状態（MPS）を TEBD で時間発展させる本物のテンソルネットワーク計算です。
+              横磁場 Ising・XXZ 鎖のクエンチで光円錐の広がりを見ながら、
               エンタングルメントエントロピーが ln <i>χ</i> の壁に迫っていく様子——
               「なぜ量子ダイナミクスは難しいのか」——を体感できます
               （実装は厳密対角化・TeNPy と照合済み）。
             </span>
             <span class="en">
-              A genuine tensor-network computation — an MPS evolved by TEBD — runs in your
-              browser. Watch light cones spread in quenches of the transverse-field Ising
+              A genuine tensor-network computation — an MPS evolved by TEBD. Watch light cones spread in quenches of the transverse-field Ising
               and XXZ chains while the entanglement entropy climbs toward the ln <i>χ</i>
               wall: feel first-hand why quantum dynamics is hard (implementation validated
               against exact diagonalization and TeNPy).
@@ -1882,18 +1888,105 @@
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
               こちらはシミュレーションではなく静止画のベンチマークです。可解模型である
-              横磁場 Ising 鎖の基底状態を iDMRG（TeNPy）で計算し、厳密解と比較しました。
+              横磁場 Ising 鎖の基底状態を無限系密度行列繰り込み群（iDMRG）で計算し、厳密解と比較しました。
               臨界点から離れると χ = 8 で誤差が倍精度の丸め誤差の床（10<sup>−14</sup> 前後）に
               達すること、臨界点では相関長が ξ ∝ χ<sup>κ</sup>（κ ≈ 2.034）の
               有限エンタングルメント・スケーリングに従うことが、χ 依存性から見て取れます。
             </span>
             <span class="en">
               Not a simulation but a static benchmark: ground states of the exactly solvable
-              transverse-field Ising chain computed with iDMRG (TeNPy) and compared with the
+              transverse-field Ising chain computed with the infinite density matrix
+              renormalization group (iDMRG) and compared with the
               exact solution. Away from criticality, χ = 8 already drives the error onto the
               double-precision round-off floor (~10<sup>−14</sup>); at the critical point the
               correlation length follows the finite-entanglement scaling ξ ∝ χ<sup>κ</sup>
               with κ ≈ 2.034 — all visible in the χ-dependence.
+            </span>
+          </p>
+        </div>
+        <div class="card">
+          <h3><a href="sim/ssh.html" style="color:var(--text); text-decoration:none;"><span class="ja">SSH 模型：トポロジカルエッジ状態と Wannier 中心</span><span class="en">The SSH Model: Topological Edge States and Wannier Centers</span> <span style="color:var(--accent2);">→</span></a></h3>
+          <p style="color:var(--text-dim); font-size:0.95rem;">
+            <span class="ja">
+              トポロジカル絶縁体の最小模型である Su–Schrieffer–Heeger 模型です。
+              ホッピング比を動かすと、巻き付き数のジャンプ、
+              ゼロエネルギーエッジ状態の出現、Wannier 中心のセル中心からボンド中心への
+              移動が連動して起こる様子が見られます。カイラル対称性・バルク・エッジ対応・
+              Zak 位相まで含めた長めの解説付きです。
+            </span>
+            <span class="en">
+              The Su–Schrieffer–Heeger model — the minimal topological insulator.
+              Drag the hopping ratio and watch the
+              winding number jump, zero-energy edge states appear, and the Wannier centers
+              shift from cell centers to bond centers, all in lockstep. Comes with an
+              extended discussion of chiral symmetry, bulk–boundary correspondence, and
+              the Zak phase.
+            </span>
+          </p>
+        </div>
+        <div class="card">
+          <h3><a href="sim/kanemele.html" style="color:var(--text); text-decoration:none;"><span class="ja">Kane–Mele 模型：量子スピンHall絶縁体</span><span class="en">The Kane–Mele Model: A Quantum Spin Hall Insulator</span> <span style="color:var(--accent2);">→</span></a></h3>
+          <p style="color:var(--text-dim); font-size:0.95rem;">
+            <span class="ja">
+              グラフェンにスピン軌道相互作用を入れた Z<sub>2</sub> トポロジカル絶縁体の
+              原型模型です。ジグザグリボンのバンド構造を対角化し、
+              スピンで色分けされたヘリカルエッジ状態が現れて消える様子を
+              観察できます。スピン Chern 数と Z<sub>2</sub> 指数、位相図、
+              時間反転対称性による保護（Kramers 対と後方散乱の禁止）まで
+              じっくり解説しています。
+            </span>
+            <span class="en">
+              The prototype Z<sub>2</sub> topological insulator: graphene with spin–orbit
+              coupling. Zigzag-ribbon band structures are diagonalized on the fly,
+              showing spin-resolved helical edge states appear and vanish as you
+              cross the phase boundary. With spin Chern numbers, the Z<sub>2</sub> index,
+              the phase diagram, and a careful discussion of time-reversal protection —
+              Kramers pairs and forbidden backscattering.
+            </span>
+          </p>
+        </div>
+        <div class="card">
+          <h3><a href="sim/hofstadter.html" style="color:var(--text); text-decoration:none;"><span class="ja">Hofstadter バタフライ：磁場中の格子電子が描くフラクタル</span><span class="en">The Hofstadter Butterfly: A Fractal Drawn by Lattice Electrons in a Magnetic Field</span> <span style="color:var(--accent2);">→</span></a></h3>
+          <p style="color:var(--text-dim); font-size:0.95rem;">
+            <span class="ja">
+              磁場中の正方格子強束縛模型のスペクトルを、分母 <i>q</i> ≤ 41 の
+              すべての既約分数 φ = <i>p</i>/<i>q</i> について対角化し、
+              自己相似フラクタル「バタフライ」を描きます。各ギャップを量子化 Hall 伝導度
+              （Chern 数）で色分けする表示付き。解説はパイエルス位相の導入から始めて、
+              Harper 方程式、有理数 vs 無理数とフラクタルの起源、TKNN と
+              Diophantine 方程式、モアレ超格子での観測まで丁寧に書いています。
+            </span>
+            <span class="en">
+              The spectrum of the square-lattice tight-binding model in a magnetic field,
+              diagonalized for every reduced fraction φ = <i>p</i>/<i>q</i>
+              with <i>q</i> ≤ 41, tracing the self-similar butterfly fractal — with a mode
+              that colors each gap by its quantized Hall conductance (Chern number). The
+              discussion starts from the Peierls phase and walks through the Harper
+              equation, rational vs irrational flux and the origin of fractality, TKNN and
+              the Diophantine equation, up to the moiré-superlattice observation.
+            </span>
+          </p>
+        </div>
+        <div class="card">
+          <h3><a href="sim/moire.html" style="color:var(--text); text-decoration:none;"><span class="ja">ねじれ2層グラフェン：モアレ模様と平坦バンド</span><span class="en">Twisted Bilayer Graphene: Moiré Patterns and Flat Bands</span> <span style="color:var(--accent2);">→</span></a></h3>
+          <p style="color:var(--text-dim); font-size:0.95rem;">
+            <span class="ja">
+              2枚のハニカム格子をねじれ角 θ で重ね、実空間のモアレ模様と、
+              連続体模型（Bistritzer–MacDonald 型）で計算したモアレバンドが
+              連動して変形していく様子を観察できます。θ を魔法角 1.05° まで下げると、
+              中央のバンドが数十 meV まで押し潰されて平坦バンドが現れます。
+              解説はうなりのアナロジーによるモアレ周期の導出から、連続体模型の考え方、
+              2つのエネルギースケールの競争と魔法角、平坦バンドが開いた
+              強相関・超伝導の物理まで。
+            </span>
+            <span class="en">
+              Two honeycomb lattices stacked at a twist angle θ: watch the real-space moiré
+              pattern and the continuum-model (Bistritzer–MacDonald) moiré bands deform in
+              lockstep. Lower θ to the magic angle 1.05° and the central bands collapse
+              into flat bands. The discussion runs from the beat-note derivation of the
+              moiré period through the continuum model, the competition of two energy
+              scales behind the magic angle, and the correlated/superconducting physics
+              the flat bands unleashed.
             </span>
           </p>
         </div>
