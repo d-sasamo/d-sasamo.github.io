@@ -728,15 +728,15 @@
     var res = lastRes;
     var svg = '<svg viewBox="0 0 ' + FW + ' ' + FH + '" xmlns="http://www.w3.org/2000/svg">';
     svg += '<rect x="0" y="0" width="' + FW + '" height="' + FH + '" fill="' + C.bg + '"/>';
-    // grid + ticks
+    // ticks (no interior grid lines)
     for (var gx = XMIN; gx <= XMAX; gx++) {
       var X = xs(gx);
-      svg += '<line x1="' + X + '" y1="' + T + '" x2="' + X + '" y2="' + (T + PH) + '" stroke="' + C.grid + '" stroke-width="' + (gx === 0 ? 1.2 : 0.6) + '"/>';
+      svg += '<line x1="' + X + '" y1="' + (T + PH) + '" x2="' + X + '" y2="' + (T + PH - 7) + '" stroke="' + C.axis + '" stroke-width="1.1"/>';
       svg += '<text x="' + X + '" y="' + (T + PH + 26) + '" font-family="' + SERIF + '" font-size="17" fill="' + C.axis + '" text-anchor="middle">' + gx + '</text>';
     }
     for (var gy = 0; gy <= 0.7001; gy += 0.1) {
       var Y = ys(gy);
-      svg += '<line x1="' + L + '" y1="' + Y + '" x2="' + (L + PW) + '" y2="' + Y + '" stroke="' + C.grid + '" stroke-width="0.6"/>';
+      svg += '<line x1="' + L + '" y1="' + Y + '" x2="' + (L + 7) + '" y2="' + Y + '" stroke="' + C.axis + '" stroke-width="1.1"/>';
       if (Math.round(gy * 10) % 2 === 0) {
         svg += '<text x="' + (L - 10) + '" y="' + (Y + 6) + '" font-family="' + SERIF + '" font-size="17" fill="' + C.axis + '" text-anchor="end">' + gy.toFixed(1) + '</text>';
       }
@@ -788,14 +788,15 @@
     svg += '<rect x="0" y="0" width="' + FW + '" height="' + FH + '" fill="' + C.bg + '"/>';
     for (var gx = 0; gx <= 4.5001; gx += 0.5) {
       var X = zxs(gx);
-      svg += '<line x1="' + X + '" y1="' + T + '" x2="' + X + '" y2="' + (T + PH) + '" stroke="' + C.grid + '" stroke-width="0.6"/>';
-      if (Math.round(gx * 2) % 2 === 0) {
+      var major = Math.round(gx * 2) % 2 === 0;
+      svg += '<line x1="' + X + '" y1="' + (T + PH) + '" x2="' + X + '" y2="' + (T + PH - (major ? 7 : 4)) + '" stroke="' + C.axis + '" stroke-width="1.1"/>';
+      if (major) {
         svg += '<text x="' + X + '" y="' + (T + PH + 26) + '" font-family="' + SERIF + '" font-size="17" fill="' + C.axis + '" text-anchor="middle">' + gx.toFixed(0) + '</text>';
       }
     }
     for (var gy = 0; gy <= 1.0001; gy += 0.2) {
       var Y = zys(gy);
-      svg += '<line x1="' + L + '" y1="' + Y + '" x2="' + (L + PW) + '" y2="' + Y + '" stroke="' + C.grid + '" stroke-width="0.6"/>';
+      svg += '<line x1="' + L + '" y1="' + Y + '" x2="' + (L + 7) + '" y2="' + Y + '" stroke="' + C.axis + '" stroke-width="1.1"/>';
       svg += '<text x="' + (L - 10) + '" y="' + (Y + 6) + '" font-family="' + SERIF + '" font-size="17" fill="' + C.axis + '" text-anchor="end">' + gy.toFixed(1) + '</text>';
     }
     function curve(data, col, square) {
