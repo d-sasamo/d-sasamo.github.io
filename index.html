@@ -19,6 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 </head>
 <body class="lang-ja light">
 <div class="bg-glow"></div>
@@ -1869,16 +1871,16 @@
           <h3><a href="sim/percolation.html" style="color:var(--text); text-decoration:none;"><span class="ja">2次元正方格子のパーコレーション</span><span class="en">Percolation on the 2D Square Lattice</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              占有確率 <i>p</i> をスライダーで動かして、クラスターが成長・融合し、
-              <i>p</i><sub>c</sub> ≈ 0.5927 で系を貫くクラスターが出現する様子を観察できます。
+              占有確率 \(p\) をスライダーで動かして、クラスターが成長・融合し、
+              \(p_c \approx 0.5927\) で系を貫くクラスターが出現する様子を観察できます。
               「乱数を撒くだけ」の単純な相転移なのに、そのユニバーサリティクラスは
-              <i>c</i> = 0 の非ユニタリーCFTで記述される、という深い模型です。
+              \(c = 0\) の非ユニタリーCFTで記述される、という深い模型です。
             </span>
             <span class="en">
-              Drag the occupation probability <i>p</i> to watch clusters grow, merge, and — at
-              <i>p</i><sub>c</sub> ≈ 0.5927 — span the lattice. A phase transition as simple
+              Drag the occupation probability \(p\) to watch clusters grow, merge, and — at
+              \(p_c \approx 0.5927\) — span the lattice. A phase transition as simple
               as sprinkling random numbers, yet its universality class is described by a
-              non-unitary CFT with <i>c</i> = 0.
+              non-unitary CFT with \(c = 0\).
             </span>
           </p>
         </div>
@@ -1887,13 +1889,13 @@
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
               正方格子 Ising 模型の Metropolis シミュレーションです。
-              温度 <i>T</i> と結合定数 <i>J</i> をスライダーで動かして、強磁性秩序（<i>J</i>&gt;0）や
-              Néel 秩序（<i>J</i>&lt;0）、そして <i>T</i><sub>c</sub> 付近の臨界揺らぎを観察してみてください。
+              温度 \(T\) と結合定数 \(J\) をスライダーで動かして、強磁性秩序（\(J > 0\)）や
+              Néel 秩序（\(J < 0\)）、そして \(T_c\) 付近の臨界揺らぎを観察してみてください。
             </span>
             <span class="en">
-              A Metropolis simulation of the square-lattice Ising model. Drag the temperature <i>T</i> and coupling <i>J</i> to watch
-              ferromagnetic order (<i>J</i>&gt;0), Néel order (<i>J</i>&lt;0), and critical
-              fluctuations near <i>T</i><sub>c</sub>.
+              A Metropolis simulation of the square-lattice Ising model. Drag the temperature \(T\) and coupling \(J\) to watch
+              ferromagnetic order (\(J > 0\)), Néel order (\(J < 0\)), and critical
+              fluctuations near \(T_c\).
             </span>
           </p>
         </div>
@@ -1902,13 +1904,13 @@
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
               スピンの角度を色相で表示し、渦・反渦をマーカーで可視化した XY 模型のモンテカルロです。
-              温度を動かして、<i>T</i><sub>BKT</sub> ≈ 0.89 <i>J</i> を境に渦ペアが束縛から解離へ移り変わる
+              温度を動かして、\(T_{\mathrm{BKT}} \approx 0.89\,J\) を境に渦ペアが束縛から解離へ移り変わる
               BKT 転移——対称性の破れを伴わない、トポロジカル欠陥が主役の相転移——を観察できます。
             </span>
             <span class="en">
               A Monte Carlo simulation of the XY model with spin angles as hue and
               vortices/antivortices marked. Tune the temperature across
-              <i>T</i><sub>BKT</sub> ≈ 0.89 <i>J</i> and watch vortex pairs unbind — the BKT
+              \(T_{\mathrm{BKT}} \approx 0.89\,J\) and watch vortex pairs unbind — the BKT
               transition, driven by topological defects with no symmetry breaking.
             </span>
           </p>
@@ -1919,15 +1921,15 @@
             <span class="ja">
               正方格子上の Heisenberg スピンを Landau–Lifshitz–Gilbert 方程式で実時間発展させます。
               DMI と磁場のスライダーを動かすと磁気スカーミオンが核生成し、
-              トポロジカル電荷 <i>Q</i> がライブで整数値を刻みます。スカーミオンを1個植えて
-              安定性を確かめたり、磁場でつぶして <i>Q</i> が跳ぶ瞬間を見たりできます。
+              トポロジカル電荷 \(Q\) がライブで整数値を刻みます。スカーミオンを1個植えて
+              安定性を確かめたり、磁場でつぶして \(Q\) が跳ぶ瞬間を見たりできます。
             </span>
             <span class="en">
               Heisenberg spins on the square lattice evolved in real time by the
               Landau–Lifshitz–Gilbert equation. Drag the DMI and field sliders to nucleate
-              magnetic skyrmions, with the topological charge <i>Q</i> ticking through
+              magnetic skyrmions, with the topological charge \(Q\) ticking through
               integers live — seed a single skyrmion, test its stability, or crush it with
-              the field and watch <i>Q</i> jump.
+              the field and watch \(Q\) jump.
             </span>
           </p>
         </div>
@@ -1935,14 +1937,14 @@
           <h3><a href="sim/kpz.html" style="color:var(--text); text-decoration:none;"><span class="ja">界面成長：ランダム堆積 vs KPZ</span><span class="en">Surface Growth: Random Deposition vs KPZ</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              各列が独立なランダムウォークとして荒れていくランダム堆積（β = 1/2）と、
-              横方向の相関が育つ KPZ クラスの RSOS 模型（β = 1/3）を並べて成長させ、
-              界面幅 <i>W</i>(<i>t</i>) の log-log プロットでスケーリングの違いをライブで観察できます。
+              各列が独立なランダムウォークとして荒れていくランダム堆積（\(\beta = 1/2\)）と、
+              横方向の相関が育つ KPZ クラスの RSOS 模型（\(\beta = 1/3\)）を並べて成長させ、
+              界面幅 \(W(t)\) の log-log プロットでスケーリングの違いをライブで観察できます。
             </span>
             <span class="en">
-              Random deposition — each column an independent random walk (β = 1/2) — grows
-              side by side with the RSOS model in the KPZ class (β = 1/3), while a live
-              log-log plot of the width <i>W</i>(<i>t</i>) reveals the different scaling.
+              Random deposition — each column an independent random walk (\(\beta = 1/2\)) — grows
+              side by side with the RSOS model in the KPZ class (\(\beta = 1/3\)), while a live
+              log-log plot of the width \(W(t)\) reveals the different scaling.
             </span>
           </p>
         </div>
@@ -1952,13 +1954,13 @@
             <span class="ja">
               行列積状態（MPS）を TEBD で時間発展させる本物のテンソルネットワーク計算です。
               横磁場 Ising・XXZ 鎖のクエンチで光円錐の広がりを見ながら、
-              エンタングルメントエントロピーが ln <i>χ</i> の壁に迫っていく様子——
+              エンタングルメントエントロピーが \(\ln \chi\) の壁に迫っていく様子——
               「なぜ量子ダイナミクスは難しいのか」——を体感できます
               （実装は厳密対角化・TeNPy と照合済み）。
             </span>
             <span class="en">
               A genuine tensor-network computation — an MPS evolved by TEBD. Watch light cones spread in quenches of the transverse-field Ising
-              and XXZ chains while the entanglement entropy climbs toward the ln <i>χ</i>
+              and XXZ chains while the entanglement entropy climbs toward the \(\ln \chi\)
               wall: feel first-hand why quantum dynamics is hard (implementation validated
               against exact diagonalization and TeNPy).
             </span>
@@ -1970,18 +1972,18 @@
             <span class="ja">
               こちらはシミュレーションではなく静止画のベンチマークです。可解模型である
               横磁場 Ising 鎖の基底状態を無限系密度行列繰り込み群（iDMRG）で計算し、厳密解と比較しました。
-              臨界点から離れると χ = 8 で誤差が倍精度の丸め誤差の床（10<sup>−14</sup> 前後）に
-              達すること、臨界点では相関長が ξ ∝ χ<sup>κ</sup>（κ ≈ 2.034）の
-              有限エンタングルメント・スケーリングに従うことが、χ 依存性から見て取れます。
+              臨界点から離れると \(\chi = 8\) で誤差が倍精度の丸め誤差の床（\(10^{-14}\) 前後）に
+              達すること、臨界点では相関長が \(\xi \propto \chi^{\kappa}\)（\(\kappa \approx 2.034\)）の
+              有限エンタングルメント・スケーリングに従うことが、\(\chi\) 依存性から見て取れます。
             </span>
             <span class="en">
               Not a simulation but a static benchmark: ground states of the exactly solvable
               transverse-field Ising chain computed with the infinite density matrix
               renormalization group (iDMRG) and compared with the
-              exact solution. Away from criticality, χ = 8 already drives the error onto the
+              exact solution. Away from criticality, \(\chi = 8\) already drives the error onto the
               double-precision round-off floor (~10<sup>−14</sup>); at the critical point the
-              correlation length follows the finite-entanglement scaling ξ ∝ χ<sup>κ</sup>
-              with κ ≈ 2.034 — all visible in the χ-dependence.
+              correlation length follows the finite-entanglement scaling \(\xi \propto \chi^{\kappa}\)
+              with \(\kappa \approx 2.034\) — all visible in the \(\chi\)-dependence.
             </span>
           </p>
         </div>
@@ -2009,18 +2011,18 @@
           <h3><a href="sim/kanemele.html" style="color:var(--text); text-decoration:none;"><span class="ja">Kane–Mele 模型：量子スピンHall絶縁体</span><span class="en">The Kane–Mele Model: A Quantum Spin Hall Insulator</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              グラフェンにスピン軌道相互作用を入れた Z<sub>2</sub> トポロジカル絶縁体の
+              グラフェンにスピン軌道相互作用を入れた \(\mathbb{Z}_2\) トポロジカル絶縁体の
               原型模型です。ジグザグリボンのバンド構造を対角化し、
               スピンで色分けされたヘリカルエッジ状態が現れて消える様子を
-              観察できます。スピン Chern 数と Z<sub>2</sub> 指数、相図、
+              観察できます。スピン Chern 数と \(\mathbb{Z}_2\) 指数、相図、
               時間反転対称性による保護（Kramers 対と後方散乱の禁止）まで
               じっくり解説しています。
             </span>
             <span class="en">
-              The prototype Z<sub>2</sub> topological insulator: graphene with spin–orbit
+              The prototype \(\mathbb{Z}_2\) topological insulator: graphene with spin–orbit
               coupling. Zigzag-ribbon band structures are diagonalized on the fly,
               showing spin-resolved helical edge states appear and vanish as you
-              cross the phase boundary. With spin Chern numbers, the Z<sub>2</sub> index,
+              cross the phase boundary. With spin Chern numbers, the \(\mathbb{Z}_2\) index,
               the phase diagram, and a careful discussion of time-reversal protection —
               Kramers pairs and forbidden backscattering.
             </span>
@@ -2030,8 +2032,8 @@
           <h3><a href="sim/hofstadter.html" style="color:var(--text); text-decoration:none;"><span class="ja">Hofstadter バタフライ：磁場中の格子電子が描くフラクタル</span><span class="en">The Hofstadter Butterfly: A Fractal Drawn by Lattice Electrons in a Magnetic Field</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              磁場中の正方格子強束縛模型のスペクトルを、分母 <i>q</i> ≤ 41 の
-              すべての既約分数 φ = <i>p</i>/<i>q</i> について対角化し、
+              磁場中の正方格子強束縛模型のスペクトルを、分母 \(q \le 41\) の
+              すべての既約分数 \(\phi = p/q\) について対角化し、
               自己相似フラクタル「バタフライ」を描きます。各ギャップを量子化 Hall 伝導度
               （Chern 数）で色分けする表示付き。解説はパイエルス位相の導入から始めて、
               Harper 方程式、有理数 vs 無理数とフラクタルの起源、TKNN と
@@ -2039,8 +2041,8 @@
             </span>
             <span class="en">
               The spectrum of the square-lattice tight-binding model in a magnetic field,
-              diagonalized for every reduced fraction φ = <i>p</i>/<i>q</i>
-              with <i>q</i> ≤ 41, tracing the self-similar butterfly fractal — with a mode
+              diagonalized for every reduced fraction \(\phi = p/q\)
+              with \(q \le 41\), tracing the self-similar butterfly fractal — with a mode
               that colors each gap by its quantized Hall conductance (Chern number). The
               discussion starts from the Peierls phase and walks through the Harper
               equation, rational vs irrational flux and the origin of fractality, TKNN and
@@ -2052,18 +2054,18 @@
           <h3><a href="sim/moire.html" style="color:var(--text); text-decoration:none;"><span class="ja">ねじれ2層グラフェン：モアレ模様と平坦バンド</span><span class="en">Twisted Bilayer Graphene: Moiré Patterns and Flat Bands</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              2枚のハニカム格子をねじれ角 θ で重ね、実空間のモアレ模様と、
+              2枚のハニカム格子をねじれ角 \(\theta\) で重ね、実空間のモアレ模様と、
               連続体模型（Bistritzer–MacDonald 型）で計算したモアレバンドが
-              連動して変形していく様子を観察できます。θ を魔法角 1.05° まで下げると、
+              連動して変形していく様子を観察できます。\(\theta\) を魔法角 \(\theta = 1.05^{\circ}\) まで下げると、
               中央のバンドが数十 meV まで押し潰されて平坦バンドが現れます。
               解説はうなりのアナロジーによるモアレ周期の導出から、連続体模型の考え方、
               2つのエネルギースケールの競争と魔法角、平坦バンドが開いた
               強相関・超伝導の物理まで。
             </span>
             <span class="en">
-              Two honeycomb lattices stacked at a twist angle θ: watch the real-space moiré
+              Two honeycomb lattices stacked at a twist angle \(\theta\): watch the real-space moiré
               pattern and the continuum-model (Bistritzer–MacDonald) moiré bands deform in
-              lockstep. Lower θ to the magic angle 1.05° and the central bands collapse
+              lockstep. Lower \(\theta\) to the magic angle \(\theta = 1.05^{\circ}\) and the central bands collapse
               into flat bands. The discussion runs from the beat-note derivation of the
               moiré period through the continuum model, the competition of two energy
               scales behind the magic angle, and the correlated/superconducting physics
@@ -2075,19 +2077,19 @@
           <h3><a href="sim/dmft.html" style="color:var(--text); text-decoration:none;"><span class="ja">Hubbard 模型と Mott 転移：動的平均場理論（DMFT）</span><span class="en">The Hubbard Model and the Mott Transition: Dynamical Mean-Field Theory (DMFT)</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              半充填 Hubbard 模型（Bethe 格子）の DMFT 方程式を、スライダーを動かすたびに
-              その場で自己無撞着に解きます。U を上げるとスペクトル関数が3ピーク構造を経て
+              半充填 Hubbard 模型（Bethe 格子）を動的平均場理論（DMFT）で解きます。
+              \(U\) を上げるとスペクトル関数が3ピーク構造を経て
               Mott ギャップを開き、上げ掃引と下げ掃引で答えが変わる共存領域（ヒステリシス）も
-              確認できます。解説は「電子は波か粒子か」——粒子数 n と位相 θ の不確定性関係——
+              確認できます。解説は「電子は波か粒子か」——粒子数 \(n\) と位相 \(\theta\) の不確定性関係——
               から始めて、Mott 転移の2つの描像、そして DMFT の考え方（動的な Weiss 場、
               不純物問題への写像、無限次元極限での厳密性）まで。
             </span>
             <span class="en">
-              The DMFT equations of the half-filled Hubbard model (Bethe lattice) are solved
-              self-consistently on the spot every time you move the slider. Raising U takes the
+              The half-filled Hubbard model (Bethe lattice) is solved with dynamical
+              mean-field theory (DMFT). Raising \(U\) takes the
               spectral function through the three-peak structure to the opening of the Mott gap,
-              and sweeping U up versus down reveals the coexistence region (hysteresis). The
-              discussion starts from “is the electron a wave or a particle?” — the n–θ
+              and sweeping \(U\) up versus down reveals the coexistence region (hysteresis). The
+              discussion starts from “is the electron a wave or a particle?” — the \(n\)–\(\theta\)
               uncertainty relation — through the two pictures of the Mott transition, to the
               ideas of DMFT: a dynamical Weiss field, the impurity mapping, and exactness in
               infinite dimensions.
