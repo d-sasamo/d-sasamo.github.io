@@ -331,7 +331,7 @@
 
   // ---------- Fig 1: |Delta e| vs g (semi-log) ----------
   function drawErr() {
-    var f = Fig(880, 470, 82, 26, 24, 62);
+    var f = Fig(880, 500, 82, 26, 54, 62);
     var x0 = 0.1, x1 = 2.1, y0 = -16.3, y1 = -1.7;
     var px = function (g) { return (f.mL + (g - x0) / (x1 - x0) * f.pw).toFixed(1); };
     var py = function (l) { return (f.mT + f.ph - (l - y0) / (y1 - y0) * f.ph).toFixed(1); };
@@ -371,12 +371,12 @@
         marker(f, px(DATA.gs[i]), py(Math.log10(Math.max(DATA.err[ci][i], 1e-16))), col, true);
       }
     }
-    // legend
-    var lx = f.mL + f.pw - 150, ly = f.mT + 24;
+    // legend: single horizontal row above the frame (never overlaps data)
+    var entryW = 105, lx = f.mL + (f.pw - entryW * DATA.chis.length) / 2, ly = 34;
     for (ci = 0; ci < DATA.chis.length; ci++) {
       var col2 = CHI_COL[DATA.chis[ci]];
-      marker(f, lx, ly + ci * 24 - 5, col2, true);
-      f.text(lx + 14, ly + ci * 24, '<tspan font-style="italic">χ</tspan> = ' + DATA.chis[ci], 15, f.c.fg, 'start');
+      marker(f, lx + ci * entryW, ly - 5, col2, true);
+      f.text(lx + ci * entryW + 14, ly, '<tspan font-style="italic">χ</tspan> = ' + DATA.chis[ci], 15, f.c.fg, 'start');
     }
     f.done('figErr');
   }
