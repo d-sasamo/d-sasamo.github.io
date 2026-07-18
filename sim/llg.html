@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLG Spin Dynamics &amp; Skyrmions — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+  .sim-canvas-box { flex: 0 0 auto; }
+  #llgCanvas {
+    width: 440px; height: 440px; max-width: 100%;
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  .sim-controls { flex: 1 1 260px; min-width: 260px; }
+  .ctrl { margin-bottom: 1.1rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  .legend { font-size: 0.85rem; color: var(--text-dim); line-height: 1.9; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">LLG 方程式によるスピンダイナミクスとスカーミオン</span><span class="en">LLG Spin Dynamics &amp; Skyrmions</span></h1>
+    <p class="hero-sub ja">
+      正方格子上の Heisenberg スピンを Landau–Lifshitz–Gilbert（LLG）方程式で実時間発展させます。
+      DMI と磁場を入れると、トポロジカル電荷を持つ渦構造——スカーミオン——が生まれます。
+    </p>
+    <p class="hero-sub en">
+      Heisenberg spins on the square lattice evolved in real time by the
+      Landau–Lifshitz–Gilbert (LLG) equation. Turn on DMI and a magnetic field, and
+      topologically charged whirls — skyrmions — emerge.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="sim-wrap">
+        <div class="sim-canvas-box">
+          <canvas id="llgCanvas" width="440" height="440"></canvas>
+        </div>
+        <div class="sim-controls">
+          <div class="ctrl">
+            <label>DMI <i>D</i>/<i>J</i> = <span class="val" id="dVal">0.80</span></label>
+            <input type="range" id="dSlider" min="0" max="1.2" step="0.02" value="0.80">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">磁場</span><span class="en">Field</span> <i>B</i>/<i>J</i> = <span class="val" id="bVal">0.25</span></label>
+            <input type="range" id="bSlider" min="0" max="0.8" step="0.01" value="0.25">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">Gilbert 減衰</span><span class="en">Gilbert damping</span> α = <span class="val" id="aVal">0.30</span></label>
+            <input type="range" id="aSlider" min="0.05" max="1" step="0.05" value="0.30">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">温度（熱ノイズ）</span><span class="en">Temperature (thermal noise)</span> <i>T</i>/<i>J</i> = <span class="val" id="tVal">0.02</span></label>
+            <input type="range" id="tSlider" min="0" max="0.3" step="0.01" value="0.02">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">64</span>（<i>L</i>×<i>L</i>）</label>
+            <input type="range" id="lSlider" min="0" max="2" step="1" value="1">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="randBtn"><span class="ja">ランダム初期化</span><span class="en">Randomize</span></button>
+            <button class="sim-btn" id="upBtn"><span class="ja">+z に揃える</span><span class="en">Align +z</span></button>
+            <button class="sim-btn" id="seedBtn"><span class="ja">スカーミオンを植える</span><span class="en">Seed a skyrmion</span></button>
+            <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
+          </div>
+          <div class="obs">
+            <span class="ja">トポロジカル電荷</span><span class="en">Topological charge</span>
+            <i>Q</i> = <b id="qVal">0.0</b><br>
+            <span class="ja">磁化</span><span class="en">Magnetization</span> <i>m</i><sub>z</sub> = <b id="mzVal">0.00</b><br>
+            <span class="legend">
+              <span class="ja">色相＝面内の向き、白＝+z、黒＝−z、矢印＝局所平均の面内成分</span>
+              <span class="en">hue = in-plane angle, white = +z, black = −z, arrows = locally averaged in-plane component</span><br>
+              <span class="ja">周期境界条件、Heun 法（確率的 LLG）</span>
+              <span class="en">Periodic boundaries, Heun integration (stochastic LLG)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+      <p class="ja">
+        古典スピン（磁気モーメント）<b>S</b><sub>i</sub>（|<b>S</b><sub>i</sub>| = 1）の
+        実時間ダイナミクスを記述するのが、Landau–Lifshitz–Gilbert（LLG）方程式です。
+      </p>
+      <p class="en">
+        The real-time dynamics of classical spins (magnetic moments)
+        <b>S</b><sub>i</sub> with |<b>S</b><sub>i</sub>| = 1 is described by the
+        Landau–Lifshitz–Gilbert (LLG) equation,
+      </p>
+      <div class="eq">\[ \frac{d\mathbf{S}_i}{dt} \;=\; -\frac{\gamma}{1+\alpha^2} \left[ \mathbf{S}_i \times \mathbf{H}_i^{\mathrm{eff}} \;+\; \alpha\, \mathbf{S}_i \times \left( \mathbf{S}_i \times \mathbf{H}_i^{\mathrm{eff}} \right) \right] \]</div>
+      <p class="ja">
+        第1項はスピンが有効磁場のまわりを歳差運動する項、第2項（Gilbert 減衰 α）は
+        歳差しながらエネルギーを失って有効磁場の向きへ倒れ込んでいく項です。
+        有効磁場はハミルトニアンの勾配から決まります。
+      </p>
+      <p class="en">
+        The first term makes each spin precess around its effective field; the second
+        (Gilbert damping α) makes it spiral down toward the field while losing energy.
+        The effective field follows from the gradient of the Hamiltonian,
+      </p>
+      <div class="eq">\[ \mathbf{H}_i^{\mathrm{eff}} \;=\; -\frac{\partial H}{\partial \mathbf{S}_i}, \qquad H \;=\; -J \sum_{\langle i,j \rangle} \mathbf{S}_i \cdot \mathbf{S}_j \;-\; B \sum_i S_i^z \;-\; D \sum_{\langle i,j \rangle} \left( \hat{\mathbf{z}} \times \hat{\mathbf{e}}_{ij} \right) \cdot \left( \mathbf{S}_i \times \mathbf{S}_j \right) \]</div>
+      <p class="ja">
+        交換相互作用 <i>J</i> はスピンを揃えようとし、界面型の
+        Dzyaloshinskii–Moriya 相互作用（DMI）<i>D</i> は隣のスピンを少しねじろうとします。
+        この2つの競合に磁場 <i>B</i> が加わると、面内でぐるりと巻いた渦状のテクスチャ——
+        <b>磁気スカーミオン</b>——が安定化されます。有限温度の揺らぎは、揺動散逸関係を
+        満たす熱ノイズ場として LLG に加えています（確率的 LLG、Heun 法で積分）。
+      </p>
+      <p class="en">
+        The exchange <i>J</i> wants spins parallel, while the interfacial
+        Dzyaloshinskii–Moriya interaction (DMI) <i>D</i> prefers a small twist between
+        neighbors. Add a field <i>B</i> to this competition and whirling textures —
+        <b>magnetic skyrmions</b> — are stabilized. Finite temperature enters as a thermal
+        noise field satisfying the fluctuation-dissipation relation (stochastic LLG,
+        integrated with the Heun scheme).
+      </p>
+      <p class="ja">
+        スカーミオンの「個数」を数えてくれるのが、トポロジカル電荷です。
+      </p>
+      <p class="en">
+        Skyrmions are counted by the topological charge,
+      </p>
+      <div class="eq">\[ Q \;=\; \frac{1}{4\pi} \int d^2 r \;\; \mathbf{S} \cdot \left( \partial_x \mathbf{S} \times \partial_y \mathbf{S} \right) \]</div>
+      <p class="ja">
+        <i>Q</i> は「スピン配置が単位球を何回覆うか」を数える整数で、スカーミオン1個が
+        <i>Q</i> = ±1 を担います（画面の値は Berg–Lüscher の格子版で計算した、
+        ほぼ整数になる量です）。XY 模型のページで見た渦の巻き付き数の、いわば3次元スピン版です。
+        連続変形では変えられない量なので、スカーミオンは粒子のように安定に存在でき、
+        生成・消滅の瞬間には <i>Q</i> が整数で飛びます。
+      </p>
+      <p class="en">
+        <i>Q</i> is an integer counting how many times the spin configuration wraps the
+        unit sphere; each skyrmion carries <i>Q</i> = ±1 (the on-screen value uses the
+        Berg–Lüscher lattice discretization and stays nearly integer). It is the
+        three-dimensional-spin cousin of the vortex winding number from the XY page.
+        Because no smooth deformation can change it, skyrmions are stable, particle-like
+        objects, and <i>Q</i> jumps by integers at the moments of their creation and
+        annihilation.
+      </p>
+      <p class="ja">
+        スカーミオンは、少ない電流で駆動できる情報担体の候補として、スピントロニクスで
+        盛んに研究されています（レーストラックメモリなど）。このページの設定は
+        γ = 1、<i>J</i> = 1 の無次元単位で、実時間・実空間でテクスチャが動く様子を
+        そのまま眺められます。
+      </p>
+      <p class="en">
+        Skyrmions are actively studied in spintronics as candidate information carriers
+        drivable by tiny currents (racetrack memories and beyond). This page uses
+        dimensionless units γ = 1, <i>J</i> = 1, letting you watch the textures move in
+        real space and real time.
+      </p>
+      <p class="ja">
+        遊び方のおすすめ：デフォルト（<i>D</i> = 0.8, <i>B</i> = 0.25）で「ランダム初期化」を
+        押すと、乱れた配置から緩和してスカーミオンが自発的に核生成し、<i>Q</i> が整数値に
+        落ち着きます。「+z に揃える」→「スカーミオンを植える」で1個だけ置いて、
+        安定に生き続けることを確かめるのも面白いです。そこから磁場 <i>B</i> を上げていくと
+        スカーミオンが縮んでいき、ある値でつぶれて <i>Q</i> が跳びます（トポロジカル
+        保護の破れは格子スケールでしか起こせません）。<i>D</i> = 0 に戻すとただの強磁性体に
+        なり、α を小さくすると歳差が長く残って波打つようなダイナミクスが見えます。
+      </p>
+      <p class="en">
+        Suggestions for play: with the defaults (<i>D</i> = 0.8, <i>B</i> = 0.25), press
+        "Randomize" and watch skyrmions nucleate spontaneously as the disordered state
+        relaxes, with <i>Q</i> settling onto an integer. Or "Align +z" then "Seed a
+        skyrmion" to place a single one and verify it lives on stably. Raising <i>B</i>
+        shrinks it until it collapses — <i>Q</i> jumps, since topological protection can
+        only fail at the lattice scale. Set <i>D</i> = 0 to recover a plain ferromagnet,
+        and lower α to see long-lived precessional, wave-like dynamics.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SIZES = [32, 64, 128];
+  var L = 64, N = L * L;
+  var Sx = new Float32Array(N), Sy = new Float32Array(N), Sz = new Float32Array(N);
+  var Hx = new Float32Array(N), Hy = new Float32Array(N), Hz = new Float32Array(N);
+  var Px = new Float32Array(N), Py = new Float32Array(N), Pz = new Float32Array(N);
+  var Tx = new Float32Array(N), Ty = new Float32Array(N), Tz = new Float32Array(N);
+  var J = 1.0, D = 0.8, B = 0.25, alpha = 0.3, Temp = 0.02;
+  var dt = 0.02, stepsPerFrame = 4, paused = false;
+  var TWO_PI = Math.PI * 2;
+
+  var canvas = document.getElementById('llgCanvas');
+  var ctx = canvas.getContext('2d');
+  var off = document.createElement('canvas');
+  off.width = L; off.height = L;
+  var offCtx = off.getContext('2d');
+  var img = offCtx.createImageData(L, L);
+
+  var HUE_N = 256, hueLUT = new Uint8Array(HUE_N * 3);
+  (function () {
+    for (var i = 0; i < HUE_N; i++) {
+      var h = i / HUE_N;
+      var f = function (n) {
+        var k = (n + h * 12) % 12;
+        return 0.5 - 0.45 * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+      };
+      hueLUT[i * 3] = Math.round(f(0) * 255);
+      hueLUT[i * 3 + 1] = Math.round(f(8) * 255);
+      hueLUT[i * 3 + 2] = Math.round(f(4) * 255);
+    }
+  })();
+
+  function gauss() {
+    var u = 1 - Math.random(), v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(TWO_PI * v);
+  }
+
+  function randomize() {
+    for (var i = 0; i < N; i++) {
+      var z = 2 * Math.random() - 1, phi = Math.random() * TWO_PI;
+      var r = Math.sqrt(1 - z * z);
+      Sx[i] = r * Math.cos(phi); Sy[i] = r * Math.sin(phi); Sz[i] = z;
+    }
+  }
+  function alignUp() { Sx.fill(0); Sy.fill(0); Sz.fill(1); }
+
+  function seedSkyrmion() {
+    var R = Math.max(5, L / 10), cx = L / 2, cy = L / 2;
+    for (var y = 0; y < L; y++) {
+      for (var x = 0; x < L; x++) {
+        var dx = x - cx, dy = y - cy;
+        var r = Math.sqrt(dx * dx + dy * dy);
+        if (r < R) {
+          var i = y * L + x;
+          var th = Math.PI * (1 - r / R);
+          var phi = Math.atan2(dy, dx);
+          Sx[i] = Math.sin(th) * Math.cos(phi);
+          Sy[i] = Math.sin(th) * Math.sin(phi);
+          Sz[i] = Math.cos(th);
+        }
+      }
+    }
+  }
+
+  function field(SxA, SyA, SzA, noise) {
+    for (var y = 0; y < L; y++) {
+      for (var x = 0; x < L; x++) {
+        var i = y * L + x;
+        var xp = y * L + (x + 1) % L, xm = y * L + (x + L - 1) % L;
+        var yp = ((y + 1) % L) * L + x, ym = ((y + L - 1) % L) * L + x;
+        var hx = J * (SxA[xp] + SxA[xm] + SxA[yp] + SxA[ym]);
+        var hy = J * (SyA[xp] + SyA[xm] + SyA[yp] + SyA[ym]);
+        var hz = J * (SzA[xp] + SzA[xm] + SzA[yp] + SzA[ym]) + B;
+        var Ax = SxA[xp] - SxA[xm], Az = SzA[xp] - SzA[xm];
+        var By2 = SyA[yp] - SyA[ym], Bz2 = SzA[yp] - SzA[ym];
+        hx += D * (-Az);
+        hy += D * (-Bz2);
+        hz += D * (Ax + By2);
+        if (noise) { hx += Tx[i]; hy += Ty[i]; hz += Tz[i]; }
+        Hx[i] = hx; Hy[i] = hy; Hz[i] = hz;
+      }
+    }
+  }
+
+  function llgRhs(SxA, SyA, SzA, i, out) {
+    var sx = SxA[i], sy = SyA[i], sz = SzA[i];
+    var hx = Hx[i], hy = Hy[i], hz = Hz[i];
+    var cx = sy * hz - sz * hy, cy = sz * hx - sx * hz, cz = sx * hy - sy * hx;
+    var dx = sy * cz - sz * cy, dy = sz * cx - sx * cz, dz = sx * cy - sy * cx;
+    var pref = -1 / (1 + alpha * alpha);
+    out[0] = pref * (cx + alpha * dx);
+    out[1] = pref * (cy + alpha * dy);
+    out[2] = pref * (cz + alpha * dz);
+  }
+
+  var k1 = [0, 0, 0], k2 = [0, 0, 0];
+
+  function step() {
+    var sigma = Temp > 0 ? Math.sqrt(2 * alpha * Temp / dt) : 0;
+    if (sigma > 0) {
+      for (var i0 = 0; i0 < N; i0++) {
+        Tx[i0] = sigma * gauss(); Ty[i0] = sigma * gauss(); Tz[i0] = sigma * gauss();
+      }
+    }
+    field(Sx, Sy, Sz, sigma > 0);
+    for (var i = 0; i < N; i++) {
+      llgRhs(Sx, Sy, Sz, i, k1);
+      Px[i] = Sx[i] + dt * k1[0];
+      Py[i] = Sy[i] + dt * k1[1];
+      Pz[i] = Sz[i] + dt * k1[2];
+    }
+    field(Px, Py, Pz, sigma > 0);
+    for (var j = 0; j < N; j++) {
+      llgRhs(Sx, Sy, Sz, j, k1);
+      llgRhs(Px, Py, Pz, j, k2);
+      var nx = Sx[j] + 0.5 * dt * (k1[0] + k2[0]);
+      var ny = Sy[j] + 0.5 * dt * (k1[1] + k2[1]);
+      var nz = Sz[j] + 0.5 * dt * (k1[2] + k2[2]);
+      var inv = 1 / Math.sqrt(nx * nx + ny * ny + nz * nz);
+      Sx[j] = nx * inv; Sy[j] = ny * inv; Sz[j] = nz * inv;
+    }
+  }
+
+  function solidAngle(i1, i2, i3) {
+    var num = Sx[i1] * (Sy[i2] * Sz[i3] - Sz[i2] * Sy[i3]) -
+              Sy[i1] * (Sx[i2] * Sz[i3] - Sz[i2] * Sx[i3]) +
+              Sz[i1] * (Sx[i2] * Sy[i3] - Sy[i2] * Sx[i3]);
+    var d12 = Sx[i1] * Sx[i2] + Sy[i1] * Sy[i2] + Sz[i1] * Sz[i2];
+    var d23 = Sx[i2] * Sx[i3] + Sy[i2] * Sy[i3] + Sz[i2] * Sz[i3];
+    var d31 = Sx[i3] * Sx[i1] + Sy[i3] * Sy[i1] + Sz[i3] * Sz[i1];
+    return 2 * Math.atan2(num, 1 + d12 + d23 + d31);
+  }
+
+  function topoCharge() {
+    var q = 0;
+    for (var y = 0; y < L; y++) {
+      for (var x = 0; x < L; x++) {
+        var i = y * L + x;
+        var ix = y * L + (x + 1) % L;
+        var iy = ((y + 1) % L) * L + x;
+        var ixy = ((y + 1) % L) * L + (x + 1) % L;
+        q += solidAngle(i, ix, ixy);
+        q += solidAngle(i, ixy, iy);
+      }
+    }
+    return q / (4 * Math.PI);
+  }
+
+  function draw() {
+    var d = img.data;
+    for (var i = 0; i < N; i++) {
+      var phi = Math.atan2(Sy[i], Sx[i]);
+      if (phi < 0) phi += TWO_PI;
+      var bin = ((phi / TWO_PI) * HUE_N) | 0;
+      if (bin >= HUE_N) bin = HUE_N - 1;
+      var b3 = bin * 3;
+      var r = hueLUT[b3], g = hueLUT[b3 + 1], b = hueLUT[b3 + 2];
+      var z = Sz[i];
+      if (z > 0) { r += (255 - r) * z; g += (255 - g) * z; b += (255 - b) * z; }
+      else { r *= (1 + z); g *= (1 + z); b *= (1 + z); }
+      var k = i * 4;
+      d[k] = r; d[k + 1] = g; d[k + 2] = b; d[k + 3] = 255;
+    }
+    offCtx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
+    drawArrows();
+  }
+
+  function arrowStroke(x0, y0, x1, y1) {
+    ctx.beginPath();
+    ctx.moveTo(x0, y0); ctx.lineTo(x1, y1);
+    var ang = Math.atan2(y1 - y0, x1 - x0);
+    var hs = 5;
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - hs * Math.cos(ang - 0.5), y1 - hs * Math.sin(ang - 0.5));
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - hs * Math.cos(ang + 0.5), y1 - hs * Math.sin(ang + 0.5));
+    ctx.stroke();
+  }
+
+  function drawArrows() {
+    var stride = Math.max(2, Math.round(L / 18));
+    var cell = canvas.width / L;
+    ctx.lineCap = 'round';
+    for (var by = 0; by < L; by += stride) {
+      for (var bx = 0; bx < L; bx += stride) {
+        var mx = 0, my = 0, cnt = 0;
+        var yM = Math.min(by + stride, L), xM = Math.min(bx + stride, L);
+        for (var y = by; y < yM; y++) {
+          for (var x = bx; x < xM; x++) {
+            var i = y * L + x;
+            mx += Sx[i]; my += Sy[i]; cnt++;
+          }
+        }
+        var mag = Math.sqrt(mx * mx + my * my) / cnt;
+        if (mag < 0.05) continue;
+        var ang = Math.atan2(my, mx);
+        var cx = (bx + stride / 2) * cell, cy = (by + stride / 2) * cell;
+        var len = stride * cell * 0.42 * (0.35 + 0.65 * mag);
+        var dx = Math.cos(ang) * len, dy = -Math.sin(ang) * len;
+        ctx.strokeStyle = 'rgba(0,0,0,0.6)'; ctx.lineWidth = 3.2;
+        arrowStroke(cx - dx, cy + dy, cx + dx, cy - dy);
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.6;
+        arrowStroke(cx - dx, cy + dy, cx + dx, cy - dy);
+      }
+    }
+  }
+
+  function observables() {
+    var mz = 0;
+    for (var i = 0; i < N; i++) mz += Sz[i];
+    document.getElementById('mzVal').textContent = (mz / N).toFixed(2);
+    document.getElementById('qVal').textContent = topoCharge().toFixed(1);
+  }
+
+  function setSize(newL) {
+    L = newL; N = L * L;
+    Sx = new Float32Array(N); Sy = new Float32Array(N); Sz = new Float32Array(N);
+    Hx = new Float32Array(N); Hy = new Float32Array(N); Hz = new Float32Array(N);
+    Px = new Float32Array(N); Py = new Float32Array(N); Pz = new Float32Array(N);
+    Tx = new Float32Array(N); Ty = new Float32Array(N); Tz = new Float32Array(N);
+    off.width = L; off.height = L;
+    img = offCtx.createImageData(L, L);
+    randomize();
+  }
+
+  var frame = 0;
+  function loop() {
+    if (!paused) {
+      for (var s = 0; s < stepsPerFrame; s++) step();
+      draw();
+      if (++frame % 10 === 0) observables();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  function bindSlider(id, valId, setter, fmt) {
+    document.getElementById(id).addEventListener('input', function () {
+      var v = parseFloat(this.value);
+      setter(v);
+      document.getElementById(valId).textContent = fmt(v);
+    });
+  }
+  bindSlider('dSlider', 'dVal', function (v) { D = v; }, function (v) { return v.toFixed(2); });
+  bindSlider('bSlider', 'bVal', function (v) { B = v; }, function (v) { return v.toFixed(2); });
+  bindSlider('aSlider', 'aVal', function (v) { alpha = v; }, function (v) { return v.toFixed(2); });
+  bindSlider('tSlider', 'tVal', function (v) { Temp = v; }, function (v) { return v.toFixed(2); });
+  document.getElementById('lSlider').addEventListener('input', function () {
+    var newL = SIZES[parseInt(this.value, 10)];
+    document.getElementById('lVal').textContent = newL;
+    setSize(newL);
+  });
+  document.getElementById('randBtn').addEventListener('click', randomize);
+  document.getElementById('upBtn').addEventListener('click', alignUp);
+  document.getElementById('seedBtn').addEventListener('click', seedSkyrmion);
+  document.getElementById('pauseBtn').addEventListener('click', function () {
+    paused = !paused;
+    this.querySelectorAll('.ja')[0].textContent = paused ? '再開' : '一時停止';
+    this.querySelectorAll('.en')[0].textContent = paused ? 'Resume' : 'Pause';
+  });
+
+  randomize();
+  loop();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2D Percolation — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+  .sim-canvas-box { flex: 0 0 auto; }
+  #percCanvas {
+    width: 440px; height: 440px; max-width: 100%;
+    border: 1px solid var(--border); border-radius: 12px;
+    image-rendering: pixelated;
+  }
+  .sim-controls { flex: 1 1 260px; min-width: 260px; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  .legend { font-size: 0.85rem; color: var(--text-dim); line-height: 1.9; }
+  .swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 0.35rem; vertical-align: -1px; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">2次元正方格子のパーコレーション</span><span class="en">Percolation on the 2D Square Lattice</span></h1>
+    <p class="hero-sub ja">
+      各サイトを確率 <i>p</i> で占有するサイトパーコレーションです。
+      <i>p</i> を動かして、上下を貫くクラスターが現れる瞬間を観察してみてください。
+    </p>
+    <p class="hero-sub en">
+      Site percolation: each site is occupied with probability <i>p</i>.
+      Drag <i>p</i> and watch the moment a cluster spans the lattice from top to bottom.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="sim-wrap">
+        <div class="sim-canvas-box">
+          <canvas id="percCanvas" width="128" height="128"></canvas>
+        </div>
+        <div class="sim-controls">
+          <div class="ctrl">
+            <label><span class="ja">占有確率</span><span class="en">Occupation probability</span> <i>p</i> = <span class="val" id="pVal">0.50</span></label>
+            <input type="range" id="pSlider" min="0" max="1" step="0.002" value="0.5">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">128</span>（<i>L</i>×<i>L</i>）</label>
+            <input type="range" id="lSlider" min="0" max="3" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="resampleBtn"><span class="ja">乱数を振り直す</span><span class="en">Resample</span></button>
+            <button class="sim-btn" id="pcBtn"><i>p</i> → <i>p</i><sub>c</sub></button>
+          </div>
+          <div class="obs">
+            <span class="ja">貫通クラスター</span><span class="en">Spanning cluster</span>:
+            <b id="spanVal">—</b><br>
+            <span class="ja">最大クラスターの占める割合</span><span class="en">Largest cluster fraction</span>:
+            <b id="fracVal">0.00</b><br>
+            <span class="legend">
+              <span class="swatch" style="background:#e05252;"></span><span class="ja">貫通（上下をつなぐ）クラスター</span><span class="en">spanning cluster (top to bottom)</span><br>
+              <span class="swatch" style="background:#f0a24a;"></span><span class="ja">最大クラスター（貫通していないとき）</span><span class="en">largest cluster (when not spanning)</span><br>
+              <span class="swatch" style="background:#4a7de0;"></span><span class="ja">その他の占有サイト</span><span class="en">other occupied sites</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+      <p class="ja">
+        サイトパーコレーションでは、格子の各サイトが確率 <i>p</i> で独立に「占有」され、
+        最近接で隣り合う占有サイトの集まりをクラスターと呼びます。このページの実装では
+        各サイトに固定の乱数 <i>r</i><sub>i</sub> ∈ [0,1) を割り振り、
+        <i>r</i><sub>i</sub> &lt; <i>p</i> のとき占有としています。そのためスライダーで
+        <i>p</i> を動かすと、クラスターが連続的に成長・融合していく様子が見られます。
+        熱揺らぎもハミルトニアンもない、純粋に幾何学だけの問題であることに注意してください。
+      </p>
+      <p class="en">
+        In site percolation, each lattice site is independently "occupied" with probability
+        <i>p</i>, and maximal sets of nearest-neighbor occupied sites are called clusters.
+        In this implementation every site carries a fixed random number
+        <i>r</i><sub>i</sub> ∈ [0,1) and is occupied when <i>r</i><sub>i</sub> &lt; <i>p</i>,
+        so dragging the slider lets you watch clusters grow and merge continuously. Note
+        that there is no thermal fluctuation and no Hamiltonian — this is a purely
+        geometric problem.
+      </p>
+      <p class="ja">
+        それでもこの模型は、立派な連続相転移を示します。正方格子のサイトパーコレーションの
+        臨界点は数値的に
+      </p>
+      <p class="en">
+        And yet the model exhibits a genuine continuous phase transition. For site
+        percolation on the square lattice the critical point is known numerically to be
+      </p>
+      <div class="eq">\[ p_c \;\approx\; 0.592746 \]</div>
+      <p class="ja">
+        で、厳密値は知られていません（ちなみにボンドパーコレーションなら双対性から
+        厳密に <i>p</i><sub>c</sub> = 1/2 です）。<i>p</i> &gt; <i>p</i><sub>c</sub> で
+        系を貫く無限クラスターが出現し、サイトがそこに属する割合が秩序変数になります。
+      </p>
+      <p class="en">
+        (no exact value is known — though for bond percolation duality gives exactly
+        <i>p</i><sub>c</sub> = 1/2). For <i>p</i> &gt; <i>p</i><sub>c</sub> an infinite
+        spanning cluster appears, and the fraction of sites belonging to it serves as the
+        order parameter:
+      </p>
+      <div class="eq">\[ P_{\infty}(p) \;\sim\; (p - p_c)^{\beta}, \qquad \beta = \frac{5}{36} \]</div>
+      <p class="ja">
+        相関長（クラスターの典型サイズ）は臨界点に向かって発散します。
+      </p>
+      <p class="en">
+        The correlation length — the typical cluster size — diverges on approach to the
+        critical point:
+      </p>
+      <div class="eq">\[ \xi \;\sim\; |p - p_c|^{-\nu}, \qquad \nu = \frac{4}{3} \]</div>
+      <p class="ja">
+        臨界点ちょうどでは、クラスターのサイズ分布がべき則に従います。
+      </p>
+      <p class="en">
+        Exactly at criticality the cluster-size distribution obeys a power law,
+      </p>
+      <div class="eq">\[ n_s \;\sim\; s^{-\tau}, \qquad \tau = \frac{187}{91} \]</div>
+      <p class="ja">
+        そして貫通クラスターは、フラクタル次元
+      </p>
+      <p class="en">
+        and the spanning cluster is a fractal object with dimension
+      </p>
+      <div class="eq">\[ D \;=\; \frac{91}{48} \;\approx\; 1.896 \]</div>
+      <p class="ja">
+        のスカスカな図形になります。「<i>p</i> → <i>p</i><sub>c</sub>」ボタンを押して
+        最大クラスターを眺めると、あらゆるスケールに穴の空いたフラクタル構造が
+        見えるはずです。ここに現れた 5/36 や 187/91 のような分数の指数が
+        <b>厳密に</b>分かっている、というのがこの分野の驚くべきところです。
+      </p>
+      <p class="en">
+        — full of holes on every scale. Press the "<i>p</i> → <i>p</i><sub>c</sub>" button
+        and look at the largest cluster to see this fractal structure. The astonishing
+        thing is that fractional exponents like 5/36 and 187/91 are known
+        <b>exactly</b>.
+      </p>
+      <p class="ja">
+        なぜ厳密に分かるのか。鍵は、パーコレーションが <i>Q</i> 状態 Potts 模型と
+        Fortuin–Kasteleyn 表現で結ばれていることです。
+      </p>
+      <p class="en">
+        Why can they be known exactly? The key is that percolation is tied to the
+        <i>Q</i>-state Potts model through the Fortuin–Kasteleyn representation,
+      </p>
+      <div class="eq">\[ Z_Q \;=\; \sum_{A \subseteq E} p^{|A|} \, (1-p)^{|E|-|A|} \, Q^{\,c(A)} \]</div>
+      <p class="ja">
+        （<i>A</i> はボンドの部分集合、<i>c</i>(<i>A</i>) はそのクラスター数）。
+        パーコレーションはこの <i>Q</i> → 1 極限に対応します。この極限では分配関数は
+        自明（<i>Z</i> = 1）になるのに、相関関数は非自明なまま残る——この一見奇妙な
+        状況こそが、中心電荷 <i>c</i> = 0 の非ユニタリー（対数的）共形場理論の世界です。
+        「乱数を撒くだけ」の最も単純な相転移が、CFT の中でも特に手強いクラスで
+        記述されるというギャップが、この模型の大きな魅力だと思います。
+        さらに、臨界クラスターの境界線は SLE<sub>6</sub> と呼ばれる共形不変な
+        ランダム曲線になることが知られており（三角格子では Smirnov により証明）、
+        貫通確率を与える Cardy の公式など、美しい厳密結果の宝庫です。
+      </p>
+      <p class="en">
+        (<i>A</i> runs over subsets of bonds and <i>c</i>(<i>A</i>) counts their clusters).
+        Percolation corresponds to the limit <i>Q</i> → 1. In this limit the partition
+        function becomes trivial (<i>Z</i> = 1) while correlation functions remain
+        nontrivial — and this peculiar situation is precisely the realm of a non-unitary
+        (logarithmic) conformal field theory with central charge <i>c</i> = 0. The gap
+        between "just sprinkling random numbers" and one of the most demanding classes of
+        CFT is, to me, the great charm of this model. Moreover, critical cluster boundaries
+        are conformally invariant random curves described by SLE<sub>6</sub> (proven by
+        Smirnov on the triangular lattice), and exact gems such as Cardy's crossing formula
+        abound.
+      </p>
+      <p class="ja">
+        遊び方のおすすめ：<i>p</i><sub>c</sub> 付近で「乱数を振り直す」を連打してみて
+        ください。貫通する／しないがサンプルごとに揺らぎます。実は
+        <i>p</i> = <i>p</i><sub>c</sub> における貫通確率は、系を大きくしても 0 にも 1 にも
+        ならず、アスペクト比だけで決まる普遍的な値に収束します（それを与えるのが
+        Cardy の公式です）。また <i>L</i> を 32 から 256 まで変えると、転移が
+        どんどん鋭くなっていく有限サイズスケーリングも観察できます。
+      </p>
+      <p class="en">
+        Suggestions for play: near <i>p</i><sub>c</sub>, hit "Resample" repeatedly — whether
+        the system percolates fluctuates from sample to sample. In fact, the crossing
+        probability at <i>p</i> = <i>p</i><sub>c</sub> converges, as the system grows, to a
+        universal value that depends only on the aspect ratio (this is what Cardy's formula
+        gives). Varying <i>L</i> from 32 to 256 also lets you watch finite-size scaling
+        sharpen the transition.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SIZES = [32, 64, 128, 256];
+  var PC = 0.592746;
+  var L = 128, N = L * L;
+  var rnd = new Float32Array(N);
+  var parent = new Int32Array(N + 2);
+  var p = 0.5;
+
+  var canvas = document.getElementById('percCanvas');
+  var ctx = canvas.getContext('2d');
+  var img = ctx.createImageData(L, L);
+
+  var EMPTY = [232, 234, 240], OCC = [74, 125, 224];
+  var SPAN = [224, 82, 82], BIG = [240, 162, 74];
+
+  function resample() {
+    for (var i = 0; i < N; i++) rnd[i] = Math.random();
+  }
+
+  function find(x) {
+    while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; }
+    return x;
+  }
+  function union(a, b) {
+    var ra = find(a), rb = find(b);
+    if (ra !== rb) parent[ra] = rb;
+  }
+
+  function update() {
+    var TOP = N, BOT = N + 1;
+    for (var i = 0; i <= N + 1; i++) parent[i] = i;
+
+    var occ = new Uint8Array(N);
+    for (var i2 = 0; i2 < N; i2++) occ[i2] = rnd[i2] < p ? 1 : 0;
+
+    for (var y = 0; y < L; y++) {
+      for (var x = 0; x < L; x++) {
+        var i3 = y * L + x;
+        if (!occ[i3]) continue;
+        if (x + 1 < L && occ[i3 + 1]) union(i3, i3 + 1);
+        if (y + 1 < L && occ[i3 + L]) union(i3, i3 + L);
+        if (y === 0) union(i3, TOP);
+        if (y === L - 1) union(i3, BOT);
+      }
+    }
+
+    var spanning = find(TOP) === find(BOT);
+    var spanRoot = spanning ? find(TOP) : -1;
+
+    var counts = {};
+    var bigRoot = -1, bigSize = 0, occCount = 0;
+    for (var i4 = 0; i4 < N; i4++) {
+      if (!occ[i4]) continue;
+      occCount++;
+      var r = find(i4);
+      counts[r] = (counts[r] || 0) + 1;
+      if (counts[r] > bigSize) { bigSize = counts[r]; bigRoot = r; }
+    }
+
+    var hiRoot = spanning ? spanRoot : bigRoot;
+    var hiColor = spanning ? SPAN : BIG;
+
+    var d = img.data;
+    for (var i5 = 0; i5 < N; i5++) {
+      var c;
+      if (!occ[i5]) c = EMPTY;
+      else if (find(i5) === hiRoot) c = hiColor;
+      else c = OCC;
+      var k = i5 * 4;
+      d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+
+    var spanEl = document.getElementById('spanVal');
+    var isJa = document.body.classList.contains('lang-ja');
+    spanEl.textContent = spanning ? (isJa ? 'あり（パーコレート）' : 'yes (percolating)') : (isJa ? 'なし' : 'no');
+    spanEl.style.color = spanning ? '#e05252' : '';
+    document.getElementById('fracVal').textContent = (bigSize / N).toFixed(3);
+  }
+
+  function setSize(newL) {
+    L = newL; N = L * L;
+    rnd = new Float32Array(N);
+    parent = new Int32Array(N + 2);
+    canvas.width = L; canvas.height = L;
+    img = ctx.createImageData(L, L);
+    resample();
+    update();
+  }
+
+  document.getElementById('pSlider').addEventListener('input', function () {
+    p = parseFloat(this.value);
+    document.getElementById('pVal').textContent = p.toFixed(3);
+    update();
+  });
+  document.getElementById('lSlider').addEventListener('input', function () {
+    var newL = SIZES[parseInt(this.value, 10)];
+    document.getElementById('lVal').textContent = newL;
+    setSize(newL);
+  });
+  document.getElementById('resampleBtn').addEventListener('click', function () {
+    resample();
+    update();
+  });
+  document.getElementById('pcBtn').addEventListener('click', function () {
+    p = PC;
+    document.getElementById('pSlider').value = PC;
+    document.getElementById('pVal').textContent = p.toFixed(3);
+    update();
+  });
+
+  resample();
+  update();
+})();
+</script>
+</body>
+</html>

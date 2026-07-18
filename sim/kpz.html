@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Deposition vs KPZ — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .surf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 700px) { .surf-grid { grid-template-columns: 1fr; } }
+  .surf-box h4 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .surf-box > div, #wChart {
+    width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
+  }
+  .surf-box svg, #wChart svg { display: block; width: 100%; height: auto; }
+  .ctrl { margin: 1.2rem 0; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; max-width: 320px; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">界面成長：ランダム堆積 vs KPZ</span><span class="en">Surface Growth: Random Deposition vs KPZ</span></h1>
+    <p class="hero-sub ja">
+      同じ「粒を落として積む」でも、ルールがひとつ違うだけで界面のスケーリングが変わります。
+      界面の幅 <i>W</i>(<i>t</i>) の log-log プロットで、成長指数 β = 1/2 と 1/3 の違いを見てみてください。
+    </p>
+    <p class="hero-sub en">
+      Two ways of dropping particles, one rule apart — and the interface scaling changes.
+      Watch the log-log plot of the width <i>W</i>(<i>t</i>) distinguish the growth exponents
+      β = 1/2 and 1/3.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="surf-grid">
+        <div class="surf-box">
+          <h4><span class="ja">ランダム堆積（独立ランダムウォーク）</span><span class="en">Random deposition (independent random walks)</span></h4>
+          <div id="rdCanvas"></div>
+        </div>
+        <div class="surf-box">
+          <h4><span class="ja">RSOS 模型（KPZ クラス）</span><span class="en">RSOS model (KPZ class)</span></h4>
+          <div id="bdCanvas"></div>
+        </div>
+      </div>
+
+      <div class="ctrl">
+        <label><span class="ja">速さ（層/フレーム）</span><span class="en">Speed (monolayers/frame)</span>: <span class="val" id="spVal">2.0</span></label>
+        <input type="range" id="spSlider" min="0.5" max="10" step="0.5" value="2">
+      </div>
+      <div class="ctrl">
+        <button class="sim-btn" id="restartBtn"><span class="ja">最初から</span><span class="en">Restart</span></button>
+        <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
+      </div>
+      <div class="obs">
+        <i>t</i> = <b id="tVal">0</b> <span class="ja">層</span><span class="en">monolayers</span>,
+        <i>L</i> = 1024（<span class="ja">周期境界条件</span><span class="en">periodic boundaries</span>）<br>
+        <i>W</i><sub>RD</sub> = <b id="wRdVal">0.0</b>,
+        <i>W</i><sub>RSOS</sub> = <b id="wBdVal">0.0</b>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">界面の幅 <i>W</i>(<i>t</i>)（log-log）</span><span class="en">Interface width <i>W</i>(<i>t</i>) (log-log)</span></h3>
+      <div id="wChart"></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+      <p class="ja">
+        高さ <i>h</i><sub>i</sub> の界面の「荒れ具合」を測る量が、界面の幅
+        （高さの標準偏差）です。
+      </p>
+      <p class="en">
+        The "roughness" of an interface with heights <i>h</i><sub>i</sub> is measured by
+        the interface width — the standard deviation of the height,
+      </p>
+      <div class="eq">\[ W(L,t) \;=\; \sqrt{\, \frac{1}{L} \sum_{i=1}^{L} \left( h_i - \bar{h} \right)^2 \,} \]</div>
+      <p class="ja">
+        <b>ランダム堆積</b>（左・青）では、ランダムに選んだ列に粒がそのまま積まれます。
+        各列の高さは他の列と一切相関を持たず、それぞれが独立な Poisson 過程
+        ——時間方向のランダムウォーク——になります。平均 <i>t</i>（単位：層）の
+        Poisson 分布は分散も <i>t</i> なので、幅は厳密に
+      </p>
+      <p class="en">
+        In <b>random deposition</b> (left, blue), each particle simply stacks on a randomly
+        chosen column. The columns are completely uncorrelated: each height is an
+        independent Poisson process — a random walk in time. Since a Poisson distribution
+        with mean <i>t</i> (in monolayers) also has variance <i>t</i>, the width obeys
+        exactly
+      </p>
+      <div class="eq">\[ W_{\mathrm{RD}}(t) \;=\; \sqrt{t} \]</div>
+      <p class="ja">
+        となります。シミュレーションの値がこの式にぴったり乗ること
+        （例えば <i>t</i> = 1000 で <i>W</i> ≈ 31.6）を確認してみてください。
+        横方向の相関は永遠に育たず、界面はどこまでも荒れ続けます。
+      </p>
+      <p class="en">
+        Check that the simulated values sit right on this curve (e.g. <i>W</i> ≈ 31.6 at
+        <i>t</i> = 1000). Lateral correlations never develop, and the surface roughens
+        without bound.
+      </p>
+      <p class="ja">
+        <b>RSOS 模型</b>（右・赤、Kim–Kosterlitz 模型）では、粒はランダムに選んだ列に
+        落ちますが、積んだ後も両隣との高低差が1以内に収まるときだけ受け入れられます。
+        この制約が隣の列どうしを結びつけ、横方向の相関長が時間とともに
+        ξ<sub>∥</sub> ∼ <i>t</i><sup>1/<i>z</i></sup> で成長します。このような成長界面は
+        一般に Family–Vicsek スケーリングに従います。
+      </p>
+      <p class="en">
+        In the <b>RSOS model</b> (right, red; Kim–Kosterlitz), a particle drops onto a
+        random column but is accepted only if the height differences with both neighbors
+        stay at most one. This constraint couples neighboring columns, and a lateral
+        correlation length grows as ξ<sub>∥</sub> ∼ <i>t</i><sup>1/<i>z</i></sup>. Growing
+        interfaces of this kind generally obey Family–Vicsek scaling,
+      </p>
+      <div class="eq">\[ W(L,t) \;\simeq\; L^{\alpha} \, f\!\left( \frac{t}{L^{z}} \right), \qquad f(u) \sim \begin{cases} u^{\beta} & (u \ll 1) \\[2pt] \mathrm{const} & (u \gg 1) \end{cases}, \qquad \beta = \frac{\alpha}{z} \]</div>
+      <p class="ja">
+        つまり最初は <i>W</i> ∼ <i>t</i><sup>β</sup> で成長し、相関長が系のサイズに達する
+        <i>t</i> ∼ <i>L</i><sup><i>z</i></sup> で成長が止まって <i>W</i> ∼ <i>L</i><sup>α</sup>
+        に飽和します（このページの設定 <i>L</i> = 1024 では飽和は <i>t</i> ∼ 3×10⁴ 層あたりで、
+        プロット窓のすぐ外にあります）。
+      </p>
+      <p class="en">
+        That is, the width first grows as <i>W</i> ∼ <i>t</i><sup>β</sup>, and saturates at
+        <i>W</i> ∼ <i>L</i><sup>α</sup> once the correlation length reaches the system size
+        at <i>t</i> ∼ <i>L</i><sup><i>z</i></sup> (for the present <i>L</i> = 1024,
+        saturation sits near <i>t</i> ∼ 3×10⁴ monolayers, just outside the plot window).
+      </p>
+      <p class="ja">
+        この普遍クラスの連続記述が、KPZ（Kardar–Parisi–Zhang）方程式です。
+      </p>
+      <p class="en">
+        The continuum description of this universality class is the KPZ
+        (Kardar–Parisi–Zhang) equation,
+      </p>
+      <div class="eq">\[ \frac{\partial h}{\partial t} \;=\; \nu \nabla^2 h \;+\; \frac{\lambda}{2} \left( \nabla h \right)^2 \;+\; \eta, \qquad \left\langle \eta(x,t)\,\eta(x',t') \right\rangle = 2D\,\delta(x-x')\,\delta(t-t') \]</div>
+      <p class="ja">
+        非線形項 (∇<i>h</i>)² は「傾いた斜面は法線方向に成長する」という幾何学的な効果を
+        表していて、これこそがランダム堆積や、λ = 0 の線形理論
+        （Edwards–Wilkinson 方程式：1+1次元で β = 1/4 の別クラス）との本質的な違いです。
+        1+1次元の KPZ では、ガリレイ不変性と揺動散逸関係という2つの特殊事情によって
+        臨界指数が厳密に決まります。
+      </p>
+      <p class="en">
+        The nonlinear term (∇<i>h</i>)² encodes the geometric fact that a tilted surface
+        grows along its normal — this is the essential difference from random deposition
+        and from the linear λ = 0 theory (the Edwards–Wilkinson equation, a distinct class
+        with β = 1/4 in 1+1 dimensions). In 1+1 dimensions, Galilean invariance together
+        with a fluctuation-dissipation relation fixes the exponents exactly:
+      </p>
+      <div class="eq">\[ \alpha = \frac{1}{2}, \qquad \beta = \frac{1}{3}, \qquad z = \frac{3}{2} \]</div>
+      <p class="ja">
+        ちなみに、KPZ クラスの代表例としてよく紹介される ballistic deposition
+        （落ちてきた粒が隣の柱に触れた瞬間にくっつく模型）も同じユニバーサリティクラス
+        ですが、固有幅によるスケーリング補正が大きく、小さな系では β = 1/3 が
+        見えにくいことが知られています。このページで RSOS 模型を採用しているのは
+        そのためです。
+      </p>
+      <p class="en">
+        Incidentally, ballistic deposition — the model where a falling particle sticks the
+        moment it touches a neighboring column — belongs to the same universality class and
+        is the textbook example of KPZ growth, but its intrinsic-width corrections to
+        scaling are notoriously large, hiding β = 1/3 in small systems. That is why this
+        page uses the RSOS model.
+      </p>
+      <p class="ja">
+        KPZ は今も発展し続けている分野です。1+1次元では高さ揺らぎの分布そのものが
+        厳密に求められていて、なんとランダム行列理論の Tracy–Widom 分布に従うことが
+        知られています（初期条件が平坦か曲面かで GOE/GUE が切り替わる、という
+        美しいおまけ付きです）。この普遍性は液晶乱流の実験（竹内・佐野）でも
+        観測されています。理論の入り口としては、教科書タブで紹介している
+        M. Kardar 先生の <i>Statistical Physics of Fields</i> の §9.6 が感動的なので、
+        ぜひそちらもどうぞ。
+      </p>
+      <p class="en">
+        KPZ remains a thriving field. In 1+1 dimensions the full distribution of height
+        fluctuations has been computed exactly, and it follows — remarkably — the
+        Tracy–Widom distributions of random matrix theory (with the beautiful twist that
+        flat versus curved initial conditions select GOE versus GUE). This universality has
+        even been observed in liquid-crystal turbulence experiments (Takeuchi–Sano). For
+        the theory, Section 9.6 of M. Kardar's <i>Statistical Physics of Fields</i> —
+        reviewed in the Textbooks tab — is breathtaking; do have a look.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var L = 1024, R = 4;
+  var hRd = [], hBd = [];
+  for (var r0 = 0; r0 < R; r0++) { hRd.push(new Float64Array(L)); hBd.push(new Float64Array(L)); }
+  var t = 0, speed = 2, paused = false;
+  var nextRec = 0.3;
+  var ptsRd = [], ptsBd = [];
+
+  var BLUE = '#2a6fb5', RED = '#c8403f';
+  var frameCount = 0;
+
+  function restart() {
+    for (var r = 0; r < R; r++) { hRd[r].fill(0); hBd[r].fill(0); }
+    t = 0; nextRec = 0.3;
+    ptsRd = []; ptsBd = [];
+    drawSurface('rdCanvas', hRd[0], BLUE);
+    drawSurface('bdCanvas', hBd[0], RED);
+    drawChart();
+  }
+
+  function depositRd(n) {
+    for (var r = 0; r < R; r++) {
+      var h = hRd[r];
+      for (var k = 0; k < n; k++) h[(Math.random() * L) | 0] += 1;
+    }
+  }
+
+  function depositBd(n) {
+    for (var r = 0; r < R; r++) {
+      var h = hBd[r];
+      for (var k = 0; k < n; k++) {
+        var x = (Math.random() * L) | 0;
+        var xl = (x + L - 1) % L, xr = (x + 1) % L;
+        var nh = h[x] + 1;
+        if (nh - h[xl] <= 1 && nh - h[xr] <= 1) h[x] = nh;
+      }
+    }
+  }
+
+  function widthOne(h) {
+    var m = 0, m2 = 0;
+    for (var i = 0; i < L; i++) m += h[i];
+    m /= L;
+    for (var j = 0; j < L; j++) { var d = h[j] - m; m2 += d * d; }
+    return Math.sqrt(m2 / L);
+  }
+  function width(hs) {
+    var w = 0;
+    for (var r = 0; r < R; r++) w += widthOne(hs[r]);
+    return w / R;
+  }
+
+  function drawSurface(id, h, color) {
+    var W = 440, H = 240;
+    var isLight = document.body.classList.contains('light');
+    var bg = isLight ? '#f4f6fa' : '#0b0f1a';
+    var min = Infinity, max = -Infinity;
+    for (var i = 0; i < L; i++) { if (h[i] < min) min = h[i]; if (h[i] > max) max = h[i]; }
+    var range = Math.max(max - min, 20);
+    var pad = range * 0.15;
+    var b0 = min - pad, b1 = max + pad;
+    var pts = ['0,' + H];
+    for (var x = 0; x < L; x++) {
+      var X = ((x + 0.5) / L * W).toFixed(2);
+      var Y = (H * (1 - (h[x] - b0) / (b1 - b0))).toFixed(2);
+      pts.push(X + ',' + Y);
+    }
+    pts.push(W + ',' + H);
+    var o = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">' +
+      '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + bg + '"/>' +
+      '<polygon points="' + pts.join(' ') + '" fill="' + color + '"/>' +
+      '</svg>';
+    document.getElementById(id).innerHTML = o;
+  }
+
+  function drawChart() {
+    var W = 880, H = 460;
+    var isLight = document.body.classList.contains('light');
+    var bg = isLight ? '#ffffff' : '#0d1220';
+    var fg = isLight ? '#1c2433' : '#dfe5f0';
+    var sub = isLight ? '#4a5568' : '#a8b2c4';
+    var SERIF = "Georgia, 'Times New Roman', serif";
+
+    var mL = 78, mR = 30, mT = 26, mB = 64;
+    var pw = W - mL - mR, ph = H - mT - mB;
+    var x0 = -0.7, x1 = 4.05, yy0 = -0.7, yy1 = 2.05;
+    var px = function (lx) { return (mL + (lx - x0) / (x1 - x0) * pw).toFixed(1); };
+    var py = function (ly) { return (mT + ph - (ly - yy0) / (yy1 - yy0) * ph).toFixed(1); };
+
+    var o = [];
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">');
+    o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + bg + '"/>');
+    o.push('<defs><clipPath id="plotclip"><rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph + '"/></clipPath></defs>');
+
+    function line(xa, ya, xb, yb, color, w, dash) {
+      o.push('<line x1="' + xa + '" y1="' + ya + '" x2="' + xb + '" y2="' + yb +
+        '" stroke="' + color + '" stroke-width="' + w + '"' +
+        (dash ? ' stroke-dasharray="' + dash + '"' : '') + '/>');
+    }
+
+    function pow10(n, cx, cy, anchor) {
+      o.push('<text x="' + cx + '" y="' + cy + '" text-anchor="' + (anchor || 'middle') +
+        '" font-family="' + SERIF + '" font-size="15" fill="' + fg + '">10' +
+        '<tspan dy="-7" font-size="11">' + n + '</tspan></text>');
+    }
+
+    o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + fg + '" stroke-width="1.4"/>');
+
+    var n, k, X, Y;
+    for (n = Math.ceil(x0); n <= Math.floor(x1); n++) {
+      X = px(n);
+      line(X, mT + ph, X, mT + ph - 7, fg, 1.1);
+      line(X, mT, X, mT + 7, fg, 1.1);
+      pow10(n, X, mT + ph + 24);
+      for (k = 2; k <= 9; k++) {
+        var lx = n + Math.log10(k);
+        if (lx > x1) break;
+        var Xm = px(lx);
+        line(Xm, mT + ph, Xm, mT + ph - 4, fg, 1.1);
+        line(Xm, mT, Xm, mT + 4, fg, 1.1);
+      }
+    }
+    for (n = Math.ceil(yy0); n <= Math.floor(yy1); n++) {
+      Y = py(n);
+      line(mL, Y, mL + 7, Y, fg, 1.1);
+      line(mL + pw, Y, mL + pw - 7, Y, fg, 1.1);
+      pow10(n, mL - 12, (parseFloat(Y) + 5).toFixed(1), 'end');
+      for (k = 2; k <= 9; k++) {
+        var ly = n + Math.log10(k);
+        if (ly > yy1) break;
+        var Ym = py(ly);
+        line(mL, Ym, mL + 4, Ym, fg, 1.1);
+        line(mL + pw, Ym, mL + pw - 4, Ym, fg, 1.1);
+      }
+    }
+
+    o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 16) +
+      '" text-anchor="middle" font-family="' + SERIF + '" font-size="19" font-style="italic" fill="' + fg + '">t</text>');
+    var ymid = mT + ph / 2;
+    o.push('<text x="26" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 26 ' + ymid + ')"' +
+      ' font-family="' + SERIF + '" font-size="19" fill="' + fg + '">' +
+      '<tspan font-style="italic">W</tspan>(<tspan font-style="italic">t</tspan>)</text>');
+
+    function guide(slope, lxA, lyA, len) {
+      line(px(lxA), py(lyA), px(lxA + len), py(lyA + len * slope), sub, 1.4, '7,6');
+    }
+    function guideLabel(lx, ly, exp) {
+      o.push('<text x="' + px(lx) + '" y="' + py(ly) + '" font-family="' + SERIF +
+        '" font-size="15" fill="' + sub + '">\u221d <tspan font-style="italic" font-size="16">t</tspan>' +
+        '<tspan dy="-7" font-size="11">' + exp + '</tspan></text>');
+    }
+    guide(0.5, 0.3, 0.35, 3.2);
+    guideLabel(2.02, 1.46, '1/2');
+    guide(1 / 3, 0.3, -0.5, 3.2);
+    guideLabel(2.55, 0.03, '1/3');
+
+    function curve(pts, color) {
+      if (pts.length < 2) return;
+      var str = [];
+      for (var i = 0; i < pts.length; i++) str.push(px(pts[i][0]) + ',' + py(pts[i][1]));
+      o.push('<polyline points="' + str.join(' ') + '" fill="none" stroke="' + color +
+        '" stroke-width="2.4" stroke-linejoin="round" clip-path="url(#plotclip)"/>');
+    }
+    curve(ptsRd, BLUE);
+    curve(ptsBd, RED);
+
+    var lx0 = mL + 18, ly0 = mT + 26;
+    line(lx0, ly0 - 5, lx0 + 30, ly0 - 5, BLUE, 2.4);
+    o.push('<text x="' + (lx0 + 38) + '" y="' + ly0 + '" font-family="Inter, sans-serif" font-size="14" fill="' + fg + '">random deposition</text>');
+    line(lx0, ly0 + 19, lx0 + 30, ly0 + 19, RED, 2.4);
+    o.push('<text x="' + (lx0 + 38) + '" y="' + (ly0 + 24) + '" font-family="Inter, sans-serif" font-size="14" fill="' + fg + '">RSOS (KPZ)</text>');
+
+    o.push('</svg>');
+    document.getElementById('wChart').innerHTML = o.join('');
+  }
+
+  function loop() {
+    if (!paused) {
+      var remaining = Math.max(1, Math.round(speed * L));
+      while (remaining > 0) {
+        var toRec = Math.max(1, Math.ceil((nextRec - t) * L));
+        var dn = Math.min(remaining, toRec);
+        depositRd(dn);
+        depositBd(dn);
+        t += dn / L;
+        remaining -= dn;
+        if (t >= nextRec) {
+          var wr = width(hRd), wb = width(hBd);
+          if (wr > 0) ptsRd.push([Math.log10(t), Math.log10(wr)]);
+          if (wb > 0) ptsBd.push([Math.log10(t), Math.log10(wb)]);
+          nextRec *= 1.08;
+          document.getElementById('tVal').textContent = t < 10 ? t.toFixed(1) : t.toFixed(0);
+          document.getElementById('wRdVal').textContent = wr.toFixed(1);
+          document.getElementById('wBdVal').textContent = wb.toFixed(1);
+          drawChart();
+        }
+      }
+      drawSurface('rdCanvas', hRd[0], BLUE);
+      drawSurface('bdCanvas', hBd[0], RED);
+      if (++frameCount % 60 === 0) drawChart();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('spSlider').addEventListener('input', function () {
+    speed = parseFloat(this.value);
+    document.getElementById('spVal').textContent = speed.toFixed(1);
+  });
+  document.getElementById('restartBtn').addEventListener('click', restart);
+  document.getElementById('pauseBtn').addEventListener('click', function () {
+    paused = !paused;
+    this.querySelectorAll('.ja')[0].textContent = paused ? '再開' : '一時停止';
+    this.querySelectorAll('.en')[0].textContent = paused ? 'Resume' : 'Pause';
+  });
+
+  restart();
+  loop();
+})();
+</script>
+</body>
+</html>

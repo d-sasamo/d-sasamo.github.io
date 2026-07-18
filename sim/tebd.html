@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPS/TEBD Quantum Dynamics — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+  .sim-canvas-box { flex: 1 1 300px; min-width: 280px; }
+  #hmCanvas {
+    width: 100%; height: 340px;
+    border: 1px solid var(--border); border-radius: 12px;
+    image-rendering: pixelated;
+  }
+  .hm-caption { font-size: 0.82rem; color: var(--text-dim); margin-top: 0.4rem; }
+  .sim-controls { flex: 1 1 260px; min-width: 260px; }
+  .ctrl { margin-bottom: 1.05rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.3rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; accent-color: var(--accent2); }
+  .ctrl select {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.35rem 0.6rem; font-size: 0.9rem;
+  }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  #sChart { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  #sChart svg { display: block; width: 100%; height: auto; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">MPS/TEBD による量子スピン鎖の実時間ダイナミクス</span><span class="en">Real-Time Quantum Spin-Chain Dynamics with MPS/TEBD</span></h1>
+    <p class="hero-sub ja">
+      行列積状態（MPS）を TEBD で時間発展させる、正真正銘のテンソルネットワーク計算が
+      ブラウザの中で走っています。横磁場 Ising 模型と XXZ 模型のクエンチダイナミクスを、
+      エンタングルメントエントロピーの成長とともに観察してみてください。
+    </p>
+    <p class="hero-sub en">
+      A genuine tensor-network computation — a matrix product state evolved by TEBD — is
+      running inside your browser. Watch quench dynamics of the transverse-field Ising and
+      XXZ chains, together with the growth of entanglement entropy.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="sim-wrap">
+        <div class="sim-canvas-box">
+          <canvas id="hmCanvas" width="32" height="160"></canvas>
+          <div class="hm-caption">
+            <span class="ja">横軸＝サイト <i>i</i>、縦軸＝時間（下向きに進行）<br>色＝⟨σ<sup>z</sup><sub>i</sub>⟩（赤 = +1, 青 = −1）</span>
+            <span class="en">horizontal = site <i>i</i>, vertical = time (downward)<br>color = ⟨σ<sup>z</sup><sub>i</sub>⟩ (red = +1, blue = −1)</span>
+          </div>
+        </div>
+        <div class="sim-controls">
+          <div class="ctrl">
+            <label><span class="ja">模型</span><span class="en">Model</span></label>
+            <select id="modelSel">
+              <option value="tfim" selected>横磁場 Ising / Transverse-field Ising</option>
+              <option value="xxz">XXZ (Heisenberg: &#916;=1)</option>
+            </select>
+          </div>
+          <div class="ctrl">
+            <label><span id="paramName"></span> = <span class="val" id="paramVal">1.00</span></label>
+            <input type="range" id="paramSlider" min="0" max="2" step="0.05" value="1.0">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">初期状態</span><span class="en">Initial state</span></label>
+            <select id="initSel">
+              <option value="up" selected>|&#8593;&#8593;&#8593;...&#8593;&#10217;</option>
+              <option value="dw">|&#8593;...&#8593;&#8595;...&#8595;&#10217;（ドメイン壁 / domain wall）</option>
+              <option value="neel">|&#8593;&#8595;&#8593;&#8595;...&#10217;（N&#233;el）</option>
+            </select>
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">サイト数</span><span class="en">Sites</span> <i>N</i> = <span class="val" id="nVal">32</span></label>
+            <input type="range" id="nSlider" min="0" max="3" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">ボンド次元</span><span class="en">Bond dimension</span> <i>&#967;</i> = <span class="val" id="chiVal">32</span></label>
+            <input type="range" id="chiSlider" min="0" max="2" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="runBtn"><span class="ja">実行</span><span class="en">Run</span></button>
+            <button class="sim-btn" id="resetBtn"><span class="ja">リセット</span><span class="en">Reset</span></button>
+          </div>
+          <div class="obs">
+            <span class="ja">時刻</span><span class="en">Time</span> <i>t</i> = <b id="tNowVal">0.00</b><br>
+            <span class="ja">エントロピー（中央ボンド）</span><span class="en">Entropy (mid bond)</span> <i>S</i> = <b id="sMidVal">0</b><br>
+            <span class="ja">使用中の最大ボンド次元</span><span class="en">Largest bond dimension in use</span>: <b id="chiUsedVal">1</b><br>
+            <span class="ja">累積打ち切り誤差</span><span class="en">Cumulative truncation error</span>: <b id="discVal">0</b><br>
+            <span style="font-size:0.85rem;">
+              <span class="ja">2次 Trotter 分解、&#948;t = 0.05、開放端、<i>t</i> = 20 で自動停止（リセットで最初から）</span>
+              <span class="en">2nd-order Trotter, &#948;t = 0.05, open boundaries; stops automatically at <i>t</i> = 20 (Reset to restart)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">エンタングルメントエントロピー <i>S</i>(<i>t</i>)（中央ボンド）</span><span class="en">Entanglement entropy <i>S</i>(<i>t</i>) (mid bond)</span></h3>
+      <div id="sChart"></div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+      <p class="ja">
+        このページの裏で走っているのは、量子多体状態そのものの時間発展です。
+        <i>N</i> 個のスピン 1/2 の状態空間は 2<sup><i>N</i></sup> 次元で、
+        <i>N</i> = 40 なら約 10<sup>12</sup> 個の複素数が必要になり、まともに保持する
+        ことすらできません。そこで登場するのが行列積状態（MPS: Matrix Product State）です。
+      </p>
+      <p class="en">
+        What runs behind this page is the time evolution of a genuine quantum many-body
+        state. The state space of <i>N</i> spins-1/2 has dimension 2<sup><i>N</i></sup> —
+        for <i>N</i> = 40, about 10<sup>12</sup> complex numbers, too many even to store.
+        Enter the matrix product state (MPS):
+      </p>
+      <div class="eq">\[ |\psi\rangle \;=\; \sum_{s_1,\dots,s_N} A^{[1]s_1} A^{[2]s_2} \cdots A^{[N]s_N} \, |s_1 s_2 \cdots s_N\rangle \]</div>
+      <p class="ja">
+        各サイトに置いた &#967;&#215;&#967; 行列の積で振幅を表す形で、パラメータ数は
+        およそ <i>N</i>&#183;2&#183;&#967;&#178; 個。&#967;（ボンド次元）が、切り捨てずに
+        保持できるエンタングルメントの量を決めます。指数的に大きな Hilbert 空間を
+        多項式個の数で近似する——一見無謀なこの圧縮が機能する理由が、
+        <b>エンタングルメントの面積則</b>です。1次元ギャップ系の基底状態では
+        部分系のエントロピーが定数に留まり（Hastings の定理）、臨界系ですら
+      </p>
+      <p class="en">
+        The amplitudes are products of &#967;&#215;&#967; matrices, roughly
+        <i>N</i>&#183;2&#183;&#967;&#178; parameters in total; the bond dimension &#967; sets
+        how much entanglement can be kept without truncation. The reason this seemingly
+        reckless compression of an exponentially large Hilbert space works is the
+        <b>area law of entanglement</b>: for gapped 1D ground states the entropy of a
+        subregion stays constant (Hastings' theorem), and even at criticality it grows only
+        as
+      </p>
+      <div class="eq">\[ S_\ell \;=\; \frac{c}{3} \ln \ell \;+\; \mathrm{const} \]</div>
+      <p class="ja">
+        と対数的にしか増えません。つまり物理的な基底状態は、巨大な Hilbert 空間の
+        ほんの片隅——MPS が張る多様体のすぐ近く——に住んでいるのです。
+      </p>
+      <p class="en">
+        Physical ground states live in a tiny corner of the huge Hilbert space — right next
+        to the manifold spanned by MPS.
+      </p>
+      <p class="ja">
+        この構造を最初に突き止めて実用にしたのが、S. R. White の密度行列繰り込み群
+        （DMRG, 1992）です。DMRG は今日では「MPS 上の変分法」として理解されており、
+        1次元強相関系では圧倒的な精度を誇る事実上の標準手法になっています。
+        凝縮系物理での戦績は輝かしく、S = 1 反強磁性鎖の Haldane ギャップの精密決定、
+        梯子系や近藤格子の研究、そして円筒形の格子に巻いて「幅の狭い2次元」へ拡張する
+        使い方では、カゴメ格子反強磁性体のスピン液体基底状態（Yan–Huse–White, 2011）や
+        Hubbard 模型のストライプ秩序の解明など、2次元の強相関問題にも決定的な証拠を
+        提供してきました。私自身も、基底状態の相図を調べる際の「答え合わせ」として
+        DMRG・テンソルネットワーク法を頼りにしています。
+      </p>
+      <p class="en">
+        The structure was first uncovered and made practical by S. R. White's density
+        matrix renormalization group (DMRG, 1992). Understood today as a variational method
+        over MPS, DMRG is the de facto standard for 1D strongly correlated systems, with a
+        glittering record in condensed matter: precision determination of the Haldane gap
+        of the S = 1 chain, ladders and Kondo lattices, and — wrapped on cylinders as
+        "narrow 2D" — decisive evidence for the spin-liquid ground state of the kagome
+        antiferromagnet (Yan–Huse–White, 2011) and stripe order in the Hubbard model. I
+        myself lean on DMRG and tensor networks as the referee when mapping out
+        ground-state phase diagrams.
+      </p>
+      <p class="ja">
+        時間発展はどうするか。このページで使っているのが TEBD
+        （Time-Evolving Block Decimation, Vidal 2004）です。ハミルトニアンを
+        奇数ボンドと偶数ボンドに分け、Trotter 分解
+      </p>
+      <p class="en">
+        What about time evolution? This page uses TEBD (Time-Evolving Block Decimation,
+        Vidal 2004): split the Hamiltonian into odd and even bonds and Trotterize,
+      </p>
+      <div class="eq">\[ e^{-iH\,\delta t} \;\approx\; e^{-iH_{\mathrm{odd}}\,\delta t/2} \; e^{-iH_{\mathrm{even}}\,\delta t} \; e^{-iH_{\mathrm{odd}}\,\delta t/2} \;+\; O(\delta t^{3}) \]</div>
+      <p class="ja">
+        で小さな2サイトゲートの列に直し、ゲートを掛けるたびに特異値分解（SVD）で
+        Schmidt 係数の大きい &#967; 個だけを残します。画面の「累積打ち切り誤差」が、
+        この切り捨ての合計です。実装は素の JavaScript ですが中身は本物で、
+        厳密対角化（<i>N</i> = 10）と 10<sup>&#8722;5</sup> 程度（Trotter 誤差の桁）、
+        テンソルネットワークライブラリ TeNPy（<i>N</i> = 20, 同一条件）とは
+        10<sup>&#8722;8</sup> の精度で一致することを確認しています。
+      </p>
+      <p class="en">
+        turning evolution into a sequence of small two-site gates; after each gate a
+        singular value decomposition keeps only the &#967; largest Schmidt values. The
+        "cumulative truncation error" on screen is the total weight discarded. The
+        implementation is plain JavaScript but the physics is real: it agrees with exact
+        diagonalization (<i>N</i> = 10) at the 10<sup>&#8722;5</sup> level (the Trotter
+        error scale), and with the tensor-network library TeNPy (<i>N</i> = 20, identical
+        settings) to 10<sup>&#8722;8</sup>.
+      </p>
+      <p class="ja">
+        扱える模型は2つ。横磁場 Ising 模型
+      </p>
+      <p class="en">
+        Two models are available: the transverse-field Ising model,
+      </p>
+      <div class="eq">\[ H_{\mathrm{TFIM}} \;=\; -J \sum_{i} \sigma^{z}_{i}\sigma^{z}_{i+1} \;-\; h \sum_{i} \sigma^{x}_{i} \]</div>
+      <p class="ja">
+        は <i>h</i>/<i>J</i> = 1 に量子臨界点を持つ、量子相転移の最も基本的な模型です
+        （Jordan–Wigner 変換で自由フェルミオンに帰着する可解模型でもあります）。
+        もうひとつの XXZ 模型
+      </p>
+      <p class="en">
+        with its quantum critical point at <i>h</i>/<i>J</i> = 1 — the fundamental model of
+        quantum phase transitions (and integrable via Jordan–Wigner fermions). And the XXZ
+        model,
+      </p>
+      <div class="eq">\[ H_{\mathrm{XXZ}} \;=\; J \sum_{i} \left( S^{x}_{i}S^{x}_{i+1} + S^{y}_{i}S^{y}_{i+1} + \Delta\, S^{z}_{i}S^{z}_{i+1} \right) \]</div>
+      <p class="ja">
+        は &#916; = 1 で Heisenberg 鎖になります。おすすめの遊び方：横磁場 Ising で
+        |&#8593;&#8593;...&#8593;&#10217; から <i>h</i> = 1（臨界点）へクエンチすると、
+        磁化が振動しながら減衰し、相関が光円錐状に広がります。ドメイン壁初期状態では、
+        壁が溶けて広がっていく様子がヒートマップにきれいな光円錐を描きます
+        （情報の伝播速度に上限がある——Lieb–Robinson 限界——ことの現れです）。
+      </p>
+      <p class="en">
+        which becomes the Heisenberg chain at &#916; = 1. Suggested experiments: in the
+        Ising model, quench from |&#8593;&#8593;...&#8593;&#10217; to the critical point
+        <i>h</i> = 1 and watch the magnetization ring down while correlations spread in a
+        light cone; with the domain-wall initial state, the melting wall paints a beautiful
+        light cone on the heatmap — a manifestation of the Lieb–Robinson bound on
+        information propagation.
+      </p>
+      <p class="ja">
+        そして、このページの一番の見どころが <i>S</i>(<i>t</i>) のプロットです。
+        クエンチ後、エンタングルメントエントロピーは一般に時間に<b>線形</b>に成長します
+        （準粒子ペアが光円錐状に飛んでいく描像）。ところが MPS が保持できる
+        エントロピーは ln &#967; まで。つまり必要なボンド次元は
+      </p>
+      <p class="en">
+        And the main attraction is the <i>S</i>(<i>t</i>) plot. After a quench,
+        entanglement entropy generically grows <b>linearly</b> in time (the quasiparticle-
+        pair picture). But an MPS can hold at most ln &#967; of entropy, so the required
+        bond dimension grows as
+      </p>
+      <div class="eq">\[ \chi_{\mathrm{needed}} \;\sim\; e^{S(t)} \;\sim\; e^{v t} \]</div>
+      <p class="ja">
+        と時間とともに<b>指数的</b>に増えます。プロットの破線（ln &#967;）に
+        <i>S</i>(<i>t</i>) が到達すると、打ち切り誤差が急増して計算は信用できなくなります。
+        &#967; を 8 → 32 と変えて、この「壁」が先送りされるだけで消えないことを
+        確かめてみてください。ちなみに、壁に達した後さらに回し続けると <i>S</i>(<i>t</i>) は
+        ゆっくり<b>減少</b>していきますが、これは物理ではありません。保持しきれない
+        エンタングルメントを毎ステップ切り捨てることが非物理的な散逸として働き、
+        状態を低エンタングルメント側へ押し流してしまうためです（このページが
+        <i>t</i> = 20 で自動停止するのはそのためです）。基底状態では無敵の MPS も、実時間ダイナミクスでは
+        比較的短い時間までしか正確に追えない——これが1次元ですら残る本質的な限界で、
+        現在も盛んに研究されている最前線です。
+      </p>
+      <p class="en">
+        — <b>exponentially</b>. When <i>S</i>(<i>t</i>) reaches the dashed ln &#967; line,
+        truncation errors blow up and the simulation loses its accuracy. Try &#967; from 8
+        to 32: the wall is postponed, never removed. Incidentally, if you keep running past
+        the wall, <i>S</i>(<i>t</i>) slowly <b>decreases</b> — this is not physics: the
+        entanglement that cannot be stored is discarded at every step, and this truncation
+        acts as an unphysical dissipation that drives the state toward low entanglement
+        (which is why this page stops automatically at <i>t</i> = 20). MPS, invincible for ground states, can
+        follow real-time dynamics only up to modest times — an essential limitation that
+        persists even in 1D, and an active research frontier.
+      </p>
+      <p class="ja">
+        実務でテンソルネットワーク計算をするなら、成熟したライブラリを使うのが正解です。
+        <b>ITensor</b>（S. R. White と E. M. Stoudenmire らによる、C++ 版と Julia 版
+        ITensors.jl）は添字を名前で管理する設計が秀逸で、数式で考えたままの縮約を
+        そのままコードに書けます。<b>TeNPy</b>（F. Pollmann グループ発の Python
+        ライブラリ）は模型定義・対称性（保存量）の扱い・ドキュメントが教育的なまでに
+        整備されていて、初学者が中身を理解しながら使うのに最適です（このページの検証にも
+        使いました）。ほかにも quimb、TensorKit.jl、量子化学向けの block2 など
+        エコシステムは充実しています。このページの実装は「中身が全部見える」ことを
+        優先した教育用のミニマル版だと思ってください。
+      </p>
+      <p class="en">
+        For real work, use the mature libraries. <b>ITensor</b> (by S. R. White, E. M.
+        Stoudenmire and collaborators; C++ and the Julia port ITensors.jl) has a brilliant
+        named-index design that lets you write contractions exactly as you think them.
+        <b>TeNPy</b> (from F. Pollmann's group, in Python) offers model definitions,
+        symmetry/conserved-quantity handling, and documentation polished to a pedagogical
+        shine — ideal for learning while doing (it was used to validate this page). The
+        ecosystem is rich beyond these: quimb, TensorKit.jl, block2 for quantum chemistry,
+        and more. Regard this page's implementation as a minimal educational version whose
+        every part is visible.
+      </p>
+      <p class="ja">
+        最後に、2次元の話をしなければフェアではありません。2次元では面積則が
+        <i>S</i> &#8733; <i>L</i>（境界の長さ）となるため、MPS を蛇行させて張る方法では
+        &#967; &#126; e<sup><i>L</i></sup> が必要になります。2次元専用のテンソル
+        ネットワークである PEPS は状態の<b>表現</b>としては優れていますが、期待値を
+        計算するための縮約が厳密には #P 困難で、近似縮約も高コストです。円筒に巻いた
+        DMRG は幅 10 サイト程度が実用限界。そこへさらに、クエンチ後のエンタングルメントの
+        線形成長が重なる実時間ダイナミクスは、現在の古典計算機にとって最も困難な問題の
+        ひとつです。2次元量子多体系の「基底状態」ですら大変なのに、「ダイナミクス」は
+        別次元の難しさなのです。だからこそ、冷却原子や量子コンピュータによる量子
+        シミュレーションに大きな期待が集まり、また同時に、（私が研究で使っている
+        parton 構成法のような）物理的描像に基づく解析的アプローチが、2次元の動的物性で
+        これからも重要であり続けると考えています。
+      </p>
+      <p class="en">
+        Finally, fairness demands a word about two dimensions. In 2D the area law reads
+        <i>S</i> &#8733; <i>L</i> (the boundary length), so a snaked MPS needs
+        &#967; &#126; e<sup><i>L</i></sup>. PEPS — the genuinely 2D tensor network — is an
+        excellent <b>representation</b> of states, but contracting it to compute
+        expectation values is #P-hard exactly, and costly even approximately. Cylinder
+        DMRG tops out around widths of ten sites. Add the linear post-quench growth of
+        entanglement on top of all this, and real-time dynamics in 2D becomes one of the
+        hardest problems facing classical computation: if 2D ground states are hard,
+        2D dynamics is hard on another level. This is exactly why quantum simulation with
+        cold atoms and quantum computers draws such expectations — and why, I believe,
+        analytic approaches built on physical pictures (such as the parton constructions I
+        use in my research) will remain essential for two-dimensional dynamics.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+// TEBD core for spin-1/2 XXZ chain, complex MPS in Vidal form. H = J sum [0.5(S+S-+S-S+) + Delta SzSz], J=1
+'use strict';
+function hermJacobi(re, im, n) {
+  var Vre = new Float64Array(n * n), Vim = new Float64Array(n * n);
+  for (var i = 0; i < n; i++) Vre[i * n + i] = 1;
+  for (var sweep = 0; sweep < 60; sweep++) {
+    var off = 0;
+    for (var p = 0; p < n; p++) for (var q = p + 1; q < n; q++)
+      off += re[p*n+q]*re[p*n+q] + im[p*n+q]*im[p*n+q];
+    if (off < 1e-24) break;
+    for (var p2 = 0; p2 < n; p2++) for (var q2 = p2 + 1; q2 < n; q2++) {
+      var hr = re[p2*n+q2], hi = im[p2*n+q2];
+      var r = Math.hypot(hr, hi);
+      if (r < 1e-15) continue;
+      var cph = hr / r, sph = hi / r;
+      var app = re[p2*n+p2], aqq = re[q2*n+q2];
+      var theta = 0.5 * Math.atan2(2 * r, app - aqq);
+      var c = Math.cos(theta), s = Math.sin(theta);
+      for (var k = 0; k < n; k++) {
+        var apr = re[k*n+p2], api = im[k*n+p2];
+        var aqr = re[k*n+q2], aqi = im[k*n+q2];
+        var eqr = cph*aqr + sph*aqi, eqi = cph*aqi - sph*aqr;
+        re[k*n+p2] = c*apr + s*eqr;  im[k*n+p2] = c*api + s*eqi;
+        var epr = cph*apr - sph*api, epi = cph*api + sph*apr;
+        re[k*n+q2] = -s*epr + c*aqr; im[k*n+q2] = -s*epi + c*aqi;
+      }
+      for (var k2 = 0; k2 < n; k2++) {
+        var bpr = re[p2*n+k2], bpi = im[p2*n+k2];
+        var bqr = re[q2*n+k2], bqi = im[q2*n+k2];
+        var fqr = cph*bqr - sph*bqi, fqi = cph*bqi + sph*bqr;
+        re[p2*n+k2] = c*bpr + s*fqr;  im[p2*n+k2] = c*bpi + s*fqi;
+        var fpr = cph*bpr + sph*bpi, fpi = cph*bpi - sph*bpr;
+        re[q2*n+k2] = -s*fpr + c*bqr; im[q2*n+k2] = -s*fpi + c*bqi;
+      }
+      for (var k3 = 0; k3 < n; k3++) {
+        var vpr = Vre[k3*n+p2], vpi = Vim[k3*n+p2];
+        var vqr = Vre[k3*n+q2], vqi = Vim[k3*n+q2];
+        var gqr = cph*vqr + sph*vqi, gqi = cph*vqi - sph*vqr;
+        Vre[k3*n+p2] = c*vpr + s*gqr;  Vim[k3*n+p2] = c*vpi + s*gqi;
+        var gpr = cph*vpr - sph*vpi, gpi = cph*vpi + sph*vpr;
+        Vre[k3*n+q2] = -s*gpr + c*vqr; Vim[k3*n+q2] = -s*gpi + c*vqi;
+      }
+    }
+  }
+  var vals = new Float64Array(n);
+  for (var d = 0; d < n; d++) vals[d] = re[d*n+d];
+  return { vals: vals, Vre: Vre, Vim: Vim };
+}
+
+function makeState(N, config) {
+  var Gam = [], lam = [];
+  lam.push(new Float64Array([1]));
+  for (var i = 0; i < N; i++) {
+    var re = new Float64Array(2), im = new Float64Array(2);
+    re[config[i]] = 1;
+    Gam.push({ re: re, im: im, Dl: 1, Dr: 1 });
+    lam.push(new Float64Array([1]));
+  }
+  return { N: N, Gam: Gam, lam: lam };
+}
+
+function makeGate(Delta, tau) {
+  var g = { rr: new Float64Array(16), ii: new Float64Array(16) };
+  function set(a, b, vr, vi) { g.rr[a*4+b] = vr; g.ii[a*4+b] = vi; }
+  var c0 = Math.cos(Delta*tau/4), s0 = Math.sin(Delta*tau/4);
+  set(0,0,c0,-s0); set(3,3,c0,-s0);
+  var cm = Math.cos(tau/2), sm = Math.sin(tau/2);
+  set(1,1,c0*cm,s0*cm); set(2,2,c0*cm,s0*cm);
+  set(1,2,s0*sm,-c0*sm); set(2,1,s0*sm,-c0*sm);
+  return g;
+}
+
+function applyGate(st, i, gate, chiMax) {
+  var G1 = st.Gam[i], G2 = st.Gam[i+1];
+  var ll = st.lam[i], lm = st.lam[i+1], lr = st.lam[i+2];
+  var Dl = G1.Dl, Dm = G1.Dr, Dr = G2.Dr;
+  var thR = new Float64Array(Dl*2*2*Dr), thI = new Float64Array(Dl*2*2*Dr);
+  for (var a = 0; a < Dl; a++) for (var s = 0; s < 2; s++) for (var g = 0; g < Dm; g++) {
+    var m1r = ll[a]*lm[g]*G1.re[(a*2+s)*Dm+g];
+    var m1i = ll[a]*lm[g]*G1.im[(a*2+s)*Dm+g];
+    if (m1r === 0 && m1i === 0) continue;
+    for (var t = 0; t < 2; t++) for (var b = 0; b < Dr; b++) {
+      var m2r = G2.re[(g*2+t)*Dr+b]*lr[b], m2i = G2.im[(g*2+t)*Dr+b]*lr[b];
+      var idx = ((a*2+s)*2+t)*Dr+b;
+      thR[idx] += m1r*m2r - m1i*m2i;
+      thI[idx] += m1r*m2i + m1i*m2r;
+    }
+  }
+  var tpR = new Float64Array(Dl*2*2*Dr), tpI = new Float64Array(Dl*2*2*Dr);
+  for (var a2 = 0; a2 < Dl; a2++) for (var b2 = 0; b2 < Dr; b2++)
+    for (var so = 0; so < 4; so++) {
+      var accR = 0, accI = 0;
+      for (var si = 0; si < 4; si++) {
+        var ur = gate.rr[so*4+si], ui = gate.ii[so*4+si];
+        if (ur === 0 && ui === 0) continue;
+        var s1 = si>>1, t1 = si&1;
+        var idx2 = ((a2*2+s1)*2+t1)*Dr+b2;
+        accR += ur*thR[idx2] - ui*thI[idx2];
+        accI += ur*thI[idx2] + ui*thR[idx2];
+      }
+      var s2 = so>>1, t2 = so&1;
+      tpR[((a2*2+s2)*2+t2)*Dr+b2] = accR;
+      tpI[((a2*2+s2)*2+t2)*Dr+b2] = accI;
+    }
+  var m = 2*Dl, n = 2*Dr;
+  var KR = new Float64Array(n*n), KI = new Float64Array(n*n);
+  for (var c1 = 0; c1 < n; c1++) for (var c2 = c1; c2 < n; c2++) {
+    var sr = 0, si2 = 0;
+    var t3a = (c1/Dr)|0, b3a = c1%Dr, t3b = (c2/Dr)|0, b3b = c2%Dr;
+    for (var rIdx = 0; rIdx < m; rIdx++) {
+      var a3 = (rIdx/2)|0, s3 = rIdx&1;
+      var i1 = ((a3*2+s3)*2+t3a)*Dr+b3a, i2 = ((a3*2+s3)*2+t3b)*Dr+b3b;
+      sr += tpR[i1]*tpR[i2] + tpI[i1]*tpI[i2];
+      si2 += tpR[i1]*tpI[i2] - tpI[i1]*tpR[i2];
+    }
+    KR[c1*n+c2] = sr; KI[c1*n+c2] = si2;
+    KR[c2*n+c1] = sr; KI[c2*n+c1] = -si2;
+  }
+  var eig = hermJacobi(KR, KI, n);
+  var order = [];
+  for (var e = 0; e < n; e++) order.push(e);
+  order.sort(function (x, y) { return eig.vals[y] - eig.vals[x]; });
+  var total = 0;
+  for (var e2 = 0; e2 < n; e2++) total += Math.max(eig.vals[e2], 0);
+  var chi = Math.min(chiMax, n);
+  var kept = [], keptSum = 0;
+  for (var e3 = 0; e3 < chi; e3++) {
+    var lamv = Math.max(eig.vals[order[e3]], 0);
+    if (lamv/(total||1) < 1e-14) break;
+    kept.push(order[e3]); keptSum += lamv;
+  }
+  if (kept.length === 0) { kept.push(order[0]); keptSum = Math.max(eig.vals[order[0]],0); }
+  var newChi = kept.length;
+  var discarded = total > 0 ? Math.max(0, 1 - keptSum/total) : 0;
+  var newLam = new Float64Array(newChi);
+  var norm = Math.sqrt(keptSum||1);
+  for (var e4 = 0; e4 < newChi; e4++) newLam[e4] = Math.sqrt(Math.max(eig.vals[kept[e4]],0))/norm;
+  var g2re = new Float64Array(newChi*2*Dr), g2im = new Float64Array(newChi*2*Dr);
+  for (var gg = 0; gg < newChi; gg++) {
+    var colV = kept[gg];
+    for (var t4 = 0; t4 < 2; t4++) for (var b4 = 0; b4 < Dr; b4++) {
+      var rowc = t4*Dr+b4;
+      var vr = eig.Vre[rowc*n+colV], vi = -eig.Vim[rowc*n+colV];
+      var div = lr[b4] > 1e-12 ? 1/lr[b4] : 0;
+      g2re[(gg*2+t4)*Dr+b4] = vr*div;
+      g2im[(gg*2+t4)*Dr+b4] = vi*div;
+    }
+  }
+  var g1re = new Float64Array(Dl*2*newChi), g1im = new Float64Array(Dl*2*newChi);
+  for (var kcol = 0; kcol < newChi; kcol++) {
+    var sig = Math.sqrt(Math.max(eig.vals[kept[kcol]],0)) || 1e-300;
+    for (var rr2 = 0; rr2 < m; rr2++) {
+      var a5 = (rr2/2)|0, s5 = rr2&1;
+      var accR2 = 0, accI2 = 0;
+      for (var cc = 0; cc < n; cc++) {
+        var t5 = (cc/Dr)|0, b5 = cc%Dr;
+        var iM = ((a5*2+s5)*2+t5)*Dr+b5;
+        var vr2 = eig.Vre[cc*n+kept[kcol]], vi2 = eig.Vim[cc*n+kept[kcol]];
+        accR2 += tpR[iM]*vr2 - tpI[iM]*vi2;
+        accI2 += tpR[iM]*vi2 + tpI[iM]*vr2;
+      }
+      var divl = ll[a5] > 1e-12 ? 1/ll[a5] : 0;
+      g1re[(a5*2+s5)*newChi+kcol] = (accR2/sig)*divl;
+      g1im[(a5*2+s5)*newChi+kcol] = (accI2/sig)*divl;
+    }
+  }
+  st.Gam[i] = { re: g1re, im: g1im, Dl: Dl, Dr: newChi };
+  st.Gam[i+1] = { re: g2re, im: g2im, Dl: newChi, Dr: Dr };
+  st.lam[i+1] = newLam;
+  return discarded;
+}
+
+function tebdStep(st, Delta, dt, chiMax) {
+  var gHalf = makeGate(Delta, dt/2), gFull = makeGate(Delta, dt);
+  var disc = 0;
+  for (var i = 0; i < st.N-1; i += 2) disc += applyGate(st, i, gHalf, chiMax);
+  for (var j = 1; j < st.N-1; j += 2) disc += applyGate(st, j, gFull, chiMax);
+  for (var k = 0; k < st.N-1; k += 2) disc += applyGate(st, k, gHalf, chiMax);
+  return disc;
+}
+
+function measureSz(st) {
+  var out = new Float64Array(st.N);
+  for (var i = 0; i < st.N; i++) {
+    var G = st.Gam[i], ll = st.lam[i], lr = st.lam[i+1];
+    var up = 0, dn = 0;
+    for (var a = 0; a < G.Dl; a++) for (var b = 0; b < G.Dr; b++) {
+      var w = ll[a]*ll[a]*lr[b]*lr[b];
+      var iu = (a*2+0)*G.Dr+b, id = (a*2+1)*G.Dr+b;
+      up += w*(G.re[iu]*G.re[iu] + G.im[iu]*G.im[iu]);
+      dn += w*(G.re[id]*G.re[id] + G.im[id]*G.im[id]);
+    }
+    out[i] = 0.5*(up - dn);
+  }
+  return out;
+}
+
+function entropyAt(st, bond) {
+  var lam = st.lam[bond], S = 0;
+  for (var i = 0; i < lam.length; i++) {
+    var p = lam[i]*lam[i];
+    if (p > 1e-15) S -= p*Math.log(p);
+  }
+  return S;
+}
+
+
+
+// generic gate: U = exp(-i Hb tau) for Hermitian 4x4 bond Hamiltonian {re, im}
+function gateFromH(Hre, Him, tau) {
+  var re = Float64Array.from(Hre), im = Float64Array.from(Him);
+  var e = hermJacobi(re, im, 4);
+  var g = { rr: new Float64Array(16), ii: new Float64Array(16) };
+  for (var a = 0; a < 4; a++) {
+    for (var b = 0; b < 4; b++) {
+      var sr = 0, si = 0;
+      for (var k = 0; k < 4; k++) {
+        var ph = -e.vals[k] * tau;
+        var er = Math.cos(ph), ei = Math.sin(ph);
+        // V[a,k] e^{-i E_k tau} conj(V[b,k])
+        var var_ = e.Vre[a*4+k], vai = e.Vim[a*4+k];
+        var vbr = e.Vre[b*4+k], vbi = -e.Vim[b*4+k];
+        var t1r = var_*er - vai*ei, t1i = var_*ei + vai*er;
+        sr += t1r*vbr - t1i*vbi;
+        si += t1r*vbi + t1i*vbr;
+      }
+      g.rr[a*4+b] = sr; g.ii[a*4+b] = si;
+    }
+  }
+  return g;
+}
+
+// TFIM bond Hamiltonian: h_bond = -J sz sz - hL sx(1) - hR sx(2)  (Pauli sigma, basis uu,ud,du,dd)
+function tfimBondH(J, hL, hR) {
+  var re = new Float64Array(16), im = new Float64Array(16);
+  re[0*4+0] = -J; re[1*4+1] = J; re[2*4+2] = J; re[3*4+3] = -J;
+  // sx on site1: |u?> <-> |d?>: (0<->2),(1<->3); on site2: (0<->1),(2<->3)
+  re[0*4+2] += -hL; re[2*4+0] += -hL; re[1*4+3] += -hL; re[3*4+1] += -hL;
+  re[0*4+1] += -hR; re[1*4+0] += -hR; re[2*4+3] += -hR; re[3*4+2] += -hR;
+  return { re: re, im: im };
+}
+
+function tebdStepTFIM(st, J, h, dt, chiMax) {
+  var N = st.N, disc = 0;
+  function gates(tau) {
+    var arr = [];
+    for (var b = 0; b < N - 1; b++) {
+      var hL = h * (b === 0 ? 1 : 0.5);
+      var hR = h * (b === N - 2 ? 1 : 0.5);
+      var HB = tfimBondH(J, hL, hR);
+      arr.push(gateFromH(HB.re, HB.im, tau));
+    }
+    return arr;
+  }
+  if (!st._tfimCache || st._tfimCache.J !== J || st._tfimCache.h !== h || st._tfimCache.dt !== dt) {
+    st._tfimCache = { J: J, h: h, dt: dt, half: gates(dt / 2), full: gates(dt) };
+  }
+  var C = st._tfimCache;
+  for (var i = 0; i < N - 1; i += 2) disc += applyGate(st, i, C.half[i], chiMax);
+  for (var j = 1; j < N - 1; j += 2) disc += applyGate(st, j, C.full[j], chiMax);
+  for (var k = 0; k < N - 1; k += 2) disc += applyGate(st, k, C.half[k], chiMax);
+  return disc;
+}
+
+
+
+
+
+// ================= UI =================
+var MODEL = 'tfim'; // 'tfim' | 'xxz'
+var PARAM = 1.0;    // h for tfim, Delta for xxz
+var N = 32, CHI = 32, DT = 0.05, TMAX = 20;
+var INIT = 'up';    // 'up' | 'dw' | 'neel'
+var running = false;
+var st = null, tNow = 0, discTotal = 0;
+var history = [];   // rows of Float32Array(N), magnetization in sigma units
+var sHist = [];     // [t, S_mid]
+var ROWS = 160;
+
+var hm = document.getElementById('hmCanvas');
+var hmCtx = hm.getContext('2d');
+
+function initState() {
+  var cfg = [];
+  for (var i = 0; i < N; i++) {
+    if (INIT === 'up') cfg.push(0);
+    else if (INIT === 'dw') cfg.push(i < N / 2 ? 0 : 1);
+    else cfg.push(i % 2);
+  }
+  st = makeState(N, cfg);
+  tNow = 0; discTotal = 0;
+  history = []; sHist = [];
+  record();
+  drawHeatmap(); drawChart(); updateObs();
+}
+
+function record() {
+  var sz = measureSz(st);
+  var row = new Float32Array(N);
+  for (var i = 0; i < N; i++) row[i] = 2 * sz[i]; // sigma units
+  history.push(row);
+  if (history.length > ROWS) history.shift();
+  sHist.push([tNow, entropyAt(st, Math.floor(N / 2))]);
+}
+
+function stepOnce() {
+  var d;
+  if (MODEL === 'tfim') d = tebdStepTFIM(st, 1.0, PARAM, DT, CHI);
+  else d = tebdStep(st, PARAM, DT, CHI);
+  discTotal += d;
+  tNow += DT;
+  record();
+}
+
+function colorOf(m) {
+  // m in [-1,1]: blue (-1) .. cream (0) .. red (+1)
+  var r, g, b;
+  if (m >= 0) {
+    r = 244 + (200 - 244) * m; g = 241 + (64 - 241) * m; b = 232 + (63 - 232) * m;
+  } else {
+    var a = -m;
+    r = 244 + (42 - 244) * a; g = 241 + (111 - 241) * a; b = 232 + (181 - 232) * a;
+  }
+  return [r | 0, g | 0, b | 0];
+}
+
+function drawHeatmap() {
+  if (hm.width !== N) { hm.width = N; }
+  hm.height = ROWS;
+  var img = hmCtx.createImageData(N, ROWS);
+  var d = img.data;
+  for (var r = 0; r < ROWS; r++) {
+    var row = r < history.length ? history[r] : null;
+    for (var x = 0; x < N; x++) {
+      var k = (r * N + x) * 4;
+      if (row) {
+        var c = colorOf(Math.max(-1, Math.min(1, row[x])));
+        d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
+      } else {
+        var isLight = document.body.classList.contains('light');
+        d[k] = isLight ? 244 : 13; d[k + 1] = isLight ? 246 : 18; d[k + 2] = isLight ? 250 : 32; d[k + 3] = 255;
+      }
+    }
+  }
+  hmCtx.putImageData(img, 0, 0);
+}
+
+function drawChart() {
+  var W = 880, H = 320;
+  var isLight = document.body.classList.contains('light');
+  var bg = isLight ? '#ffffff' : '#0d1220';
+  var fg = isLight ? '#1c2433' : '#dfe5f0';
+  var sub = isLight ? '#4a5568' : '#a8b2c4';
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var mL = 64, mR = 24, mT = 20, mB = 52;
+  var pw = W - mL - mR, ph = H - mT - mB;
+  var tMax = Math.min(TMAX, Math.max(8, tNow * 1.05));
+  var sMax = Math.max(Math.log(CHI) * 1.15, 1.2);
+  var px = function (t) { return (mL + t / tMax * pw).toFixed(1); };
+  var py = function (s) { return (mT + ph - s / sMax * ph).toFixed(1); };
+  var o = ['<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">'];
+  o.push('<rect width="' + W + '" height="' + H + '" fill="' + bg + '"/>');
+  o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph + '" fill="none" stroke="' + fg + '" stroke-width="1.4"/>');
+  var tTick = tMax > 30 ? 10 : (tMax > 12 ? 4 : 2);
+  for (var t = 0; t <= tMax + 1e-9; t += tTick) {
+    var X = px(t);
+    o.push('<line x1="' + X + '" y1="' + (mT + ph) + '" x2="' + X + '" y2="' + (mT + ph - 6) + '" stroke="' + fg + '" stroke-width="1.1"/>');
+    o.push('<text x="' + X + '" y="' + (mT + ph + 20) + '" text-anchor="middle" font-family="' + SERIF + '" font-size="14" fill="' + fg + '">' + t + '</text>');
+  }
+  for (var s = 0; s <= sMax + 1e-9; s += 1) {
+    var Y = py(s);
+    o.push('<line x1="' + mL + '" y1="' + Y + '" x2="' + (mL + 6) + '" y2="' + Y + '" stroke="' + fg + '" stroke-width="1.1"/>');
+    o.push('<text x="' + (mL - 8) + '" y="' + (parseFloat(Y) + 5) + '" text-anchor="end" font-family="' + SERIF + '" font-size="14" fill="' + fg + '">' + s + '</text>');
+  }
+  o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 14) + '" text-anchor="middle" font-family="' + SERIF + '" font-size="17" font-style="italic" fill="' + fg + '">t</text>');
+  var ymid = mT + ph / 2;
+  o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid + ')" font-family="' + SERIF + '" font-size="17" fill="' + fg + '"><tspan font-style="italic">S</tspan><tspan dy="4" font-size="12">mid</tspan></text>');
+  // ln chi dashed
+  var yChi = py(Math.log(CHI));
+  o.push('<line x1="' + mL + '" y1="' + yChi + '" x2="' + (mL + pw) + '" y2="' + yChi + '" stroke="' + sub + '" stroke-width="1.4" stroke-dasharray="7,6"/>');
+  o.push('<text x="' + (mL + pw - 8) + '" y="' + (parseFloat(yChi) - 7) + '" text-anchor="end" font-family="' + SERIF + '" font-size="14" fill="' + sub + '">ln <tspan font-style="italic">χ</tspan></text>');
+  if (sHist.length > 1) {
+    var pts = [];
+    for (var i = 0; i < sHist.length; i++) pts.push(px(sHist[i][0]) + ',' + py(sHist[i][1]));
+    o.push('<polyline points="' + pts.join(' ') + '" fill="none" stroke="#c8403f" stroke-width="2.2" stroke-linejoin="round"/>');
+  }
+  o.push('</svg>');
+  document.getElementById('sChart').innerHTML = o.join('');
+}
+
+function maxBond() {
+  var m = 1;
+  for (var b = 0; b <= N; b++) m = Math.max(m, st.lam[b].length);
+  return m;
+}
+
+function updateObs() {
+  document.getElementById('tNowVal').textContent = tNow.toFixed(2);
+  document.getElementById('sMidVal').textContent = sHist.length ? sHist[sHist.length - 1][1].toFixed(3) : '0';
+  document.getElementById('chiUsedVal').textContent = maxBond();
+  document.getElementById('discVal').textContent = discTotal.toExponential(1);
+}
+
+var frame = 0;
+function loop() {
+  if (running) {
+    stepOnce();
+    drawHeatmap();
+    if (++frame % 5 === 0) { drawChart(); updateObs(); }
+    if (tNow >= TMAX - 1e-9) {
+      setRunning(false);
+      drawChart(); updateObs();
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+function refreshParamLabel() {
+  var lbl = document.getElementById('paramName');
+  if (MODEL === 'tfim') {
+    lbl.innerHTML = '<span class="ja">横磁場</span><span class="en">Transverse field</span> <i>h</i>/<i>J</i>';
+  } else {
+    lbl.innerHTML = '<span class="ja">異方性</span><span class="en">Anisotropy</span> Δ';
+  }
+  document.getElementById('paramVal').textContent = PARAM.toFixed(2);
+  if (typeof setLang === 'function') {
+    var isJa = document.body.classList.contains('lang-ja');
+    setLang(isJa ? 'ja' : 'en');
+  }
+}
+
+document.getElementById('modelSel').addEventListener('change', function () {
+  MODEL = this.value;
+  refreshParamLabel();
+  initState();
+});
+document.getElementById('initSel').addEventListener('change', function () {
+  INIT = this.value;
+  initState();
+});
+document.getElementById('paramSlider').addEventListener('input', function () {
+  PARAM = parseFloat(this.value);
+  document.getElementById('paramVal').textContent = PARAM.toFixed(2);
+});
+var NS = [16, 24, 32, 40];
+document.getElementById('nSlider').addEventListener('input', function () {
+  N = NS[parseInt(this.value, 10)];
+  document.getElementById('nVal').textContent = N;
+  initState();
+});
+var CHIS = [8, 16, 32];
+document.getElementById('chiSlider').addEventListener('input', function () {
+  CHI = CHIS[parseInt(this.value, 10)];
+  document.getElementById('chiVal').textContent = CHI;
+  drawChart();
+});
+function setRunning(r) {
+  running = r;
+  var btn = document.getElementById('runBtn');
+  btn.querySelectorAll('.ja')[0].textContent = running ? '一時停止' : '実行';
+  btn.querySelectorAll('.en')[0].textContent = running ? 'Pause' : 'Run';
+}
+document.getElementById('runBtn').addEventListener('click', function () {
+  if (!running && tNow >= TMAX - 1e-9) return; // finished; use reset
+  setRunning(!running);
+});
+document.getElementById('resetBtn').addEventListener('click', function () {
+  initState();
+});
+
+refreshParamLabel();
+initState();
+loop();
+
+})();
+</script>
+</body>
+</html>

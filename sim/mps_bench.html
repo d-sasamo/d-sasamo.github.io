@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MPS vs Exact: Transverse-Field Ising Benchmark — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .fig-box svg { display: block; width: 100%; height: auto; }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 700px) { .fig-grid { grid-template-columns: 1fr; } }
+  .fig-cap { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; margin-top: 0.8rem; }
+  .fig-cap b { color: var(--text); font-weight: 600; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">MPS はどこまで正確か？— 横磁場 Ising 模型によるベンチマーク</span><span class="en">How Accurate Is an MPS? — Benchmark on the Transverse-Field Ising Model</span></h1>
+    <p class="hero-sub ja">
+      可解模型である1次元横磁場 Ising 模型を舞台に、行列積状態（MPS）による基底状態計算（iDMRG）を
+      厳密解と突き合わせます。唯一のパラメータであるボンド次元 χ を変えたとき、
+      精度がどう変わるかに注目してください。これはシミュレーションではなく、
+      事前に計算した結果の静止画です。
+    </p>
+    <p class="hero-sub en">
+      We benchmark matrix-product-state (MPS) ground-state calculations (iDMRG) against the
+      exact solution of the 1D transverse-field Ising model. Watch how the accuracy responds
+      to the single control knob — the bond dimension χ. These are static, precomputed
+      figures rather than a live simulation.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <h3><span class="ja">図1：基底エネルギー密度の誤差</span><span class="en">Fig. 1: Error in the ground-state energy density</span></h3>
+      <div class="fig-box" id="figErr"></div>
+      <p class="fig-cap ja">
+        基底エネルギー密度の厳密解との差 |Δ<i>e</i>| を横磁場 <i>h</i> に対して片対数プロット
+        したもの（無限系 iDMRG、単位胞2サイト）。臨界点 <i>h</i><sub>c</sub> = 1 から離れると、
+        χ = 8 程度ですでに誤差は 10<sup>−13</sup>〜10<sup>−15</sup>、つまり倍精度演算の丸め誤差の
+        床に到達します。底に張り付いた点はアンザッツの限界ではなく計算機の限界です。
+        一方、臨界点近傍だけは有限の χ では誤差が残り、山になります。
+      </p>
+      <p class="fig-cap en">
+        Semi-log plot of the deviation |Δ<i>e</i>| of the ground-state energy density from the
+        exact value, versus the transverse field <i>h</i> (infinite-system iDMRG, two-site unit
+        cell). Away from the critical point <i>h</i><sub>c</sub> = 1, already χ = 8 pushes the
+        error down to 10<sup>−13</sup>–10<sup>−15</sup> — the round-off floor of double-precision
+        arithmetic. The points sitting on that floor mark the limit of the computer, not of the
+        ansatz. Only near criticality does a finite χ leave a visible peak of residual error.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">図2：磁化の厳密解との比較</span><span class="en">Fig. 2: Magnetizations vs the exact solution</span></h3>
+      <div class="fig-box" id="figMag"></div>
+      <p class="fig-cap ja">
+        実線が厳密解、記号が MPS です。横磁化 ⟨σ<sup><i>z</i></sup>⟩（赤）はどの χ でも
+        実線に重なるため χ = 32 のみ示しています。秩序変数 ⟨σ<sup><i>x</i></sup>⟩（青）は
+        <i>h</i> &lt; 1 で (1 − <i>h</i><sup>2</sup>)<sup>1/8</sup> に完全に一致する一方、
+        臨界点直上では有限の χ が「偽の秩序」を残すことが見えます（χ を増やすとゆっくり
+        減っていきます）。有限の χ は実効的に臨界点をわずかにずらすため、転移のごく近傍だけは
+        χ 依存性が残る、という典型的な有限エンタングルメント効果です。
+      </p>
+      <p class="fig-cap en">
+        Solid lines: exact; symbols: MPS. The transverse magnetization ⟨σ<sup><i>z</i></sup>⟩
+        (red) coincides with the exact curve for every χ, so only χ = 32 is shown. The order
+        parameter ⟨σ<sup><i>x</i></sup>⟩ (blue) reproduces (1 − <i>h</i><sup>2</sup>)<sup>1/8</sup>
+        perfectly for <i>h</i> &lt; 1, but right at the critical point a finite χ leaves a
+        spurious remnant order that decays only slowly with growing χ. A finite bond dimension
+        effectively shifts the critical point slightly — a textbook finite-entanglement effect,
+        confined to the immediate vicinity of the transition.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">図3：臨界点 <i>h</i> = 1 での χ 依存性</span><span class="en">Fig. 3: χ-dependence at the critical point <i>h</i> = 1</span></h3>
+      <div class="fig-grid">
+        <div class="fig-box" id="figErrChi"></div>
+        <div class="fig-box" id="figXiChi"></div>
+      </div>
+      <p class="fig-cap ja">
+        <b>(a)</b> 臨界点でのエネルギー誤差の χ 依存性（両対数）。χ を倍にするごとに誤差は
+        およそ1桁ずつ落ちていきます。<b>(b)</b> MPS の転送行列から求めた相関長 ξ(χ)。
+        臨界点では真の相関長は無限大ですが、有限の χ が保持できるエンタングルメントを
+        頭打ちにするため、MPS は有限の相関長を持ちます。その成長は有限エンタングルメント・
+        スケーリング ξ ∝ χ<sup>κ</sup>（破線、Ising 普遍類 <i>c</i> = 1/2 に対する理論値
+        κ ≈ 2.034）によく従います。実際 χ = 16 → 32 では ξ が 76 → 311 と、理論比
+        2<sup>2.03</sup> ≈ 4.1 倍で伸びています。白抜きの χ = 64 の点が直線から下に
+        ずれているのは、同じ反復回数では収束しきらなかったためで、臨界点近傍で MPS を
+        収束させるコストが χ とともに急増することの現れです。
+      </p>
+      <p class="fig-cap en">
+        <b>(a)</b> Log-log plot of the energy error at criticality: each doubling of χ buys
+        roughly one decade of accuracy. <b>(b)</b> Correlation length ξ(χ) extracted from the
+        MPS transfer matrix. At criticality the true correlation length is infinite, but a
+        finite χ caps the entanglement the state can hold, so the MPS acquires a finite ξ.
+        Its growth follows the finite-entanglement scaling ξ ∝ χ<sup>κ</sup> (dashed line;
+        the theoretical value κ ≈ 2.034 for the Ising universality class, <i>c</i> = 1/2).
+        Indeed, from χ = 16 to 32, ξ grows from 76 to 311 — the predicted factor of
+        2<sup>2.03</sup> ≈ 4.1. The open χ = 64 point falls below the line because it did not
+        fully converge within the same sweep budget, illustrating how steeply the cost of
+        converging an MPS grows near criticality.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+
+      <h4 style="margin-top:0.6rem;"><span class="ja">模型と厳密解</span><span class="en">The model and its exact solution</span></h4>
+      <p class="ja">
+        対象は1次元の横磁場 Ising 模型
+      </p>
+      <p class="en">
+        The subject is the 1D transverse-field Ising model,
+      </p>
+      <div class="eq">\[ H \;=\; -J \sum_{i} \sigma^{x}_{i} \sigma^{x}_{i+1} \;-\; h \sum_{i} \sigma^{z}_{i} \]</div>
+      <p class="ja">
+        です（以下 <i>J</i> = 1）。この模型は Jordan–Wigner 変換によって自由フェルミオンに
+        厳密に書き換えられ、分散
+      </p>
+      <p class="en">
+        (we set <i>J</i> = 1). The Jordan–Wigner transformation maps it exactly onto free
+        fermions with dispersion
+      </p>
+      <div class="eq">\[ \varepsilon(k) \;=\; 2\sqrt{1 + h^{2} - 2h\cos k} \]</div>
+      <p class="ja">
+        を持ちます。基底エネルギー密度は占有されたモードの和
+      </p>
+      <p class="en">
+        The ground-state energy density is the filled-mode sum
+      </p>
+      <div class="eq">\[ e(h) \;=\; -\frac{1}{2\pi} \int_{-\pi}^{\pi} \frac{\varepsilon(k)}{2}\, dk \]</div>
+      <p class="ja">
+        で与えられ、横磁化 ⟨σ<sup><i>z</i></sup>⟩ も同様の <i>k</i> 積分で書けます。
+        さらに Pfeuty (1970) により、秩序変数は
+      </p>
+      <p class="en">
+        and the transverse magnetization ⟨σ<sup><i>z</i></sup>⟩ is a similar <i>k</i>-integral.
+        Moreover, Pfeuty (1970) showed that the order parameter takes the closed form
+      </p>
+      <div class="eq">\[ \langle \sigma^{x} \rangle \;=\; \left( 1 - h^{2} \right)^{1/8} \qquad (h < 1) \]</div>
+      <p class="ja">
+        という閉じた形を取ることが知られています。<i>h</i><sub>c</sub> = 1 の量子相転移は
+        2次元古典 Ising 模型と同じ普遍類（中心電荷 <i>c</i> = 1/2 の共形場理論）に属します。
+        つまりこの模型では、比べるべき「正解」がすべて手元にある——数値手法のベンチマークとして
+        理想的な舞台です。
+      </p>
+      <p class="en">
+        The quantum phase transition at <i>h</i><sub>c</sub> = 1 belongs to the same
+        universality class as the 2D classical Ising model — a conformal field theory with
+        central charge <i>c</i> = 1/2. In other words, every "right answer" is available in
+        closed form, making this model the ideal benchmark stage for a numerical method.
+      </p>
+
+      <h4><span class="ja">どう計算したか</span><span class="en">How the MPS data were computed</span></h4>
+      <p class="ja">
+        MPS 側のデータは TeNPy を用いた無限系 DMRG（iDMRG）で計算しました。2サイトの単位胞を持つ
+        無限一様 MPS を変分的に最適化する方法で、熱力学極限を有限サイズ効果なしに直接扱えます。
+        収束判定はエネルギーの変化が 10<sup>−13</sup> 程度に落ち着くまでスイープを繰り返す、
+        という素朴なものです。調整するパラメータは実質ボンド次元 χ だけで、
+        これが「MPS が保持できるエンタングルメントの量」を決めます
+        （2分割エンタングルメント・エントロピーの上限が ln χ）。
+        図2の秩序変数を出すときは対称性を保存せず、わずかに対称性を破った初期状態から
+        出発して自発的対称性の破れを再現させています。逆に図3の臨界スケーリングでは
+        パリティ対称性を保存して計算しています。
+      </p>
+      <p class="en">
+        The MPS data were obtained with infinite-system DMRG (iDMRG) in TeNPy: a uniform
+        infinite MPS with a two-site unit cell is optimized variationally, giving direct
+        access to the thermodynamic limit with no finite-size effects. Convergence simply
+        means sweeping until the energy settles at the 10<sup>−13</sup> level. The only real
+        knob is the bond dimension χ, which caps the amount of entanglement the state can
+        carry (the bipartite entanglement entropy is bounded by ln χ). For the order parameter
+        in Fig. 2 the calculation does not enforce the symmetry and starts from a slightly
+        symmetry-broken state, so that spontaneous symmetry breaking can occur; for the
+        critical scaling in Fig. 3, parity is conserved instead.
+      </p>
+
+      <h4><span class="ja">なぜ、ここまで正確なのか</span><span class="en">Why is it this accurate?</span></h4>
+      <p class="ja">
+        図1の凄みは、χ = 8 という「手のひらサイズ」の行列で誤差が丸め誤差の床に達する点です。
+        理由はエンタングルメントの構造にあります。ギャップのある1次元基底状態は
+        面積則を満たし、シュミット係数が指数関数的に減衰するため、
+        小さな χ の MPS で波動関数をほぼ厳密に表現できます。誤差はおおむね切り捨てた
+        シュミット係数の重みで決まり、χ に対して指数関数的に落ちます。
+        「基底状態計算では1次元は解かれた問題」と言われるのはこのためです。
+      </p>
+      <p class="en">
+        The striking feature of Fig. 1 is that a palm-sized χ = 8 matrix already drives the
+        error onto the round-off floor. The reason is the structure of entanglement: gapped 1D
+        ground states obey the area law, their Schmidt coefficients decay exponentially, and
+        so a small-χ MPS represents the wavefunction essentially exactly. The error tracks the
+        discarded Schmidt weight and falls exponentially in χ — this is why one says that 1D
+        ground-state physics is a solved problem.
+      </p>
+      <p class="ja">
+        唯一の例外が臨界点です。<i>h</i> = 1 ではエンタングルメント・エントロピーが
+        <i>S</i> = (<i>c</i>/6) ln ξ のように対数発散するため、有限の χ では表現しきれません。
+        しかしここでも MPS は「壊れる」のではなく、上品に失敗します。χ が保持できる
+        エンタングルメントの上限が、実効的な相関長のカットオフとして働き、
+      </p>
+      <p class="en">
+        The single exception is the critical point. At <i>h</i> = 1 the entanglement entropy
+        diverges logarithmically, <i>S</i> = (<i>c</i>/6) ln ξ, which no finite χ can
+        accommodate. Yet even here the MPS does not break — it fails gracefully. The
+        entanglement cap acts as an effective cutoff on the correlation length,
+      </p>
+      <div class="eq">\[ \xi(\chi) \;\propto\; \chi^{\kappa}, \qquad \kappa \;=\; \frac{6}{c\left( \sqrt{12/c} + 1 \right)} \;\approx\; 2.034 \quad (c = 1/2) \]</div>
+      <p class="ja">
+        という有限エンタングルメント・スケーリングに従います（Pollmann らによる 2009 年の結果）。
+        図3(b) はまさにこの法則を示しており、逆に言えば、χ を系統的に変えて外挿することで
+        臨界指数や中心電荷まで抽出できるということです。有限サイズ・スケーリングの
+        「サイズ」の役割を χ が果たすわけです。
+      </p>
+      <p class="en">
+        This finite-entanglement scaling (Pollmann et al., 2009) is exactly what Fig. 3(b)
+        displays. Turned around, it means one can extract critical exponents and even the
+        central charge by systematically varying χ and extrapolating — the bond dimension
+        plays the role that system size plays in ordinary finite-size scaling.
+      </p>
+
+      <h4><span class="ja">ダイナミクスとの対比</span><span class="en">Contrast with dynamics</span></h4>
+      <p class="ja">
+        上の TEBD のページでは、同じ MPS がクエンチ後の実時間発展で
+        エンタングルメントの線形成長に追い越され、短時間で破綻する様子を見ました。
+        このページはその裏返しです。基底状態（と、ギャップがあれば低励起状態）に対しては、
+        MPS は「近似」と呼ぶのがためらわれるほど正確で、可解模型の厳密解と
+        機械精度で一致します。同じアンザッツでも、対象のエンタングルメント構造次第で
+        無敵にも無力にもなる——テンソルネットワークの面白さはこの落差にあります。
+      </p>
+      <p class="en">
+        On the TEBD page above, the very same MPS ansatz was overtaken by the linear growth of
+        entanglement after a quench and broke down at short times. This page is the flip side:
+        for ground states (and, given a gap, low-lying states) the MPS is accurate to a degree
+        that makes "approximation" feel like the wrong word, matching the exact solution at
+        machine precision. One ansatz, invincible or helpless depending on the entanglement
+        structure of the target — that contrast is what makes tensor networks fascinating.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var DATA = {"gs":[0.2,0.4,0.6,0.8,0.9,0.95,1.0,1.05,1.1,1.2,1.4,1.6,1.8,2.0],"chis":[2,4,8,16,32],"err":[[1.647e-10,4.99e-08,1.753e-06,3.067e-05,0.0001258,0.0002736,0.000719,0.001855,0.001515,0.0008012,0.0002945,0.0001328,6.789e-05,3.791e-05],[1.572e-13,5.908e-12,1.361e-09,1.236e-07,1.312e-06,5.376e-06,4.82e-05,4.237e-05,1.699e-05,4.291e-06,5.817e-07,1.268e-07,3.607e-08,1.225e-08],[2.931e-14,8.926e-14,3.34e-13,7.625e-12,6.043e-10,9.827e-09,2.677e-06,4.415e-07,6.722e-08,4.886e-09,1.315e-10,8.934e-12,9.062e-13,6.195e-13],[1.288e-13,3.864e-14,3.553e-14,3.486e-13,3.451e-13,7.332e-12,1.86e-07,4.148e-10,1.929e-11,1.903e-13,2.325e-13,3.888e-13,4.012e-13,3.184e-13],[8.882e-16,9.548e-14,1.35e-13,6.35e-14,3.451e-13,3.12e-13,7.936e-08,5.449e-13,3.109e-15,2.287e-14,5.174e-14,1.512e-13,2.591e-13,2.047e-13]],"sx":[[0.99491,0.978442,0.945765,0.880812,0.817447,0.764813,0.675044,0.42775,2e-06,0.0,0.0,0.0,0.0,0.0],[0.99491,0.978442,0.945742,0.880119,0.812693,0.748724,0.564787,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.99491,0.978442,0.945742,0.880112,0.812539,0.747531,0.47733,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.99491,0.978442,0.945742,0.880112,0.812539,0.747525,0.409104,1e-06,0.0,0.0,0.0,0.0,0.0,0.0],[0.99491,0.978442,0.945742,0.880112,0.812539,0.747525,0.389011,0.0,0.0,0.0,0.0,0.0,0.0,0.0]],"sz32":[0.100508,0.204262,0.315764,0.444075,0.522306,0.569738,0.636377,0.699624,0.738665,0.792572,0.856565,0.893694,0.917679,0.934215],"crit":[{"chi":2,"err":0.003585,"S":0.3763,"xi":0.73},{"chi":4,"err":0.0001741,"S":0.5219,"xi":4.04},{"chi":8,"err":1.665e-05,"S":0.6153,"xi":14.01},{"chi":16,"err":5.744e-07,"S":0.7622,"xi":76.0},{"chi":32,"err":7.189e-08,"S":0.8616,"xi":310.73},{"chi":64,"err":1.163e-08,"S":0.9085,"xi":564.49}]};
+  var GD=[0.0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,0.25,0.275,0.3,0.325,0.35,0.375,0.4,0.425,0.45,0.475,0.5,0.525,0.55,0.575,0.6,0.625,0.65,0.675,0.7,0.725,0.75,0.775,0.8,0.825,0.85,0.875,0.9,0.925,0.95,0.975,1.0,1.025,1.05,1.075,1.1,1.125,1.15,1.175,1.2,1.225,1.25,1.275,1.3,1.325,1.35,1.375,1.4,1.425,1.45,1.475,1.5,1.525,1.55,1.575,1.6,1.625,1.65,1.675,1.7,1.725,1.75,1.775,1.8,1.825,1.85,1.875,1.9,1.925,1.95,1.975,2.0];
+  var SZD=[0.0,0.0125,0.02501,0.03753,0.05006,0.06262,0.07521,0.08784,0.10051,0.11323,0.126,0.13884,0.15175,0.16474,0.17781,0.19098,0.20426,0.21766,0.23118,0.24484,0.25866,0.27264,0.28681,0.30118,0.31576,0.3306,0.3457,0.3611,0.37684,0.39295,0.40949,0.4265,0.44407,0.4623,0.48129,0.50121,0.52231,0.54494,0.56974,0.59807,0.63662,0.67399,0.69962,0.72065,0.73866,0.75446,0.76851,0.78113,0.79257,0.803,0.81255,0.82134,0.82946,0.83698,0.84397,0.85048,0.85656,0.86226,0.8676,0.87261,0.87733,0.88178,0.88597,0.88994,0.89369,0.89725,0.90063,0.90383,0.90688,0.90977,0.91254,0.91517,0.91768,0.92008,0.92237,0.92456,0.92666,0.92867,0.9306,0.93244,0.93422];
+  var SXD=[1.0,0.99992,0.99969,0.9993,0.99874,0.99803,0.99716,0.99612,0.99491,0.99353,0.99197,0.99022,0.98828,0.98614,0.9838,0.98123,0.97844,0.97541,0.97211,0.96854,0.96468,0.9605,0.95597,0.95106,0.94574,0.93996,0.93367,0.9268,0.91928,0.91099,0.90182,0.89161,0.88011,0.86704,0.85194,0.83414,0.81254,0.78512,0.74752,0.68658,0.0];
+
+  var CHI_COL = { 2: '#c85c5c', 4: '#dd8b3f', 8: '#5ea54e', 16: '#4187d6', 32: '#8a63d2', 64: '#c9518f' };
+  var SERIF = "Georgia, 'Times New Roman', serif";
+
+  function colors() {
+    var isLight = document.body.classList.contains('light');
+    return {
+      bg: isLight ? '#ffffff' : '#0d1220',
+      fg: isLight ? '#1c2433' : '#dfe5f0',
+      sub: isLight ? '#4a5568' : '#a8b2c4'
+    };
+  }
+
+  // ---------- generic frame helpers ----------
+  function Fig(W, H, mL, mR, mT, mB) {
+    var c = colors();
+    var f = { W: W, H: H, mL: mL, mR: mR, mT: mT, mB: mB, pw: W - mL - mR, ph: H - mT - mB, o: [], c: c };
+    f.o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">');
+    f.o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + c.bg + '"/>');
+    f.line = function (xa, ya, xb, yb, color, w, dash) {
+      f.o.push('<line x1="' + xa + '" y1="' + ya + '" x2="' + xb + '" y2="' + yb +
+        '" stroke="' + color + '" stroke-width="' + w + '"' +
+        (dash ? ' stroke-dasharray="' + dash + '"' : '') + '/>');
+    };
+    f.text = function (x, y, s, size, fill, anchor, extra) {
+      f.o.push('<text x="' + x + '" y="' + y + '" text-anchor="' + (anchor || 'middle') +
+        '" font-family="' + SERIF + '" font-size="' + size + '" fill="' + fill + '"' +
+        (extra || '') + '>' + s + '</text>');
+    };
+    f.frame = function () {
+      f.o.push('<rect x="' + f.mL + '" y="' + f.mT + '" width="' + f.pw + '" height="' + f.ph +
+        '" fill="none" stroke="' + c.fg + '" stroke-width="1.4"/>');
+    };
+    f.done = function (id) {
+      f.o.push('</svg>');
+      document.getElementById(id).innerHTML = f.o.join('');
+    };
+    return f;
+  }
+
+  function pow10Label(f, n, cx, cy, anchor) {
+    f.o.push('<text x="' + cx + '" y="' + cy + '" text-anchor="' + (anchor || 'middle') +
+      '" font-family="' + SERIF + '" font-size="14" fill="' + f.c.fg + '">10' +
+      '<tspan dy="-6" font-size="10">' + n + '</tspan></text>');
+  }
+
+  function marker(f, X, Y, color, filled, shape) {
+    if (shape === 'sq') {
+      f.o.push('<rect x="' + (X - 4) + '" y="' + (Y - 4) + '" width="8" height="8" fill="' +
+        (filled ? color : f.c.bg) + '" stroke="' + color + '" stroke-width="1.6"/>');
+    } else {
+      f.o.push('<circle cx="' + X + '" cy="' + Y + '" r="4.4" fill="' +
+        (filled ? color : f.c.bg) + '" stroke="' + color + '" stroke-width="1.6"/>');
+    }
+  }
+
+  // ---------- Fig 1: |Delta e| vs g (semi-log) ----------
+  function drawErr() {
+    var f = Fig(880, 470, 82, 26, 24, 62);
+    var x0 = 0.1, x1 = 2.1, y0 = -16.3, y1 = -1.7;
+    var px = function (g) { return (f.mL + (g - x0) / (x1 - x0) * f.pw).toFixed(1); };
+    var py = function (l) { return (f.mT + f.ph - (l - y0) / (y1 - y0) * f.ph).toFixed(1); };
+    f.frame();
+    // x ticks
+    for (var g = 0.2; g <= 2.001; g += 0.1) {
+      var X = px(g), major = Math.abs(g * 2 - Math.round(g * 2)) < 1e-9;
+      f.line(X, f.mT + f.ph, X, f.mT + f.ph - (major ? 7 : 4), f.c.fg, 1.1);
+      f.line(X, f.mT, X, f.mT + (major ? 7 : 4), f.c.fg, 1.1);
+      if (major) f.text(X, f.mT + f.ph + 22, g.toFixed(1), 14, f.c.fg);
+    }
+    // y ticks (decades)
+    for (var n = -16; n <= -2; n++) {
+      var Y = py(n), maj = (n % 2 === 0);
+      f.line(f.mL, Y, f.mL + (maj ? 7 : 4), Y, f.c.fg, 1.1);
+      f.line(f.mL + f.pw, Y, f.mL + f.pw - (maj ? 7 : 4), Y, f.c.fg, 1.1);
+      if (maj) pow10Label(f, n, f.mL - 12, parseFloat(Y) + 5, 'end');
+    }
+    // g_c line
+    f.line(px(1), f.mT, px(1), f.mT + f.ph, f.c.sub, 1.2, '5,5');
+    f.text(parseFloat(px(1)) + 6, f.mT + 18, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'start');
+    // axis labels
+    f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 19, f.c.fg);
+    var ymid = f.mT + f.ph / 2;
+    f.o.push('<text x="26" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 26 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
+      '">|Δ<tspan font-style="italic">e</tspan>|</text>');
+    // series
+    for (var ci = 0; ci < DATA.chis.length; ci++) {
+      var col = CHI_COL[DATA.chis[ci]], pts = [];
+      for (var i = 0; i < DATA.gs.length; i++) {
+        pts.push(px(DATA.gs[i]) + ',' + py(Math.log10(Math.max(DATA.err[ci][i], 1e-16))));
+      }
+      f.o.push('<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + col +
+        '" stroke-width="1.6" stroke-linejoin="round" opacity="0.75"/>');
+      for (i = 0; i < DATA.gs.length; i++) {
+        marker(f, px(DATA.gs[i]), py(Math.log10(Math.max(DATA.err[ci][i], 1e-16))), col, true);
+      }
+    }
+    // legend
+    var lx = f.mL + f.pw - 150, ly = f.mT + 24;
+    for (ci = 0; ci < DATA.chis.length; ci++) {
+      var col2 = CHI_COL[DATA.chis[ci]];
+      marker(f, lx, ly + ci * 24 - 5, col2, true);
+      f.text(lx + 14, ly + ci * 24, '<tspan font-style="italic">χ</tspan> = ' + DATA.chis[ci], 15, f.c.fg, 'start');
+    }
+    f.done('figErr');
+  }
+
+  // ---------- Fig 2: magnetizations ----------
+  function drawMag() {
+    var f = Fig(880, 470, 82, 26, 24, 62);
+    var x0 = 0, x1 = 2.05, y0 = -0.03, y1 = 1.06;
+    var px = function (g) { return (f.mL + (g - x0) / (x1 - x0) * f.pw).toFixed(1); };
+    var py = function (v) { return (f.mT + f.ph - (v - y0) / (y1 - y0) * f.ph).toFixed(1); };
+    f.frame();
+    for (var g = 0; g <= 2.001; g += 0.1) {
+      var X = px(g), major = Math.abs(g * 2 - Math.round(g * 2)) < 1e-9;
+      f.line(X, f.mT + f.ph, X, f.mT + f.ph - (major ? 7 : 4), f.c.fg, 1.1);
+      f.line(X, f.mT, X, f.mT + (major ? 7 : 4), f.c.fg, 1.1);
+      if (major) f.text(X, f.mT + f.ph + 22, g.toFixed(1), 14, f.c.fg);
+    }
+    for (var v = 0; v <= 1.001; v += 0.05) {
+      var Y = py(v), maj = Math.abs(v * 5 - Math.round(v * 5)) < 1e-9;
+      f.line(f.mL, Y, f.mL + (maj ? 7 : 4), Y, f.c.fg, 1.1);
+      f.line(f.mL + f.pw, Y, f.mL + f.pw - (maj ? 7 : 4), Y, f.c.fg, 1.1);
+      if (maj) f.text(f.mL - 12, parseFloat(Y) + 5, v.toFixed(1), 14, f.c.fg, 'end');
+    }
+    f.line(px(1), f.mT, px(1), f.mT + f.ph, f.c.sub, 1.2, '5,5');
+    f.text(parseFloat(px(1)) + 6, f.mT + 18, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'start');
+    f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 19, f.c.fg);
+    var BLUE = '#4187d6', RED = '#c85c5c';
+    // exact curves
+    function curve(xs, ys, col, upto) {
+      var pts = [];
+      for (var i = 0; i < xs.length; i++) {
+        if (upto !== undefined && xs[i] > upto + 1e-9) break;
+        pts.push(px(xs[i]) + ',' + py(ys[i]));
+      }
+      f.o.push('<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + col +
+        '" stroke-width="2.4" stroke-linejoin="round"/>');
+    }
+    curve(GD, SZD, RED);
+    curve(GD, SXD, BLUE, 1.0);           // sx exact up to g=1 (drops to 0 at g=1)
+    f.line(px(1), py(0), px(2.05), py(0), BLUE, 2.4);  // sx = 0 for g > 1
+    // MPS markers: sx for chi = 2, 8, 32 ; sz for chi = 32
+    var show = [{ ci: 0, chi: 2 }, { ci: 2, chi: 8 }, { ci: 4, chi: 32 }];
+    for (var s = 0; s < show.length; s++) {
+      for (var i = 0; i < DATA.gs.length; i++) {
+        marker(f, px(DATA.gs[i]), py(DATA.sx[show[s].ci][i]), CHI_COL[show[s].chi], show[s].chi === 32);
+      }
+    }
+    for (i = 0; i < DATA.gs.length; i++) {
+      marker(f, px(DATA.gs[i]), py(DATA.sz32[i]), '#8a63d2', true, 'sq');
+    }
+    // labels on curves
+    f.text(px(0.42), py(0.86), '⟨σ<tspan dy="-7" font-size="11" font-style="italic">x</tspan><tspan dy="7">⟩</tspan>', 17, BLUE);
+    f.text(px(1.5), py(0.70), '⟨σ<tspan dy="-7" font-size="11" font-style="italic">z</tspan><tspan dy="7">⟩</tspan>', 17, RED);
+    // legend
+    var lx = f.mL + f.pw - 250, ly = f.mT + f.ph - 96;
+    f.line(lx, ly - 5, lx + 26, ly - 5, f.c.fg, 2.4);
+    f.text(lx + 34, ly, '<tspan>exact</tspan>', 14, f.c.fg, 'start');
+    marker(f, lx + 8, ly + 19, CHI_COL[2], false);
+    f.text(lx + 34, ly + 24, 'MPS <tspan font-style="italic">χ</tspan> = 2', 14, f.c.fg, 'start');
+    marker(f, lx + 8, ly + 43, CHI_COL[8], false);
+    f.text(lx + 34, ly + 48, 'MPS <tspan font-style="italic">χ</tspan> = 8', 14, f.c.fg, 'start');
+    marker(f, lx + 8, ly + 67, CHI_COL[32], true);
+    f.text(lx + 34, ly + 72, 'MPS <tspan font-style="italic">χ</tspan> = 32', 14, f.c.fg, 'start');
+    f.done('figMag');
+  }
+
+  // ---------- Fig 3a / 3b: chi scaling at criticality ----------
+  function chiAxis(f, px) {
+    var ticks = [2, 4, 8, 16, 32, 64];
+    for (var i = 0; i < ticks.length; i++) {
+      var X = px(Math.log10(ticks[i]));
+      f.line(X, f.mT + f.ph, X, f.mT + f.ph - 7, f.c.fg, 1.1);
+      f.line(X, f.mT, X, f.mT + 7, f.c.fg, 1.1);
+      f.text(X, f.mT + f.ph + 22, String(ticks[i]), 14, f.c.fg);
+    }
+    f.text(f.mL + f.pw / 2, f.H - 12, '<tspan font-style="italic">χ</tspan>', 19, f.c.fg);
+  }
+
+  function drawErrChi() {
+    var f = Fig(430, 400, 74, 20, 26, 58);
+    var x0 = Math.log10(1.6), x1 = Math.log10(80), y0 = -8.6, y1 = -1.9;
+    var px = function (l) { return (f.mL + (l - x0) / (x1 - x0) * f.pw).toFixed(1); };
+    var py = function (l) { return (f.mT + f.ph - (l - y0) / (y1 - y0) * f.ph).toFixed(1); };
+    f.frame();
+    chiAxis(f, px);
+    for (var n = -8; n <= -2; n++) {
+      var Y = py(n);
+      f.line(f.mL, Y, f.mL + 7, Y, f.c.fg, 1.1);
+      f.line(f.mL + f.pw, Y, f.mL + f.pw - 7, Y, f.c.fg, 1.1);
+      pow10Label(f, n, f.mL - 10, parseFloat(Y) + 5, 'end');
+    }
+    var ymid = f.mT + f.ph / 2;
+    f.o.push('<text x="24" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 24 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="17" fill="' + f.c.fg +
+      '">|Δ<tspan font-style="italic">e</tspan>| (<tspan font-style="italic">h</tspan> = 1)</text>');
+    var pts = [];
+    for (var i = 0; i < DATA.crit.length; i++) {
+      pts.push(px(Math.log10(DATA.crit[i].chi)) + ',' + py(Math.log10(DATA.crit[i].err)));
+    }
+    f.o.push('<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + CHI_COL[16] +
+      '" stroke-width="1.6" opacity="0.75"/>');
+    for (i = 0; i < DATA.crit.length; i++) {
+      marker(f, px(Math.log10(DATA.crit[i].chi)), py(Math.log10(DATA.crit[i].err)), CHI_COL[16], true);
+    }
+    f.text(f.mL + f.pw - 34, f.mT + 24, '(a)', 16, f.c.fg, 'start');
+    f.done('figErrChi');
+  }
+
+  function drawXiChi() {
+    var f = Fig(430, 400, 74, 20, 26, 58);
+    var x0 = Math.log10(1.6), x1 = Math.log10(80), y0 = -0.6, y1 = 3.4;
+    var px = function (l) { return (f.mL + (l - x0) / (x1 - x0) * f.pw).toFixed(1); };
+    var py = function (l) { return (f.mT + f.ph - (l - y0) / (y1 - y0) * f.ph).toFixed(1); };
+    f.frame();
+    chiAxis(f, px);
+    for (var n = 0; n <= 3; n++) {
+      var Y = py(n);
+      f.line(f.mL, Y, f.mL + 7, Y, f.c.fg, 1.1);
+      f.line(f.mL + f.pw, Y, f.mL + f.pw - 7, Y, f.c.fg, 1.1);
+      pow10Label(f, n, f.mL - 10, parseFloat(Y) + 5, 'end');
+      for (var k = 2; k <= 9; k++) {
+        var ly = n - 1 + Math.log10(k);
+        if (ly < y0 || ly > y1) continue;
+        var Ym = py(ly);
+        f.line(f.mL, Ym, f.mL + 4, Ym, f.c.fg, 1.1);
+        f.line(f.mL + f.pw, Ym, f.mL + f.pw - 4, Ym, f.c.fg, 1.1);
+      }
+    }
+    var ymid = f.mT + f.ph / 2;
+    f.o.push('<text x="24" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 24 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="17" fill="' + f.c.fg +
+      '"><tspan font-style="italic">ξ</tspan>(<tspan font-style="italic">χ</tspan>)</text>');
+    // guide: xi = 76 * (chi/16)^2.034 drawn chi in [3, 72]
+    var KAP = 2.034;
+    var gA = Math.log10(3), gB = Math.log10(72);
+    var yA = Math.log10(76.0) + KAP * (gA - Math.log10(16));
+    var yB = Math.log10(76.0) + KAP * (gB - Math.log10(16));
+    f.line(px(gA), py(yA), px(gB), py(yB), f.c.sub, 1.5, '7,6');
+    f.o.push('<text x="' + px(Math.log10(13)) + '" y="' + py(0.95) + '" font-family="' + SERIF +
+      '" font-size="15" fill="' + f.c.sub + '">∝ <tspan font-style="italic" font-size="16">χ</tspan>' +
+      '<tspan dy="-7" font-size="11">2.034</tspan></text>');
+    for (var i = 0; i < DATA.crit.length; i++) {
+      var d = DATA.crit[i];
+      marker(f, px(Math.log10(d.chi)), py(Math.log10(d.xi)), CHI_COL[16], d.chi !== 64);
+    }
+    f.text(f.mL + 16, f.mT + 24, '(b)', 16, f.c.fg, 'start');
+    f.done('figXiChi');
+  }
+
+  function drawAll() { drawErr(); drawMag(); drawErrChi(); drawXiChi(); }
+  drawAll();
+  new MutationObserver(function () { drawAll(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>

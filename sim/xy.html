@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2D XY Model &amp; BKT Transition — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+  .sim-canvas-box { flex: 0 0 auto; }
+  #xyCanvas {
+    width: 440px; height: 440px; max-width: 100%;
+    border: 1px solid var(--border); border-radius: 12px;
+  }
+  .sim-controls { flex: 1 1 260px; min-width: 260px; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  .legend { font-size: 0.85rem; color: var(--text-dim); line-height: 1.9; }
+  .vmark { display: inline-block; width: 13px; height: 13px; border-radius: 50%; margin-right: 0.35rem; vertical-align: -2px; font-size: 10px; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">2次元 XY 模型と Berezinskii–Kosterlitz–Thouless 転移</span><span class="en">The 2D XY Model and the Berezinskii–Kosterlitz–Thouless Transition</span></h1>
+    <p class="hero-sub ja">
+      スピンの向き θ を色相で表した XY 模型のモンテカルロシミュレーションです。
+      主役は渦（トポロジカル欠陥）。温度を動かして、渦ペアの束縛と解離を観察してみてください。
+    </p>
+    <p class="hero-sub en">
+      A Monte Carlo simulation of the XY model, with the spin angle θ shown as hue.
+      The protagonists are vortices — topological defects. Tune the temperature and watch
+      vortex pairs bind and unbind.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="sim-wrap">
+        <div class="sim-canvas-box">
+          <canvas id="xyCanvas" width="440" height="440"></canvas>
+        </div>
+        <div class="sim-controls">
+          <div class="ctrl">
+            <label><span class="ja">温度</span><span class="en">Temperature</span> <i>T</i>/<i>J</i> = <span class="val" id="tVal">0.40</span></label>
+            <input type="range" id="tSlider" min="0.05" max="2.5" step="0.01" value="0.40">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">128</span>（<i>L</i>×<i>L</i>）</label>
+            <input type="range" id="lSlider" min="0" max="3" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="randBtn"><span class="ja">ランダム初期化</span><span class="en">Randomize</span></button>
+            <button class="sim-btn" id="alignBtn"><span class="ja">揃えて初期化</span><span class="en">Align</span></button>
+            <button class="sim-btn" id="ktBtn"><i>T</i> → <i>T</i><sub>BKT</sub></button>
+            <button class="sim-btn" id="vortexBtn"><span class="ja">渦の表示: OFF</span><span class="en">Vortices: OFF</span></button>
+            <button class="sim-btn" id="arrowBtn"><span class="ja">矢印の表示: ON</span><span class="en">Arrows: ON</span></button>
+            <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
+          </div>
+          <div class="obs">
+            <span class="ja">渦の数</span><span class="en">Vortex count</span>: <b id="nvVal">0</b><br>
+            <span class="ja">磁化</span><span class="en">Magnetization</span> |<i>m</i>| = <b id="mVal">0.00</b><br>
+            <span class="legend">
+              <span class="vmark" style="background:#ffffff; border:2px solid #111; text-align:center; line-height:11px; font-weight:700; color:#111;">+</span><span class="ja">渦（巻き付き数 +1）</span><span class="en">vortex (winding +1)</span><br>
+              <span class="vmark" style="background:#111111; border:2px solid #fff; text-align:center; line-height:11px; font-weight:700; color:#fff;">−</span><span class="ja">反渦（巻き付き数 −1）</span><span class="en">antivortex (winding −1)</span><br>
+              <span class="ja">色相＝スピンの角度 θ（対応は下の色相環）、白い矢印＝局所平均したスピンの向き</span>
+              <span class="en">hue = spin angle θ (see wheel below), white arrows = locally averaged spin direction</span><br>
+              <span id="hueWheel" style="display:inline-block; margin-top:0.4rem;"></span><br>
+              <span class="ja">周期境界条件</span>
+              <span class="en">Periodic boundaries</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+      <p class="ja">
+        XY 模型では、各サイトのスピンが平面内の連続的な向き
+        θ<sub>i</sub> ∈ [0, 2π) を持ちます（画面では θ を色相で表しています）。
+        ハミルトニアンは
+      </p>
+      <p class="en">
+        In the XY model, each spin has a continuous in-plane orientation
+        θ<sub>i</sub> ∈ [0, 2π) (shown here as hue). The Hamiltonian is
+      </p>
+      <div class="eq">\[ H \;=\; -J \sum_{\langle i,j \rangle} \cos\!\left( \theta_i - \theta_j \right) \]</div>
+      <p class="ja">
+        で、更新は Ising のページと同じ Metropolis 法です（スピンの角度に小さなランダムな
+        回転を提案して、確率 min(1, e<sup>−Δ<i>E</i>/<i>T</i></sup>) で受理します）。
+        色と向きの対応は右上の色相環のとおりで、白い矢印は近くのスピンを平均した
+        局所的な向き（矢印が長いほど局所的に揃っている）を表します。
+      </p>
+      <p class="en">
+        and the dynamics is the same Metropolis algorithm as on the Ising page: propose a
+        small random rotation of a spin and accept it with probability
+        min(1, e<sup>−Δ<i>E</i>/<i>T</i></sup>). The hue-angle correspondence is given by
+        the color wheel in the panel, and the white arrows show the locally averaged spin
+        direction (longer arrows mean better local alignment).
+      </p>
+      <p class="ja">
+        連続対称性を持つ2次元の系では、Mermin–Wagner の定理により有限温度で自発磁化は
+        存在できません。実際、低温相でもスピン相関は指数関数的にではなく、
+        温度に依存するべきで減衰します。
+      </p>
+      <p class="en">
+        In two dimensions with a continuous symmetry, the Mermin–Wagner theorem forbids
+        spontaneous magnetization at any finite temperature. Indeed, even in the
+        low-temperature phase, spin correlations decay not exponentially but as a
+        temperature-dependent power law,
+      </p>
+      <div class="eq">\[ \left\langle \cos\left( \theta_i - \theta_j \right) \right\rangle \;\sim\; r^{-\eta(T)}, \qquad \eta(T) = \frac{T}{2\pi J} \qquad (T < T_{\mathrm{BKT}}) \]</div>
+      <p class="ja">
+        これを準長距離秩序と呼びます。一方、高温相では相関は指数関数的に減衰します。
+        「真の秩序はないのに相転移はある」——この一見矛盾した状況を解決するのが、
+        トポロジカル欠陥＝渦です。渦とは、あるプラケットの周りを一周したときに
+        角度が 2π<i>q</i>（<i>q</i> = ±1, ±2, …）だけ巻き付いている点のことです。
+      </p>
+      <p class="en">
+        This is called quasi-long-range order; in the high-temperature phase, correlations
+        decay exponentially instead. "A phase transition without true order" — the
+        resolution of this apparent paradox lies in topological defects: vortices. A vortex
+        is a point around which the angle winds by 2π<i>q</i> (<i>q</i> = ±1, ±2, …):
+      </p>
+      <div class="eq">\[ \oint \nabla \theta \cdot d\boldsymbol{\ell} \;=\; 2\pi q \]</div>
+      <p class="ja">
+        画面の「＋」印（<i>q</i> = +1）と「−」印（<i>q</i> = −1）が、各プラケットの
+        巻き付き数から検出した渦・反渦です。マーカーの周りをぐるっと見てください——
+        ＋印の周りでは、白い矢印（と色相）が一周するあいだに同じ向きにちょうど1回転し、
+        −印の周りでは逆向きに1回転しています。この「巻き付き」は連続変形では
+        ほどけないので、渦は生成・消滅こそすれ（対で生まれ、対で消えます）、
+        単独ではじわじわ消えることができません。これがトポロジカル欠陥と呼ばれる所以です。孤立した1個の渦のエネルギーは系のサイズとともに
+        E ≈ π<i>J</i> ln(<i>L</i>/<i>a</i>) と対数発散しますが、位置の選び方から得られる
+        エントロピーも S ≈ 2 ln(<i>L</i>/<i>a</i>) と対数的です。自由エネルギーは
+      </p>
+      <p class="en">
+        The "+" (<i>q</i> = +1) and "−" (<i>q</i> = −1) markers on screen are vortices and
+        antivortices detected from the winding number of each plaquette. Look around a
+        marker: around a "+", the white arrows (and the hue) make exactly one full turn in
+        the same sense as you circle it, and around a "−" one full turn in the opposite
+        sense. This winding cannot be undone by any smooth deformation — vortices are
+        created and annihilated only in pairs, never fading away alone. That is what makes
+        them topological defects. The energy of a
+        single isolated vortex diverges logarithmically with system size,
+        E ≈ π<i>J</i> ln(<i>L</i>/<i>a</i>), but so does the entropy of placing it,
+        S ≈ 2 ln(<i>L</i>/<i>a</i>). The free energy
+      </p>
+      <div class="eq">\[ F \;=\; E - TS \;\approx\; \left( \pi J - 2T \right) \ln\!\left( \frac{L}{a} \right) \]</div>
+      <p class="ja">
+        の符号が変わる温度 <i>T</i> ∼ π<i>J</i>/2 を境に、低温では渦は反渦と束縛ペアを
+        組むことしかできず、高温では自由な渦が熱的に増殖します。これが
+        Berezinskii–Kosterlitz–Thouless（BKT）転移で、精密な数値計算による転移温度は
+        <i>T</i><sub>BKT</sub> ≈ 0.893 <i>J</i> です。対称性の破れを伴わず、自由エネルギーの
+        あらゆる階数の微分が連続という「無限次相転移」であり、転移点では相関関数の指数が
+        普遍値 η = 1/4 をとり、スピン剛性（ヘリシティ係数）が普遍的にジャンプします。
+      </p>
+      <p class="en">
+        changes sign around <i>T</i> ∼ π<i>J</i>/2: below it, vortices can only exist as
+        bound vortex-antivortex pairs; above it, free vortices proliferate thermally. This
+        is the Berezinskii–Kosterlitz–Thouless (BKT) transition, located by precise
+        numerics at <i>T</i><sub>BKT</sub> ≈ 0.893 <i>J</i>. It breaks no symmetry and is of
+        "infinite order" — every derivative of the free energy stays continuous — while at
+        the transition the correlation exponent takes the universal value η = 1/4 and the
+        spin stiffness (helicity modulus) jumps universally:
+      </p>
+      <div class="eq">\[ \lim_{T \to T_{\mathrm{BKT}}^{-}} \frac{\rho_s(T)}{T} \;=\; \frac{2}{\pi} \]</div>
+      <p class="ja">
+        このトポロジカル欠陥による相転移の発見は、2016年のノーベル物理学賞
+        （Kosterlitz, Thouless, Haldane）の対象になりました。超流動薄膜、
+        超伝導薄膜、2次元ボース気体など、実に多くの系がこのユニバーサリティクラスに
+        属します。
+      </p>
+      <p class="en">
+        The discovery of this defect-driven transition was honored by the 2016 Nobel Prize
+        in Physics (Kosterlitz, Thouless, Haldane). Superfluid films, superconducting
+        films, and two-dimensional Bose gases all belong to this universality class.
+      </p>
+      <p class="ja">
+        遊び方のおすすめ：まず低温（<i>T</i> ≈ 0.3）で「揃えて初期化」すると、
+        滑らかな色のグラデーションの中に、渦・反渦がペアで生まれてはすぐ対消滅する様子が
+        見えます。温度を <i>T</i><sub>BKT</sub> ≈ 0.89 に近づけるとペアの間隔が伸びていき、
+        <i>T</i> ≈ 1.2 を超えると自由な渦がばらまかれた「渦のプラズマ」になって、
+        渦の数が急増します。渦の数と温度の関係を眺めるだけでも、束縛→解離の
+        クロスオーバーがはっきり分かるはずです。
+      </p>
+      <p class="en">
+        Suggestions for play: start at low temperature (<i>T</i> ≈ 0.3) with "Align" and
+        you will see vortex-antivortex pairs pop into existence and quickly annihilate
+        within the smooth color gradient. As you approach <i>T</i><sub>BKT</sub> ≈ 0.89 the
+        pairs stretch farther apart, and beyond <i>T</i> ≈ 1.2 the system becomes a plasma
+        of free vortices, with the vortex count shooting up. Just watching the vortex count
+        versus temperature makes the binding-unbinding crossover vivid.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SIZES = [32, 64, 128, 256];
+  var L = 128, N = L * L;
+  var theta = new Float32Array(N);
+  var T = 0.40, J = 1.0, paused = false, showVortex = false, showArrows = true;
+  var TWO_PI = Math.PI * 2;
+
+  var canvas = document.getElementById('xyCanvas');
+  var ctx = canvas.getContext('2d');
+  var off = document.createElement('canvas');
+  off.width = L; off.height = L;
+  var offCtx = off.getContext('2d');
+  var img = offCtx.createImageData(L, L);
+
+  var HUE_N = 256, hueLUT = new Uint8Array(HUE_N * 3);
+  (function buildLUT() {
+    for (var i = 0; i < HUE_N; i++) {
+      var h = i / HUE_N, r, g, b;
+      var f = function (n) {
+        var k = (n + h * 12) % 12;
+        return 0.5 - 0.45 * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+      };
+      r = f(0); g = f(8); b = f(4);
+      hueLUT[i * 3] = Math.round(r * 255);
+      hueLUT[i * 3 + 1] = Math.round(g * 255);
+      hueLUT[i * 3 + 2] = Math.round(b * 255);
+    }
+  })();
+
+  function randomize() { for (var i = 0; i < N; i++) theta[i] = Math.random() * TWO_PI; }
+  function align() { theta.fill(0); }
+
+  function wrap(d) { return d - TWO_PI * Math.round(d / TWO_PI); }
+
+  function sweep() {
+    var delta = Math.min(Math.PI, 0.4 + T);
+    for (var n = 0; n < N; n++) {
+      var i = (Math.random() * N) | 0;
+      var x = i % L, y = (i / L) | 0;
+      var xp = (x + 1) % L, xm = (x + L - 1) % L;
+      var yp = (y + 1) % L, ym = (y + L - 1) % L;
+      var t0 = theta[i];
+      var t1 = t0 + (Math.random() * 2 - 1) * delta;
+      var dE = 0;
+      var nb = [theta[y * L + xp], theta[y * L + xm], theta[yp * L + x], theta[ym * L + x]];
+      for (var k = 0; k < 4; k++) dE -= J * (Math.cos(t1 - nb[k]) - Math.cos(t0 - nb[k]));
+      if (dE <= 0 || Math.random() < Math.exp(-dE / T)) {
+        theta[i] = t1 - TWO_PI * Math.floor(t1 / TWO_PI);
+      }
+    }
+  }
+
+  function arrowStroke(x0, y0, x1, y1) {
+    ctx.beginPath();
+    ctx.moveTo(x0, y0); ctx.lineTo(x1, y1);
+    var ang = Math.atan2(y1 - y0, x1 - x0);
+    var hs = 5;
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - hs * Math.cos(ang - 0.5), y1 - hs * Math.sin(ang - 0.5));
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x1 - hs * Math.cos(ang + 0.5), y1 - hs * Math.sin(ang + 0.5));
+    ctx.stroke();
+  }
+
+  function drawArrows() {
+    var stride = Math.max(2, Math.round(L / 20));
+    var cell = canvas.width / L;
+    ctx.lineCap = 'round';
+    for (var by = 0; by < L; by += stride) {
+      for (var bx = 0; bx < L; bx += stride) {
+        var mx = 0, my = 0, cnt = 0;
+        var yMax = Math.min(by + stride, L), xMax = Math.min(bx + stride, L);
+        for (var y = by; y < yMax; y++) {
+          for (var x = bx; x < xMax; x++) {
+            var th = theta[y * L + x];
+            mx += Math.cos(th); my += Math.sin(th); cnt++;
+          }
+        }
+        var mag = Math.sqrt(mx * mx + my * my) / cnt;
+        var ang = Math.atan2(my, mx);
+        var cx = (bx + stride / 2) * cell, cy = (by + stride / 2) * cell;
+        var len = stride * cell * 0.42 * (0.35 + 0.65 * mag);
+        var dx = Math.cos(ang) * len, dy = -Math.sin(ang) * len;
+        ctx.strokeStyle = 'rgba(0,0,0,0.7)'; ctx.lineWidth = 3.4;
+        arrowStroke(cx - dx, cy + dy, cx + dx, cy - dy);
+        ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.7;
+        arrowStroke(cx - dx, cy + dy, cx + dx, cy - dy);
+      }
+    }
+  }
+
+  function buildWheel() {
+    var seg = 36, R = 32, r = 20, cx = 60, cy = 52;
+    var o = ['<svg viewBox="0 0 120 108" width="126" height="113" xmlns="http://www.w3.org/2000/svg">'];
+    for (var i = 0; i < seg; i++) {
+      var a0 = i / seg * TWO_PI, a1 = (i + 1.06) / seg * TWO_PI;
+      var b3 = (((i + 0.5) / seg * HUE_N) | 0) * 3;
+      var col = 'rgb(' + hueLUT[b3] + ',' + hueLUT[b3 + 1] + ',' + hueLUT[b3 + 2] + ')';
+      var x0 = cx + R * Math.cos(a0), y0 = cy - R * Math.sin(a0);
+      var x1 = cx + R * Math.cos(a1), y1 = cy - R * Math.sin(a1);
+      var x2 = cx + r * Math.cos(a1), y2 = cy - r * Math.sin(a1);
+      var x3 = cx + r * Math.cos(a0), y3 = cy - r * Math.sin(a0);
+      o.push('<path d="M' + x0.toFixed(1) + ' ' + y0.toFixed(1) + ' L' + x1.toFixed(1) + ' ' + y1.toFixed(1) +
+        ' L' + x2.toFixed(1) + ' ' + y2.toFixed(1) + ' L' + x3.toFixed(1) + ' ' + y3.toFixed(1) + ' Z" fill="' + col + '"/>');
+    }
+    var SER = "Georgia, serif";
+    o.push('<text x="' + (cx + R + 5) + '" y="' + (cy + 4) + '" font-family="' + SER + '" font-size="12" fill="currentColor">0</text>');
+    o.push('<text x="' + cx + '" y="' + (cy - R - 5) + '" text-anchor="middle" font-family="' + SER + '" font-size="12" fill="currentColor">\u03c0/2</text>');
+    o.push('<text x="' + (cx - R - 5) + '" y="' + (cy + 4) + '" text-anchor="end" font-family="' + SER + '" font-size="12" fill="currentColor">\u03c0</text>');
+    o.push('<text x="' + cx + '" y="' + (cy + R + 15) + '" text-anchor="middle" font-family="' + SER + '" font-size="12" fill="currentColor">3\u03c0/2</text>');
+    o.push('<text x="' + cx + '" y="' + (cy + 5) + '" text-anchor="middle" font-family="' + SER + '" font-size="13" font-style="italic" fill="currentColor">\u03b8</text>');
+    o.push('</svg>');
+    document.getElementById('hueWheel').innerHTML = o.join('');
+  }
+
+  function draw() {
+    var d = img.data;
+    for (var i = 0; i < N; i++) {
+      var bin = ((theta[i] / TWO_PI) * HUE_N) | 0;
+      if (bin >= HUE_N) bin = HUE_N - 1;
+      var k = i * 4, b3 = bin * 3;
+      d[k] = hueLUT[b3]; d[k + 1] = hueLUT[b3 + 1]; d[k + 2] = hueLUT[b3 + 2]; d[k + 3] = 255;
+    }
+    offCtx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(off, 0, 0, canvas.width, canvas.height);
+
+    if (showArrows) drawArrows();
+
+    var nv = 0;
+    if (true) {
+      var cell = canvas.width / L;
+      for (var y = 0; y < L; y++) {
+        for (var x = 0; x < L; x++) {
+          var xp = (x + 1) % L, yp = (y + 1) % L;
+          var a = theta[y * L + x], b = theta[y * L + xp];
+          var c = theta[yp * L + xp], e = theta[yp * L + x];
+          var w = wrap(b - a) + wrap(c - b) + wrap(e - c) + wrap(a - e);
+          var q = Math.round(w / TWO_PI);
+          if (q !== 0) {
+            nv++;
+            if (showVortex) {
+              var cx = (x + 1) * cell, cy = (y + 1) * cell;
+              var rad = Math.max(5.5, cell * 1.1);
+              ctx.beginPath();
+              ctx.arc(cx, cy, rad, 0, TWO_PI);
+              ctx.fillStyle = q > 0 ? '#ffffff' : '#111111';
+              ctx.fill();
+              ctx.lineWidth = 1.5;
+              ctx.strokeStyle = q > 0 ? '#111111' : '#ffffff';
+              ctx.stroke();
+              ctx.lineWidth = 1.7;
+              ctx.beginPath();
+              ctx.moveTo(cx - rad * 0.5, cy); ctx.lineTo(cx + rad * 0.5, cy);
+              if (q > 0) { ctx.moveTo(cx, cy - rad * 0.5); ctx.lineTo(cx, cy + rad * 0.5); }
+              ctx.stroke();
+            }
+          }
+        }
+      }
+    }
+    return nv;
+  }
+
+  function observables(nv) {
+    var mx = 0, my = 0;
+    for (var i = 0; i < N; i++) { mx += Math.cos(theta[i]); my += Math.sin(theta[i]); }
+    document.getElementById('mVal').textContent = (Math.sqrt(mx * mx + my * my) / N).toFixed(2);
+    document.getElementById('nvVal').textContent = nv;
+  }
+
+  function setSize(newL) {
+    L = newL; N = L * L;
+    theta = new Float32Array(N);
+    off.width = L; off.height = L;
+    img = offCtx.createImageData(L, L);
+    randomize();
+  }
+
+  var frame = 0;
+  function loop() {
+    if (!paused) {
+      sweep();
+      var nv = draw();
+      if (++frame % 10 === 0) observables(nv);
+    }
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('tSlider').addEventListener('input', function () {
+    T = parseFloat(this.value);
+    document.getElementById('tVal').textContent = T.toFixed(2);
+  });
+  document.getElementById('lSlider').addEventListener('input', function () {
+    var newL = SIZES[parseInt(this.value, 10)];
+    document.getElementById('lVal').textContent = newL;
+    setSize(newL);
+  });
+  document.getElementById('randBtn').addEventListener('click', randomize);
+  document.getElementById('ktBtn').addEventListener('click', function () {
+    T = 0.89;
+    document.getElementById('tSlider').value = T;
+    document.getElementById('tVal').textContent = T.toFixed(2);
+  });
+  document.getElementById('alignBtn').addEventListener('click', align);
+  document.getElementById('arrowBtn').addEventListener('click', function () {
+    showArrows = !showArrows;
+    this.querySelectorAll('.ja')[0].textContent = '矢印の表示: ' + (showArrows ? 'ON' : 'OFF');
+    this.querySelectorAll('.en')[0].textContent = 'Arrows: ' + (showArrows ? 'ON' : 'OFF');
+  });
+  document.getElementById('vortexBtn').addEventListener('click', function () {
+    showVortex = !showVortex;
+    this.querySelectorAll('.ja')[0].textContent = '渦の表示: ' + (showVortex ? 'ON' : 'OFF');
+    this.querySelectorAll('.en')[0].textContent = 'Vortices: ' + (showVortex ? 'ON' : 'OFF');
+  });
+  document.getElementById('pauseBtn').addEventListener('click', function () {
+    paused = !paused;
+    this.querySelectorAll('.ja')[0].textContent = paused ? '再開' : '一時停止';
+    this.querySelectorAll('.en')[0].textContent = paused ? 'Resume' : 'Pause';
+  });
+
+  buildWheel();
+  randomize();
+  loop();
+})();
+</script>
+</body>
+</html>

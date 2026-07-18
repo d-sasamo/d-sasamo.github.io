@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2D Ising Monte Carlo — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
+  .sim-canvas-box { flex: 0 0 auto; }
+  #isingCanvas {
+    width: 440px; height: 440px; max-width: 100%;
+    border: 1px solid var(--border); border-radius: 12px;
+    image-rendering: pixelated;
+  }
+  .sim-controls { flex: 1 1 260px; min-width: 260px; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">2次元 Ising 模型のモンテカルロシミュレーション</span><span class="en">Monte Carlo Simulation of the 2D Ising Model</span></h1>
+    <p class="hero-sub ja">
+      正方格子上の Ising 模型を Metropolis 法でシミュレーションしています。
+      温度 <i>T</i> と結合定数 <i>J</i> を動かして遊んでみてください。
+    </p>
+    <p class="hero-sub en">
+      The Ising model on the square lattice, simulated with the Metropolis algorithm.
+      Play with the temperature <i>T</i> and the coupling <i>J</i>.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <div class="sim-wrap">
+        <div class="sim-canvas-box">
+          <canvas id="isingCanvas" width="128" height="128"></canvas>
+        </div>
+        <div class="sim-controls">
+          <div class="ctrl">
+            <label><span class="ja">温度</span><span class="en">Temperature</span> <i>T</i>/|<i>J</i>| = <span class="val" id="tVal">2.27</span></label>
+            <input type="range" id="tSlider" min="0.05" max="5" step="0.01" value="2.27">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">結合定数</span><span class="en">Coupling</span> <i>J</i> = <span class="val" id="jVal">1.0</span>
+              <span style="color:var(--text-dim); font-size:0.8rem;">（<span class="ja"><i>J</i>&gt;0: 強磁性, <i>J</i>&lt;0: 反強磁性</span><span class="en"><i>J</i>&gt;0: ferro, <i>J</i>&lt;0: antiferro</span>）</span>
+            </label>
+            <input type="range" id="jSlider" min="-1" max="1" step="0.1" value="1">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">128</span>（<i>L</i>×<i>L</i>）</label>
+            <input type="range" id="lSlider" min="0" max="3" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="randBtn"><span class="ja">ランダム初期化</span><span class="en">Randomize</span></button>
+            <button class="sim-btn" id="tcBtn"><i>T</i> → <i>T</i><sub>c</sub></button>
+            <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
+          </div>
+          <div class="obs">
+            <span class="ja">磁化</span><span class="en">Magnetization</span> |<i>m</i>| = <b id="mVal">0.00</b><br>
+            <span class="ja">交替磁化</span><span class="en">Staggered magnetization</span> |<i>m</i><sub>s</sub>| = <b id="msVal">0.00</b><br>
+            <span style="font-size:0.85rem;">
+              <span class="ja">周期境界条件、Metropolis 法（1スイープ/フレーム）</span>
+              <span class="en">Periodic boundary conditions, Metropolis updates (1 sweep/frame)</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+      <p class="ja">
+        このシミュレーションが扱うのは、正方格子上の Ising 模型です。各サイトの
+        スピン <i>s</i><sub>i</sub> = ±1（赤が +1、青が −1）が最近接どうしで相互作用します。
+      </p>
+      <p class="en">
+        This simulation deals with the Ising model on the square lattice: spins
+        <i>s</i><sub>i</sub> = ±1 (red = +1, blue = −1) interact between nearest neighbors.
+      </p>
+      <div class="eq">\[ H \;=\; -J \sum_{\langle i,j \rangle} s_i \, s_j , \qquad s_i = \pm 1 \]</div>
+      <p class="ja">
+        <i>J</i> &gt; 0 なら隣どうし揃うのが得（強磁性）、<i>J</i> &lt; 0 なら反平行が得
+        （反強磁性）です。系は温度 <i>T</i> の熱浴に接しているとします（以下 <i>k</i><sub>B</sub> = 1）。
+      </p>
+      <p class="en">
+        For <i>J</i> &gt; 0 neighbors prefer to align (ferromagnet); for <i>J</i> &lt; 0 they
+        prefer to anti-align (antiferromagnet). The system is coupled to a heat bath at
+        temperature <i>T</i> (we set <i>k</i><sub>B</sub> = 1 throughout).
+      </p>
+      <p class="ja">
+        更新は Metropolis 法です。ランダムにスピンを1つ選び、それを反転させたときの
+        エネルギー変化 Δ<i>E</i> を計算して、次の確率で反転を受け入れます。
+      </p>
+      <p class="en">
+        The dynamics is the Metropolis algorithm: pick a spin at random, compute the energy
+        change Δ<i>E</i> for flipping it, and accept the flip with probability
+      </p>
+      <div class="eq">\[ P_{\mathrm{acc}} \;=\; \min\!\left( 1, \; e^{-\Delta E / T} \right) \]</div>
+      <p class="ja">
+        この規則は詳細釣り合いを満たすので、十分時間が経つとスピン配置はボルツマン分布
+        ∝ e<sup>−<i>E</i>/<i>T</i></sup> からのサンプルになります。画面の「1スイープ」は
+        <i>N</i> = <i>L</i>² 回の反転試行に対応します。
+      </p>
+      <p class="en">
+        This rule satisfies detailed balance, so at long times the configurations are
+        sampled from the Boltzmann distribution ∝ e<sup>−<i>E</i>/<i>T</i></sup>. One
+        "sweep" corresponds to <i>N</i> = <i>L</i>² flip attempts.
+      </p>
+      <p class="ja">
+        2次元 Ising 模型は、相転移を示す模型として最初に厳密に解かれた記念碑的な模型です
+        （Onsager, 1944）。転移温度は
+      </p>
+      <p class="en">
+        The 2D Ising model is the monumental first exactly solved model exhibiting a phase
+        transition (Onsager, 1944). The transition temperature is
+      </p>
+      <div class="eq">\[ \frac{T_c}{|J|} \;=\; \frac{2}{\ln\left(1+\sqrt{2}\right)} \;\approx\; 2.269 \]</div>
+      <p class="ja">
+        低温側 <i>T</i> &lt; <i>T</i><sub>c</sub> では自発磁化が現れ、その厳密な表式
+        （Onsager–Yang）も知られています。
+      </p>
+      <p class="en">
+        Below <i>T</i><sub>c</sub> a spontaneous magnetization appears, with the exact
+        expression (Onsager–Yang)
+      </p>
+      <div class="eq">\[ m \;=\; \left[ 1 - \sinh^{-4}\!\left( \frac{2J}{T} \right) \right]^{1/8} \qquad (T < T_c) \]</div>
+      <p class="ja">
+        ここから読み取れる臨界指数は β = 1/8 で、ほかに γ = 7/4、ν = 1 などが厳密に
+        分かっています。臨界点は中心電荷 <i>c</i> = 1/2 の共形場理論——自由 Majorana
+        フェルミオン——で記述されます。古典スピン模型の臨界点に Majorana フェルミオンが
+        現れるというのは、何度考えても味わい深い事実です。
+      </p>
+      <p class="en">
+        The critical exponent read off here is β = 1/8, and others such as γ = 7/4 and
+        ν = 1 are also known exactly. The critical point is described by a conformal field
+        theory with central charge <i>c</i> = 1/2 — a free Majorana fermion. That a Majorana
+        fermion emerges at the critical point of a classical spin model is a fact worth
+        savoring, however many times one thinks about it.
+      </p>
+      <p class="ja">
+        <i>J</i> &lt; 0 の反強磁性の場合はどうでしょうか。正方格子は二部格子なので、
+        部分格子変換 <i>s</i><sub>i</sub> → (−1)<sup><i>x</i>+<i>y</i></sup><i>s</i><sub>i</sub>
+        によって <i>J</i> → −<i>J</i> の系と厳密に移り合います。したがって転移温度は
+        強磁性の場合と同じで、秩序が一様磁化ではなく交替磁化（市松模様の Néel 秩序）に
+        変わるだけです。これはフラストレーションのない格子の特権で、例えば三角格子の
+        反強磁性 Ising 模型ではこの変換が使えず、基底状態がマクロに縮退する
+        まったく別の物理になります。
+      </p>
+      <p class="en">
+        What about the antiferromagnet, <i>J</i> &lt; 0? The square lattice is bipartite, so
+        the sublattice transformation
+        <i>s</i><sub>i</sub> → (−1)<sup><i>x</i>+<i>y</i></sup><i>s</i><sub>i</sub> maps it
+        exactly onto the <i>J</i> → −<i>J</i> system. The transition temperature is
+        therefore identical, and only the order changes: staggered (checkerboard Néel)
+        instead of uniform. This is the privilege of an unfrustrated lattice — on the
+        triangular lattice the transformation fails, and the antiferromagnetic Ising model
+        becomes an entirely different problem with macroscopic ground-state degeneracy.
+      </p>
+      <p class="ja">
+        遊び方のおすすめ：温度を <i>T</i><sub>c</sub> ≈ 2.27 に合わせると、
+        あらゆるスケールのドメインが現れては消える臨界揺らぎが見られます
+        （相関長が発散した状態です）。高温から一気に低温へ下げると（クエンチ）、
+        ドメインがゆっくり合体していく粗大化の過程が観察できます。
+        また <i>T</i><sub>c</sub> 付近では、単一スピン反転の動的指数が <i>z</i> ≈ 2.2 と
+        大きいため緩和が極端に遅くなる「臨界減速」も体感できます——実際の研究では
+        Wolff 法や Swendsen–Wang 法のようなクラスター更新でこれを回避します。
+      </p>
+      <p class="en">
+        Suggestions for play: tune the temperature to <i>T</i><sub>c</sub> ≈ 2.27 and you
+        will see critical fluctuations — domains of all sizes appearing and dissolving, the
+        signature of a diverging correlation length. Quenching from high to low temperature
+        shows slow domain coarsening. Near <i>T</i><sub>c</sub> you can also feel "critical
+        slowing down": single-spin-flip dynamics has a large dynamical exponent
+        <i>z</i> ≈ 2.2, which is why real studies use cluster updates such as the Wolff or
+        Swendsen–Wang algorithms.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SIZES = [32, 64, 128, 256];
+  var L = 128, N = L * L;
+  var spins = new Int8Array(N);
+  var T = 2.27, J = 1.0, sweepsPerFrame = 1, paused = false;
+
+  var canvas = document.getElementById('isingCanvas');
+  var ctx = canvas.getContext('2d');
+  var img = ctx.createImageData(L, L);
+
+  var RED = [224, 82, 82], BLUE = [74, 125, 224];
+
+  function randomize() {
+    for (var i = 0; i < N; i++) spins[i] = Math.random() < 0.5 ? 1 : -1;
+  }
+
+  function setSize(newL) {
+    L = newL; N = L * L;
+    spins = new Int8Array(N);
+    canvas.width = L; canvas.height = L;
+    img = ctx.createImageData(L, L);
+    randomize();
+    draw();
+  }
+
+  function metropolisSweep() {
+    for (var n = 0; n < N; n++) {
+      var i = (Math.random() * N) | 0;
+      var x = i % L, y = (i / L) | 0;
+      var xp = (x + 1) % L, xm = (x + L - 1) % L;
+      var yp = (y + 1) % L, ym = (y + L - 1) % L;
+      var nb = spins[y * L + xp] + spins[y * L + xm] + spins[yp * L + x] + spins[ym * L + x];
+      var dE = 2 * J * spins[i] * nb;
+      if (dE <= 0 || Math.random() < Math.exp(-dE / T)) spins[i] = -spins[i];
+    }
+  }
+
+  function draw() {
+    var d = img.data;
+    for (var i = 0; i < N; i++) {
+      var c = spins[i] === 1 ? RED : BLUE;
+      var k = i * 4;
+      d[k] = c[0]; d[k + 1] = c[1]; d[k + 2] = c[2]; d[k + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+  function observables() {
+    var m = 0, ms = 0;
+    for (var y = 0; y < L; y++) {
+      for (var x = 0; x < L; x++) {
+        var s = spins[y * L + x];
+        m += s;
+        ms += ((x + y) % 2 === 0) ? s : -s;
+      }
+    }
+    document.getElementById('mVal').textContent = Math.abs(m / N).toFixed(2);
+    document.getElementById('msVal').textContent = Math.abs(ms / N).toFixed(2);
+  }
+
+  var frame = 0;
+  function loop() {
+    if (!paused) {
+      for (var s = 0; s < sweepsPerFrame; s++) metropolisSweep();
+      draw();
+      if (++frame % 10 === 0) observables();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  document.getElementById('tSlider').addEventListener('input', function () {
+    T = parseFloat(this.value);
+    document.getElementById('tVal').textContent = T.toFixed(2);
+  });
+  document.getElementById('jSlider').addEventListener('input', function () {
+    J = parseFloat(this.value);
+    if (Math.abs(J) < 0.05) J = 0.1 * Math.sign(J || 1);
+    document.getElementById('jVal').textContent = J.toFixed(1);
+  });
+  document.getElementById('lSlider').addEventListener('input', function () {
+    var newL = SIZES[parseInt(this.value, 10)];
+    document.getElementById('lVal').textContent = newL;
+    setSize(newL);
+  });
+  document.getElementById('randBtn').addEventListener('click', randomize);
+  document.getElementById('tcBtn').addEventListener('click', function () {
+    T = 2.269;
+    document.getElementById('tSlider').value = T;
+    document.getElementById('tVal').textContent = T.toFixed(2);
+  });
+  document.getElementById('pauseBtn').addEventListener('click', function () {
+    paused = !paused;
+    this.querySelectorAll('.ja')[0].textContent = paused ? '再開' : '一時停止';
+    this.querySelectorAll('.en')[0].textContent = paused ? 'Resume' : 'Pause';
+  });
+
+  randomize();
+  draw();
+  loop();
+})();
+</script>
+</body>
+</html>
