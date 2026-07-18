@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
@@ -70,23 +70,23 @@
         </div>
         <div class="sim-controls">
           <div class="ctrl">
-            <label>DMI <i>D</i>/<i>J</i> = <span class="val" id="dVal">0.80</span></label>
+            <label>DMI \(D/J\) = <span class="val" id="dVal">0.80</span></label>
             <input type="range" id="dSlider" min="0" max="1.2" step="0.02" value="0.80">
           </div>
           <div class="ctrl">
-            <label><span class="ja">磁場</span><span class="en">Field</span> <i>B</i>/<i>J</i> = <span class="val" id="bVal">0.25</span></label>
+            <label><span class="ja">磁場</span><span class="en">Field</span> \(B/J\) = <span class="val" id="bVal">0.25</span></label>
             <input type="range" id="bSlider" min="0" max="0.8" step="0.01" value="0.25">
           </div>
           <div class="ctrl">
-            <label><span class="ja">Gilbert 減衰</span><span class="en">Gilbert damping</span> α = <span class="val" id="aVal">0.30</span></label>
+            <label><span class="ja">Gilbert 減衰</span><span class="en">Gilbert damping</span> \(\alpha\) = <span class="val" id="aVal">0.30</span></label>
             <input type="range" id="aSlider" min="0.05" max="1" step="0.05" value="0.30">
           </div>
           <div class="ctrl">
-            <label><span class="ja">温度（熱ノイズ）</span><span class="en">Temperature (thermal noise)</span> <i>T</i>/<i>J</i> = <span class="val" id="tVal">0.02</span></label>
+            <label><span class="ja">温度（熱ノイズ）</span><span class="en">Temperature (thermal noise)</span> \(T/J\) = <span class="val" id="tVal">0.02</span></label>
             <input type="range" id="tSlider" min="0" max="0.3" step="0.01" value="0.02">
           </div>
           <div class="ctrl">
-            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">64</span>（<i>L</i>×<i>L</i>）</label>
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> \(L\) = <span class="val" id="lVal">64</span>（\(L \times L\)）</label>
             <input type="range" id="lSlider" min="0" max="2" step="1" value="1">
           </div>
           <div class="ctrl">
@@ -97,8 +97,8 @@
           </div>
           <div class="obs">
             <span class="ja">トポロジカル電荷</span><span class="en">Topological charge</span>
-            <i>Q</i> = <b id="qVal">0.0</b><br>
-            <span class="ja">磁化</span><span class="en">Magnetization</span> <i>m</i><sub>z</sub> = <b id="mzVal">0.00</b><br>
+            \(Q\) = <b id="qVal">0.0</b><br>
+            <span class="ja">磁化</span><span class="en">Magnetization</span> \(m_z\) = <b id="mzVal">0.00</b><br>
             <span class="legend">
               <span class="ja">色相＝面内の向き、白＝+z、黒＝−z、矢印＝局所平均の面内成分</span>
               <span class="en">hue = in-plane angle, white = +z, black = −z, arrows = locally averaged in-plane component</span><br>
@@ -113,37 +113,37 @@
     <div class="card">
       <h3><span class="ja">解説</span><span class="en">About</span></h3>
       <p class="ja">
-        古典スピン（磁気モーメント）<b>S</b><sub>i</sub>（|<b>S</b><sub>i</sub>| = 1）の
+        古典スピン（磁気モーメント）\(\boldsymbol{S}_i\)（\(|\boldsymbol{S}_i| = 1\)）の
         実時間ダイナミクスを記述するのが、Landau–Lifshitz–Gilbert（LLG）方程式です。
       </p>
       <p class="en">
         The real-time dynamics of classical spins (magnetic moments)
-        <b>S</b><sub>i</sub> with |<b>S</b><sub>i</sub>| = 1 is described by the
+        \(\boldsymbol{S}_i\) with \(|\boldsymbol{S}_i| = 1\) is described by the
         Landau–Lifshitz–Gilbert (LLG) equation,
       </p>
-      <div class="eq">\[ \frac{d\mathbf{S}_i}{dt} \;=\; -\frac{\gamma}{1+\alpha^2} \left[ \mathbf{S}_i \times \mathbf{H}_i^{\mathrm{eff}} \;+\; \alpha\, \mathbf{S}_i \times \left( \mathbf{S}_i \times \mathbf{H}_i^{\mathrm{eff}} \right) \right] \]</div>
+      <div class="eq">\[ \frac{d\boldsymbol{S}_i}{dt} \;=\; -\frac{\gamma}{1+\alpha^2} \left[ \boldsymbol{S}_i \times \boldsymbol{H}_i^{\mathrm{eff}} \;+\; \alpha\, \boldsymbol{S}_i \times \left( \boldsymbol{S}_i \times \boldsymbol{H}_i^{\mathrm{eff}} \right) \right] \]</div>
       <p class="ja">
-        第1項はスピンが有効磁場のまわりを歳差運動する項、第2項（Gilbert 減衰 α）は
+        第1項はスピンが有効磁場のまわりを歳差運動する項、第2項（Gilbert 減衰 \(\alpha\)）は
         歳差しながらエネルギーを失って有効磁場の向きへ倒れ込んでいく項です。
         有効磁場はハミルトニアンの勾配から決まります。
       </p>
       <p class="en">
         The first term makes each spin precess around its effective field; the second
-        (Gilbert damping α) makes it spiral down toward the field while losing energy.
+        (Gilbert damping \(\alpha\)) makes it spiral down toward the field while losing energy.
         The effective field follows from the gradient of the Hamiltonian,
       </p>
-      <div class="eq">\[ \mathbf{H}_i^{\mathrm{eff}} \;=\; -\frac{\partial H}{\partial \mathbf{S}_i}, \qquad H \;=\; -J \sum_{\langle i,j \rangle} \mathbf{S}_i \cdot \mathbf{S}_j \;-\; B \sum_i S_i^z \;-\; D \sum_{\langle i,j \rangle} \left( \hat{\mathbf{z}} \times \hat{\mathbf{e}}_{ij} \right) \cdot \left( \mathbf{S}_i \times \mathbf{S}_j \right) \]</div>
+      <div class="eq">\[ \boldsymbol{H}_i^{\mathrm{eff}} \;=\; -\frac{\partial H}{\partial \boldsymbol{S}_i}, \qquad H \;=\; -J \sum_{\langle i,j \rangle} \boldsymbol{S}_i \cdot \boldsymbol{S}_j \;-\; B \sum_i S_i^z \;-\; D \sum_{\langle i,j \rangle} \left( \hat{\boldsymbol{z}} \times \hat{\boldsymbol{e}}_{ij} \right) \cdot \left( \boldsymbol{S}_i \times \boldsymbol{S}_j \right) \]</div>
       <p class="ja">
-        交換相互作用 <i>J</i> はスピンを揃えようとし、界面型の
-        Dzyaloshinskii–Moriya 相互作用（DMI）<i>D</i> は隣のスピンを少しねじろうとします。
-        この2つの競合に磁場 <i>B</i> が加わると、面内でぐるりと巻いた渦状のテクスチャ——
+        交換相互作用 \(J\) はスピンを揃えようとし、界面型の
+        Dzyaloshinskii–Moriya 相互作用（DMI）\(D\) は隣のスピンを少しねじろうとします。
+        この2つの競合に磁場 \(B\) が加わると、面内でぐるりと巻いた渦状のテクスチャ——
         <b>磁気スカーミオン</b>——が安定化されます。有限温度の揺らぎは、揺動散逸関係を
         満たす熱ノイズ場として LLG に加えています（確率的 LLG、Heun 法で積分）。
       </p>
       <p class="en">
-        The exchange <i>J</i> wants spins parallel, while the interfacial
-        Dzyaloshinskii–Moriya interaction (DMI) <i>D</i> prefers a small twist between
-        neighbors. Add a field <i>B</i> to this competition and whirling textures —
+        The exchange \(J\) wants spins parallel, while the interfacial
+        Dzyaloshinskii–Moriya interaction (DMI) \(D\) prefers a small twist between
+        neighbors. Add a field \(B\) to this competition and whirling textures —
         <b>magnetic skyrmions</b> — are stabilized. Finite temperature enters as a thermal
         noise field satisfying the fluctuation-dissipation relation (stochastic LLG,
         integrated with the Heun scheme).
@@ -154,63 +154,63 @@
       <p class="en">
         Skyrmions are counted by the topological charge,
       </p>
-      <div class="eq">\[ Q \;=\; \frac{1}{4\pi} \int d^2 r \;\; \mathbf{S} \cdot \left( \partial_x \mathbf{S} \times \partial_y \mathbf{S} \right) \]</div>
+      <div class="eq">\[ Q \;=\; \frac{1}{4\pi} \int d^2 r \;\; \boldsymbol{S} \cdot \left( \partial_x \boldsymbol{S} \times \partial_y \boldsymbol{S} \right) \]</div>
       <p class="ja">
-        <i>Q</i> は「スピン配置が単位球を何回覆うか」を数える整数で、スカーミオン1個が
-        <i>Q</i> = ±1 を担います（画面の値は Berg–Lüscher の格子版で計算した、
+        \(Q\) は「スピン配置が単位球を何回覆うか」を数える整数で、スカーミオン1個が
+        \(Q = \pm 1\) を担います（画面の値は Berg–Lüscher の格子版で計算した、
         ほぼ整数になる量です）。XY 模型のページで見た渦の巻き付き数の、いわば3次元スピン版です。
         連続変形では変えられない量なので、スカーミオンは粒子のように安定に存在でき、
-        生成・消滅の瞬間には <i>Q</i> が整数で飛びます。
+        生成・消滅の瞬間には \(Q\) が整数で飛びます。
       </p>
       <p class="en">
-        <i>Q</i> is an integer counting how many times the spin configuration wraps the
-        unit sphere; each skyrmion carries <i>Q</i> = ±1 (the on-screen value uses the
+        \(Q\) is an integer counting how many times the spin configuration wraps the
+        unit sphere; each skyrmion carries \(Q = \pm 1\) (the on-screen value uses the
         Berg–Lüscher lattice discretization and stays nearly integer). It is the
         three-dimensional-spin cousin of the vortex winding number from the XY page.
         Because no smooth deformation can change it, skyrmions are stable, particle-like
-        objects, and <i>Q</i> jumps by integers at the moments of their creation and
+        objects, and \(Q\) jumps by integers at the moments of their creation and
         annihilation.
       </p>
       <p class="ja">
         スカーミオンは、少ない電流で駆動できる情報担体の候補として、スピントロニクスで
         盛んに研究されています（レーストラックメモリなど）。このページの設定は
-        γ = 1、<i>J</i> = 1 の無次元単位で、実時間・実空間でテクスチャが動く様子を
+        \(\gamma = 1\)、\(J = 1\) の無次元単位で、実時間・実空間でテクスチャが動く様子を
         そのまま眺められます。
       </p>
       <p class="en">
         Skyrmions are actively studied in spintronics as candidate information carriers
         drivable by tiny currents (racetrack memories and beyond). This page uses
-        dimensionless units γ = 1, <i>J</i> = 1, letting you watch the textures move in
+        dimensionless units \(\gamma = 1\), \(J = 1\), letting you watch the textures move in
         real space and real time.
       </p>
       <p class="ja">
-        遊び方のおすすめ：デフォルト（<i>D</i> = 0.8, <i>B</i> = 0.25）で「ランダム初期化」を
-        押すと、乱れた配置から緩和してスカーミオンが自発的に核生成し、<i>Q</i> が整数値に
+        遊び方のおすすめ：デフォルト（\(D = 0.8\), \(B = 0.25\)）で「ランダム初期化」を
+        押すと、乱れた配置から緩和してスカーミオンが自発的に核生成し、\(Q\) が整数値に
         落ち着きます。「+z に揃える」→「スカーミオンを植える」で1個だけ置いて、
-        安定に生き続けることを確かめるのも面白いです。そこから磁場 <i>B</i> を上げていくと
-        スカーミオンが縮んでいき、ある値でつぶれて <i>Q</i> が跳びます（トポロジカル
-        保護の破れは格子スケールでしか起こせません）。<i>D</i> = 0 に戻すとただの強磁性体に
-        なり、α を小さくすると歳差が長く残って波打つようなダイナミクスが見えます。
+        安定に生き続けることを確かめるのも面白いです。そこから磁場 \(B\) を上げていくと
+        スカーミオンが縮んでいき、ある値でつぶれて \(Q\) が跳びます（トポロジカル
+        保護の破れは格子スケールでしか起こせません）。\(D = 0\) に戻すとただの強磁性体に
+        なり、\(\alpha\) を小さくすると歳差が長く残って波打つようなダイナミクスが見えます。
       </p>
       <p class="en">
-        Suggestions for play: with the defaults (<i>D</i> = 0.8, <i>B</i> = 0.25), press
+        Suggestions for play: with the defaults (\(D = 0.8\), \(B = 0.25\)), press
         "Randomize" and watch skyrmions nucleate spontaneously as the disordered state
-        relaxes, with <i>Q</i> settling onto an integer. Or "Align +z" then "Seed a
-        skyrmion" to place a single one and verify it lives on stably. Raising <i>B</i>
-        shrinks it until it collapses — <i>Q</i> jumps, since topological protection can
-        only fail at the lattice scale. Set <i>D</i> = 0 to recover a plain ferromagnet,
-        and lower α to see long-lived precessional, wave-like dynamics.
+        relaxes, with \(Q\) settling onto an integer. Or "Align +z" then "Seed a
+        skyrmion" to place a single one and verify it lives on stably. Raising \(B\)
+        shrinks it until it collapses — \(Q\) jumps, since topological protection can
+        only fail at the lattice scale. Set \(D = 0\) to recover a plain ferromagnet,
+        and lower \(\alpha\) to see long-lived precessional, wave-like dynamics.
       </p>
       <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
       <p class="ja" style="line-height:2.1;">
         ・T. L. Gilbert, IEEE Trans. Magn. <b>40</b>, 3443 (2004)——Gilbert 減衰を含む LLG 方程式。<br>
-        ・B. Berg and M. L&uuml;scher, Nucl. Phys. B <b>190</b>, 412 (1981)——格子上のトポロジカル電荷（このページの <i>Q</i> の定義）。<br>
+        ・B. Berg and M. L&uuml;scher, Nucl. Phys. B <b>190</b>, 412 (1981)——格子上のトポロジカル電荷（このページの \(Q\) の定義）。<br>
         ・S. M&uuml;hlbauer <i>et al.</i>, Science <b>323</b>, 915 (2009)——スキルミオン格子の観測。<br>
         ・N. Nagaosa and Y. Tokura, Nat. Nanotechnol. <b>8</b>, 899 (2013)——スキルミオンのレビュー。
       </p>
       <p class="en" style="line-height:2.1;">
         ・T. L. Gilbert, IEEE Trans. Magn. <b>40</b>, 3443 (2004) — the LLG equation with Gilbert damping.<br>
-        ・B. Berg and M. L&uuml;scher, Nucl. Phys. B <b>190</b>, 412 (1981) — the lattice topological charge used for <i>Q</i> here.<br>
+        ・B. Berg and M. L&uuml;scher, Nucl. Phys. B <b>190</b>, 412 (1981) — the lattice topological charge used for \(Q\) here.<br>
         ・S. M&uuml;hlbauer <i>et al.</i>, Science <b>323</b>, 915 (2009) — observation of the skyrmion lattice.<br>
         ・N. Nagaosa and Y. Tokura, Nat. Nanotechnol. <b>8</b>, 899 (2013) — a review of magnetic skyrmions.
       </p>

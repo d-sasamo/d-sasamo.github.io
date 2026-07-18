@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
@@ -76,8 +76,8 @@
         <div class="sim-canvas-box">
           <canvas id="hmCanvas" width="32" height="160"></canvas>
           <div class="hm-caption">
-            <span class="ja">横軸＝サイト <i>i</i>、縦軸＝時間（下向きに進行）<br>色＝⟨σ<sup>z</sup><sub>i</sub>⟩（赤 = +1, 青 = −1）</span>
-            <span class="en">horizontal = site <i>i</i>, vertical = time (downward)<br>color = ⟨σ<sup>z</sup><sub>i</sub>⟩ (red = +1, blue = −1)</span>
+            <span class="ja">横軸＝サイト \(i\)、縦軸＝時間（下向きに進行）<br>色＝\(\langle \sigma^z_i \rangle\)（赤 = +1, 青 = −1）</span>
+            <span class="en">horizontal = site \(i\), vertical = time (downward)<br>color = \(\langle \sigma^z_i \rangle\) (red = +1, blue = −1)</span>
           </div>
         </div>
         <div class="sim-controls">
@@ -101,11 +101,11 @@
             </select>
           </div>
           <div class="ctrl">
-            <label><span class="ja">サイト数</span><span class="en">Sites</span> <i>N</i> = <span class="val" id="nVal">32</span></label>
+            <label><span class="ja">サイト数</span><span class="en">Sites</span> \(N\) = <span class="val" id="nVal">32</span></label>
             <input type="range" id="nSlider" min="0" max="3" step="1" value="2">
           </div>
           <div class="ctrl">
-            <label><span class="ja">ボンド次元</span><span class="en">Bond dimension</span> <i>&#967;</i> = <span class="val" id="chiVal">32</span></label>
+            <label><span class="ja">ボンド次元</span><span class="en">Bond dimension</span> \(\chi\) = <span class="val" id="chiVal">32</span></label>
             <input type="range" id="chiSlider" min="0" max="2" step="1" value="2">
           </div>
           <div class="ctrl">
@@ -113,13 +113,13 @@
             <button class="sim-btn" id="resetBtn"><span class="ja">リセット</span><span class="en">Reset</span></button>
           </div>
           <div class="obs">
-            <span class="ja">時刻</span><span class="en">Time</span> <i>t</i> = <b id="tNowVal">0.00</b><br>
-            <span class="ja">エントロピー（中央ボンド）</span><span class="en">Entropy (mid bond)</span> <i>S</i> = <b id="sMidVal">0</b><br>
+            <span class="ja">時刻</span><span class="en">Time</span> \(t\) = <b id="tNowVal">0.00</b><br>
+            <span class="ja">エントロピー（中央ボンド）</span><span class="en">Entropy (mid bond)</span> \(S\) = <b id="sMidVal">0</b><br>
             <span class="ja">使用中の最大ボンド次元</span><span class="en">Largest bond dimension in use</span>: <b id="chiUsedVal">1</b><br>
             <span class="ja">累積打ち切り誤差</span><span class="en">Cumulative truncation error</span>: <b id="discVal">0</b><br>
             <span style="font-size:0.85rem;">
-              <span class="ja">2次 Trotter 分解、&#948;t = 0.05、開放端、<i>t</i> = 20 で自動停止（リセットで最初から）</span>
-              <span class="en">2nd-order Trotter, &#948;t = 0.05, open boundaries; stops automatically at <i>t</i> = 20 (Reset to restart)</span>
+              <span class="ja">2次 Trotter 分解、\(\delta t = 0.05\)、開放端、\(t = 20\) で自動停止（リセットで最初から）</span>
+              <span class="en">2nd-order Trotter, \(\delta t = 0.05\), open boundaries; stops automatically at \(t = 20\) (Reset to restart)</span>
             </span>
           </div>
         </div>
@@ -127,7 +127,7 @@
     </div>
 
     <div class="card">
-      <h3><span class="ja">エンタングルメントエントロピー <i>S</i>(<i>t</i>)（中央ボンド）</span><span class="en">Entanglement entropy <i>S</i>(<i>t</i>) (mid bond)</span></h3>
+      <h3><span class="ja">エンタングルメントエントロピー \(S(t)\)（中央ボンド）</span><span class="en">Entanglement entropy \(S(t)\) (mid bond)</span></h3>
       <div id="sChart"></div>
     </div>
 
@@ -135,28 +135,28 @@
       <h3><span class="ja">解説</span><span class="en">About</span></h3>
       <p class="ja">
         このページの裏で走っているのは、量子多体状態そのものの時間発展です。
-        <i>N</i> 個のスピン 1/2 の状態空間は 2<sup><i>N</i></sup> 次元で、
-        <i>N</i> = 40 なら約 10<sup>12</sup> 個の複素数が必要になり、まともに保持する
+        \(N\) 個のスピン \(1/2\) の状態空間は \(2^N\) 次元で、
+        \(N = 40\) なら約 \(10^{12}\) 個の複素数が必要になり、まともに保持する
         ことすらできません。そこで登場するのが行列積状態（MPS: Matrix Product State）です。
       </p>
       <p class="en">
         What runs behind this page is the time evolution of a genuine quantum many-body
-        state. The state space of <i>N</i> spins-1/2 has dimension 2<sup><i>N</i></sup> —
-        for <i>N</i> = 40, about 10<sup>12</sup> complex numbers, too many even to store.
+        state. The state space of \(N\) spins-\(1/2\) has dimension \(2^N\) —
+        for \(N = 40\), about \(10^{12}\) complex numbers, too many even to store.
         Enter the matrix product state (MPS):
       </p>
       <div class="eq">\[ |\psi\rangle \;=\; \sum_{s_1,\dots,s_N} A^{[1]s_1} A^{[2]s_2} \cdots A^{[N]s_N} \, |s_1 s_2 \cdots s_N\rangle \]</div>
       <p class="ja">
-        各サイトに置いた &#967;&#215;&#967; 行列の積で振幅を表す形で、パラメータ数は
-        およそ <i>N</i>&#183;2&#183;&#967;&#178; 個。&#967;（ボンド次元）が、切り捨てずに
+        各サイトに置いた \(\chi \times \chi\) 行列の積で振幅を表す形で、パラメータ数は
+        およそ \(N \cdot 2 \cdot \chi^2\) 個。\(\chi\)（ボンド次元）が、切り捨てずに
         保持できるエンタングルメントの量を決めます。指数的に大きな Hilbert 空間を
         多項式個の数で近似する——一見無謀なこの圧縮が機能する理由が、
         <b>エンタングルメントの面積則</b>です。1次元ギャップ系の基底状態では
         部分系のエントロピーが定数に留まり（Hastings の定理）、臨界系ですら
       </p>
       <p class="en">
-        The amplitudes are products of &#967;&#215;&#967; matrices, roughly
-        <i>N</i>&#183;2&#183;&#967;&#178; parameters in total; the bond dimension &#967; sets
+        The amplitudes are products of \(\chi \times \chi\) matrices, roughly
+        \(N \cdot 2 \cdot \chi^2\) parameters in total; the bond dimension \(\chi\) sets
         how much entanglement can be kept without truncation. The reason this seemingly
         reckless compression of an exponentially large Hilbert space works is the
         <b>area law of entanglement</b>: for gapped 1D ground states the entropy of a
@@ -206,20 +206,20 @@
       <div class="eq">\[ e^{-iH\,\delta t} \;\approx\; e^{-iH_{\mathrm{odd}}\,\delta t/2} \; e^{-iH_{\mathrm{even}}\,\delta t} \; e^{-iH_{\mathrm{odd}}\,\delta t/2} \;+\; O(\delta t^{3}) \]</div>
       <p class="ja">
         で小さな2サイトゲートの列に直し、ゲートを掛けるたびに特異値分解（SVD）で
-        Schmidt 係数の大きい &#967; 個だけを残します。画面の「累積打ち切り誤差」が、
+        Schmidt 係数の大きい \(\chi\) 個だけを残します。画面の「累積打ち切り誤差」が、
         この切り捨ての合計です。実装は素の JavaScript ですが中身は本物で、
-        厳密対角化（<i>N</i> = 10）と 10<sup>&#8722;5</sup> 程度（Trotter 誤差の桁）、
-        テンソルネットワークライブラリ TeNPy（<i>N</i> = 20, 同一条件）とは
-        10<sup>&#8722;8</sup> の精度で一致することを確認しています。
+        厳密対角化（\(N = 10\)）と \(10^{-5}\) 程度（Trotter 誤差の桁）、
+        テンソルネットワークライブラリ TeNPy（\(N = 20\), 同一条件）とは
+        \(10^{-8}\) の精度で一致することを確認しています。
       </p>
       <p class="en">
         turning evolution into a sequence of small two-site gates; after each gate a
-        singular value decomposition keeps only the &#967; largest Schmidt values. The
+        singular value decomposition keeps only the \(\chi\) largest Schmidt values. The
         "cumulative truncation error" on screen is the total weight discarded. The
         implementation is plain JavaScript but the physics is real: it agrees with exact
-        diagonalization (<i>N</i> = 10) at the 10<sup>&#8722;5</sup> level (the Trotter
-        error scale), and with the tensor-network library TeNPy (<i>N</i> = 20, identical
-        settings) to 10<sup>&#8722;8</sup>.
+        diagonalization (\(N = 10\)) at the \(10^{-5}\) level (the Trotter
+        error scale), and with the tensor-network library TeNPy (\(N = 20\), identical
+        settings) to \(10^{-8}\).
       </p>
       <p class="ja">
         扱える模型は2つ。横磁場 Ising 模型
@@ -229,64 +229,64 @@
       </p>
       <div class="eq">\[ H_{\mathrm{TFIM}} \;=\; -J \sum_{i} \sigma^{z}_{i}\sigma^{z}_{i+1} \;-\; h \sum_{i} \sigma^{x}_{i} \]</div>
       <p class="ja">
-        は <i>h</i>/<i>J</i> = 1 に量子臨界点を持つ、量子相転移の最も基本的な模型です
+        は \(h/J = 1\) に量子臨界点を持つ、量子相転移の最も基本的な模型です
         （Jordan–Wigner 変換で自由フェルミオンに帰着する可解模型でもあります）。
         もうひとつの XXZ 模型
       </p>
       <p class="en">
-        with its quantum critical point at <i>h</i>/<i>J</i> = 1 — the fundamental model of
+        with its quantum critical point at \(h/J = 1\) — the fundamental model of
         quantum phase transitions (and integrable via Jordan–Wigner fermions). And the XXZ
         model,
       </p>
       <div class="eq">\[ H_{\mathrm{XXZ}} \;=\; J \sum_{i} \left( S^{x}_{i}S^{x}_{i+1} + S^{y}_{i}S^{y}_{i+1} + \Delta\, S^{z}_{i}S^{z}_{i+1} \right) \]</div>
       <p class="ja">
-        は &#916; = 1 で Heisenberg 鎖になります。おすすめの遊び方：横磁場 Ising で
-        |&#8593;&#8593;...&#8593;&#10217; から <i>h</i> = 1（臨界点）へクエンチすると、
+        は \(\Delta = 1\) で Heisenberg 鎖になります。おすすめの遊び方：横磁場 Ising で
+        \(|\uparrow\uparrow\cdots\uparrow\rangle\) から \(h = 1\)（臨界点）へクエンチすると、
         磁化が振動しながら減衰し、相関が光円錐状に広がります。ドメイン壁初期状態では、
         壁が溶けて広がっていく様子がヒートマップにきれいな光円錐を描きます
         （情報の伝播速度に上限がある——Lieb–Robinson 限界——ことの現れです）。
       </p>
       <p class="en">
-        which becomes the Heisenberg chain at &#916; = 1. Suggested experiments: in the
-        Ising model, quench from |&#8593;&#8593;...&#8593;&#10217; to the critical point
-        <i>h</i> = 1 and watch the magnetization ring down while correlations spread in a
+        which becomes the Heisenberg chain at \(\Delta = 1\). Suggested experiments: in the
+        Ising model, quench from \(|\uparrow\uparrow\cdots\uparrow\rangle\) to the critical point
+        \(h = 1\) and watch the magnetization ring down while correlations spread in a
         light cone; with the domain-wall initial state, the melting wall paints a beautiful
         light cone on the heatmap — a manifestation of the Lieb–Robinson bound on
         information propagation.
       </p>
       <p class="ja">
-        そして、このページの一番の見どころが <i>S</i>(<i>t</i>) のプロットです。
+        そして、このページの一番の見どころが \(S(t)\) のプロットです。
         クエンチ後、エンタングルメントエントロピーは一般に時間に<b>線形</b>に成長します
         （準粒子ペアが光円錐状に飛んでいく描像）。ところが MPS が保持できる
-        エントロピーは ln &#967; まで。つまり必要なボンド次元は
+        エントロピーは \(\ln \chi\) まで。つまり必要なボンド次元は
       </p>
       <p class="en">
-        And the main attraction is the <i>S</i>(<i>t</i>) plot. After a quench,
+        And the main attraction is the \(S(t)\) plot. After a quench,
         entanglement entropy generically grows <b>linearly</b> in time (the quasiparticle-
-        pair picture). But an MPS can hold at most ln &#967; of entropy, so the required
+        pair picture). But an MPS can hold at most \(\ln \chi\) of entropy, so the required
         bond dimension grows as
       </p>
       <div class="eq">\[ \chi_{\mathrm{needed}} \;\sim\; e^{S(t)} \;\sim\; e^{v t} \]</div>
       <p class="ja">
-        と時間とともに<b>指数的</b>に増えます。プロットの破線（ln &#967;）に
-        <i>S</i>(<i>t</i>) が到達すると、打ち切り誤差が急増して計算は信用できなくなります。
-        &#967; を 8 → 32 と変えて、この「壁」が先送りされるだけで消えないことを
-        確かめてみてください。ちなみに、壁に達した後さらに回し続けると <i>S</i>(<i>t</i>) は
+        と時間とともに<b>指数的</b>に増えます。プロットの破線（\(\ln \chi\)）に
+        \(S(t)\) が到達すると、打ち切り誤差が急増して計算は信用できなくなります。
+        \(\chi\) を 8 → 32 と変えて、この「壁」が先送りされるだけで消えないことを
+        確かめてみてください。ちなみに、壁に達した後さらに回し続けると \(S(t)\) は
         ゆっくり<b>減少</b>していきますが、これは物理ではありません。保持しきれない
         エンタングルメントを毎ステップ切り捨てることが非物理的な散逸として働き、
         状態を低エンタングルメント側へ押し流してしまうためです（このページが
-        <i>t</i> = 20 で自動停止するのはそのためです）。基底状態では無敵の MPS も、実時間ダイナミクスでは
+        \(t = 20\) で自動停止するのはそのためです）。基底状態では無敵の MPS も、実時間ダイナミクスでは
         比較的短い時間までしか正確に追えない——これが1次元ですら残る本質的な限界で、
         現在も盛んに研究されている最前線です。
       </p>
       <p class="en">
-        — <b>exponentially</b>. When <i>S</i>(<i>t</i>) reaches the dashed ln &#967; line,
-        truncation errors blow up and the simulation loses its accuracy. Try &#967; from 8
+        — <b>exponentially</b>. When \(S(t)\) reaches the dashed \(\ln \chi\) line,
+        truncation errors blow up and the simulation loses its accuracy. Try \(\chi\) from 8
         to 32: the wall is postponed, never removed. Incidentally, if you keep running past
-        the wall, <i>S</i>(<i>t</i>) slowly <b>decreases</b> — this is not physics: the
+        the wall, \(S(t)\) slowly <b>decreases</b> — this is not physics: the
         entanglement that cannot be stored is discarded at every step, and this truncation
         acts as an unphysical dissipation that drives the state toward low entanglement
-        (which is why this page stops automatically at <i>t</i> = 20). MPS, invincible for ground states, can
+        (which is why this page stops automatically at \(t = 20\)). MPS, invincible for ground states, can
         follow real-time dynamics only up to modest times — an essential limitation that
         persists even in 1D, and an active research frontier.
       </p>
@@ -314,8 +314,8 @@
       </p>
       <p class="ja">
         最後に、2次元の話をしなければフェアではありません。2次元では面積則が
-        <i>S</i> &#8733; <i>L</i>（境界の長さ）となるため、MPS を蛇行させて張る方法では
-        &#967; &#126; e<sup><i>L</i></sup> が必要になります。2次元専用のテンソル
+        \(S \propto L\)（境界の長さ）となるため、MPS を蛇行させて張る方法では
+        \(\chi \sim e^{L}\) が必要になります。2次元専用のテンソル
         ネットワークである PEPS は状態の<b>表現</b>としては優れていますが、期待値を
         計算するための縮約が厳密には #P 困難で、近似縮約も高コストです。円筒に巻いた
         DMRG は幅 10 サイト程度が実用限界。そこへさらに、クエンチ後のエンタングルメントの
@@ -328,8 +328,8 @@
       </p>
       <p class="en">
         Finally, fairness demands a word about two dimensions. In 2D the area law reads
-        <i>S</i> &#8733; <i>L</i> (the boundary length), so a snaked MPS needs
-        &#967; &#126; e<sup><i>L</i></sup>. PEPS — the genuinely 2D tensor network — is an
+        \(S \propto L\) (the boundary length), so a snaked MPS needs
+        \(\chi \sim e^{L}\). PEPS — the genuinely 2D tensor network — is an
         excellent <b>representation</b> of states, but contracting it to compute
         expectation values is #P-hard exactly, and costly even approximately. Cylinder
         DMRG tops out around widths of ten sites. Add the linear post-quench growth of

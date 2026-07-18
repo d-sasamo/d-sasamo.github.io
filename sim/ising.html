@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
@@ -53,11 +53,11 @@
     <h1 style="font-size:2rem;"><span class="ja">2次元 Ising 模型のモンテカルロシミュレーション</span><span class="en">Monte Carlo Simulation of the 2D Ising Model</span></h1>
     <p class="hero-sub ja">
       正方格子上の Ising 模型を Metropolis 法でシミュレーションしています。
-      温度 <i>T</i> と結合定数 <i>J</i> を動かして遊んでみてください。
+      温度 \(T\) と結合定数 \(J\) を動かして遊んでみてください。
     </p>
     <p class="hero-sub en">
       The Ising model on the square lattice, simulated with the Metropolis algorithm.
-      Play with the temperature <i>T</i> and the coupling <i>J</i>.
+      Play with the temperature \(T\) and the coupling \(J\).
     </p>
   </section>
 
@@ -69,27 +69,27 @@
         </div>
         <div class="sim-controls">
           <div class="ctrl">
-            <label><span class="ja">温度</span><span class="en">Temperature</span> <i>T</i>/|<i>J</i>| = <span class="val" id="tVal">2.27</span></label>
+            <label><span class="ja">温度</span><span class="en">Temperature</span> \(T/|J|\) = <span class="val" id="tVal">2.27</span></label>
             <input type="range" id="tSlider" min="0.05" max="5" step="0.01" value="2.27">
           </div>
           <div class="ctrl">
-            <label><span class="ja">結合定数</span><span class="en">Coupling</span> <i>J</i> = <span class="val" id="jVal">1.0</span>
+            <label><span class="ja">結合定数</span><span class="en">Coupling</span> \(J\) = <span class="val" id="jVal">1.0</span>
               <span style="color:var(--text-dim); font-size:0.8rem;">（<span class="ja"><i>J</i>&gt;0: 強磁性, <i>J</i>&lt;0: 反強磁性</span><span class="en"><i>J</i>&gt;0: ferro, <i>J</i>&lt;0: antiferro</span>）</span>
             </label>
             <input type="range" id="jSlider" min="-1" max="1" step="0.1" value="1">
           </div>
           <div class="ctrl">
-            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">128</span>（<i>L</i>×<i>L</i>）</label>
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> \(L\) = <span class="val" id="lVal">128</span>（\(L \times L\)）</label>
             <input type="range" id="lSlider" min="0" max="3" step="1" value="2">
           </div>
           <div class="ctrl">
             <button class="sim-btn" id="randBtn"><span class="ja">ランダム初期化</span><span class="en">Randomize</span></button>
-            <button class="sim-btn" id="tcBtn"><i>T</i> → <i>T</i><sub>c</sub></button>
+            <button class="sim-btn" id="tcBtn">\(T \to T_c\)</button>
             <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
           </div>
           <div class="obs">
-            <span class="ja">磁化</span><span class="en">Magnetization</span> |<i>m</i>| = <b id="mVal">0.00</b><br>
-            <span class="ja">交替磁化</span><span class="en">Staggered magnetization</span> |<i>m</i><sub>s</sub>| = <b id="msVal">0.00</b><br>
+            <span class="ja">磁化</span><span class="en">Magnetization</span> \(|m|\) = <b id="mVal">0.00</b><br>
+            <span class="ja">交替磁化</span><span class="en">Staggered magnetization</span> \(|m_s|\) = <b id="msVal">0.00</b><br>
             <span style="font-size:0.85rem;">
               <span class="ja">周期境界条件、Metropolis 法（1スイープ/フレーム）</span>
               <span class="en">Periodic boundary conditions, Metropolis updates (1 sweep/frame)</span>
@@ -103,40 +103,40 @@
       <h3><span class="ja">解説</span><span class="en">About</span></h3>
       <p class="ja">
         このシミュレーションが扱うのは、正方格子上の Ising 模型です。各サイトの
-        スピン <i>s</i><sub>i</sub> = ±1（赤が +1、青が −1）が最近接どうしで相互作用します。
+        スピン \(s_i = \pm 1\)（赤が +1、青が −1）が最近接どうしで相互作用します。
       </p>
       <p class="en">
         This simulation deals with the Ising model on the square lattice: spins
-        <i>s</i><sub>i</sub> = ±1 (red = +1, blue = −1) interact between nearest neighbors.
+        \(s_i = \pm 1\) (red = +1, blue = −1) interact between nearest neighbors.
       </p>
       <div class="eq">\[ H \;=\; -J \sum_{\langle i,j \rangle} s_i \, s_j , \qquad s_i = \pm 1 \]</div>
       <p class="ja">
-        <i>J</i> &gt; 0 なら隣どうし揃うのが得（強磁性）、<i>J</i> &lt; 0 なら反平行が得
-        （反強磁性）です。系は温度 <i>T</i> の熱浴に接しているとします（以下 <i>k</i><sub>B</sub> = 1）。
+        \(J &gt; 0\) なら隣どうし揃うのが得（強磁性）、\(J &lt; 0\) なら反平行が得
+        （反強磁性）です。系は温度 \(T\) の熱浴に接しているとします（以下 \(k_B = 1\)）。
       </p>
       <p class="en">
-        For <i>J</i> &gt; 0 neighbors prefer to align (ferromagnet); for <i>J</i> &lt; 0 they
+        For \(J &gt; 0\) neighbors prefer to align (ferromagnet); for \(J &lt; 0\) they
         prefer to anti-align (antiferromagnet). The system is coupled to a heat bath at
-        temperature <i>T</i> (we set <i>k</i><sub>B</sub> = 1 throughout).
+        temperature \(T\) (we set \(k_B = 1\) throughout).
       </p>
       <p class="ja">
         更新は Metropolis 法です。ランダムにスピンを1つ選び、それを反転させたときの
-        エネルギー変化 Δ<i>E</i> を計算して、次の確率で反転を受け入れます。
+        エネルギー変化 \(\Delta E\) を計算して、次の確率で反転を受け入れます。
       </p>
       <p class="en">
         The dynamics is the Metropolis algorithm: pick a spin at random, compute the energy
-        change Δ<i>E</i> for flipping it, and accept the flip with probability
+        change \(\Delta E\) for flipping it, and accept the flip with probability
       </p>
       <div class="eq">\[ P_{\mathrm{acc}} \;=\; \min\!\left( 1, \; e^{-\Delta E / T} \right) \]</div>
       <p class="ja">
         この規則は詳細釣り合いを満たすので、十分時間が経つとスピン配置はボルツマン分布
-        ∝ e<sup>−<i>E</i>/<i>T</i></sup> からのサンプルになります。画面の「1スイープ」は
-        <i>N</i> = <i>L</i>² 回の反転試行に対応します。
+        \(\propto e^{-E/T}\) からのサンプルになります。画面の「1スイープ」は
+        \(N = L^2\) 回の反転試行に対応します。
       </p>
       <p class="en">
         This rule satisfies detailed balance, so at long times the configurations are
-        sampled from the Boltzmann distribution ∝ e<sup>−<i>E</i>/<i>T</i></sup>. One
-        "sweep" corresponds to <i>N</i> = <i>L</i>² flip attempts.
+        sampled from the Boltzmann distribution \(\propto e^{-E/T}\). One
+        "sweep" corresponds to \(N = L^2\) flip attempts.
       </p>
       <p class="ja">
         2次元 Ising 模型は、相転移を示す模型として最初に厳密に解かれた記念碑的な模型です
@@ -148,62 +148,62 @@
       </p>
       <div class="eq">\[ \frac{T_c}{|J|} \;=\; \frac{2}{\ln\left(1+\sqrt{2}\right)} \;\approx\; 2.269 \]</div>
       <p class="ja">
-        低温側 <i>T</i> &lt; <i>T</i><sub>c</sub> では自発磁化が現れ、その厳密な表式
+        低温側 \(T < T_c\) では自発磁化が現れ、その厳密な表式
         （Onsager–Yang）も知られています。
       </p>
       <p class="en">
-        Below <i>T</i><sub>c</sub> a spontaneous magnetization appears, with the exact
+        Below \(T_c\) a spontaneous magnetization appears, with the exact
         expression (Onsager–Yang)
       </p>
       <div class="eq">\[ m \;=\; \left[ 1 - \sinh^{-4}\!\left( \frac{2J}{T} \right) \right]^{1/8} \qquad (T < T_c) \]</div>
       <p class="ja">
-        ここから読み取れる臨界指数は β = 1/8 で、ほかに γ = 7/4、ν = 1 などが厳密に
-        分かっています。臨界点はセントラルチャージ <i>c</i> = 1/2 の共形場理論——自由 Majorana
+        ここから読み取れる臨界指数は \(\beta = 1/8\) で、ほかに \(\gamma = 7/4\)、\(\nu = 1\) などが厳密に
+        分かっています。臨界点はセントラルチャージ \(c = 1/2\) の共形場理論——自由 Majorana
         フェルミオン——で記述されます。古典スピン模型の臨界点に Majorana フェルミオンが
         現れるというのは、何度考えても味わい深い事実です。
       </p>
       <p class="en">
-        The critical exponent read off here is β = 1/8, and others such as γ = 7/4 and
-        ν = 1 are also known exactly. The critical point is described by a conformal field
-        theory with central charge <i>c</i> = 1/2 — a free Majorana fermion. That a Majorana
+        The critical exponent read off here is \(\beta = 1/8\), and others such as \(\gamma = 7/4\) and
+        \(\nu = 1\) are also known exactly. The critical point is described by a conformal field
+        theory with central charge \(c = 1/2\) — a free Majorana fermion. That a Majorana
         fermion emerges at the critical point of a classical spin model is a fact worth
         savoring, however many times one thinks about it.
       </p>
       <p class="ja">
-        <i>J</i> &lt; 0 の反強磁性の場合はどうでしょうか。正方格子は二部格子なので、
-        部分格子変換 <i>s</i><sub>i</sub> → (−1)<sup><i>x</i>+<i>y</i></sup><i>s</i><sub>i</sub>
-        によって <i>J</i> → −<i>J</i> の系と厳密に移り合います。したがって転移温度は
+        \(J &lt; 0\) の反強磁性の場合はどうでしょうか。正方格子は二部格子なので、
+        部分格子変換 \(s_i \to (-1)^{x+y} s_i\)
+        によって \(J \to -J\) の系と厳密に移り合います。したがって転移温度は
         強磁性の場合と同じで、秩序が一様磁化ではなく交替磁化（市松模様の Néel 秩序）に
         変わるだけです。これはフラストレーションのない格子の特権で、例えば三角格子の
         反強磁性 Ising 模型ではこの変換が使えず、基底状態がマクロに縮退する
         まったく別の物理になります。
       </p>
       <p class="en">
-        What about the antiferromagnet, <i>J</i> &lt; 0? The square lattice is bipartite, so
+        What about the antiferromagnet, \(J &lt; 0\)? The square lattice is bipartite, so
         the sublattice transformation
-        <i>s</i><sub>i</sub> → (−1)<sup><i>x</i>+<i>y</i></sup><i>s</i><sub>i</sub> maps it
-        exactly onto the <i>J</i> → −<i>J</i> system. The transition temperature is
+        \(s_i \to (-1)^{x+y} s_i\) maps it
+        exactly onto the \(J \to -J\) system. The transition temperature is
         therefore identical, and only the order changes: staggered (checkerboard Néel)
         instead of uniform. This is the privilege of an unfrustrated lattice — on the
         triangular lattice the transformation fails, and the antiferromagnetic Ising model
         becomes an entirely different problem with macroscopic ground-state degeneracy.
       </p>
       <p class="ja">
-        遊び方のおすすめ：温度を <i>T</i><sub>c</sub> ≈ 2.27 に合わせると、
+        遊び方のおすすめ：温度を \(T_c \approx 2.27\) に合わせると、
         あらゆるスケールのドメインが現れては消える臨界揺らぎが見られます
         （相関長が発散した状態です）。高温から一気に低温へ下げると（クエンチ）、
         ドメインがゆっくり合体していく粗大化の過程が観察できます。
-        また <i>T</i><sub>c</sub> 付近では、単一スピン反転の動的指数が <i>z</i> ≈ 2.2 と
+        また \(T_c\) 付近では、単一スピン反転の動的指数が \(z \approx 2.2\) と
         大きいため緩和が極端に遅くなる「臨界減速」も体感できます——実際の研究では
         Wolff 法や Swendsen–Wang 法のようなクラスター更新でこれを回避します。
       </p>
       <p class="en">
-        Suggestions for play: tune the temperature to <i>T</i><sub>c</sub> ≈ 2.27 and you
+        Suggestions for play: tune the temperature to \(T_c \approx 2.27\) and you
         will see critical fluctuations — domains of all sizes appearing and dissolving, the
         signature of a diverging correlation length. Quenching from high to low temperature
-        shows slow domain coarsening. Near <i>T</i><sub>c</sub> you can also feel "critical
+        shows slow domain coarsening. Near \(T_c\) you can also feel "critical
         slowing down": single-spin-flip dynamics has a large dynamical exponent
-        <i>z</i> ≈ 2.2, which is why real studies use cluster updates such as the Wolff or
+        \(z \approx 2.2\), which is why real studies use cluster updates such as the Wolff or
         Swendsen–Wang algorithms.
       </p>
       <h4><span class="ja">参考文献</span><span class="en">References</span></h4>

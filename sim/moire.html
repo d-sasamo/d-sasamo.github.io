@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -62,15 +62,15 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">ねじれ2層グラフェン：モアレ模様と平坦バンド</span><span class="en">Twisted Bilayer Graphene: Moiré Patterns and Flat Bands</span></h1>
     <p class="hero-sub ja">
-      完全に重なった2枚のハニカム格子（θ = 0）から出発して、ねじれ角 θ を
+      完全に重なった2枚のハニカム格子（\(\theta = 0\)）から出発して、ねじれ角 \(\theta\) を
       少しずつ回してみてください。長周期のモアレ模様が浮かび上がり、
       連続体模型で計算したモアレバンドが連動して変形していきます。
-      θ ≈ 1.05° の「魔法角」でバンドがほぼ平坦になります。
+      \(\theta \approx 1.05^{\circ}\) の「魔法角」でバンドがほぼ平坦になります。
     </p>
     <p class="hero-sub en">
-      Start from two perfectly aligned honeycomb lattices (θ = 0) and slowly turn the
+      Start from two perfectly aligned honeycomb lattices (\(\theta = 0\)) and slowly turn the
       twist angle: a long-period moiré pattern emerges, and the continuum-model moiré
-      bands deform in lockstep — becoming nearly flat at the magic angle θ ≈ 1.05°.
+      bands deform in lockstep — becoming nearly flat at the magic angle \(\theta \approx 1.05^{\circ}\).
     </p>
   </section>
 
@@ -78,41 +78,41 @@
     <div class="card">
       <h3><span class="ja">実空間：2枚のハニカム格子とモアレ模様</span><span class="en">Real space: two honeycomb lattices and the moiré pattern</span></h3>
       <div class="ctrl" style="margin-top:0.6rem;">
-        <label><span class="ja">ねじれ角</span><span class="en">Twist angle</span> θ = <span class="val" id="thVal">0.00</span>°</label>
+        <label><span class="ja">ねじれ角</span><span class="en">Twist angle</span> \(\theta\) = <span class="val" id="thVal">0.00</span>°</label>
         <input type="range" id="thSlider" min="0" max="8" step="0.01" value="0">
       </div>
       <div class="ctrl">
-        <button class="sim-btn" id="r0"><span>θ = 0°</span></button>
-        <button class="sim-btn" id="r082"><span>θ = 0.82°</span></button>
-        <button class="sim-btn" id="r105"><span class="ja">魔法角 1.05°</span><span class="en">Magic 1.05°</span></button>
-        <button class="sim-btn" id="r147"><span>θ = 1.47°</span></button>
-        <button class="sim-btn" id="r265"><span>θ = 2.65°</span></button>
-        <button class="sim-btn" id="r5"><span>θ = 5°</span></button>
+        <button class="sim-btn" id="r0"><span>\(\theta = 0^{\circ}\)</span></button>
+        <button class="sim-btn" id="r082"><span>\(\theta = 0.82^{\circ}\)</span></button>
+        <button class="sim-btn" id="r105"><span class="ja">魔法角 \(\theta = 1.05^{\circ}\)</span><span class="en">Magic \(\theta = 1.05^{\circ}\)</span></button>
+        <button class="sim-btn" id="r147"><span>\(\theta = 1.47^{\circ}\)</span></button>
+        <button class="sim-btn" id="r265"><span>\(\theta = 2.65^{\circ}\)</span></button>
+        <button class="sim-btn" id="r5"><span>\(\theta = 5^{\circ}\)</span></button>
       </div>
       <p class="obs-compact" style="margin-bottom:0.9rem;">
-        <span class="ja">モアレ周期</span><span class="en">Moiré period</span> <i>L</i><sub>M</sub> = <b id="lmVal">—</b>
+        <span class="ja">モアレ周期</span><span class="en">Moiré period</span> \(L_{\mathrm{M}}\) = <b id="lmVal">—</b>
         ・ <span class="ja">モアレ単位胞あたりの原子数</span><span class="en">atoms per moiré cell</span> ≈ <b id="natVal">—</b>
       </p>
       <div class="fig-box"><canvas id="moireCanvas" width="1760" height="1120" style="width:100%;"></canvas></div>
       <p class="fig-cap ja">
-        黒いハニカムシートが1層目（＋θ/2 回転）、赤いシートが2層目（−θ/2 回転、
-        ひと回り大きく描いてあるので縁が見えます）です。θ = 0 では2枚は完全に重なり、
-        ただのハニカム格子にしか見えません。ところが θ を少し回すと、
+        黒いハニカムシートが1層目（\(+\theta/2\) 回転）、赤いシートが2層目（\(-\theta/2\) 回転、
+        ひと回り大きく描いてあるので縁が見えます）です。\(\theta = 0\) では2枚は完全に重なり、
+        ただのハニカム格子にしか見えません。ところが \(\theta\) を少し回すと、
         六角形が重なって濃く見える場所（AA 積層）と、ずれて網目が細かく見える場所
         （AB/BA 積層）が交互に現れ、周期
-        <i>L</i><sub>M</sub> = <i>a</i>/[2 sin(θ/2)] の三角格子模様——モアレ模様——が
+        \(L_{\mathrm{M}} = a/[2\sin(\theta/2)]\) の三角格子模様——モアレ模様——が
         浮かび上がります。視野と格子の大きさは固定で、起きているのは2枚の相対回転だけです。
-        θ を小さくするほど模様は大きく育っていきます（矢印が <i>L</i><sub>M</sub>）。
+        \(\theta\) を小さくするほど模様は大きく育っていきます（矢印が \(L_{\mathrm{M}}\)）。
       </p>
       <p class="fig-cap en">
-        The black honeycomb sheet is layer 1 (rotated by +θ/2); the red sheet is layer 2
-        (−θ/2, drawn slightly larger so its edge stays visible). At θ = 0 the two sheets
-        coincide perfectly and look like a single honeycomb. Turn θ slightly and regions
+        The black honeycomb sheet is layer 1 (rotated by \(+\theta/2\)); the red sheet is layer 2
+        (\(-\theta/2\), drawn slightly larger so its edge stays visible). At \(\theta = 0\) the two sheets
+        coincide perfectly and look like a single honeycomb. Turn \(\theta\) slightly and regions
         where the hexagons align (AA stacking) alternate with regions where they interleave
         (AB/BA), revealing the triangular moiré pattern of period
-        <i>L</i><sub>M</sub> = <i>a</i>/[2 sin(θ/2)]. The field of view and lattice scale are
-        fixed — the only thing changing is the relative rotation. As θ decreases the pattern
-        grows (the arrow marks <i>L</i><sub>M</sub>).
+        \(L_{\mathrm{M}} = a/[2\sin(\theta/2)]\). The field of view and lattice scale are
+        fixed — the only thing changing is the relative rotation. As \(\theta\) decreases the pattern
+        grows (the arrow marks \(L_{\mathrm{M}}\)).
       </p>
     </div>
 
@@ -120,57 +120,57 @@
       <h3><span class="ja">運動量空間：モアレバンド構造</span><span class="en">Momentum space: the moiré band structure</span></h3>
       <p style="color:var(--text-dim); font-size:0.95rem; margin-top:0.4rem;">
         <span class="ja">
-          まずは大きめの θ から出発して、スライダーを少しずつ下げてみてください。
-          赤い Dirac 錐がだんだん押しつぶされ、「魔法角 1.05°」のボタンを押すと、
+          まずは大きめの \(\theta\) から出発して、スライダーを少しずつ下げてみてください。
+          赤い Dirac 錐がだんだん押しつぶされ、「魔法角 \(\theta = 1.05^{\circ}\)」のボタンを押すと、
           灰色のバンドに挟まれた<b>ほぼ完全に平坦な赤いバンド</b>が現れます——
           これが強相関物理と超伝導の舞台になる平坦バンドです。
         </span>
         <span class="en">
-          Start from a large θ and lower the slider step by step: the red Dirac cone gets
-          squeezed flatter and flatter, and hitting the "Magic 1.05°" button reveals an
+          Start from a large \(\theta\) and lower the slider step by step: the red Dirac cone gets
+          squeezed flatter and flatter, and hitting the “Magic \(\theta = 1.05^{\circ}\)” button reveals an
           <b>almost perfectly flat red band</b> sandwiched between the gray bands — the flat
           band on which correlated physics and superconductivity play out.
         </span>
       </p>
       <div class="ctrl" style="margin-top:0.6rem;">
-        <label><span class="ja">ねじれ角</span><span class="en">Twist angle</span> θ = <span class="val" id="thBandVal">2.65</span>°<span class="ja">（基底の打ち切りの都合で 0.5° から。連続体模型自体は小さな θ でも有効です）</span><span class="en"> (from 0.5° — a basis-truncation limit of this page; the continuum model itself remains valid at smaller θ)</span></label>
+        <label><span class="ja">ねじれ角</span><span class="en">Twist angle</span> \(\theta\) = <span class="val" id="thBandVal">2.65</span>°<span class="ja">（基底の打ち切りの都合で 0.5° から。連続体模型自体は小さな \(\theta\) でも有効です）</span><span class="en"> (from 0.5° — a basis-truncation limit of this page; the continuum model itself remains valid at smaller \(\theta\))</span></label>
         <input type="range" id="thBandSlider" min="0.5" max="8" step="0.01" value="2.65">
       </div>
       <div class="ctrl">
-        <button class="sim-btn" id="b082"><span>θ = 0.82°</span></button>
-        <button class="sim-btn" id="b105"><span class="ja">魔法角 1.05°</span><span class="en">Magic 1.05°</span></button>
-        <button class="sim-btn" id="b147"><span>θ = 1.47°</span></button>
-        <button class="sim-btn" id="b265"><span>θ = 2.65°</span></button>
-        <button class="sim-btn" id="b5"><span>θ = 5°</span></button>
+        <button class="sim-btn" id="b082"><span>\(\theta = 0.82^{\circ}\)</span></button>
+        <button class="sim-btn" id="b105"><span class="ja">魔法角 \(\theta = 1.05^{\circ}\)</span><span class="en">Magic \(\theta = 1.05^{\circ}\)</span></button>
+        <button class="sim-btn" id="b147"><span>\(\theta = 1.47^{\circ}\)</span></button>
+        <button class="sim-btn" id="b265"><span>\(\theta = 2.65^{\circ}\)</span></button>
+        <button class="sim-btn" id="b5"><span>\(\theta = 5^{\circ}\)</span></button>
       </div>
       <p class="obs-compact" style="margin-bottom:0.9rem;">
-        <span class="ja">Dirac 点のずれ</span><span class="en">Dirac-point mismatch</span> <i>q</i><sub>θ</sub> = <b id="qthVal">—</b>
-        ・ ε<sub>θ</sub> = ħ<i>v</i><i>q</i><sub>θ</sub>/2 = <b id="epsVal">—</b>
-        ・ <i>u</i>′/ε<sub>θ</sub> = <b id="ratVal">—</b><br>
-        <span class="ja">中央バンドの幅</span><span class="en">Central bandwidth</span> <i>W</i> = <b id="wVal">—</b>
-        ・ <span class="ja">速度繰り込み</span><span class="en">Velocity renormalization</span> <i>v</i>*/<i>v</i> ≈ <b id="vVal">—</b>
+        <span class="ja">Dirac 点のずれ</span><span class="en">Dirac-point mismatch</span> \(q_{\theta}\) = <b id="qthVal">—</b>
+        ・ \(\varepsilon_{\theta} = \hbar v\, q_{\theta}/2\) = <b id="epsVal">—</b>
+        ・ \(u'/\varepsilon_{\theta}\) = <b id="ratVal">—</b><br>
+        <span class="ja">中央バンドの幅</span><span class="en">Central bandwidth</span> \(W\) = <b id="wVal">—</b>
+        ・ <span class="ja">速度繰り込み</span><span class="en">Velocity renormalization</span> \(v^{*}/v\) ≈ <b id="vVal">—</b>
       </p>
       <div class="fig-box" id="figBands" style="max-width:640px; margin:0 auto;"></div>
       <p class="fig-cap ja">
-        連続体模型で計算したモアレバンドの3次元表示（バレー ξ = +）。
-        底面の六角形が波数空間のモアレ Brillouin ゾーン（γ が中心、頂点の κ と κ′ が
-        1層目・2層目の Dirac 点の位置）で、その上にエネルギー窓 ±0.25 eV に入る
+        連続体模型で計算したモアレバンドの3次元表示（バレー \(\xi = +\)）。
+        底面の六角形が波数空間のモアレ Brillouin ゾーン（\(\gamma\) が中心、頂点の \(\kappa\) と \(\kappa'\) が
+        1層目・2層目の Dirac 点の位置）で、その上にエネルギー窓 \(\pm 0.25\) eV に入る
         すべてのバンドを半透明のシートとして描いています（電荷中性点を挟む中央の
-        2枚だけ赤系で色付け）。κ と κ′ では Dirac 円錐が
-        ギャップを開かずに生き残っています。θ を下げていくと円錐の傾き
-        （電子の速度）が下がってバンド全体が押しつぶされ、θ ≈ 1.05° で赤い2枚が
+        2枚だけ赤系で色付け）。\(\kappa\) と \(\kappa'\) では Dirac 円錐が
+        ギャップを開かずに生き残っています。\(\theta\) を下げていくと円錐の傾き
+        （電子の速度）が下がってバンド全体が押しつぶされ、\(\theta \approx 1.05^{\circ}\) で赤い2枚が
         数十 meV 幅の平坦な板になります——これが魔法角の平坦バンドです。
-        上の読み出しで幅 <i>W</i> と <i>v</i>*/<i>v</i> の変化を追ってみてください。
+        上の読み出しで幅 \(W\) と \(v^{*}/v\) の変化を追ってみてください。
       </p>
       <p class="fig-cap en">
-        A three-dimensional view of the continuum-model moiré bands (valley ξ = +). The
-        hexagon at the base is the moiré Brillouin zone in momentum space (γ at the
-        center; the corners κ and κ′ host the Dirac points of layers 1 and 2), and every
-        band entering the energy window ±0.25 eV is drawn as a translucent sheet (the two
-        central bands straddling charge neutrality are tinted red). The Dirac cones at κ and κ′ survive without gapping; as θ decreases the
+        A three-dimensional view of the continuum-model moiré bands (valley \(\xi = +\)). The
+        hexagon at the base is the moiré Brillouin zone in momentum space (\(\gamma\) at the
+        center; the corners \(\kappa\) and \(\kappa'\) host the Dirac points of layers 1 and 2), and every
+        band entering the energy window \(\pm 0.25\) eV is drawn as a translucent sheet (the two
+        central bands straddling charge neutrality are tinted red). The Dirac cones at \(\kappa\) and \(\kappa'\) survive without gapping; as \(\theta\) decreases the
         cone slope — the electron velocity — drops, the spectrum gets squeezed, and at
-        θ ≈ 1.05° the two red sheets collapse into a nearly flat slab a few tens of meV
-        thick: the magic-angle flat band. Track <i>W</i> and <i>v</i>*/<i>v</i> in the
+        \(\theta \approx 1.05^{\circ}\) the two red sheets collapse into a nearly flat slab a few tens of meV
+        thick: the magic-angle flat band. Track \(W\) and \(v^{*}/v\) in the
         readouts above.
       </p>
     </div>
@@ -181,18 +181,18 @@
       <h4 style="margin-top:0.6rem;"><span class="ja">モアレ模様：うなりの2次元版</span><span class="en">Moiré patterns: beats in two dimensions</span></h4>
       <p class="ja">
         振動数のわずかに違う2つの音を同時に鳴らすと、差の振動数
-        <i>f</i><sub>1</sub> − <i>f</i><sub>2</sub> でゆっくり振動する「うなり」が
+        \(f_{1} - f_{2}\) でゆっくり振動する「うなり」が
         聞こえます。モアレ模様はこの空間版です。2枚の格子はほぼ同じ波数を持ちますが、
-        角度 θ だけ回転しているため、逆格子ベクトルが
+        角度 \(\theta\) だけ回転しているため、逆格子ベクトルが
       </p>
       <p class="en">
         Play two tones of slightly different frequencies and you hear a beat, oscillating
-        slowly at the difference frequency <i>f</i><sub>1</sub> − <i>f</i><sub>2</sub>. A
+        slowly at the difference frequency \(f_{1} - f_{2}\). A
         moiré pattern is the spatial version. The two lattices carry nearly the same wave
-        vectors, but the rotation by θ leaves a small mismatch between their reciprocal
+        vectors, but the rotation by \(\theta\) leaves a small mismatch between their reciprocal
         vectors,
       </p>
-      <div class="eq">\[ \mathbf{G}^{\mathrm{M}}_{j} \;=\; \mathbf{b}_{j} - \mathbf{b}'_{j}, \qquad |\mathbf{G}^{\mathrm{M}}| = 2b \sin(\theta/2) \]</div>
+      <div class="eq">\[ \boldsymbol{G}^{\mathrm{M}}_{j} \;=\; \boldsymbol{b}_{j} - \boldsymbol{b}'_{j}, \qquad |\boldsymbol{G}^{\mathrm{M}}| = 2b \sin(\theta/2) \]</div>
       <p class="ja">
         だけ食い違います。この「差の波数」が作る長波長の変調がモアレ模様であり、
         その実空間周期が
@@ -203,16 +203,16 @@
       </p>
       <div class="eq">\[ L_{\mathrm{M}} \;=\; \frac{a}{2 \sin(\theta/2)} \;\approx\; \frac{a}{\theta} \quad (\theta \ll 1) \]</div>
       <p class="ja">
-        です。角度に反比例して伸びるのがポイントで、θ = 1° なら
-        <i>L</i><sub>M</sub> ≈ 14 nm、モアレ単位胞1個に1万個を超える炭素原子が入ります。
+        です。角度に反比例して伸びるのがポイントで、\(\theta = 1^{\circ}\) なら
+        \(L_{\mathrm{M}} \approx 14\) nm、モアレ単位胞1個に1万個を超える炭素原子が入ります。
         単位胞の中では、局所的な積層の仕方が AA（六角形が完全に重なる）→ AB → BA と
         場所とともにゆっくり一巡します。なお実際の試料では格子が自発的に歪み（格子緩和）、
         エネルギーの低い AB/BA 積層の三角形ドメインが広がって AA 領域が縮む、
         という再構成が起こることも知られています。
       </p>
       <p class="en">
-        The inverse dependence on angle is the point: at θ = 1°,
-        <i>L</i><sub>M</sub> ≈ 14 nm and a single moiré cell contains more than ten
+        The inverse dependence on angle is the point: at \(\theta = 1^{\circ}\),
+        \(L_{\mathrm{M}} \approx 14\) nm and a single moiré cell contains more than ten
         thousand carbon atoms. Within the cell, the local stacking slowly cycles through
         AA (hexagons perfectly aligned), AB, and BA. In real samples the lattice also
         relaxes: the low-energy AB/BA regions grow into triangular domains while the AA
@@ -221,58 +221,58 @@
 
       <h4><span class="ja">連続体模型：原子を忘れ、モアレだけを残す</span><span class="en">The continuum model: forget the atoms, keep the moiré</span></h4>
       <p class="ja">
-        一般の θ では2枚の格子は正確には整合せず、系全体には厳密な意味での結晶周期が
-        ありません。それでも θ が小さければ、原子スケール <i>a</i> とモアレスケール
-        <i>L</i><sub>M</sub> がよく分離しているので、原子構造を粗視化して
+        一般の \(\theta\) では2枚の格子は正確には整合せず、系全体には厳密な意味での結晶周期が
+        ありません。それでも \(\theta\) が小さければ、原子スケール \(a\) とモアレスケール
+        \(L_{\mathrm{M}}\) がよく分離しているので、原子構造を粗視化して
         「モアレ周期だけを持つ有効理論」を作れます。それが連続体模型
         （Bistritzer–Macdonald 型模型）です。各層の低エネルギー電子は
         Dirac ハミルトニアンで記述し、層間の飛び移りを、モアレ周期で変調された
-        結合 <i>U</i>(<b>r</b>) として取り込みます：
+        結合 \(U(\boldsymbol{r})\) として取り込みます：
       </p>
       <p class="en">
-        At generic θ the two lattices are incommensurate — strictly speaking the system has
-        no crystal period at all. But for small θ the atomic scale <i>a</i> and the moiré
-        scale <i>L</i><sub>M</sub> are well separated, so one can coarse-grain the atomic
+        At generic \(\theta\) the two lattices are incommensurate — strictly speaking the system has
+        no crystal period at all. But for small \(\theta\) the atomic scale \(a\) and the moiré
+        scale \(L_{\mathrm{M}}\) are well separated, so one can coarse-grain the atomic
         structure into an effective theory that knows only the moiré period: the continuum
         (Bistritzer–MacDonald) model. Each layer contributes a Dirac Hamiltonian, and the
-        interlayer tunneling enters as a coupling <i>U</i>(<b>r</b>) modulated with the
+        interlayer tunneling enters as a coupling \(U(\boldsymbol{r})\) modulated with the
         moiré period:
       </p>
-      <div class="eq">\[ \mathcal{H} \;=\; \begin{pmatrix} H_{0} &amp; U^{\dagger} \\ U &amp; H_{0} \end{pmatrix}, \qquad U(\mathbf{r}) \;=\; \sum_{j=1}^{3} e^{i \mathbf{q}_{j} \cdot \mathbf{r}}\, T_{j} \]</div>
+      <div class="eq">\[ \mathcal{H} \;=\; \begin{pmatrix} H_{0} &amp; U^{\dagger} \\ U &amp; H_{0} \end{pmatrix}, \qquad U(\boldsymbol{r}) \;=\; \sum_{j=1}^{3} e^{i \boldsymbol{q}_{j} \cdot \boldsymbol{r}}\, T_{j} \]</div>
       <p class="ja">
-        ここで <b>q</b><sub>1,2,3</sub> は、回転によってずれた2層の Dirac 点の差
-        （大きさ <i>q</i><sub>θ</sub> = 2<i>K</i> sin(θ/2)、120° 対称の3本）で、
-        <i>T<sub>j</sub></i> は 2×2 の結合行列です。その成分には2つのパラメータが
-        入ります：AA 領域での層間結合 <i>u</i> と、AB/BA 領域での結合 <i>u</i>′ です
-        （格子緩和で AA 領域が縮み層間距離も開くため、<i>u</i> &lt; <i>u</i>′ と
-        なります。このページでは <i>u</i> = 0.079 eV、<i>u</i>′ = 0.098 eV を
+        ここで \(\boldsymbol{q}_{1,2,3}\) は、回転によってずれた2層の Dirac 点の差
+        （大きさ \(q_{\theta} = 2K \sin(\theta/2)\)、120° 対称の3本）で、
+        \(T_{j}\) は \(2 \times 2\) の結合行列です。その成分には2つのパラメータが
+        入ります：AA 領域での層間結合 \(u\) と、AB/BA 領域での結合 \(u'\) です
+        （格子緩和で AA 領域が縮み層間距離も開くため、\(u < u'\) と
+        なります。このページでは \(u = 0.079\) eV、\(u' = 0.098\) eV を
         使っています）。
       </p>
       <p class="en">
-        Here <b>q</b><sub>1,2,3</sub> are the three 120°-symmetric offsets between the
+        Here \(\boldsymbol{q}_{1,2,3}\) are the three 120°-symmetric offsets between the
         Dirac points of the two rotated layers (of magnitude
-        <i>q</i><sub>θ</sub> = 2<i>K</i> sin(θ/2)), and <i>T<sub>j</sub></i> are 2×2
-        coupling matrices containing two parameters: the interlayer coupling <i>u</i> in
-        the AA regions and <i>u</i>′ in the AB/BA regions (lattice relaxation shrinks the
-        AA regions and widens their interlayer distance, so <i>u</i> &lt; <i>u</i>′; this
-        page uses <i>u</i> = 0.079 eV, <i>u</i>′ = 0.098 eV).
+        \(q_{\theta} = 2K \sin(\theta/2)\)), and \(T_{j}\) are \(2 \times 2\)
+        coupling matrices containing two parameters: the interlayer coupling \(u\) in
+        the AA regions and \(u'\) in the AB/BA regions (lattice relaxation shrinks the
+        AA regions and widens their interlayer distance, so \(u < u'\); this
+        page uses \(u = 0.079\) eV, \(u' = 0.098\) eV).
       </p>
       <p class="ja">
-        バンド計算は普通の Bloch 電子と同じ手順でできます。1層目の波数 <b>k</b> の状態は、
-        <i>U</i> を1回かけるごとに2層目の <b>k</b> + <b>q</b><sub><i>j</i></sub> の状態と
+        バンド計算は普通の Bloch 電子と同じ手順でできます。1層目の波数 \(\boldsymbol{k}\) の状態は、
+        \(U\) を1回かけるごとに2層目の \(\boldsymbol{k} + \boldsymbol{q}_{j}\) の状態と
         混成し、それを繰り返すとモアレ逆格子ベクトルの分だけ離れた平面波の集合が
         閉じた基底を作ります。低エネルギーのバンドには Dirac 点の近くの波だけが効くので、
-        有限個（このページでは各層7個、行列サイズ 28×28）で打ち切って対角化すれば
+        有限個（このページでは各層7個、行列サイズ \(28 \times 28\)）で打ち切って対角化すれば
         十分です。この最小の打ち切りでも、魔法角付近の中央バンド幅は収束計算と
         1〜2割以内で一致し、バンドが潰れていく様子は正しく再現されます。
       </p>
       <p class="en">
         Band structures then follow the ordinary Bloch procedure: a layer-1 state at
-        <b>k</b> hybridizes, through <i>U</i>, with layer-2 states at
-        <b>k</b> + <b>q</b><sub><i>j</i></sub>, and iterating generates a closed set of
+        \(\boldsymbol{k}\) hybridizes, through \(U\), with layer-2 states at
+        \(\boldsymbol{k} + \boldsymbol{q}_{j}\), and iterating generates a closed set of
         plane waves separated by moiré reciprocal vectors. Only waves near the Dirac
         points matter at low energy, so truncating to a finite set (seven waves per layer
-        here — a 28×28 matrix) suffices: even this minimal truncation reproduces the
+        here — a \(28 \times 28\) matrix) suffices: even this minimal truncation reproduces the
         central bandwidth near the magic angle to within 10–20% of the converged value,
         and the band flattening faithfully.
       </p>
@@ -280,45 +280,45 @@
       <h4><span class="ja">2つのエネルギースケールの競争と魔法角</span><span class="en">A competition of two energy scales, and the magic angle</span></h4>
       <p class="ja">
         モアレバンドの形を決めるのは、たった2つのスケールの比です。ひとつは層間結合の
-        強さ <i>u</i>′ ∼ 0.1 eV——これは θ にほとんど依存しません。もうひとつは、
+        強さ \(u' \sim 0.1\) eV——これは \(\theta\) にほとんど依存しません。もうひとつは、
         ずれた2つの Dirac 円錐が交わる高さ
       </p>
       <p class="en">
         The shape of the moiré bands is controlled by the ratio of just two scales. One is
-        the interlayer coupling <i>u</i>′ ∼ 0.1 eV, essentially independent of θ. The
+        the interlayer coupling \(u' \sim 0.1\) eV, essentially independent of \(\theta\). The
         other is the energy at which the two displaced Dirac cones intersect,
       </p>
       <div class="eq">\[ \varepsilon_{\theta} \;=\; \frac{\hbar v\, q_{\theta}}{2} \;\propto\; \theta \]</div>
       <p class="ja">
-        です。θ が大きいうちは ε<sub>θ</sub> ≫ <i>u</i>′ で、層間結合は円錐の交線に
-        小さなギャップを開ける摂動にすぎません。ところが θ を下げると ε<sub>θ</sub> は
-        θ に比例して小さくなり、θ ≈ 1° で <i>u</i>′/ε<sub>θ</sub> が 1 を超えます。
+        です。\(\theta\) が大きいうちは \(\varepsilon_{\theta} \gg u'\) で、層間結合は円錐の交線に
+        小さなギャップを開ける摂動にすぎません。ところが \(\theta\) を下げると \(\varepsilon_{\theta}\) は
+        \(\theta\) に比例して小さくなり、\(\theta \approx 1^{\circ}\) で \(u'/\varepsilon_{\theta}\) が 1 を超えます。
         ここでは層間結合はもはや摂動ではなく、Dirac 円錐は原形をとどめない
         モアレバンドに再構成されます。摂動論の範囲でも前兆は見えていて、
         Dirac 点の速度は
       </p>
       <p class="en">
-        For large θ, ε<sub>θ</sub> ≫ <i>u</i>′ and the interlayer coupling is a small
-        perturbation that merely opens minigaps along the cone intersections. As θ
-        decreases, ε<sub>θ</sub> shrinks linearly, and around θ ≈ 1° the ratio
-        <i>u</i>′/ε<sub>θ</sub> exceeds one: the coupling is no longer perturbative and
+        For large \(\theta\), \(\varepsilon_{\theta} \gg u'\) and the interlayer coupling is a small
+        perturbation that merely opens minigaps along the cone intersections. As \(\theta\)
+        decreases, \(\varepsilon_{\theta}\) shrinks linearly, and around \(\theta \approx 1^{\circ}\) the ratio
+        \(u'/\varepsilon_{\theta}\) exceeds one: the coupling is no longer perturbative and
         the Dirac cones are reorganized into moiré bands beyond recognition. Perturbation
         theory already announces this: the Dirac-point velocity renormalizes as
       </p>
       <div class="eq">\[ \frac{v^{*}}{v} \;=\; \frac{1 - 3\alpha^{2}}{1 + 6\alpha^{2}}, \qquad \alpha = \frac{u'}{\hbar v\, q_{\theta}} \]</div>
       <p class="ja">
-        と繰り込まれ（等方結合 <i>u</i> = <i>u</i>′ の場合の式）、α = 1/√3 で
+        と繰り込まれ（等方結合 \(u = u'\) の場合の式）、\(\alpha = 1/\sqrt{3}\) で
         ゼロになります。これが第一魔法角のおおまかな位置で、実際の計算では
-        θ ≈ 1.05° 付近で中央の2本のバンドの幅が数 meV まで潰れます。
-        上のシミュレーションで θ を 3° から魔法角までゆっくり下げると、
+        \(\theta \approx 1.05^{\circ}\) 付近で中央の2本のバンドの幅が数 meV まで潰れます。
+        上のシミュレーションで \(\theta\) を 3° から魔法角までゆっくり下げると、
         赤いバンドが平らに潰れていく一部始終が見られます。
         ちなみに Dirac 点そのものは魔法角でもギャップを開けずに生き残ります——
         これは系の対称性が保護する縮退です。
       </p>
       <p class="en">
-        (the isotropic-coupling formula, <i>u</i> = <i>u</i>′), vanishing at α = 1/√3.
+        (the isotropic-coupling formula, \(u = u'\)), vanishing at \(\alpha = 1/\sqrt{3}\).
         That is roughly the first magic angle; in the actual calculation the two central
-        bands collapse to a few meV around θ ≈ 1.05°. Slide θ slowly from 3° down to the
+        bands collapse to a few meV around \(\theta \approx 1.05^{\circ}\). Slide \(\theta\) slowly from 3° down to the
         magic angle above and you can watch the red bands flatten in real time. The Dirac
         points themselves survive ungapped even at the magic angle — a degeneracy
         protected by the symmetries of the system.
@@ -329,7 +329,7 @@
         バンドが平坦になるとは、電子の運動エネルギーが事実上消えるということです。
         すると相対的に電子間相互作用が支配的になり、系は強相関電子系として振る舞います。
         2018年、魔法角付近のねじれ2層グラフェンで、モアレバンドの部分充填における
-        相関絶縁体と、それに隣接する超伝導（転移温度 ∼1 K）が発見されると、
+        相関絶縁体と、それに隣接する超伝導（転移温度 \(\sim 1\) K）が発見されると、
         この分野は爆発的に広がりました。特筆すべきは制御性です：ねじれ角という
         たった1つの幾何学的パラメータ（しかも 0.1° 単位の精度が要る！）で、
         同じ炭素のシートが半金属にも、Mott 的絶縁体にも、超伝導体にもなる。
@@ -342,10 +342,10 @@
         A flat band means the electronic kinetic energy has effectively vanished, so
         interactions take over and the system behaves as a strongly correlated electron
         system. The 2018 discovery of correlated insulators at partial fillings of the
-        moiré bands — and of superconductivity (<i>T</i><sub>c</sub> ∼ 1 K) right next to
+        moiré bands — and of superconductivity (\(T_{\mathrm{c}} \sim 1\) K) right next to
         them — in magic-angle twisted bilayer graphene set off an explosion. What is
         remarkable is the control: a single geometric parameter, the twist angle (tuned to
-        within ∼0.1°!), turns the same carbon sheets into a semimetal, a Mott-like
+        within \(\sim 0.1^{\circ}\)!), turns the same carbon sheets into a semimetal, a Mott-like
         insulator, or a superconductor. The field of moiré materials — twisting graphene
         multilayers, transition-metal dichalcogenides, and more — grew from here, hosting
         exotic phases up to fractional Chern insulators. The moiré-superlattice
@@ -358,7 +358,7 @@
         ・R. Bistritzer and A. H. MacDonald, PNAS <b>108</b>, 12233 (2011)
         ——連続体模型の原論文。<br>
         ・N. N. T. Nam and M. Koshino, Phys. Rev. B <b>96</b>, 075311 (2017)
-        ——格子緩和を取り込んだパラメータ（<i>u</i> = 0.079 eV, <i>u</i>′ = 0.098 eV）はこちらに基づきます。<br>
+        ——格子緩和を取り込んだパラメータ（\(u = 0.079\) eV, \(u' = 0.098\) eV）はこちらに基づきます。<br>
         ・<a href="../index.html#book-koshino" style="color:var(--accent2);">越野幹人『グラフェンの物理学 —ディラック電子とトポロジカル物性の基礎—』</a>（内田老鶴圃）
         第9章「モアレ2次元物質」——体系的な解説として最良です。このページの記号の取り方も
         同書に合わせています。
@@ -367,7 +367,7 @@
         ・R. Bistritzer and A. H. MacDonald, PNAS <b>108</b>, 12233 (2011)
         — the original continuum-model paper.<br>
         ・N. N. T. Nam and M. Koshino, Phys. Rev. B <b>96</b>, 075311 (2017)
-        — source of the relaxed parameters (<i>u</i> = 0.079 eV, <i>u</i>′ = 0.098 eV).<br>
+        — source of the relaxed parameters (\(u = 0.079\) eV, \(u' = 0.098\) eV).<br>
         ・<a href="../index.html#book-koshino" style="color:var(--accent2);">M. Koshino, <i>グラフェンの物理学 (Physics of Graphene)</i></a>, Uchida Rokakuho,
         Chapter 9 — the best systematic exposition; this page follows its notation.
       </p>
@@ -562,7 +562,7 @@
       ctx.lineTo(ax1 - 6, ay1 + 11);
       ctx.lineTo(ax1 + 6, ay1 + 11);
       ctx.closePath(); ctx.fill();
-      ctx.font = '600 19px Georgia, serif';
+      ctx.font = 'italic 600 19px Georgia, serif';
       ctx.fillText('Lₘ', ax1 + 9, ay1 + 8);
     }
     // scale bar
@@ -636,11 +636,11 @@
         '<svg viewBox="0 0 ' + Wp + ' ' + Hp + '" xmlns="http://www.w3.org/2000/svg">' +
         '<rect x="0" y="0" width="' + Wp + '" height="' + Hp + '" fill="' + c.bg + '"/>' +
         '<text x="' + (Wp / 2) + '" y="' + (Hp / 2 - 10) + '" text-anchor="middle" font-family="' + SERIF +
-        '" font-size="17" fill="' + c.sub + '">θ ≥ 0.5° でモアレバンドを表示します</text>' +
+        '" font-size="17" fill="' + c.sub + '"><tspan font-style="italic">θ</tspan> ≥ 0.5° でモアレバンドを表示します</text>' +
         '<text x="' + (Wp / 2) + '" y="' + (Hp / 2 + 48) + '" text-anchor="middle" font-family="' + SERIF +
-        '" font-size="13" fill="' + c.sub + '">（このページの平面波基底の打ち切りによる制限で、連続体模型自体は小さな θ でも有効です）</text>' +
+        '" font-size="13" fill="' + c.sub + '">（このページの平面波基底の打ち切りによる制限で、連続体模型自体は小さな <tspan font-style="italic">θ</tspan> でも有効です）</text>' +
         '<text x="' + (Wp / 2) + '" y="' + (Hp / 2 + 20) + '" text-anchor="middle" font-family="' + SERIF +
-        '" font-size="15" fill="' + c.sub + '">moiré bands are shown for θ ≥ 0.5°</text></svg>';
+        '" font-size="15" fill="' + c.sub + '">moiré bands are shown for <tspan font-style="italic">θ</tspan> ≥ 0.5°</text></svg>';
       return null;
     }
     var NSUB = fine ? NSUB_FINE : NSUB_FAST;
@@ -776,7 +776,7 @@
     o.push('<text x="' + pg[0] + '" y="' + (pg[1] + 20) + '" text-anchor="middle" font-family="' + SERIF +
       '" font-size="20" font-style="italic" fill="' + c.sub + '">γ</text>');
     o.push('<text x="' + (W - 20) + '" y="34" text-anchor="end" font-family="' + SERIF +
-      '" font-size="21" fill="' + c.fg + '">θ = ' + thetaBand.toFixed(2) + '°</text>');
+      '" font-size="21" fill="' + c.fg + '"><tspan font-style="italic">θ</tspan> = ' + thetaBand.toFixed(2) + '°</text>');
     o.push('</svg>');
     document.getElementById('figBands').innerHTML = o.join('');
     return B;

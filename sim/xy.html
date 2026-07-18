@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
@@ -53,11 +53,11 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">2次元 XY 模型と Berezinskii–Kosterlitz–Thouless 転移</span><span class="en">The 2D XY Model and the Berezinskii–Kosterlitz–Thouless Transition</span></h1>
     <p class="hero-sub ja">
-      スピンの向き θ を色相で表した XY 模型のモンテカルロシミュレーションです。
+      スピンの向き \(\theta\) を色相で表した XY 模型のモンテカルロシミュレーションです。
       主役は渦（トポロジカル欠陥）。温度を動かして、渦ペアの束縛と解離を観察してみてください。
     </p>
     <p class="hero-sub en">
-      A Monte Carlo simulation of the XY model, with the spin angle θ shown as hue.
+      A Monte Carlo simulation of the XY model, with the spin angle \(\theta\) shown as hue.
       The protagonists are vortices — topological defects. Tune the temperature and watch
       vortex pairs bind and unbind.
     </p>
@@ -71,28 +71,28 @@
         </div>
         <div class="sim-controls">
           <div class="ctrl">
-            <label><span class="ja">温度</span><span class="en">Temperature</span> <i>T</i>/<i>J</i> = <span class="val" id="tVal">0.40</span></label>
+            <label><span class="ja">温度</span><span class="en">Temperature</span> \(T/J\) = <span class="val" id="tVal">0.40</span></label>
             <input type="range" id="tSlider" min="0.05" max="2.5" step="0.01" value="0.40">
           </div>
           <div class="ctrl">
-            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">128</span>（<i>L</i>×<i>L</i>）</label>
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> \(L\) = <span class="val" id="lVal">128</span>（\(L \times L\)）</label>
             <input type="range" id="lSlider" min="0" max="3" step="1" value="2">
           </div>
           <div class="ctrl">
             <button class="sim-btn" id="randBtn"><span class="ja">ランダム初期化</span><span class="en">Randomize</span></button>
             <button class="sim-btn" id="alignBtn"><span class="ja">揃えて初期化</span><span class="en">Align</span></button>
-            <button class="sim-btn" id="ktBtn"><i>T</i> → <i>T</i><sub>BKT</sub></button>
+            <button class="sim-btn" id="ktBtn">\(T \to T_{\mathrm{BKT}}\)</button>
             <button class="sim-btn" id="vortexBtn"><span class="ja">渦の表示: OFF</span><span class="en">Vortices: OFF</span></button>
             <button class="sim-btn" id="arrowBtn"><span class="ja">矢印の表示: ON</span><span class="en">Arrows: ON</span></button>
             <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
           </div>
           <div class="obs">
             <span class="ja">渦の数</span><span class="en">Vortex count</span>: <b id="nvVal">0</b><br>
-            <span class="ja">磁化</span><span class="en">Magnetization</span> |<i>m</i>| = <b id="mVal">0.00</b><br>
+            <span class="ja">磁化</span><span class="en">Magnetization</span> \(|m|\) = <b id="mVal">0.00</b><br>
             <span class="legend">
               <span class="vmark" style="background:#ffffff; border:2px solid #111; text-align:center; line-height:11px; font-weight:700; color:#111;">+</span><span class="ja">渦（巻き付き数 +1）</span><span class="en">vortex (winding +1)</span><br>
               <span class="vmark" style="background:#111111; border:2px solid #fff; text-align:center; line-height:11px; font-weight:700; color:#fff;">−</span><span class="ja">反渦（巻き付き数 −1）</span><span class="en">antivortex (winding −1)</span><br>
-              <span class="ja">色相＝スピンの角度 θ（対応は下の色相環）、白い矢印＝局所平均したスピンの向き</span>
+              <span class="ja">色相＝スピンの角度 \(\theta\)（対応は下の色相環）、白い矢印＝局所平均したスピンの向き</span>
               <span class="en">hue = spin angle θ (see wheel below), white arrows = locally averaged spin direction</span><br>
               <span id="hueWheel" style="display:inline-block; margin-top:0.4rem;"></span><br>
               <span class="ja">周期境界条件</span>
@@ -107,24 +107,24 @@
       <h3><span class="ja">解説</span><span class="en">About</span></h3>
       <p class="ja">
         XY 模型では、各サイトのスピンが平面内の連続的な向き
-        θ<sub>i</sub> ∈ [0, 2π) を持ちます（画面では θ を色相で表しています）。
+        \(\theta_i \in [0, 2\pi)\) を持ちます（画面では \(\theta\) を色相で表しています）。
         ハミルトニアンは
       </p>
       <p class="en">
         In the XY model, each spin has a continuous in-plane orientation
-        θ<sub>i</sub> ∈ [0, 2π) (shown here as hue). The Hamiltonian is
+        \(\theta_i \in [0, 2\pi)\) (shown here as hue). The Hamiltonian is
       </p>
       <div class="eq">\[ H \;=\; -J \sum_{\langle i,j \rangle} \cos\!\left( \theta_i - \theta_j \right) \]</div>
       <p class="ja">
         で、更新は Ising のページと同じ Metropolis 法です（スピンの角度に小さなランダムな
-        回転を提案して、確率 min(1, e<sup>−Δ<i>E</i>/<i>T</i></sup>) で受理します）。
+        回転を提案して、確率 \(\min(1, e^{-\Delta E/T})\) で受理します）。
         色と向きの対応は右上の色相環のとおりで、白い矢印は近くのスピンを平均した
         局所的な向き（矢印が長いほど局所的に揃っている）を表します。
       </p>
       <p class="en">
         and the dynamics is the same Metropolis algorithm as on the Ising page: propose a
         small random rotation of a spin and accept it with probability
-        min(1, e<sup>−Δ<i>E</i>/<i>T</i></sup>). The hue-angle correspondence is given by
+        \(\min(1, e^{-\Delta E/T})\). The hue-angle correspondence is given by
         the color wheel in the panel, and the white arrows show the locally averaged spin
         direction (longer arrows mean better local alignment).
       </p>
@@ -144,27 +144,27 @@
         これを準長距離秩序と呼びます。一方、高温相では相関は指数関数的に減衰します。
         「真の秩序はないのに相転移はある」——この一見矛盾した状況を解決するのが、
         トポロジカル欠陥＝渦です。渦とは、あるプラケットの周りを一周したときに
-        角度が 2π<i>q</i>（<i>q</i> = ±1, ±2, …）だけ巻き付いている点のことです。
+        角度が \(2\pi q\)（\(q = \pm 1, \pm 2, \ldots\)）だけ巻き付いている点のことです。
       </p>
       <p class="en">
         This is called quasi-long-range order; in the high-temperature phase, correlations
         decay exponentially instead. "A phase transition without true order" — the
         resolution of this apparent paradox lies in topological defects: vortices. A vortex
-        is a point around which the angle winds by 2π<i>q</i> (<i>q</i> = ±1, ±2, …):
+        is a point around which the angle winds by \(2\pi q\) (\(q = \pm 1, \pm 2, \ldots\)):
       </p>
       <div class="eq">\[ \oint \nabla \theta \cdot d\boldsymbol{\ell} \;=\; 2\pi q \]</div>
       <p class="ja">
-        画面の「＋」印（<i>q</i> = +1）と「−」印（<i>q</i> = −1）が、各プラケットの
+        画面の「＋」印（\(q = +1\)）と「−」印（\(q = -1\)）が、各プラケットの
         巻き付き数から検出した渦・反渦です。マーカーの周りをぐるっと見てください——
         ＋印の周りでは、白い矢印（と色相）が一周するあいだに同じ向きにちょうど1回転し、
         −印の周りでは逆向きに1回転しています。この「巻き付き」は連続変形では
         ほどけないので、渦は生成・消滅こそすれ（対で生まれ、対で消えます）、
         単独ではじわじわ消えることができません。これがトポロジカル欠陥と呼ばれる所以です。孤立した1個の渦のエネルギーは系のサイズとともに
-        E ≈ π<i>J</i> ln(<i>L</i>/<i>a</i>) と対数発散しますが、位置の選び方から得られる
-        エントロピーも S ≈ 2 ln(<i>L</i>/<i>a</i>) と対数的です。自由エネルギーは
+        \(E \approx \pi J \ln(L/a)\) と対数発散しますが、位置の選び方から得られる
+        エントロピーも \(S \approx 2\ln(L/a)\) と対数的です。自由エネルギーは
       </p>
       <p class="en">
-        The "+" (<i>q</i> = +1) and "−" (<i>q</i> = −1) markers on screen are vortices and
+        The "+" (\(q = +1\)) and "−" (\(q = -1\)) markers on screen are vortices and
         antivortices detected from the winding number of each plaquette. Look around a
         marker: around a "+", the white arrows (and the hue) make exactly one full turn in
         the same sense as you circle it, and around a "−" one full turn in the opposite
@@ -172,25 +172,25 @@
         created and annihilated only in pairs, never fading away alone. That is what makes
         them topological defects. The energy of a
         single isolated vortex diverges logarithmically with system size,
-        E ≈ π<i>J</i> ln(<i>L</i>/<i>a</i>), but so does the entropy of placing it,
-        S ≈ 2 ln(<i>L</i>/<i>a</i>). The free energy
+        \(E \approx \pi J \ln(L/a)\), but so does the entropy of placing it,
+        \(S \approx 2\ln(L/a)\). The free energy
       </p>
       <div class="eq">\[ F \;=\; E - TS \;\approx\; \left( \pi J - 2T \right) \ln\!\left( \frac{L}{a} \right) \]</div>
       <p class="ja">
-        の符号が変わる温度 <i>T</i> ∼ π<i>J</i>/2 を境に、低温では渦は反渦と束縛ペアを
+        の符号が変わる温度 \(T \sim \pi J/2\) を境に、低温では渦は反渦と束縛ペアを
         組むことしかできず、高温では自由な渦が熱的に増殖します。これが
         Berezinskii–Kosterlitz–Thouless（BKT）転移で、精密な数値計算による転移温度は
-        <i>T</i><sub>BKT</sub> ≈ 0.893 <i>J</i> です。対称性の破れを伴わず、自由エネルギーの
+        \(T_{\mathrm{BKT}} \approx 0.893\,J\) です。対称性の破れを伴わず、自由エネルギーの
         あらゆる階数の微分が連続という「無限次相転移」であり、転移点では相関関数の指数が
-        普遍値 η = 1/4 をとり、スピン剛性（ヘリシティ係数）が普遍的にジャンプします。
+        普遍値 \(\eta = 1/4\) をとり、スピン剛性（ヘリシティ係数）が普遍的にジャンプします。
       </p>
       <p class="en">
-        changes sign around <i>T</i> ∼ π<i>J</i>/2: below it, vortices can only exist as
+        changes sign around \(T \sim \pi J/2\): below it, vortices can only exist as
         bound vortex-antivortex pairs; above it, free vortices proliferate thermally. This
         is the Berezinskii–Kosterlitz–Thouless (BKT) transition, located by precise
-        numerics at <i>T</i><sub>BKT</sub> ≈ 0.893 <i>J</i>. It breaks no symmetry and is of
+        numerics at \(T_{\mathrm{BKT}} \approx 0.893\,J\). It breaks no symmetry and is of
         "infinite order" — every derivative of the free energy stays continuous — while at
-        the transition the correlation exponent takes the universal value η = 1/4 and the
+        the transition the correlation exponent takes the universal value \(\eta = 1/4\) and the
         spin stiffness (helicity modulus) jumps universally:
       </p>
       <div class="eq">\[ \lim_{T \to T_{\mathrm{BKT}}^{-}} \frac{\rho_s(T)}{T} \;=\; \frac{2}{\pi} \]</div>
@@ -206,18 +206,18 @@
         films, and two-dimensional Bose gases all belong to this universality class.
       </p>
       <p class="ja">
-        遊び方のおすすめ：まず低温（<i>T</i> ≈ 0.3）で「揃えて初期化」すると、
+        遊び方のおすすめ：まず低温（\(T \approx 0.3\)）で「揃えて初期化」すると、
         滑らかな色のグラデーションの中に、渦・反渦がペアで生まれてはすぐ対消滅する様子が
-        見えます。温度を <i>T</i><sub>BKT</sub> ≈ 0.89 に近づけるとペアの間隔が伸びていき、
-        <i>T</i> ≈ 1.2 を超えると自由な渦がばらまかれた「渦のプラズマ」になって、
+        見えます。温度を \(T_{\mathrm{BKT}} \approx 0.89\) に近づけるとペアの間隔が伸びていき、
+        \(T \approx 1.2\) を超えると自由な渦がばらまかれた「渦のプラズマ」になって、
         渦の数が急増します。渦の数と温度の関係を眺めるだけでも、束縛→解離の
         クロスオーバーがはっきり分かるはずです。
       </p>
       <p class="en">
-        Suggestions for play: start at low temperature (<i>T</i> ≈ 0.3) with "Align" and
+        Suggestions for play: start at low temperature (\(T \approx 0.3\)) with "Align" and
         you will see vortex-antivortex pairs pop into existence and quickly annihilate
-        within the smooth color gradient. As you approach <i>T</i><sub>BKT</sub> ≈ 0.89 the
-        pairs stretch farther apart, and beyond <i>T</i> ≈ 1.2 the system becomes a plasma
+        within the smooth color gradient. As you approach \(T_{\mathrm{BKT}} \approx 0.89\) the
+        pairs stretch farther apart, and beyond \(T \approx 1.2\) the system becomes a plasma
         of free vortices, with the vortex count shooting up. Just watching the vortex count
         versus temperature makes the binding-unbinding crossover vivid.
       </p>
@@ -225,12 +225,12 @@
       <p class="ja" style="line-height:2.1;">
         ・V. L. Berezinskii, Sov. Phys. JETP <b>32</b>, 493 (1971)<br>
         ・J. M. Kosterlitz and D. J. Thouless, J. Phys. C <b>6</b>, 1181 (1973)——BKT 転移の原論文。<br>
-        ・M. Hasenbusch, J. Phys. A <b>38</b>, 5869 (2005)——<i>T</i><sub>BKT</sub> ≈ 0.8929 の高精度モンテカルロ。
+        ・M. Hasenbusch, J. Phys. A <b>38</b>, 5869 (2005)——\(T_{\mathrm{BKT}} \approx 0.8929\) の高精度モンテカルロ。
       </p>
       <p class="en" style="line-height:2.1;">
         ・V. L. Berezinskii, Sov. Phys. JETP <b>32</b>, 493 (1971)<br>
         ・J. M. Kosterlitz and D. J. Thouless, J. Phys. C <b>6</b>, 1181 (1973) — the original BKT papers.<br>
-        ・M. Hasenbusch, J. Phys. A <b>38</b>, 5869 (2005) — high-precision Monte Carlo giving <i>T</i><sub>BKT</sub> ≈ 0.8929.
+        ・M. Hasenbusch, J. Phys. A <b>38</b>, 5869 (2005) — high-precision Monte Carlo giving \(T_{\mathrm{BKT}} \approx 0.8929\).
       </p>
     </div>
   </section>

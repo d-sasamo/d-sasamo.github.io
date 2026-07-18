@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -61,15 +61,15 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">Kane–Mele 模型：量子スピンHall絶縁体</span><span class="en">The Kane–Mele Model: A Quantum Spin Hall Insulator</span></h1>
     <p class="hero-sub ja">
-      グラフェンにスピン軌道相互作用を入れると、Z<sub>2</sub> トポロジカル絶縁体——
-      量子スピン Hall 絶縁体——が生まれます。スピン軌道相互作用 λ<sub>SO</sub> と
-      副格子ポテンシャル λ<sub>v</sub> を動かして、K 点でギャップが閉じ直る瞬間と、
+      グラフェンにスピン軌道相互作用を入れると、\(\mathbb{Z}_2\) トポロジカル絶縁体——
+      量子スピン Hall（QSH）絶縁体——が生まれます。スピン軌道相互作用 \(\lambda_{\mathrm{SO}}\) と
+      副格子ポテンシャル \(\lambda_v\) を動かして、K 点でギャップが閉じ直る瞬間と、
       ヘリカルエッジ状態が現れて消える瞬間を観察してみてください。
     </p>
     <p class="hero-sub en">
-      Add spin–orbit coupling to graphene and you get a Z<sub>2</sub> topological
-      insulator — the quantum spin Hall insulator. Drag the spin–orbit coupling
-      λ<sub>SO</sub> and the sublattice potential λ<sub>v</sub>, and watch the gap close
+      Add spin–orbit coupling to graphene and you get a \(\mathbb{Z}_2\) topological
+      insulator — the quantum spin Hall (QSH) insulator. Drag the spin–orbit coupling
+      \(\lambda_{\mathrm{SO}}\) and the sublattice potential \(\lambda_v\), and watch the gap close
       and reopen at the K points while helical edge states appear and disappear.
     </p>
   </section>
@@ -79,11 +79,11 @@
       <div class="panel-row">
         <div>
           <div class="ctrl">
-            <label><span class="ja">スピン軌道相互作用</span><span class="en">Spin–orbit coupling</span> λ<sub>SO</sub>/<i>t</i> = <span class="val" id="soVal">0.060</span></label>
+            <label><span class="ja">スピン軌道相互作用</span><span class="en">Spin–orbit coupling</span> \(\lambda_{\mathrm{SO}}/t\) = <span class="val" id="soVal">0.060</span></label>
             <input type="range" id="soSlider" min="0" max="0.15" step="0.005" value="0.06">
           </div>
           <div class="ctrl">
-            <label><span class="ja">副格子ポテンシャル</span><span class="en">Sublattice potential</span> λ<sub>v</sub>/<i>t</i> = <span class="val" id="lvVal">0.15</span></label>
+            <label><span class="ja">副格子ポテンシャル</span><span class="en">Sublattice potential</span> \(\lambda_v/t\) = <span class="val" id="lvVal">0.15</span></label>
             <input type="range" id="lvSlider" min="0" max="1" step="0.01" value="0.15">
           </div>
           <div class="ctrl">
@@ -95,11 +95,11 @@
         </div>
         <div class="obs-compact">
           <span class="ja">スピン Chern 数</span><span class="en">Spin Chern numbers</span>:
-          <i>C</i><sub>↑</sub> = <b id="cuVal">−1</b>, <i>C</i><sub>↓</sub> = <b id="cdVal">+1</b><br>
-          Z<sub>2</sub> <span class="ja">指数</span><span class="en">index</span> ν = <b id="z2Val">1</b>
+          \(C_\uparrow\) = <b id="cuVal">−1</b>, \(C_\downarrow\) = <b id="cdVal">+1</b><br>
+          \(\mathbb{Z}_2\) <span class="ja">指数</span><span class="en">index</span> \(\nu\) = <b id="z2Val">1</b>
           ・ <span class="ja">相</span><span class="en">phase</span>: <b id="phaseVal">QSH</b><br>
-          <span class="ja">バルクギャップ</span><span class="en">Bulk gap</span> Δ/<i>t</i> = <b id="gapVal">0.62</b><br>
-          <span class="ja">転移線</span><span class="en">Transition line</span>: λ<sub>v</sub> = 3√3 λ<sub>SO</sub> = <b id="critVal">0.31</b>
+          <span class="ja">バルクギャップ</span><span class="en">Bulk gap</span> \(\Delta/t\) = <b id="gapVal">0.62</b><br>
+          <span class="ja">転移線</span><span class="en">Transition line</span>: \(\lambda_v = 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) = <b id="critVal">0.31</b>
         </div>
       </div>
     </div>
@@ -108,22 +108,22 @@
       <h3><span class="ja">格子とスピン軌道ホッピング</span><span class="en">Lattice and spin–orbit hopping</span></h3>
       <div class="fig-box" id="figLattice"></div>
       <p class="fig-cap ja">
-        蜂の巣格子。● が A 副格子（＋λ<sub>v</sub>）、■ が B 副格子（−λ<sub>v</sub>）で、
-        実線が最近接ホッピング <i>t</i> です。矢印は第2近接（同一副格子内）の
-        スピン軌道ホッピング ±iλ<sub>SO</sub> の符号 ν<sub><i>ij</i></sub> を表します：
-        矢印の向きにホップするとき、スピン ↑ には ＋iλ<sub>SO</sub>、
-        スピン ↓ には −iλ<sub>SO</sub> が付きます。逆向きなら符号が反転します。
-        ν<sub><i>ij</i></sub> の符号は「2ステップの経路が左に曲がるか右に曲がるか」で
+        蜂の巣格子。● が A 副格子（\(+\lambda_v\)）、■ が B 副格子（\(-\lambda_v\)）で、
+        実線が最近接ホッピング \(t\) です。矢印は第2近接（同一副格子内）の
+        スピン軌道ホッピング \(\pm i\lambda_{\mathrm{SO}}\) の符号 \(\nu_{ij}\) を表します：
+        矢印の向きにホップするとき、スピン ↑ には \(+i\lambda_{\mathrm{SO}}\)、
+        スピン ↓ には \(-i\lambda_{\mathrm{SO}}\) が付きます。逆向きなら符号が反転します。
+        \(\nu_{ij}\) の符号は「2ステップの経路が左に曲がるか右に曲がるか」で
         決まっています。
         つまりスピン ↑ と ↓ は、互いに逆向きの「磁束」を感じる Haldane 模型に従います。
       </p>
       <p class="fig-cap en">
-        The honeycomb lattice. Circles: A sublattice (+λ<sub>v</sub>); squares: B sublattice
-        (−λ<sub>v</sub>); solid lines: nearest-neighbor hopping <i>t</i>. The arrows show the
-        sign ν<sub><i>ij</i></sub> of the next-nearest-neighbor (same-sublattice) spin–orbit
-        hopping ±iλ<sub>SO</sub>: hopping along the arrows picks up +iλ<sub>SO</sub> for
-        spin ↑ and −iλ<sub>SO</sub> for spin ↓, and the opposite sign against them. The
-        sign ν<sub><i>ij</i></sub> encodes whether the two-step path bends left or right.
+        The honeycomb lattice. Circles: A sublattice (\(+\lambda_v\)); squares: B sublattice
+        (\(-\lambda_v\)); solid lines: nearest-neighbor hopping \(t\). The arrows show the
+        sign \(\nu_{ij}\) of the next-nearest-neighbor (same-sublattice) spin–orbit
+        hopping \(\pm i\lambda_{\mathrm{SO}}\): hopping along the arrows picks up \(+i\lambda_{\mathrm{SO}}\) for
+        spin ↑ and \(-i\lambda_{\mathrm{SO}}\) for spin ↓, and the opposite sign against them. The
+        sign \(\nu_{ij}\) encodes whether the two-step path bends left or right.
         Each spin species thus lives in a Haldane model with opposite effective flux.
       </p>
     </div>
@@ -136,11 +136,11 @@
       </div>
       <p class="fig-cap ja">
         <b>左：</b>バルクのバンド構造（Γ–K–M–K′–Γ、青＝スピン ↑、赤＝スピン ↓）。
-        ギャップの大きさはスピン s と谷（K か K′）に依存する Dirac 質量
-        <i>m</i> = λ<sub>v</sub> + 3√3 s λ<sub>SO</sub> η（η = ∓1 が K/K′）で決まります。
-        λ<sub>v</sub> を増やしていくと、スピン ↑ は K で、スピン ↓ は K′ で
+        ギャップの大きさはスピン \(s\) と谷（K か K′）に依存する Dirac 質量
+        \(m = \lambda_v + 3\sqrt{3}\, s\, \lambda_{\mathrm{SO}}\, \eta\)（\(\eta = \mp 1\) が K/K′）で決まります。
+        \(\lambda_v\) を増やしていくと、スピン ↑ は K で、スピン ↓ は K′ で
         ギャップが一度閉じて開き直します——これがトポロジカル転移です。
-        <b>右：</b>ジグザグリボン（幅 <i>N</i> = 10 セル）のバンド構造。
+        <b>右：</b>ジグザグリボン（幅 \(N = 10\) セル）のバンド構造。
         QSH 相ではギャップを斜めに横断する4本のエッジ状態（各エッジに
         スピン ↑↓ の対）が見え、同じエッジではスピン ↑ と ↓ が逆向きに走ります
         （ヘリカルエッジ状態）。自明相ではエッジ状態はギャップから離れ、
@@ -148,11 +148,11 @@
       </p>
       <p class="fig-cap en">
         <b>Left:</b> bulk band structure along Γ–K–M–K′–Γ (blue = spin ↑, red = spin ↓).
-        The gap is set by the Dirac mass <i>m</i> = λ<sub>v</sub> + 3√3 s λ<sub>SO</sub> η,
-        which depends on the spin s and the valley (η = ∓1 for K/K′). As λ<sub>v</sub>
+        The gap is set by the Dirac mass \(m = \lambda_v + 3\sqrt{3}\, s\, \lambda_{\mathrm{SO}}\, \eta\),
+        which depends on the spin \(s\) and the valley (\(\eta = \mp 1\) for K/K′). As \(\lambda_v\)
         grows, the gap closes and reopens at K for spin ↑ and at K′ for spin ↓ — the
         topological transition. <b>Right:</b> band structure of a zigzag ribbon
-        (<i>N</i> = 10 cells wide). In the QSH phase four edge branches cross the gap
+        (\(N = 10\) cells wide). In the QSH phase four edge branches cross the gap
         (a Kramers pair of spins on each edge), with ↑ and ↓ propagating in opposite
         directions along the same edge — helical edge states. In the trivial phase the
         edge states detach from the gap and merge into the bulk bands.
@@ -163,16 +163,16 @@
       <h3><span class="ja">相図</span><span class="en">Phase diagram</span></h3>
       <div class="fig-box" id="figPhase" style="max-width:520px; margin:0 auto;"></div>
       <p class="fig-cap ja">
-        (λ<sub>SO</sub>, λ<sub>v</sub>) 平面の相図。● が現在のパラメータです。
-        境界線 λ<sub>v</sub> = 3√3 λ<sub>SO</sub> 上でだけバルクギャップが閉じ、
-        Z<sub>2</sub> 指数が 1（QSH）から 0（自明）へ切り替わります。
+        (\(\lambda_{\mathrm{SO}}\), \(\lambda_v\)) 平面の相図。● が現在のパラメータです。
+        境界線 \(\lambda_v = 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) 上でだけバルクギャップが閉じ、
+        \(\mathbb{Z}_2\) 指数が 1（QSH）から 0（自明）へ切り替わります。
         線上以外ではどう動いてもギャップは開いたままなので、
         QSH 相の中でパラメータを連続的に変えてもエッジ状態は消えません。
       </p>
       <p class="fig-cap en">
-        Phase diagram in the (λ<sub>SO</sub>, λ<sub>v</sub>) plane; the dot marks the
+        Phase diagram in the (\(\lambda_{\mathrm{SO}}\), \(\lambda_v\)) plane; the dot marks the
         current parameters. The bulk gap closes only on the boundary line
-        λ<sub>v</sub> = 3√3 λ<sub>SO</sub>, where the Z<sub>2</sub> index switches between
+        \(\lambda_v = 3\sqrt{3}\,\lambda_{\mathrm{SO}}\), where the \(\mathbb{Z}_2\) index switches between
         1 (QSH) and 0 (trivial). Away from the line the gap stays open, so the edge states
         survive any continuous change of parameters within the QSH phase.
       </p>
@@ -192,48 +192,48 @@
       </p>
       <div class="eq">\[ H \;=\; t \sum_{\langle i,j \rangle} c^{\dagger}_{i} c_{j} \;+\; i \lambda_{\mathrm{SO}} \sum_{\langle\langle i,j \rangle\rangle} \nu_{ij}\, c^{\dagger}_{i} s^{z} c_{j} \;+\; \lambda_{v} \sum_{i} \xi_{i}\, c^{\dagger}_{i} c_{i} \]</div>
       <p class="ja">
-        第1項は最近接ホッピング、第3項は A/B 副格子で符号 ξ<sub><i>i</i></sub> = ±1 を変える
+        第1項は最近接ホッピング、第3項は A/B 副格子で符号 \(\xi_i\) = ±1 を変える
         ポテンシャル（反転対称性を破る項）です。核心は第2項——第2近接（同一副格子内）を結ぶ
-        純虚数ホッピングで、s<sup><i>z</i></sup> はスピン、符号
-        ν<sub><i>ij</i></sub> = ±1 はホップの経路が左回りか右回りかで決まります
+        純虚数ホッピングで、\(s^z\) はスピン、符号
+        \(\nu_{ij}\) = ±1 はホップの経路が左回りか右回りかで決まります
         （上の格子図の矢印）。この項は時間反転対称性を保ちます：
-        虚数ホッピング i → −i の反転が、スピン s<sup><i>z</i></sup> → −s<sup><i>z</i></sup> の
+        虚数ホッピング \(i \to -i\) の反転が、スピン \(s^z \to -s^z\) の
         反転でちょうど打ち消されるからです。
       </p>
       <p class="en">
         The first term is the nearest-neighbor hopping; the third is a staggered potential
-        with ξ<sub><i>i</i></sub> = ±1 on the A/B sublattices (it breaks inversion symmetry).
+        with \(\xi_i\) = ±1 on the A/B sublattices (it breaks inversion symmetry).
         The heart of the model is the second term — a purely imaginary hopping between
-        next-nearest neighbors (within a sublattice), where s<sup><i>z</i></sup> is the spin
-        and the sign ν<sub><i>ij</i></sub> = ±1 depends on whether the two-step path turns
+        next-nearest neighbors (within a sublattice), where \(s^z\) is the spin
+        and the sign \(\nu_{ij}\) = ±1 depends on whether the two-step path turns
         left or right (the arrows in the lattice figure). This term respects time-reversal
-        symmetry: flipping i → −i is exactly compensated by flipping the spin
-        s<sup><i>z</i></sup> → −s<sup><i>z</i></sup>.
+        symmetry: flipping \(i \to -i\) is exactly compensated by flipping the spin
+        \(s^z \to -s^z\).
       </p>
 
       <h4><span class="ja">Haldane 模型の2枚のコピー</span><span class="en">Two copies of the Haldane model</span></h4>
       <p class="ja">
-        s<sup><i>z</i></sup> が保存する限り（Rashba 項がない限り）、ハミルトニアンは
+        \(s^z\) が保存する限り（Rashba 項がない限り）、ハミルトニアンは
         スピン ↑ とスピン ↓ のブロックに完全に分解します。各ブロックは
         Haldane 模型——蜂の巣格子上で正味の磁束なしに量子 Hall 効果を実現する
         有名な模型——そのものであり、しかも2つのブロックは互いに時間反転の関係に
-        あるため、実効磁束の符号が逆です。運動量空間では、スピン s のブロックは
+        あるため、実効磁束の符号が逆です。運動量空間では、スピン \(s\) のブロックは
       </p>
       <p class="en">
-        As long as s<sup><i>z</i></sup> is conserved (no Rashba term), the Hamiltonian
+        As long as \(s^z\) is conserved (no Rashba term), the Hamiltonian
         decouples into spin-↑ and spin-↓ blocks. Each block is precisely the Haldane
         model — the famous realization of the quantum Hall effect on the honeycomb lattice
         without net magnetic flux — and the two blocks, being time-reversed partners, carry
-        opposite effective flux. In momentum space the spin-s block reads
+        opposite effective flux. In momentum space the spin-\(s\) block reads
       </p>
-      <div class="eq">\[ h_{s}(\mathbf{k}) \;=\; \begin{pmatrix} \lambda_{v} + s \lambda_{\mathrm{SO}}\, \gamma(\mathbf{k}) &amp; f(\mathbf{k}) \\ f^{*}(\mathbf{k}) &amp; -\lambda_{v} - s \lambda_{\mathrm{SO}}\, \gamma(\mathbf{k}) \end{pmatrix}, \qquad \gamma(\mathbf{k}) = 2 \sum_{i=1}^{3} \sin(\mathbf{k} \cdot \mathbf{a}_{i}) \]</div>
+      <div class="eq">\[ h_{s}(\boldsymbol{k}) \;=\; \begin{pmatrix} \lambda_{v} + s \lambda_{\mathrm{SO}}\, \gamma(\boldsymbol{k}) &amp; f(\boldsymbol{k}) \\ f^{*}(\boldsymbol{k}) &amp; -\lambda_{v} - s \lambda_{\mathrm{SO}}\, \gamma(\boldsymbol{k}) \end{pmatrix}, \qquad \gamma(\boldsymbol{k}) = 2 \sum_{i=1}^{3} \sin(\boldsymbol{k} \cdot \boldsymbol{a}_{i}) \]</div>
       <p class="ja">
-        で、<i>f</i>(<b>k</b>) はグラフェンの最近接ホッピング因子です。Dirac 点 K, K′ では
-        <i>f</i> = 0、γ = ∓3√3 となり、質量項
+        で、\(f(\boldsymbol{k})\) はグラフェンの最近接ホッピング因子です。Dirac 点 K, K′ では
+        \(f = 0\)、\(\gamma = \mp 3\sqrt{3}\) となり、質量項
       </p>
       <p class="en">
-        where <i>f</i>(<b>k</b>) is the graphene nearest-neighbor factor. At the Dirac
-        points K and K′ one has <i>f</i> = 0 and γ = ∓3√3, so the Dirac mass becomes
+        where \(f(\boldsymbol{k})\) is the graphene nearest-neighbor factor. At the Dirac
+        points K and K′ one has \(f = 0\) and \(\gamma = \mp 3\sqrt{3}\), so the Dirac mass becomes
       </p>
       <div class="eq">\[ m_{s}(\mathrm{K}/\mathrm{K}') \;=\; \lambda_{v} \mp 3\sqrt{3}\, s\, \lambda_{\mathrm{SO}} \]</div>
       <p class="ja">
@@ -246,50 +246,50 @@
       <div class="eq">\[ C_{s} \;=\; \frac{1}{2} \left[ \mathrm{sgn}\, m_{s}(\mathrm{K}) - \mathrm{sgn}\, m_{s}(\mathrm{K}') \right] \]</div>
       <p class="ja">
         と書けます（このページの読み出しもこの式で計算しています。別途 Fukui–Hatsugai の
-        格子 Berry 曲率法でも数値的に確認済みです）。λ<sub>v</sub> &lt; 3√3 λ<sub>SO</sub> では
-        <i>C</i><sub>↑</sub> = −1, <i>C</i><sub>↓</sub> = +1：2つのスピンが逆符号の
+        格子 Berry 曲率法でも数値的に確認済みです）。\(\lambda_v < 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) では
+        \(C_\uparrow\) = −1, \(C_\downarrow\) = +1：2つのスピンが逆符号の
         量子 Hall 状態にある、というのが量子スピン Hall（QSH）相の実体です。
-        全体の Chern 数は <i>C</i><sub>↑</sub> + <i>C</i><sub>↓</sub> = 0——時間反転対称な系で
+        全体の Chern 数は \(C_\uparrow\) + \(C_\downarrow\) = 0——時間反転対称な系で
         Hall 伝導度が消えるのは当然ですが、スピンごとに見れば非自明、というわけです。
       </p>
       <p class="en">
         (the readouts on this page use this formula; it has also been checked numerically
         with the Fukui–Hatsugai lattice Berry-curvature method). For
-        λ<sub>v</sub> &lt; 3√3 λ<sub>SO</sub> one finds <i>C</i><sub>↑</sub> = −1 and
-        <i>C</i><sub>↓</sub> = +1: the two spin species sit in quantum Hall states of
+        \(\lambda_v < 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) one finds \(C_\uparrow\) = −1 and
+        \(C_\downarrow\) = +1: the two spin species sit in quantum Hall states of
         opposite sign — that is the substance of the quantum spin Hall (QSH) phase. The
-        total Chern number <i>C</i><sub>↑</sub> + <i>C</i><sub>↓</sub> = 0, as it must be in
+        total Chern number \(C_\uparrow\) + \(C_\downarrow\) = 0, as it must be in
         a time-reversal-invariant system, yet each spin sector is separately nontrivial.
       </p>
 
-      <h4><span class="ja">時間反転対称性と Z<sub>2</sub> 指数</span><span class="en">Time-reversal symmetry and the Z<sub>2</sub> index</span></h4>
+      <h4><span class="ja">時間反転対称性と \(\mathbb{Z}_2\) 指数</span><span class="en">Time-reversal symmetry and the \(\mathbb{Z}_2\) index</span></h4>
       <p class="ja">
-        スピン 1/2 の系では時間反転演算子は Θ<sup>2</sup> = −1 を満たし、
-        Kramers の定理により、時間反転不変な運動量（1次元エッジなら <i>k</i> = 0, π）で
+        スピン 1/2 の系では時間反転演算子は \(\Theta^2 = -1\) を満たし、
+        Kramers の定理により、時間反転不変な運動量（1次元エッジなら \(k = 0, \pi\)）で
         すべての状態が2重に縮退します。この縮退が、ヘリカルエッジ状態の交差点を
         守っています：交差を裂いてギャップを開けることは Kramers 縮退を破ることに
         なるため、時間反転対称性を保つ摂動では不可能なのです。
       </p>
       <p class="en">
-        For spin-1/2 systems the time-reversal operator obeys Θ<sup>2</sup> = −1, and
+        For spin-1/2 systems the time-reversal operator obeys \(\Theta^2 = -1\), and
         Kramers' theorem forces every state at a time-reversal-invariant momentum
-        (<i>k</i> = 0, π for a 1D edge) to be doubly degenerate. This degeneracy is what
+        (\(k = 0, \pi\) for a 1D edge) to be doubly degenerate. This degeneracy is what
         protects the crossing of the helical edge branches: splitting it open would violate
         Kramers' theorem, which no time-reversal-preserving perturbation can do.
       </p>
       <p class="ja">
-        s<sup><i>z</i></sup> が保存する場合、Z<sub>2</sub> 指数は単純に
-        ν = <i>C</i><sub>↑</sub> mod 2 です。しかし Kane–Mele の本当の発見は、
-        s<sup><i>z</i></sup> 保存が壊れても（次節の Rashba 項を入れても）意味を持ち続ける
-        Z<sub>2</sub> 不変量 ν ∈ {0, 1} が定義できることでした。整数（Z）ではなく
-        2値（Z<sub>2</sub>）なのは、エッジの Kramers 対が2組あると、時間反転を保ったまま
+        \(s^z\) が保存する場合、\(\mathbb{Z}_2\) 指数は単純に
+        \(\nu = C_\uparrow \bmod 2\) です。しかし Kane–Mele の本当の発見は、
+        \(s^z\) 保存が壊れても（次節の Rashba 項を入れても）意味を持ち続ける
+        \(\mathbb{Z}_2\) 不変量 \(\nu \in \{0, 1\}\) が定義できることでした。整数（Z）ではなく
+        2値（\(\mathbb{Z}_2\)）なのは、エッジの Kramers 対が2組あると、時間反転を保ったまま
         対消滅できてしまうからです：守られるのは「Kramers 対の数の偶奇」だけなのです。
       </p>
       <p class="en">
-        When s<sup><i>z</i></sup> is conserved the Z<sub>2</sub> index is simply
-        ν = <i>C</i><sub>↑</sub> mod 2. The real discovery of Kane and Mele, however, was
-        that a Z<sub>2</sub> invariant ν ∈ {0, 1} remains well-defined even when
-        s<sup><i>z</i></sup> conservation is destroyed (by the Rashba term of the next
+        When \(s^z\) is conserved the \(\mathbb{Z}_2\) index is simply
+        \(\nu = C_\uparrow \bmod 2\). The real discovery of Kane and Mele, however, was
+        that a \(\mathbb{Z}_2\) invariant \(\nu \in \{0, 1\}\) remains well-defined even when
+        \(s^z\) conservation is destroyed (by the Rashba term of the next
         section). The invariant is two-valued rather than an integer because two Kramers
         pairs of edge states can annihilate each other without breaking time reversal: only
         the parity of the number of Kramers pairs is protected.
@@ -299,11 +299,11 @@
       <p class="ja">
         QSH 相のエッジには、右向きに走るスピン ↑ と左向きに走るスピン ↓ の
         1組の Kramers 対が住んでいます（ヘリカル液体）。この2つは互いの時間反転
-        パートナーなので、不純物による弾性後方散乱 |<i>k</i>, ↑⟩ → |−<i>k</i>, ↓⟩ の
+        パートナーなので、不純物による弾性後方散乱 \(|k, \uparrow\rangle \to |{-k}, \downarrow\rangle\) の
         振幅は、不純物が非磁性（時間反転対称）である限り厳密に消えます。
         直感的には、スピンを π 回転させながら戻る2つの経路（時計回りと反時計回り）が
         位相 −1 で干渉して打ち消し合うためです。かくして QSH のエッジ伝導は
-        非磁性不純物に対して量子化された値 2<i>e</i><sup>2</sup>/<i>h</i>
+        非磁性不純物に対して量子化された値 \(2e^2/h\)
         （両エッジ合計）を保ちます。磁性不純物や磁場は時間反転を破るので、
         この保護は失われます。
       </p>
@@ -311,10 +311,10 @@
         The edge of a QSH insulator hosts one Kramers pair: a right-moving spin-↑ branch
         and a left-moving spin-↓ branch (a helical liquid). Since the two are each other's
         time-reversal partners, the elastic backscattering amplitude
-        |<i>k</i>, ↑⟩ → |−<i>k</i>, ↓⟩ off any nonmagnetic (time-reversal-symmetric)
+        \(|k, \uparrow\rangle \to |{-k}, \downarrow\rangle\) off any nonmagnetic (time-reversal-symmetric)
         impurity vanishes exactly. Intuitively, the two paths that rotate the spin by π —
         clockwise and counterclockwise — interfere with a relative phase of −1 and cancel.
-        The edge conductance therefore stays quantized at 2<i>e</i><sup>2</sup>/<i>h</i>
+        The edge conductance therefore stays quantized at \(2e^2/h\)
         (both edges together) against nonmagnetic disorder. Magnetic impurities or a
         magnetic field break time reversal and destroy the protection.
       </p>
@@ -322,26 +322,26 @@
       <h4><span class="ja">Rashba 項を入れると何が起こるか</span><span class="en">What the Rashba term does</span></h4>
       <p class="ja">
         基板や電場があると、対称性は最近接の Rashba 型スピン軌道項
-        λ<sub>R</sub>（s<sup><i>x</i></sup>, s<sup><i>y</i></sup> を含む項）も許します。
-        これは s<sup><i>z</i></sup> の保存を壊すため、「スピン ↑ の Chern 数」という
-        言葉自体が意味を失います。それでも Kane–Mele が示したように、Z<sub>2</sub> 指数と
-        ヘリカルエッジ状態は λ<sub>R</sub> がバルクギャップを閉じるまで
-        （λ<sub>v</sub> = 0 なら λ<sub>R</sub> ≲ 2√3 λ<sub>SO</sub> 程度まで）生き残ります。
+        \(\lambda_R\)（\(s^x, s^y\) を含む項）も許します。
+        これは \(s^z\) の保存を壊すため、「スピン ↑ の Chern 数」という
+        言葉自体が意味を失います。それでも Kane–Mele が示したように、\(\mathbb{Z}_2\) 指数と
+        ヘリカルエッジ状態は \(\lambda_R\) がバルクギャップを閉じるまで
+        （\(\lambda_v = 0\) なら \(\lambda_R \lesssim 2\sqrt{3}\,\lambda_{\mathrm{SO}}\) 程度まで）生き残ります。
         トポロジカルな保護の拠り所が「スピンの保存」ではなく「時間反転対称性」に
         あることを示す、決定的なポイントです。このページのシミュレーションは
-        見通しのよい s<sup><i>z</i></sup> 保存の場合（λ<sub>R</sub> = 0）に限っていますが、
+        見通しのよい \(s^z\) 保存の場合（\(\lambda_R = 0\)）に限っていますが、
         物理の本質はこの範囲で全部見えます。
       </p>
       <p class="en">
         A substrate or an electric field also allows a nearest-neighbor Rashba spin–orbit
-        term λ<sub>R</sub> (involving s<sup><i>x</i></sup>, s<sup><i>y</i></sup>), which
-        destroys s<sup><i>z</i></sup> conservation — the very phrase "spin-↑ Chern number"
-        loses its meaning. Yet, as Kane and Mele showed, the Z<sub>2</sub> index and the
-        helical edge states survive until λ<sub>R</sub> closes the bulk gap (for
-        λ<sub>v</sub> = 0, up to λ<sub>R</sub> ≲ 2√3 λ<sub>SO</sub>). This is the decisive
+        term \(\lambda_R\) (involving \(s^x, s^y\)), which
+        destroys \(s^z\) conservation — the very phrase "spin-↑ Chern number"
+        loses its meaning. Yet, as Kane and Mele showed, the \(\mathbb{Z}_2\) index and the
+        helical edge states survive until \(\lambda_R\) closes the bulk gap (for
+        \(\lambda_v = 0\), up to \(\lambda_R \lesssim 2\sqrt{3}\,\lambda_{\mathrm{SO}}\)). This is the decisive
         point: the protection rests on time-reversal symmetry, not on spin conservation.
-        The simulation on this page sticks to the transparent s<sup><i>z</i></sup>-conserving
-        case (λ<sub>R</sub> = 0), where all the essential physics is already visible.
+        The simulation on this page sticks to the transparent \(s^z\)-conserving
+        case (\(\lambda_R = 0\)), where all the essential physics is already visible.
       </p>
 
       <h4><span class="ja">現実の物質へ</span><span class="en">To real materials</span></h4>
@@ -350,7 +350,7 @@
         Kane–Mele 機構の QSH 効果は観測できていません。しかしこの提案が引き金となり、
         Bernevig–Hughes–Zhang（BHZ）による HgTe/CdTe 量子井戸の理論提案（2006）と
         Würzburg グループによる観測（2007）で量子スピン Hall 効果は現実になりました。
-        その後、Z<sub>2</sub> 分類は3次元に拡張され（強いトポロジカル絶縁体、
+        その後、\(\mathbb{Z}_2\) 分類は3次元に拡張され（強いトポロジカル絶縁体、
         Bi<sub>2</sub>Se<sub>3</sub> 系など）、単層 WTe<sub>2</sub> での QSH 観測や、
         ビスマスやスタネンなど「重い元素の蜂の巣格子」での Kane–Mele 物理の探索へと
         つながっていきます。トポロジカル物質科学というひとつの分野が、
@@ -361,7 +361,7 @@
         Kane–Mele QSH effect has never been observed there. But the proposal triggered the
         Bernevig–Hughes–Zhang (BHZ) theory of HgTe/CdTe quantum wells (2006) and the
         observation by the Würzburg group (2007), which made the quantum spin Hall effect
-        real. The Z<sub>2</sub> classification was then extended to three dimensions
+        real. The \(\mathbb{Z}_2\) classification was then extended to three dimensions
         (strong topological insulators, the Bi<sub>2</sub>Se<sub>3</sub> family), followed by
         QSH observations in monolayer WTe<sub>2</sub> and the ongoing search for Kane–Mele
         physics in heavy-element honeycombs such as bismuthene and stanene. An entire
@@ -371,36 +371,36 @@
       <h4><span class="ja">このページの計算</span><span class="en">Numerics on this page</span></h4>
       <p class="ja">
         リボンのバンド構造は、ジグザグリボン（幅 10 セル、20 サイト）の
-        Bloch ハミルトニアン <i>H</i>(<i>k<sub>x</sub></i>) を各 <i>k<sub>x</sub></i> で
+        Bloch ハミルトニアン \(H(k_x)\) を各 \(k_x\) で
         複素 Hermite 行列として構成し、Jacobi 法で対角化しています
-        （ν<sub><i>ij</i></sub> は経路の外積の符号から自動生成）。スピン ↓ のバンドは
-        時間反転対称性 <i>E</i><sub>↓</sub>(<i>k</i>) = <i>E</i><sub>↑</sub>(−<i>k</i>) を
+        （\(\nu_{ij}\) は経路の外積の符号から自動生成）。スピン ↓ のバンドは
+        時間反転対称性 \(E_\downarrow(k) = E_\uparrow(-k)\) を
         使ってスピン ↑ から折り返しています。バルクバンドは 2×2 ブロックの
-        固有値 ±√(|<i>f</i>|<sup>2</sup> + <i>d<sub>z</sub></i><sup>2</sup>) をそのまま
+        固有値 \(\pm\sqrt{|f|^2 + d_z^2}\) をそのまま
         描いています。SSH のページと同様、実装は Python（NumPy）での独立計算と
         照合済みです。
       </p>
       <p class="en">
         The ribbon bands are obtained by building the Bloch Hamiltonian
-        <i>H</i>(<i>k<sub>x</sub></i>) of a zigzag ribbon (10 cells, 20 sites wide) as a
-        complex Hermitian matrix at each <i>k<sub>x</sub></i> and diagonalizing it with the
-        Jacobi method (the signs ν<sub><i>ij</i></sub> are generated automatically from the
+        \(H(k_x)\) of a zigzag ribbon (10 cells, 20 sites wide) as a
+        complex Hermitian matrix at each \(k_x\) and diagonalizing it with the
+        Jacobi method (the signs \(\nu_{ij}\) are generated automatically from the
         cross product of the two hop vectors). The spin-↓ bands are obtained from spin ↑ via
-        time reversal, <i>E</i><sub>↓</sub>(<i>k</i>) = <i>E</i><sub>↑</sub>(−<i>k</i>). The
+        time reversal, \(E_\downarrow(k) = E_\uparrow(-k)\). The
         bulk bands are the closed-form eigenvalues
-        ±√(|<i>f</i>|<sup>2</sup> + <i>d<sub>z</sub></i><sup>2</sup>) of the 2×2 blocks. As
+        \(\pm\sqrt{|f|^2 + d_z^2}\) of the 2×2 blocks. As
         with the SSH page, the implementation has been validated against an independent
         Python (NumPy) calculation.
       </p>
       <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
       <p class="ja" style="line-height:2.1;">
-        ・C. L. Kane and E. J. Mele, Phys. Rev. Lett. <b>95</b>, 226801 (2005); <b>95</b>, 146802 (2005)——量子スピン Hall 効果と Z<sub>2</sub> 指数の原論文。<br>
+        ・C. L. Kane and E. J. Mele, Phys. Rev. Lett. <b>95</b>, 226801 (2005); <b>95</b>, 146802 (2005)——量子スピン Hall 効果と \(\mathbb{Z}_2\) 指数の原論文。<br>
         ・F. D. M. Haldane, Phys. Rev. Lett. <b>61</b>, 2015 (1988)——Haldane 模型。<br>
         ・B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Science <b>314</b>, 1757 (2006)——HgTe 量子井戸の理論提案（BHZ）。<br>
         ・M. K&ouml;nig <i>et al.</i>, Science <b>318</b>, 766 (2007)——量子スピン Hall 効果の観測。
       </p>
       <p class="en" style="line-height:2.1;">
-        ・C. L. Kane and E. J. Mele, Phys. Rev. Lett. <b>95</b>, 226801 (2005); <b>95</b>, 146802 (2005) — the original QSH and Z<sub>2</sub> papers.<br>
+        ・C. L. Kane and E. J. Mele, Phys. Rev. Lett. <b>95</b>, 226801 (2005); <b>95</b>, 146802 (2005) — the original QSH and \(\mathbb{Z}_2\) papers.<br>
         ・F. D. M. Haldane, Phys. Rev. Lett. <b>61</b>, 2015 (1988) — the Haldane model.<br>
         ・B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Science <b>314</b>, 1757 (2006) — the BHZ proposal for HgTe quantum wells.<br>
         ・M. K&ouml;nig <i>et al.</i>, Science <b>318</b>, 766 (2007) — observation of the quantum spin Hall effect.
@@ -628,11 +628,11 @@
     }
     // labels (ASCII parens for font safety inside SVG)
     var pA = [-1, 0], pB = [-1 + DAB[0], DAB[1]];
-    f.text(X(pA), Y(pA) + 28, 'A (+λ<tspan dy="3" font-size="12">v</tspan><tspan dy="-3">)</tspan>', 16, BLUE);
-    f.text(X(pB) - 14, Y(pB) - 12, 'B (−λ<tspan dy="3" font-size="12">v</tspan><tspan dy="-3">)</tspan>', 16, RED, 'end');
+    f.text(X(pA), Y(pA) + 28, 'A (+<tspan font-style="italic">λ</tspan><tspan dy="3" font-size="12" font-style="italic">v</tspan><tspan dy="-3">)</tspan>', 16, BLUE);
+    f.text(X(pB) - 14, Y(pB) - 12, 'B (−<tspan font-style="italic">λ</tspan><tspan dy="3" font-size="12" font-style="italic">v</tspan><tspan dy="-3">)</tspan>', 16, RED, 'end');
     var mid = [(0 + DAB[0]) / 2 + 0.02, (0 + DAB[1]) / 2];
     f.text(X(mid) + 12, Y(mid) + 5, '<tspan font-style="italic">t</tspan>', 18, f.c.fg, 'start');
-    f.text(X(tri[1]), Y(tri[1]) - 46, '+iλ<tspan dy="3" font-size="12">SO</tspan><tspan dy="-3"> (spin ↑)</tspan>', 17, PURPLE);
+    f.text(X(tri[1]), Y(tri[1]) - 46, '+<tspan font-style="italic">iλ</tspan><tspan dy="3" font-size="12">SO</tspan><tspan dy="-3"> (spin ↑)</tspan>', 17, PURPLE);
     f.done('figLattice');
   }
 
@@ -713,7 +713,7 @@
       f.line(mL + pw, Yt, mL + pw - 6, Yt, f.c.fg, 1.1);
       f.text(mL - 8, Yt + 4, String(i), 15, f.c.fg, 'end');
     }
-    f.text(mL + pw / 2, f.H - 10, '<tspan font-style="italic">k</tspan><tspan dy="4" font-size="13">x</tspan>', 18, f.c.fg);
+    f.text(mL + pw / 2, f.H - 10, '<tspan font-style="italic">k</tspan><tspan dy="4" font-size="13" font-style="italic">x</tspan>', 18, f.c.fg);
     var ymid = mT + ph / 2;
     f.o.push('<text x="16" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 16 ' + ymid +
       ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
@@ -765,14 +765,14 @@
       f.line(mL, Y, mL + 6, Y, f.c.fg, 1.1);
       f.text(mL - 9, Y + 4, yv.toFixed(1), 17, f.c.fg, 'end');
     }
-    f.text(mL + pw / 2, f.H - 12, 'λ<tspan dy="4" font-size="15">SO</tspan><tspan dy="-4">/</tspan><tspan font-style="italic">t</tspan>', 20, f.c.fg);
+    f.text(mL + pw / 2, f.H - 12, '<tspan font-style="italic">λ</tspan><tspan dy="4" font-size="15">SO</tspan><tspan dy="-4">/</tspan><tspan font-style="italic">t</tspan>', 20, f.c.fg);
     var ymid = mT + ph / 2;
     f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
       ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
       '">λ<tspan dy="4" font-size="15">v</tspan><tspan dy="-4">/</tspan><tspan font-style="italic">t</tspan></text>');
-    f.text(px(0.105), py(0.18), 'QSH (ν = 1)', 21, BLUE, 'middle', ' font-weight="600"');
-    f.text(px(0.045), py(0.72), 'ν = 0', 21, f.c.fg, 'middle', ' font-weight="600"');
-    f.text(px(0.094), py(0.90), 'λ<tspan dy="4" font-size="13">v</tspan><tspan dy="-4"> = 3√</tspan><tspan text-decoration="overline">3</tspan><tspan> λ</tspan><tspan dy="4" font-size="13">SO</tspan>', 18, f.c.sub, 'start');
+    f.text(px(0.105), py(0.18), 'QSH (<tspan font-style="italic">ν</tspan> = 1)', 21, BLUE, 'middle', ' font-weight="600"');
+    f.text(px(0.045), py(0.72), '<tspan font-style="italic">ν</tspan> = 0', 21, f.c.fg, 'middle', ' font-weight="600"');
+    f.text(px(0.094), py(0.90), '<tspan font-style="italic">λ</tspan><tspan dy="4" font-size="13" font-style="italic">v</tspan><tspan dy="-4"> = 3√</tspan><tspan text-decoration="overline">3</tspan><tspan font-style="italic"> λ</tspan><tspan dy="4" font-size="13">SO</tspan>', 18, f.c.sub, 'start');
     // current point
     f.o.push('<circle cx="' + px(lso) + '" cy="' + py(Math.min(lv, ymax)) + '" r="7" fill="' + PURPLE +
       '" stroke="' + f.c.bg + '" stroke-width="2"/>');

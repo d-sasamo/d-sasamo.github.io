@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -64,13 +64,13 @@
     <h1 style="font-size:2rem;"><span class="ja">SSH 模型：トポロジカルエッジ状態と Wannier 中心</span><span class="en">The SSH Model: Topological Edge States and Wannier Centers</span></h1>
     <p class="hero-sub ja">
       トポロジカル絶縁体の「最小模型」である Su–Schrieffer–Heeger（SSH）模型です。
-      ホッピング比 <i>w</i>/<i>v</i> を動かして、巻き付き数が跳ぶ瞬間、ゼロエネルギーの
+      ホッピング比 \(w/v\) を動かして、巻き付き数が跳ぶ瞬間、ゼロエネルギーの
       エッジ状態が現れる瞬間、そして Wannier 中心がセル中心からボンド中心へ移る瞬間を
       観察してみてください。
     </p>
     <p class="hero-sub en">
       The Su–Schrieffer–Heeger (SSH) model — the minimal model of a topological insulator.
-      Drag the hopping ratio <i>w</i>/<i>v</i> and watch the winding number jump, zero-energy
+      Drag the hopping ratio \(w/v\) and watch the winding number jump, zero-energy
       edge states appear, and the Wannier centers shift from the cell centers to the bond
       centers.
     </p>
@@ -81,11 +81,11 @@
       <div class="panel-row">
         <div>
           <div class="ctrl">
-            <label><span class="ja">セル間ホッピング</span><span class="en">Inter-cell hopping</span> <i>w</i>/<i>v</i> = <span class="val" id="wVal">1.80</span>（<i>v</i> = 1 <span class="ja">固定</span><span class="en">fixed</span>）</label>
+            <label><span class="ja">セル間ホッピング</span><span class="en">Inter-cell hopping</span> \(w/v\) = <span class="val" id="wVal">1.80</span>（\(v = 1\) <span class="ja">固定</span><span class="en">fixed</span>）</label>
             <input type="range" id="wSlider" min="0" max="2.5" step="0.01" value="1.8">
           </div>
           <div class="ctrl">
-            <label><span class="ja">単位胞の数</span><span class="en">Number of unit cells</span> <i>N</i> = <span class="val" id="nVal">20</span>（2<i>N</i> <span class="ja">サイト、開放端</span><span class="en">sites, open ends</span>）</label>
+            <label><span class="ja">単位胞の数</span><span class="en">Number of unit cells</span> \(N\) = <span class="val" id="nVal">20</span>（\(2N\) <span class="ja">サイト、開放端</span><span class="en">sites, open ends</span>）</label>
             <input type="range" id="nSlider" min="0" max="3" step="1" value="2">
           </div>
           <div class="ctrl">
@@ -95,12 +95,12 @@
           </div>
         </div>
         <div class="obs-compact">
-          <span class="ja">巻き付き数</span><span class="en">Winding number</span> <i>W</i> = <b id="windVal">1</b>
+          <span class="ja">巻き付き数</span><span class="en">Winding number</span> \(W =\) <b id="windVal">1</b>
           ・ <span class="ja">ゼロモード数</span><span class="en">zero modes</span>: <b id="nzVal">2</b><br>
-          <span class="ja">Zak 位相</span><span class="en">Zak phase</span> γ/π = <b id="zakVal">1.000</b><br>
-          <span class="ja">Wannier 中心</span><span class="en">Wannier center</span> <i>x̄</i> = <b id="wanVal">1/2</b>
+          <span class="ja">Zak 位相</span><span class="en">Zak phase</span> \(\gamma/\pi =\) <b id="zakVal">1.000</b><br>
+          <span class="ja">Wannier 中心</span><span class="en">Wannier center</span> \(\bar{x} =\) <b id="wanVal">1/2</b>
           <span class="ja">（0：セル中心、1/2：ボンド中心）</span><span class="en">(0: cell center, 1/2: bond center)</span><br>
-          <span class="ja">最小固有エネルギー</span><span class="en">Smallest eigenenergy</span> |<i>E</i>|<sub>min</sub> = <b id="e0Val">—</b>
+          <span class="ja">最小固有エネルギー</span><span class="en">Smallest eigenenergy</span> \(|E|_{\mathrm{min}} =\) <b id="e0Val">—</b>
         </div>
       </div>
     </div>
@@ -110,18 +110,18 @@
       <div class="fig-box" id="figChain"></div>
       <p class="fig-cap ja">
         ● が A 副格子、■ が B 副格子です。結合線の太さがホッピングの大きさ
-        （セル内 <i>v</i>、セル間 <i>w</i>）を表し、◆ が下バンドの Wannier 中心の位置です。
-        <i>v</i> &gt; <i>w</i> では Wannier 中心はセルの中（<i>v</i> ボンド上）にあり、
-        鎖をセル境界で切っても何も切断されません。<i>w</i> &gt; <i>v</i> では Wannier 中心が
-        セル境界（<i>w</i> ボンド上）に移るため、端では Wannier 軌道が「半分に切られ」、
+        （セル内 \(v\)、セル間 \(w\)）を表し、◆ が下バンドの Wannier 中心の位置です。
+        \(v > w\) では Wannier 中心はセルの中（\(v\) ボンド上）にあり、
+        鎖をセル境界で切っても何も切断されません。\(w > v\) では Wannier 中心が
+        セル境界（\(w\) ボンド上）に移るため、端では Wannier 軌道が「半分に切られ」、
         その残骸がゼロエネルギーのエッジ状態になります。
       </p>
       <p class="fig-cap en">
         Circles: A sublattice; squares: B sublattice. Bond thickness indicates the hopping
-        strength (intra-cell <i>v</i>, inter-cell <i>w</i>), and the diamonds mark the Wannier
-        centers of the lower band. For <i>v</i> &gt; <i>w</i> the Wannier centers sit inside
-        the cells (on the <i>v</i> bonds), so terminating the chain at a cell boundary cuts
-        nothing. For <i>w</i> &gt; <i>v</i> they move to the cell boundaries (the <i>w</i>
+        strength (intra-cell \(v\), inter-cell \(w\)), and the diamonds mark the Wannier
+        centers of the lower band. For \(v > w\) the Wannier centers sit inside
+        the cells (on the \(v\) bonds), so terminating the chain at a cell boundary cuts
+        nothing. For \(w > v\) they move to the cell boundaries (the \(w\)
         bonds): the edge then slices a Wannier orbital in half, and the leftover half is the
         zero-energy edge state.
       </p>
@@ -134,23 +134,23 @@
         <div class="fig-box" id="figEdge"></div>
       </div>
       <p class="fig-cap ja">
-        <b>左：</b>開放端の SSH 鎖の全固有エネルギーを <i>w</i>/<i>v</i> の関数として
-        描いたもの（縦の破線が現在の値）。<i>w</i>/<i>v</i> &gt; 1 でバルクギャップの
+        <b>左：</b>開放端の SSH 鎖の全固有エネルギーを \(w/v\) の関数として
+        描いたもの（縦の破線が現在の値）。\(w/v > 1\) でバルクギャップの
         真ん中に赤い2本のミッドギャップ状態が現れます。厳密にゼロではなく、
         両端のエッジ状態が鎖を貫いて混成するため指数関数的に小さい分裂
-        |<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> が残ります（上の観測値で確認できます）。
-        <b>右：</b>最小 |<i>E</i>| の状態の確率分布 |ψ|<sup>2</sup>。トポロジカル相では
+        \(|E| \sim (v/w)^{N}\) が残ります（上の観測値で確認できます）。
+        <b>右：</b>最小 \(|E|\) の状態の確率分布 \(|\psi|^{2}\)。トポロジカル相では
         2つのミッドギャップ状態を足し引きして左端に局在させたものを示しています。
         端に指数関数的に局在し、しかも A 副格子（青）のみに振幅を持つこと——
         カイラル対称性の帰結——に注目してください。
       </p>
       <p class="fig-cap en">
-        <b>Left:</b> all eigenenergies of the open SSH chain versus <i>w</i>/<i>v</i>
-        (the vertical dashed line marks the current value). For <i>w</i>/<i>v</i> &gt; 1 two
+        <b>Left:</b> all eigenenergies of the open SSH chain versus \(w/v\)
+        (the vertical dashed line marks the current value). For \(w/v > 1\) two
         red mid-gap states appear in the bulk gap. They are not exactly at zero: the two edge
         states hybridize across the finite chain, leaving an exponentially small splitting
-        |<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> (check the readout above).
-        <b>Right:</b> probability distribution |ψ|<sup>2</sup> of the lowest-|<i>E</i>| state.
+        \(|E| \sim (v/w)^{N}\) (check the readout above).
+        <b>Right:</b> probability distribution \(|\psi|^{2}\) of the lowest-\(|E|\) state.
         In the topological phase we show the combination of the two mid-gap states localized
         at the left edge. Note that it decays exponentially into the bulk and lives purely on
         the A sublattice (blue) — a consequence of chiral symmetry.
@@ -158,26 +158,25 @@
     </div>
 
     <div class="card">
-      <h3><span class="ja">ベクトル d(k) の軌跡と巻き付き数</span><span class="en">The trajectory of d(k) and the winding number</span></h3>
+      <h3><span class="ja">ベクトル \(\boldsymbol{d}(k)\) の軌跡と巻き付き数</span><span class="en">The trajectory of \(\boldsymbol{d}(k)\) and the winding number</span></h3>
       <div class="fig-box" id="figLoop" style="max-width:460px; margin:0 auto;"></div>
       <p class="fig-cap ja">
-        バルクハミルトニアン <i>h</i>(<i>k</i>) = <b>d</b>(<i>k</i>)·<b>σ</b> を特徴づける
-        ベクトル <b>d</b>(<i>k</i>) = (<i>v</i> + <i>w</i> cos <i>k</i>, <i>w</i> sin <i>k</i>) の
-        軌跡です。<i>k</i> が Brillouin 域を一周すると、<b>d</b> は中心 (<i>v</i>, 0)・
-        半径 <i>w</i> の円を一周します。この円が原点（×印）を囲むかどうか——
-        つまり <i>w</i> &gt; <i>v</i> かどうか——が巻き付き数 <i>W</i> を決めます。
-        原点はギャップが閉じる点なので、円が原点をまたぐ瞬間（<i>v</i> = <i>w</i>）を
-        経ない限り <i>W</i> は変われません。これがトポロジカルな保護の意味です。
+        バルクハミルトニアン \(h(k) = \boldsymbol{d}(k)\cdot\boldsymbol{\sigma}\) を特徴づける
+        ベクトル \(\boldsymbol{d}(k) = (v + w\cos k,\ w\sin k)\) の
+        軌跡です。\(k\) が Brillouin 域を一周すると、\(\boldsymbol{d}\) は中心 \((v, 0)\)・
+        半径 \(w\) の円を一周します。この円が原点（×印）を囲むかどうか——
+        つまり \(w > v\) かどうか——が巻き付き数 \(W\) を決めます。
+        原点はギャップが閉じる点なので、円が原点をまたぐ瞬間（\(v = w\)）を
+        経ない限り \(W\) は変われません。これがトポロジカルな保護の意味です。
       </p>
       <p class="fig-cap en">
-        The trajectory of the vector <b>d</b>(<i>k</i>) = (<i>v</i> + <i>w</i> cos <i>k</i>,
-        <i>w</i> sin <i>k</i>) characterizing the bulk Hamiltonian
-        <i>h</i>(<i>k</i>) = <b>d</b>(<i>k</i>)·<b>σ</b>. As <i>k</i> runs once around the
-        Brillouin zone, <b>d</b> traces a circle of radius <i>w</i> centered at (<i>v</i>, 0).
+        The trajectory of the vector \(\boldsymbol{d}(k) = (v + w\cos k,\ w\sin k)\) characterizing the bulk Hamiltonian
+        \(h(k) = \boldsymbol{d}(k)\cdot\boldsymbol{\sigma}\). As \(k\) runs once around the
+        Brillouin zone, \(\boldsymbol{d}\) traces a circle of radius \(w\) centered at \((v, 0)\).
         Whether this circle encloses the origin (the × mark) — i.e., whether
-        <i>w</i> &gt; <i>v</i> — determines the winding number <i>W</i>. Since the origin is
-        the gap-closing point, <i>W</i> cannot change without the circle sweeping through it
-        at <i>v</i> = <i>w</i>. That is what topological protection means.
+        \(w > v\) — determines the winding number \(W\). Since the origin is
+        the gap-closing point, \(W\) cannot change without the circle sweeping through it
+        at \(v = w\). That is what topological protection means.
       </p>
     </div>
 
@@ -197,24 +196,24 @@
       </p>
       <div class="eq">\[ H \;=\; v \sum_{n} \left( c^{\dagger}_{\mathrm{A},n} c_{\mathrm{B},n} + \mathrm{h.c.} \right) \;+\; w \sum_{n} \left( c^{\dagger}_{\mathrm{B},n} c_{\mathrm{A},n+1} + \mathrm{h.c.} \right) \]</div>
       <p class="ja">
-        と書けます（<i>v</i>, <i>w</i> &gt; 0 とします）。周期境界で Fourier 変換すると、
-        各波数 <i>k</i> ごとに 2×2 のブロッホハミルトニアン
+        と書けます（\(v, w > 0\) とします）。周期境界で Fourier 変換すると、
+        各波数 \(k\) ごとに \(2\times 2\) のブロッホハミルトニアン
       </p>
       <p class="en">
-        (we take <i>v</i>, <i>w</i> &gt; 0). Fourier transforming with periodic boundaries
-        gives, for each momentum <i>k</i>, the 2×2 Bloch Hamiltonian
+        (we take \(v, w > 0\)). Fourier transforming with periodic boundaries
+        gives, for each momentum \(k\), the \(2\times 2\) Bloch Hamiltonian
       </p>
-      <div class="eq">\[ h(k) \;=\; \begin{pmatrix} 0 &amp; v + w e^{-ik} \\ v + w e^{ik} &amp; 0 \end{pmatrix} \;=\; \mathbf{d}(k) \cdot \boldsymbol{\sigma}, \qquad \mathbf{d}(k) = \left( v + w\cos k,\; w \sin k,\; 0 \right) \]</div>
+      <div class="eq">\[ h(k) \;=\; \begin{pmatrix} 0 &amp; v + w e^{-ik} \\ v + w e^{ik} &amp; 0 \end{pmatrix} \;=\; \boldsymbol{d}(k) \cdot \boldsymbol{\sigma}, \qquad \boldsymbol{d}(k) = \left( v + w\cos k,\; w \sin k,\; 0 \right) \]</div>
       <p class="ja">
-        が得られ、バンドは <i>E</i><sub>±</sub>(<i>k</i>) = ±|<b>d</b>(<i>k</i>)| の2本です。
-        ギャップは |<i>v</i> − <i>w</i>| で、<i>v</i> = <i>w</i>（<i>k</i> = π）でのみ閉じます。
-        半分詰まった絶縁体として、<i>v</i> &gt; <i>w</i> の相と <i>w</i> &gt; <i>v</i> の相は
+        が得られ、バンドは \(E_{\pm}(k) = \pm|\boldsymbol{d}(k)|\) の2本です。
+        ギャップは \(|v - w|\) で、\(v = w\)（\(k = \pi\)）でのみ閉じます。
+        半分詰まった絶縁体として、\(v > w\) の相と \(w > v\) の相は
         どちらも同じように「ただの絶縁体」に見えます——バルクのバンド構造だけを見ている限りは。
       </p>
       <p class="en">
-        with two bands <i>E</i><sub>±</sub>(<i>k</i>) = ±|<b>d</b>(<i>k</i>)|. The gap is
-        |<i>v</i> − <i>w</i>| and closes only at <i>v</i> = <i>w</i> (at <i>k</i> = π). At
-        half filling, the phases <i>v</i> &gt; <i>w</i> and <i>w</i> &gt; <i>v</i> both look
+        with two bands \(E_{\pm}(k) = \pm|\boldsymbol{d}(k)|\). The gap is
+        \(|v - w|\) and closes only at \(v = w\) (at \(k = \pi\)). At
+        half filling, the phases \(v > w\) and \(w > v\) both look
         like perfectly ordinary insulators — as long as you only look at the bulk band
         structure.
       </p>
@@ -223,38 +222,38 @@
       <p class="ja">
         この模型のホッピングはすべて A 副格子と B 副格子の間を結び、同一副格子内を
         結ぶ項がありません（二部格子構造）。その帰結として、副格子の符号を反転する
-        演算子 Γ = σ<sub><i>z</i></sub> に対して
+        演算子 \(\Gamma = \sigma_z\) に対して
       </p>
       <p class="en">
         Every hopping in this model connects the A and B sublattices; there are no terms
         within a sublattice (the lattice is bipartite). As a consequence, the operator
-        Γ = σ<sub><i>z</i></sub>, which flips the sign of one sublattice, satisfies
+        \(\Gamma = \sigma_z\), which flips the sign of one sublattice, satisfies
       </p>
       <div class="eq">\[ \Gamma\, h(k)\, \Gamma \;=\; -\,h(k) \]</div>
       <p class="ja">
         が成り立ちます。これがカイラル対称性（副格子対称性）です。3つの重要な帰結があります。
-        第一に、スペクトルは ±<i>E</i> で対称になります。第二に、<b>d</b>(<i>k</i>) の
-        <i>z</i> 成分が禁止されるため、軌跡は <i>d<sub>x</sub></i>–<i>d<sub>y</sub></i>
+        第一に、スペクトルは \(\pm E\) で対称になります。第二に、\(\boldsymbol{d}(k)\) の
+        \(z\) 成分が禁止されるため、軌跡は \(d_x\)–\(d_y\)
         平面内の閉曲線に限られ、原点の周りの巻き付き数
       </p>
       <p class="en">
         This is chiral (sublattice) symmetry, and it has three important consequences.
-        First, the spectrum is symmetric under <i>E</i> → −<i>E</i>. Second, the
-        <i>z</i>-component of <b>d</b>(<i>k</i>) is forbidden, so the trajectory is confined
-        to the <i>d<sub>x</sub></i>–<i>d<sub>y</sub></i> plane and the winding number about
+        First, the spectrum is symmetric under \(E \to -E\). Second, the
+        \(z\)-component of \(\boldsymbol{d}(k)\) is forbidden, so the trajectory is confined
+        to the \(d_x\)–\(d_y\) plane and the winding number about
         the origin,
       </p>
       <div class="eq">\[ W \;=\; \frac{1}{2\pi} \oint dk \; \left( \hat{d}_x \,\partial_k \hat{d}_y - \hat{d}_y \,\partial_k \hat{d}_x \right) \;=\; \begin{cases} 0 &amp; (v &gt; w) \\ 1 &amp; (v &lt; w) \end{cases} \]</div>
       <p class="ja">
         が整数として定義できます。ギャップが開いている限り（軌跡が原点を通らない限り）、
-        <i>W</i> はホッピングの連続変形で変わりません。第三に、ゼロエネルギー状態は
+        \(W\) はホッピングの連続変形で変わりません。第三に、ゼロエネルギー状態は
         カイラル演算子の固有状態に取れるため、A 副格子のみ、または B 副格子のみに
         振幅を持ちます。右のエッジ状態のパネルで、青（A）だけが立っているのは
         このためです。
       </p>
       <p class="en">
         is well-defined as an integer. As long as the gap stays open (the loop avoids the
-        origin), <i>W</i> cannot change under any continuous deformation of the hoppings.
+        origin), \(W\) cannot change under any continuous deformation of the hoppings.
         Third, zero-energy states can be chosen as eigenstates of the chiral operator, so
         they live purely on the A sublattice or purely on the B sublattice — which is why
         only the blue (A) bars appear in the edge-state panel.
@@ -263,25 +262,25 @@
       <h4><span class="ja">バルク・エッジ対応</span><span class="en">Bulk–boundary correspondence</span></h4>
       <p class="ja">
         巻き付き数はバルク（周期境界）の量ですが、その帰結は端に現れます。開放端の
-        SSH 鎖では、片方の端あたりちょうど |<i>W</i>| 個のゼロエネルギー状態が現れます。
-        これがバルク・エッジ対応です。左のスペクトル図で <i>w</i>/<i>v</i> &gt; 1 の領域に
+        SSH 鎖では、片方の端あたりちょうど \(|W|\) 個のゼロエネルギー状態が現れます。
+        これがバルク・エッジ対応です。左のスペクトル図で \(w/v > 1\) の領域に
         現れる2本のミッドギャップ状態が、左端と右端のエッジ状態に対応します
-        （有限の鎖では両者がわずかに混成し、|<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> の
-        分裂が生じます。<i>N</i> を増やすと分裂が指数関数的に消えていくのを
+        （有限の鎖では両者がわずかに混成し、\(|E| \sim (v/w)^{N}\) の
+        分裂が生じます。\(N\) を増やすと分裂が指数関数的に消えていくのを
         観測値で確認できます）。
       </p>
       <p class="en">
         The winding number is a bulk (periodic-boundary) quantity, but its consequence
-        appears at the boundary: an open SSH chain hosts exactly |<i>W</i>| zero-energy
+        appears at the boundary: an open SSH chain hosts exactly \(|W|\) zero-energy
         states per edge. This is the bulk–boundary correspondence. The two mid-gap states in
-        the spectrum panel for <i>w</i>/<i>v</i> &gt; 1 are the left- and right-edge states
+        the spectrum panel for \(w/v > 1\) are the left- and right-edge states
         (in a finite chain they hybridize slightly, with splitting
-        |<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> — watch it vanish exponentially
-        as you increase <i>N</i>).
+        \(|E| \sim (v/w)^{N}\) — watch it vanish exponentially
+        as you increase \(N\)).
       </p>
       <p class="ja">
         重要なのは、この対応の頑健さです。ホッピングを乱雑にしても——つまり
-        <i>v</i>, <i>w</i> をサイトごとにランダムに変えても——カイラル対称性を保つ限り
+        \(v, w\) をサイトごとにランダムに変えても——カイラル対称性を保つ限り
         （副格子内ホッピングやオンサイトポテンシャルを入れない限り）、エッジ状態は
         厳密にゼロエネルギーに留まり続けます。エッジ状態を消す唯一の方法は、
         バルクのギャップを閉じるか、対称性を壊すことです。「対称性に守られた
@@ -289,7 +288,7 @@
       </p>
       <p class="en">
         What matters is the robustness of this correspondence. Make the hoppings disordered —
-        random <i>v</i>, <i>w</i> from site to site — and as long as chiral symmetry is
+        random \(v, w\) from site to site — and as long as chiral symmetry is
         preserved (no intra-sublattice hopping, no on-site potentials), the edge states stay
         pinned exactly at zero energy. The only ways to remove them are to close the bulk gap
         or to break the symmetry. The phrase "symmetry-protected topological (SPT) phase" is
@@ -298,42 +297,42 @@
 
       <h4><span class="ja">Zak 位相と Wannier 中心</span><span class="en">The Zak phase and Wannier centers</span></h4>
       <p class="ja">
-        巻き付き数と同じ情報は、下バンドのブロッホ状態 |<i>u</i>(<i>k</i>)⟩ の
+        巻き付き数と同じ情報は、下バンドのブロッホ状態 \(|u(k)\rangle\) の
         Berry 位相——1次元では Zak 位相と呼ばれます——にも書き込まれています。
       </p>
       <p class="en">
         The same information carried by the winding number is also encoded in the Berry
-        phase of the lower-band Bloch states |<i>u</i>(<i>k</i>)⟩ — in one dimension, the
+        phase of the lower-band Bloch states \(|u(k)\rangle\) — in one dimension, the
         Zak phase:
       </p>
       <div class="eq">\[ \gamma \;=\; i \oint dk \; \langle u(k) | \partial_k u(k) \rangle \;=\; \pi W \pmod{2\pi} \]</div>
       <p class="ja">
-        このページでは γ を離散 Berry 位相（Wilson ループ）として数値的に計算しており、
-        自明相で 0、トポロジカル相で π にぴったり量子化されるのが観測値で見えます。
+        このページでは \(\gamma\) を離散 Berry 位相（Wilson ループ）として数値的に計算しており、
+        自明相で \(0\)、トポロジカル相で \(\pi\) にぴったり量子化されるのが観測値で見えます。
         Zak 位相の物理的な意味を与えるのが Wannier 軌道です。バンドのブロッホ状態を
         重ね合わせて作る局在軌道（Wannier 軌道）の中心位置は
       </p>
       <p class="en">
-        On this page γ is computed numerically as a discrete Berry phase (a Wilson loop),
-        and the readout shows it quantized exactly to 0 in the trivial phase and π in the
+        On this page \(\gamma\) is computed numerically as a discrete Berry phase (a Wilson loop),
+        and the readout shows it quantized exactly to \(0\) in the trivial phase and \(\pi\) in the
         topological phase. The physical meaning of the Zak phase is provided by the Wannier
         orbitals: the center of the localized orbital built by superposing the Bloch states
         of the band sits at
       </p>
       <div class="eq">\[ \bar{x} \;=\; \frac{\gamma}{2\pi} \pmod{1} \]</div>
       <p class="ja">
-        （単位胞の長さを1とした座標）で与えられます。つまり γ = 0 の自明相では
-        Wannier 中心は単位胞の中心（<i>v</i> ボンドの上）にあり、γ = π の
-        トポロジカル相ではセルの境界（<i>w</i> ボンドの上）にあります。
+        （単位胞の長さを1とした座標）で与えられます。つまり \(\gamma = 0\) の自明相では
+        Wannier 中心は単位胞の中心（\(v\) ボンドの上）にあり、\(\gamma = \pi\) の
+        トポロジカル相ではセルの境界（\(w\) ボンドの上）にあります。
         これは電子の電気分極そのものでもあり（modern theory of polarization）、
-        トポロジカル相は分極 <i>P</i> = <i>e</i>/2（単位胞あたり）を持ちます。
+        トポロジカル相は分極 \(P = e/2\)（単位胞あたり）を持ちます。
       </p>
       <p class="en">
-        (in units where the unit cell has length 1). So in the trivial phase (γ = 0) the
-        Wannier centers sit at the middle of the unit cell, on the <i>v</i> bonds; in the
-        topological phase (γ = π) they sit at the cell boundary, on the <i>w</i> bonds. This
+        (in units where the unit cell has length 1). So in the trivial phase (\(\gamma = 0\)) the
+        Wannier centers sit at the middle of the unit cell, on the \(v\) bonds; in the
+        topological phase (\(\gamma = \pi\)) they sit at the cell boundary, on the \(w\) bonds. This
         is nothing but the electronic polarization (the modern theory of polarization): the
-        topological phase carries <i>P</i> = <i>e</i>/2 per unit cell.
+        topological phase carries \(P = e/2\) per unit cell.
       </p>
       <p class="ja">
         この描像を使うと、エッジ状態の存在が一枚の絵で理解できます。上の模式図で、
@@ -355,33 +354,33 @@
       <p class="ja">
         ひとつ注意すべき点があります。Zak 位相の値そのものは単位胞の取り方
         （原点の選び方）に依存します。A–B をセルとするか B–A をセルとするかで
-        γ は 0 と π が入れ替わります。物理的に意味があるのは、対称性
-        （ここではカイラル対称性や反転対称性）が γ を 0 か π に量子化すること、
-        そして2つの相の「差」が π であることです。実際、どちらの相が「自明」かは
+        \(\gamma\) は \(0\) と \(\pi\) が入れ替わります。物理的に意味があるのは、対称性
+        （ここではカイラル対称性や反転対称性）が \(\gamma\) を \(0\) か \(\pi\) に量子化すること、
+        そして2つの相の「差」が \(\pi\) であることです。実際、どちらの相が「自明」かは
         端の切り方に依存する、というのは上の Wannier の絵からも明らかです。
       </p>
       <p class="en">
         One caveat: the value of the Zak phase itself depends on the choice of unit cell
-        (the choice of origin) — taking A–B versus B–A as the cell swaps γ = 0 and π. What
-        is physical is that symmetry (here chiral or inversion) quantizes γ to 0 or π, and
-        that the two phases differ by π. Indeed, which phase is "trivial" depends on how the
+        (the choice of origin) — taking A–B versus B–A as the cell swaps \(\gamma = 0\) and \(\pi\). What
+        is physical is that symmetry (here chiral or inversion) quantizes \(\gamma\) to \(0\) or \(\pi\), and
+        that the two phases differ by \(\pi\). Indeed, which phase is "trivial" depends on how the
         chain is cut — as the Wannier picture above makes obvious.
       </p>
 
       <h4><span class="ja">このページの計算と参考書</span><span class="en">Numerics on this page, and further reading</span></h4>
       <p class="ja">
         スペクトルとエッジ状態は
-        開放端の 2<i>N</i>×2<i>N</i> ホッピング行列を Jacobi 法で対角化したもの、
-        Zak 位相は下バンドのブロッホ状態の重なり ⟨<i>u</i>(<i>k<sub>j</sub></i>)|<i>u</i>(<i>k</i><sub><i>j</i>+1</sub>)⟩ の
-        積の偏角（離散 Berry 位相）、巻き付き数は <b>d</b>(<i>k</i>) の偏角の巻き数として
+        開放端の \(2N \times 2N\) ホッピング行列を Jacobi 法で対角化したもの、
+        Zak 位相は下バンドのブロッホ状態の重なり \(\langle u(k_j) | u(k_{j+1}) \rangle\) の
+        積の偏角（離散 Berry 位相）、巻き付き数は \(\boldsymbol{d}(k)\) の偏角の巻き数として
         数値的に評価しています。
       </p>
       <p class="en">
-        The spectrum and edge states are obtained by Jacobi diagonalization of the open-chain 2<i>N</i>×2<i>N</i> hopping matrix, the Zak
+        The spectrum and edge states are obtained by Jacobi diagonalization of the open-chain \(2N \times 2N\) hopping matrix, the Zak
         phase as the phase of the product of overlaps
-        ⟨<i>u</i>(<i>k<sub>j</sub></i>)|<i>u</i>(<i>k</i><sub><i>j</i>+1</sub>)⟩ (a discrete
+        \(\langle u(k_j) | u(k_{j+1}) \rangle\) (a discrete
         Berry phase), and the winding number as the numerical winding of the phase of
-        <b>d</b>(<i>k</i>).
+        \(\boldsymbol{d}(k)\).
       </p>
       <p class="ja">
         SSH 模型から始めてトポロジカルバンド理論を体系的に学ぶには、
@@ -697,7 +696,7 @@
     var ymid = mT + ph / 2;
     f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
       ')" font-family="' + SERIF + '" font-size="19" fill="' + f.c.fg +
-      '">|ψ|<tspan dy="-6" font-size="13">2</tspan></text>');
+      '">|<tspan font-style="italic">ψ</tspan>|<tspan dy="-6" font-size="13">2</tspan></text>');
     // legend
     f.o.push('<rect x="' + (mL + pw - 120) + '" y="' + (mT + 14) + '" width="11" height="11" fill="' + BLUE + '"/>');
     f.text(mL + pw - 103, mT + 24, 'A', 16, f.c.fg, 'start');
@@ -737,11 +736,11 @@
     // axes through origin
     f.line(px(xmin), py(0), px(xmax), py(0), f.c.sub, 0.8);
     f.line(px(0), mT, px(0), mT + ph, f.c.sub, 0.8);
-    f.text(mL + pw / 2, f.H - 12, '<tspan font-style="italic">d</tspan><tspan dy="4" font-size="13">x</tspan>', 19, f.c.fg);
+    f.text(mL + pw / 2, f.H - 12, '<tspan font-style="italic">d</tspan><tspan dy="4" font-size="13" font-style="italic">x</tspan>', 19, f.c.fg);
     var ymid = mT + ph / 2;
     f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
       ')" font-family="' + SERIF + '" font-size="19" fill="' + f.c.fg +
-      '"><tspan font-style="italic">d</tspan><tspan dy="4" font-size="13">y</tspan></text>');
+      '"><tspan font-style="italic">d</tspan><tspan dy="4" font-size="13" font-style="italic">y</tspan></text>');
     // circle
     f.o.push('<circle cx="' + px(1) + '" cy="' + py(0) + '" r="' + (w * scale).toFixed(1) +
       '" fill="' + BLUE + '" fill-opacity="0.08" stroke="' + BLUE + '" stroke-width="2.4"/>');

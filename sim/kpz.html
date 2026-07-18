@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .surf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
@@ -52,12 +52,12 @@
     <h1 style="font-size:2rem;"><span class="ja">界面成長：ランダム堆積 vs KPZ</span><span class="en">Surface Growth: Random Deposition vs KPZ</span></h1>
     <p class="hero-sub ja">
       同じ「粒を落として積む」でも、ルールがひとつ違うだけで界面のスケーリングが変わります。
-      界面の幅 <i>W</i>(<i>t</i>) の log-log プロットで、成長指数 β = 1/2 と 1/3 の違いを見てみてください。
+      界面の幅 \(W(t)\) の log-log プロットで、成長指数 \(\beta = 1/2\) と \(1/3\) の違いを見てみてください。
     </p>
     <p class="hero-sub en">
       Two ways of dropping particles, one rule apart — and the interface scaling changes.
-      Watch the log-log plot of the width <i>W</i>(<i>t</i>) distinguish the growth exponents
-      β = 1/2 and 1/3.
+      Watch the log-log plot of the width \(W(t)\) distinguish the growth exponents
+      \(\beta = 1/2\) and \(1/3\).
     </p>
   </section>
 
@@ -83,79 +83,79 @@
         <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
       </div>
       <div class="obs">
-        <i>t</i> = <b id="tVal">0</b> <span class="ja">層</span><span class="en">monolayers</span>,
-        <i>L</i> = 1024（<span class="ja">周期境界条件</span><span class="en">periodic boundaries</span>）<br>
-        <i>W</i><sub>RD</sub> = <b id="wRdVal">0.0</b>,
-        <i>W</i><sub>RSOS</sub> = <b id="wBdVal">0.0</b>
+        \(t\) = <b id="tVal">0</b> <span class="ja">層</span><span class="en">monolayers</span>,
+        \(L\) = 1024（<span class="ja">周期境界条件</span><span class="en">periodic boundaries</span>）<br>
+        \(W_{\mathrm{RD}}\) = <b id="wRdVal">0.0</b>,
+        \(W_{\mathrm{RSOS}}\) = <b id="wBdVal">0.0</b>
       </div>
     </div>
 
     <div class="card">
-      <h3><span class="ja">界面の幅 <i>W</i>(<i>t</i>)（log-log）</span><span class="en">Interface width <i>W</i>(<i>t</i>) (log-log)</span></h3>
+      <h3><span class="ja">界面の幅 \(W(t)\)（log-log）</span><span class="en">Interface width \(W(t)\) (log-log)</span></h3>
       <div id="wChart"></div>
     </div>
 
     <div class="card">
       <h3><span class="ja">解説</span><span class="en">About</span></h3>
       <p class="ja">
-        高さ <i>h</i><sub>i</sub> の界面の「荒れ具合」を測る量が、界面の幅
+        高さ \(h_i\) の界面の「荒れ具合」を測る量が、界面の幅
         （高さの標準偏差）です。
       </p>
       <p class="en">
-        The "roughness" of an interface with heights <i>h</i><sub>i</sub> is measured by
+        The "roughness" of an interface with heights \(h_i\) is measured by
         the interface width — the standard deviation of the height,
       </p>
       <div class="eq">\[ W(L,t) \;=\; \sqrt{\, \frac{1}{L} \sum_{i=1}^{L} \left( h_i - \bar{h} \right)^2 \,} \]</div>
       <p class="ja">
         <b>ランダム堆積</b>（左・青）では、ランダムに選んだ列に粒がそのまま積まれます。
         各列の高さは他の列と一切相関を持たず、それぞれが独立な Poisson 過程
-        ——時間方向のランダムウォーク——になります。平均 <i>t</i>（単位：層）の
-        Poisson 分布は分散も <i>t</i> なので、幅は厳密に
+        ——時間方向のランダムウォーク——になります。平均 \(t\)（単位：層）の
+        Poisson 分布は分散も \(t\) なので、幅は厳密に
       </p>
       <p class="en">
         In <b>random deposition</b> (left, blue), each particle simply stacks on a randomly
         chosen column. The columns are completely uncorrelated: each height is an
         independent Poisson process — a random walk in time. Since a Poisson distribution
-        with mean <i>t</i> (in monolayers) also has variance <i>t</i>, the width obeys
+        with mean \(t\) (in monolayers) also has variance \(t\), the width obeys
         exactly
       </p>
       <div class="eq">\[ W_{\mathrm{RD}}(t) \;=\; \sqrt{t} \]</div>
       <p class="ja">
         となります。シミュレーションの値がこの式にぴったり乗ること
-        （例えば <i>t</i> = 1000 で <i>W</i> ≈ 31.6）を確認してみてください。
+        （例えば \(t = 1000\) で \(W \approx 31.6\)）を確認してみてください。
         横方向の相関は永遠に育たず、界面はどこまでも荒れ続けます。
       </p>
       <p class="en">
-        Check that the simulated values sit right on this curve (e.g. <i>W</i> ≈ 31.6 at
-        <i>t</i> = 1000). Lateral correlations never develop, and the surface roughens
+        Check that the simulated values sit right on this curve (e.g. \(W \approx 31.6\) at
+        \(t = 1000\)). Lateral correlations never develop, and the surface roughens
         without bound.
       </p>
       <p class="ja">
         <b>RSOS 模型</b>（右・赤、Kim–Kosterlitz 模型）では、粒はランダムに選んだ列に
         落ちますが、積んだ後も両隣との高低差が1以内に収まるときだけ受け入れられます。
         この制約が隣の列どうしを結びつけ、横方向の相関長が時間とともに
-        ξ<sub>∥</sub> ∼ <i>t</i><sup>1/<i>z</i></sup> で成長します。このような成長界面は
+        \(\xi_\parallel \sim t^{1/z}\) で成長します。このような成長界面は
         一般に Family–Vicsek スケーリングに従います。
       </p>
       <p class="en">
         In the <b>RSOS model</b> (right, red; Kim–Kosterlitz), a particle drops onto a
         random column but is accepted only if the height differences with both neighbors
         stay at most one. This constraint couples neighboring columns, and a lateral
-        correlation length grows as ξ<sub>∥</sub> ∼ <i>t</i><sup>1/<i>z</i></sup>. Growing
+        correlation length grows as \(\xi_\parallel \sim t^{1/z}\). Growing
         interfaces of this kind generally obey Family–Vicsek scaling,
       </p>
       <div class="eq">\[ W(L,t) \;\simeq\; L^{\alpha} \, f\!\left( \frac{t}{L^{z}} \right), \qquad f(u) \sim \begin{cases} u^{\beta} & (u \ll 1) \\[2pt] \mathrm{const} & (u \gg 1) \end{cases}, \qquad \beta = \frac{\alpha}{z} \]</div>
       <p class="ja">
-        つまり最初は <i>W</i> ∼ <i>t</i><sup>β</sup> で成長し、相関長が系のサイズに達する
-        <i>t</i> ∼ <i>L</i><sup><i>z</i></sup> で成長が止まって <i>W</i> ∼ <i>L</i><sup>α</sup>
-        に飽和します（このページの設定 <i>L</i> = 1024 では飽和は <i>t</i> ∼ 3×10⁴ 層あたりで、
+        つまり最初は \(W \sim t^{\beta}\) で成長し、相関長が系のサイズに達する
+        \(t \sim L^{z}\) で成長が止まって \(W \sim L^{\alpha}\)
+        に飽和します（このページの設定 \(L = 1024\) では飽和は \(t \sim 3\times10^4\) 層あたりで、
         プロット窓のすぐ外にあります）。
       </p>
       <p class="en">
-        That is, the width first grows as <i>W</i> ∼ <i>t</i><sup>β</sup>, and saturates at
-        <i>W</i> ∼ <i>L</i><sup>α</sup> once the correlation length reaches the system size
-        at <i>t</i> ∼ <i>L</i><sup><i>z</i></sup> (for the present <i>L</i> = 1024,
-        saturation sits near <i>t</i> ∼ 3×10⁴ monolayers, just outside the plot window).
+        That is, the width first grows as \(W \sim t^{\beta}\), and saturates at
+        \(W \sim L^{\alpha}\) once the correlation length reaches the system size
+        at \(t \sim L^{z}\) (for the present \(L = 1024\),
+        saturation sits near \(t \sim 3\times10^4\) monolayers, just outside the plot window).
       </p>
       <p class="ja">
         この普遍クラスの連続記述が、KPZ（Kardar–Parisi–Zhang）方程式です。
@@ -166,24 +166,24 @@
       </p>
       <div class="eq">\[ \frac{\partial h}{\partial t} \;=\; \nu \nabla^2 h \;+\; \frac{\lambda}{2} \left( \nabla h \right)^2 \;+\; \eta, \qquad \left\langle \eta(x,t)\,\eta(x',t') \right\rangle = 2D\,\delta(x-x')\,\delta(t-t') \]</div>
       <p class="ja">
-        非線形項 (∇<i>h</i>)² は「傾いた斜面は法線方向に成長する」という幾何学的な効果を
-        表していて、これこそがランダム堆積や、λ = 0 の線形理論
-        （Edwards–Wilkinson 方程式：1+1次元で β = 1/4 の別クラス）との本質的な違いです。
+        非線形項 \((\nabla h)^2\) は「傾いた斜面は法線方向に成長する」という幾何学的な効果を
+        表していて、これこそがランダム堆積や、\(\lambda = 0\) の線形理論
+        （Edwards–Wilkinson 方程式：1+1次元で \(\beta = 1/4\) の別クラス）との本質的な違いです。
         1+1次元の KPZ では、ガリレイ不変性と揺動散逸関係という2つの特殊事情によって
         臨界指数が厳密に決まります。
       </p>
       <p class="en">
-        The nonlinear term (∇<i>h</i>)² encodes the geometric fact that a tilted surface
+        The nonlinear term \((\nabla h)^2\) encodes the geometric fact that a tilted surface
         grows along its normal — this is the essential difference from random deposition
-        and from the linear λ = 0 theory (the Edwards–Wilkinson equation, a distinct class
-        with β = 1/4 in 1+1 dimensions). In 1+1 dimensions, Galilean invariance together
+        and from the linear \(\lambda = 0\) theory (the Edwards–Wilkinson equation, a distinct class
+        with \(\beta = 1/4\) in 1+1 dimensions). In 1+1 dimensions, Galilean invariance together
         with a fluctuation-dissipation relation fixes the exponents exactly:
       </p>
       <div class="eq">\[ \alpha = \frac{1}{2}, \qquad \beta = \frac{1}{3}, \qquad z = \frac{3}{2} \]</div>
       <p class="ja">
         ちなみに、KPZ クラスの代表例としてよく紹介される ballistic deposition
         （落ちてきた粒が隣の柱に触れた瞬間にくっつく模型）も同じユニバーサリティクラス
-        ですが、固有幅によるスケーリング補正が大きく、小さな系では β = 1/3 が
+        ですが、固有幅によるスケーリング補正が大きく、小さな系では \(\beta = 1/3\) が
         見えにくいことが知られています。このページで RSOS 模型を採用しているのは
         そのためです。
       </p>
@@ -191,7 +191,7 @@
         Incidentally, ballistic deposition — the model where a falling particle sticks the
         moment it touches a neighboring column — belongs to the same universality class and
         is the textbook example of KPZ growth, but its intrinsic-width corrections to
-        scaling are notoriously large, hiding β = 1/3 in small systems. That is why this
+        scaling are notoriously large, hiding \(\beta = 1/3\) in small systems. That is why this
         page uses the RSOS model.
       </p>
       <p class="ja">

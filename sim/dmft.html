@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -51,94 +51,93 @@
     <h1 style="font-size:2rem;"><span class="ja">Hubbard 模型と Mott 転移：動的平均場理論（DMFT）</span><span class="en">The Hubbard Model and the Mott Transition: Dynamical Mean-Field Theory (DMFT)</span></h1>
     <p class="hero-sub ja">
       「電子は波か、粒子か」——強相関電子系のいちばん深い問いを、最も単純な模型で体験するページです。
-      半充填 Hubbard 模型（Bethe 格子）の動的平均場理論（DMFT）方程式を、
-      スライダーを動かすたびにその場で自己無撞着に解き、スペクトル関数 A(ω) が
-      金属から Mott 絶縁体へ変わる瞬間を観察できます。
+      半充填 Hubbard 模型（Bethe 格子）を動的平均場理論（DMFT）で解いて、
+      スペクトル関数 \(A(\omega)\) が金属から Mott 絶縁体へ変わる瞬間を観察できます。
     </p>
     <p class="hero-sub en">
       Is the electron a wave or a particle? This page lets you experience the deepest question
-      of correlated electrons through the simplest model. Every time you move the slider, the
-      dynamical mean-field (DMFT) equations of the half-filled Hubbard model on the Bethe
-      lattice are solved self-consistently on the spot, and you can watch the spectral
-      function A(ω) turn from a metal into a Mott insulator.
+      of correlated electrons through the simplest model. The half-filled Hubbard model on the
+      Bethe lattice is solved with dynamical mean-field theory (DMFT), and you can watch the
+      spectral function \(A(\omega)\) turn from a metal into a Mott insulator.
     </p>
   </section>
 
   <section>
     <div class="card">
-      <h3><span class="ja">スペクトル関数 A(ω)：金属から Mott 絶縁体へ</span><span class="en">Spectral function A(ω): from metal to Mott insulator</span></h3>
+      <h3><span class="ja">スペクトル関数 \(A(\omega)\)：金属から Mott 絶縁体へ</span><span class="en">Spectral function \(A(\omega)\): from metal to Mott insulator</span></h3>
       <p class="ja" style="line-height:2;">
-        スライダーで相互作用 U を変えると、DMFT（不純物ソルバーは IPT）をその場で解き直します。
-        U を上げていくと、中央の準粒子ピークが痩せながら、±U/2 に Hubbard バンドが育ち、
+        スライダーで相互作用 \(U\) を変えると、DMFT（不純物ソルバーは IPT）をその場で解き直します。
+        \(U\) を上げていくと、中央の準粒子ピークが痩せながら、\(\pm U/2\) に Hubbard バンドが育ち、
         <b>3ピーク構造</b>を経て、あるところで中央のピークが消えて<b> Mott ギャップ</b>が開きます。
-        解は直前の解を種にして解かれる（＝履歴に依存する）ので、U を上げてから下げると
-        同じ U でも違う解に落ちることがあります。これが共存領域（ヒステリシス）です。
+        解は直前の解を種にして解かれる（＝履歴に依存する）ので、\(U\) を上げてから下げると
+        同じ \(U\) でも違う解に落ちることがあります。これが共存領域（ヒステリシス）です。
         「金属の種」「絶縁体の種」ボタンで種を選び直せます。
       </p>
       <p class="en" style="line-height:2;">
-        Moving the slider re-solves the DMFT equations (with the IPT impurity solver) on the
-        spot. As U grows, the central quasiparticle peak sharpens and loses weight while
-        Hubbard bands build up at ±U/2 — the <b>three-peak structure</b> — until the central
+        Moving the slider re-solves the DMFT self-consistency loop (with the IPT impurity
+        solver) on the spot. As \(U\) grows, the central quasiparticle peak sharpens and loses weight while
+        Hubbard bands build up at \(\pm U/2\) — the <b>three-peak structure</b> — until the central
         peak disappears and the <b>Mott gap</b> opens. Each solution is seeded by the previous
-        one (i.e., it depends on history), so sweeping U up and then down can land on
-        different solutions at the same U: the coexistence region (hysteresis). Use the
+        one (i.e., it depends on history), so sweeping \(U\) up and then down can land on
+        different solutions at the same \(U\): the coexistence region (hysteresis). Use the
         “metallic seed” / “insulating seed” buttons to re-seed.
       </p>
       <div class="ctrl">
-        <label><span class="ja">相互作用</span><span class="en">Interaction</span> U/W = <span class="val" id="uVal">1.25</span>
-          <span style="color:var(--text-dim); font-size:0.85rem;">（<span class="ja">W は無相互作用バンドの半バンド幅：D⁰(ε) は |ε| ≤ W に広がる半円型。W = 2t</span><span class="en">W is the half bandwidth of the noninteracting band: the semicircular D⁰(ε) extends over |ε| ≤ W; W = 2t</span>）</span></label>
+        <label><span class="ja">相互作用</span><span class="en">Interaction</span> \(U/W\) = <span class="val" id="uVal">1.25</span>
+          <span style="color:var(--text-dim); font-size:0.85rem;">（<span class="ja">\(W\) は無相互作用バンドの半バンド幅：\(D^{(0)}(\varepsilon)\) は \(|\varepsilon| \le W\) に広がる半円型。\(W = 2t\)</span><span class="en">\(W\) is the half bandwidth of the noninteracting band: the semicircular \(D^{(0)}(\varepsilon)\) extends over \(|\varepsilon| \le W\); \(W = 2t\)</span>）</span></label>
         <input type="range" id="uSlider" min="0" max="5" step="0.05" value="2.5">
       </div>
       <div class="ctrl">
-        <button class="sim-btn" id="bU10"><span>U/W = 1.0</span></button>
-        <button class="sim-btn" id="bU25"><span>U/W = 2.5</span></button>
-        <button class="sim-btn" id="bU34"><span>U/W = 3.4</span></button>
-        <button class="sim-btn" id="bU40"><span>U/W = 4.0</span></button>
+        <button class="sim-btn" id="bU10"><span>\(U/W = 1.0\)</span></button>
+        <button class="sim-btn" id="bU25"><span>\(U/W = 2.5\)</span></button>
+        <button class="sim-btn" id="bU34"><span>\(U/W = 3.4\)</span></button>
+        <button class="sim-btn" id="bU40"><span>\(U/W = 4.0\)</span></button>
+      </div>
+      <div class="ctrl">
         <button class="sim-btn" id="bSeedM"><span class="ja">金属の種から解く</span><span class="en">Solve from metallic seed</span></button>
         <button class="sim-btn" id="bSeedI"><span class="ja">絶縁体の種から解く</span><span class="en">Solve from insulating seed</span></button>
       </div>
       <div class="obs-compact" style="margin-bottom:0.9rem;">
-        <span class="ja">準粒子重み</span><span class="en">Quasiparticle weight</span> Z = <b id="zVal">–</b>
-        <span class="ja">有効質量</span><span class="en">Effective mass</span> m*/m = <b id="mVal">–</b>
+        <span class="ja">準粒子重み</span><span class="en">Quasiparticle weight</span> \(Z\) = <b id="zVal">–</b>
+        <span class="ja">有効質量</span><span class="en">Effective mass</span> \(m^{*}/m\) = <b id="mVal">–</b>
         <span class="ja">状態</span><span class="en">Phase</span>: <b id="phaseVal">–</b><br>
         <span class="ja">自己無撞着ループ</span><span class="en">Self-consistency loop</span>: <b id="iterVal">–</b>
         <span class="ja">回で収束</span><span class="en">iterations</span>（<b id="timeVal">–</b> ms）
       </div>
       <div class="fig-box" id="figA"></div>
       <p class="fig-cap ja">
-        半充填 Hubbard 模型（Bethe 格子、常磁性解、T = 0）の局所スペクトル関数 A(ω)。
-        横軸はエネルギー ω（半バンド幅 W 単位）、縦軸は A(ω)W。金属解では、
-        Fermi 準位 ω = 0 の値が相互作用によらず無相互作用の値
-        A(0) = D⁰(0) = 2/πW に<b>ピン止め</b>されることに注目してください（Luttinger の定理の帰結）。
-        破線は現在の ±U/2（Hubbard バンドの目安の位置）です。
+        半充填 Hubbard 模型（Bethe 格子、常磁性解、\(T = 0\)）の局所スペクトル関数 \(A(\omega)\)。
+        横軸はエネルギー \(\omega\)（半バンド幅 \(W\) 単位）、縦軸は \(A(\omega)W\)。金属解では、
+        Fermi 準位 \(\omega = 0\) の値が相互作用によらず無相互作用の値
+        \(A(0) = D^{(0)}(0) = 2/\pi W\) に<b>ピン止め</b>されることに注目してください（Luttinger の定理の帰結）。
+        破線は現在の \(\pm U/2\)（Hubbard バンドの目安の位置）です。
       </p>
       <p class="fig-cap en">
-        Local spectral function A(ω) of the half-filled Hubbard model (Bethe lattice,
-        paramagnetic, T = 0). Horizontal axis: energy ω in units of the half bandwidth W;
-        vertical axis: A(ω)W. Note that in the metallic solution the value at the Fermi level
-        ω = 0 is <b>pinned</b> at the noninteracting value A(0) = D⁰(0) = 2/πW regardless of U
-        (a consequence of Luttinger’s theorem). Dashed lines mark ±U/2, the expected
+        Local spectral function \(A(\omega)\) of the half-filled Hubbard model (Bethe lattice,
+        paramagnetic, \(T = 0\)). Horizontal axis: energy \(\omega\) in units of the half bandwidth \(W\);
+        vertical axis: \(A(\omega)W\). Note that in the metallic solution the value at the Fermi level
+        \(\omega = 0\) is <b>pinned</b> at the noninteracting value \(A(0) = D^{(0)}(0) = 2/\pi W\) regardless of \(U\)
+        (a consequence of Luttinger’s theorem). Dashed lines mark \(\pm U/2\), the expected
         positions of the Hubbard bands.
       </p>
     </div>
 
     <div class="card">
-      <h3><span class="ja">準粒子重み Z(U) とヒステリシス</span><span class="en">Quasiparticle weight Z(U) and hysteresis</span></h3>
+      <h3><span class="ja">準粒子重み \(Z(U)\) とヒステリシス</span><span class="en">Quasiparticle weight \(Z(U)\) and hysteresis</span></h3>
       <p class="ja" style="line-height:2;">
         <b>まず「上げ掃引」を、続けて「下げ掃引」を実行してみてください。</b>
-        金属側から U を上げると Z は連続的に 0 へ向かい、U<sub>c2</sub> で金属解が消えます。
-        絶縁体側から U を下げると、U<sub>c2</sub> より小さい U<sub>c1</sub> まで絶縁体解が生き残ります。
-        あいだの U<sub>c1</sub> &lt; U &lt; U<sub>c2</sub> が<b>共存領域</b>：同じ U に金属と絶縁体、
+        金属側から \(U\) を上げると \(Z\) は連続的に 0 へ向かい、\(U_{c2}\) で金属解が消えます。
+        絶縁体側から \(U\) を下げると、\(U_{c2}\) より小さい \(U_{c1}\) まで絶縁体解が生き残ります。
+        あいだの \(U_{c1} &lt; U &lt; U_{c2}\) が<b>共存領域</b>：同じ \(U\) に金属と絶縁体、
         2つの自己無撞着解が存在します（有限温度では1次転移と臨界終点になります）。
         各点で DMFT を解きながら描くので、点が1つずつ現れます。
       </p>
       <p class="en" style="line-height:2;">
-        <b>Run the “up sweep” first, then the “down sweep.”</b> Coming from the metal, Z heads
-        continuously toward 0 and the metallic solution dies at U<sub>c2</sub>. Coming from
-        the insulator, the insulating solution survives down to U<sub>c1</sub> &lt;
-        U<sub>c2</sub>. In between, U<sub>c1</sub> &lt; U &lt; U<sub>c2</sub>, is the
+        <b>Run the “up sweep” first, then the “down sweep.”</b> Coming from the metal, \(Z\) heads
+        continuously toward 0 and the metallic solution dies at \(U_{c2}\). Coming from
+        the insulator, the insulating solution survives down to \(U_{c1} &lt; U_{c2}\). In between, \(U_{c1} &lt; U &lt; U_{c2}\), is the
         <b>coexistence region</b>: two self-consistent solutions — metal and insulator — exist
-        at the same U (at finite temperature this becomes a first-order line ending at a
+        at the same \(U\) (at finite temperature this becomes a first-order line ending at a
         critical point). Each point is a full DMFT solution, so they appear one by one.
       </p>
       <div class="ctrl">
@@ -149,27 +148,27 @@
       </div>
       <div class="fig-box" id="figZ"></div>
       <p class="fig-cap ja">
-        準粒子重み Z = (1 − ∂Re Σ/∂ω)<sup>−1</sup>（ω = 0）。Z は「電子の波らしさ」の残量で、
-        有効質量は m*/m = 1/Z。赤（●）が上げ掃引（金属の種）、青（■）が下げ掃引（絶縁体の種）です。
-        このページの IPT では U<sub>c2</sub> ≈ 3.45–3.5 W、U<sub>c1</sub> ≈ 2.7–2.75 W になり、
-        そのあいだで2つの解が共存します（微小幅 η → 0 の外挿では IPT の文献値
-        U<sub>c2</sub> ≈ 3.37 W に収束することを確認済み。「このページの計算」参照）。
-        なお T = 0 では、共存領域でも<b>金属解のほうが常にエネルギーが低い</b>ことが
-        知られており、絶対零度での実際の転移は U<sub>c2</sub> で Z → 0 とともに
+        準粒子重み \(Z = (1 - \partial\,\mathrm{Re}\,\Sigma/\partial\omega)^{-1}\)（\(\omega = 0\)）。\(Z\) は「電子の波らしさ」の残量で、
+        有効質量は \(m^{*}/m = 1/Z\)。赤（●）が上げ掃引（金属の種）、青（■）が下げ掃引（絶縁体の種）です。
+        このページの IPT では \(U_{c2} \approx 3.45\text{–}3.5\,W\)、\(U_{c1} \approx 2.7\text{–}2.75\,W\) になり、
+        そのあいだで2つの解が共存します（微小幅 \(\eta \to 0\) の外挿では IPT の文献値
+        \(U_{c2} \approx 3.37\,W\) に収束することを確認済み。「このページの計算」参照）。
+        なお \(T = 0\) では、共存領域でも<b>金属解のほうが常にエネルギーが低い</b>ことが
+        知られており、絶対零度での実際の転移は \(U_{c2}\) で \(Z \to 0\) とともに
         連続的（2次転移的）に起こります。ヒステリシスが物理的な1次転移として現れるのは
         有限温度です。
       </p>
       <p class="fig-cap en">
-        Quasiparticle weight Z = (1 − ∂Re Σ/∂ω)<sup>−1</sup> at ω = 0 — the remaining
-        “waveness” of the electron, with effective mass m*/m = 1/Z. Red (●): up sweep
+        Quasiparticle weight \(Z = (1 - \partial\,\mathrm{Re}\,\Sigma/\partial\omega)^{-1}\) at \(\omega = 0\) — the remaining
+        “waveness” of the electron, with effective mass \(m^{*}/m = 1/Z\). Red (●): up sweep
         (metallic seed); blue (■): down sweep (insulating seed). With the IPT solver used
-        here, U<sub>c2</sub> ≈ 3.45–3.5 W and U<sub>c1</sub> ≈ 2.7–2.75 W, with two coexisting
-        solutions in between (extrapolating the broadening η → 0 we verified convergence to
-        the IPT literature value U<sub>c2</sub> ≈ 3.37 W; see “Numerics on this page”).
-        Note that at T = 0 <b>the metallic solution is known to always have the lower
+        here, \(U_{c2} \approx 3.45\text{–}3.5\,W\) and \(U_{c1} \approx 2.7\text{–}2.75\,W\), with two coexisting
+        solutions in between (extrapolating the broadening \(\eta \to 0\) we verified convergence to
+        the IPT literature value \(U_{c2} \approx 3.37\,W\); see “Numerics on this page”).
+        Note that at \(T = 0\) <b>the metallic solution is known to always have the lower
         energy</b> throughout the coexistence region, so the actual zero-temperature
-        transition is continuous (second-order-like), occurring at U<sub>c2</sub> with
-        Z → 0. The hysteresis becomes a physical first-order transition at finite
+        transition is continuous (second-order-like), occurring at \(U_{c2}\) with
+        \(Z \to 0\). The hysteresis becomes a physical first-order transition at finite
         temperature.
       </p>
     </div>
@@ -180,12 +179,12 @@
       <h4 style="margin-top:0.6rem;"><span class="ja">Hubbard 模型：最も単純で、最も難しい</span><span class="en">The Hubbard model: the simplest, and the hardest</span></h4>
       <p class="ja">
         Hubbard 模型は、固体中の電子の相関を記述する「最小の」模型です。
-        格子の上を電子が飛び移り（ホッピング t）、同じサイトに上下スピンの電子が
-        重なったときだけエネルギー U を払う：
+        格子の上を電子が飛び移り（ホッピング \(t\)）、同じサイトに上下スピンの電子が
+        重なったときだけエネルギー \(U\) を払う：
       </p>
       <p class="en">
         The Hubbard model is the minimal model of electron correlation in a solid: electrons
-        hop between lattice sites (hopping t), and pay an energy U only when an up-spin and a
+        hop between lattice sites (hopping \(t\)), and pay an energy \(U\) only when an up-spin and a
         down-spin electron occupy the same site:
       </p>
       <div class="eq">\[
@@ -195,43 +194,43 @@
       \]</div>
       <p class="ja">
         1963年に Hubbard、Gutzwiller、金森順次郎がそれぞれ独立に導入しました。
-        パラメータは実質 U/t の1つ（と電子数）だけ。それなのに、この模型は
+        パラメータは実質 \(U/t\) の1つ（と電子数）だけ。それなのに、この模型は
         60年経ったいまも2次元以上では厳密に解けておらず、磁性・金属絶縁体転移・
         超伝導など、強相関物理のほぼすべてがこの1行に詰まっていると考えられています。
         以下ではバンドが半分まで埋まった「半充填」の場合を考えます。
-        2つの極限は簡単です。U = 0 なら、ただのバンド金属。
-        t = 0 なら、各サイトに電子が1個ずつ座った絶縁体です。
-        問題は、そのあいだ——U がバンド幅と同程度のとき——に起こります。
+        2つの極限は簡単です。\(U = 0\) なら、ただのバンド金属。
+        \(t = 0\) なら、各サイトに電子が1個ずつ座った絶縁体です。
+        問題は、そのあいだ——\(U\) がバンド幅と同程度のとき——に起こります。
       </p>
       <p class="en">
         It was introduced independently by Hubbard, Gutzwiller, and Kanamori in 1963. There is
-        essentially a single parameter, U/t (plus the filling). Yet sixty years on, the model
+        essentially a single parameter, \(U/t\) (plus the filling). Yet sixty years on, the model
         remains unsolved in two or more dimensions, and nearly all of strongly correlated
         physics — magnetism, metal–insulator transitions, superconductivity — is believed to
         be encoded in this one line. We consider the half-filled case below. The two limits
-        are easy: at U = 0 it is a plain band metal; at t = 0 it is an insulator with one
-        electron parked on each site. The problem is everything in between — when U is
+        are easy: at \(U = 0\) it is a plain band metal; at \(t = 0\) it is an insulator with one
+        electron parked on each site. The problem is everything in between — when \(U\) is
         comparable to the bandwidth.
       </p>
 
-      <h4><span class="ja">波か、粒子か：n と θ の不確定性関係</span><span class="en">Wave or particle? The n–θ uncertainty relation</span></h4>
+      <h4><span class="ja">波か、粒子か：\(n\) と \(\theta\) の不確定性関係</span><span class="en">Wave or particle? The \(n\)–\(\theta\) uncertainty relation</span></h4>
       <p class="ja">
         なぜ「あいだ」が難しいのか。理由は模型の2つの項が、<b>互いに相容れない基底で
         対角的</b>だからです。ホッピング項は平面波（Bloch 波）で対角化されます。
         電子を<b>波</b>として扱う基底です。一方、相互作用項は各サイトの粒子数
-        n̂<sub>i</sub> の固有状態で対角的です。電子を<b>粒子</b>として扱う基底です。
+        \(\hat{n}_i\) の固有状態で対角的です。電子を<b>粒子</b>として扱う基底です。
         そしてこの2つは、量子力学の根本によって同時に確定できません。
-        粒子数 n̂ と位相 θ̂ は正準共役なペアであり（角度変数なので厳密には
-        e<sup>iθ̂</sup> を使って述べますが、本質は変わりません）、
+        粒子数 \(\hat{n}\) と位相 \(\hat{\theta}\) は正準共役なペアであり（角度変数なので厳密には
+        \(e^{i\hat{\theta}}\) を使って述べますが、本質は変わりません）、
       </p>
       <p class="en">
         Why is the middle so hard? Because the two terms of the model are <b>diagonal in
         mutually incompatible bases</b>. The hopping term is diagonalized by plane (Bloch)
         waves — a basis that treats the electron as a <b>wave</b>. The interaction term is
-        diagonal in the eigenstates of the on-site number operators n̂<sub>i</sub> — a basis
+        diagonal in the eigenstates of the on-site number operators \(\hat{n}_i\) — a basis
         that treats the electron as a <b>particle</b>. And quantum mechanics forbids fixing
-        both at once: particle number n̂ and phase θ̂ form a canonically conjugate pair
-        (strictly speaking one should use e<sup>iθ̂</sup> since θ is an angle, but the essence
+        both at once: particle number \(\hat{n}\) and phase \(\hat{\theta}\) form a canonically conjugate pair
+        (strictly speaking one should use \(e^{i\hat{\theta}}\) since \(\theta\) is an angle, but the essence
         is unchanged),
       </p>
       <div class="eq">\[
@@ -240,16 +239,16 @@
         \Delta n \,\cdot\, \Delta\theta \;\gtrsim\; \tfrac{1}{2}.
       \]</div>
       <p class="ja">
-        位相 θ がそろった状態——コヒーレントな波——を作ろうとすれば、各サイトの粒子数は
+        位相 \(\theta\) がそろった状態——コヒーレントな波——を作ろうとすれば、各サイトの粒子数は
         大きく揺らがなければなりません。超流動や超伝導、BEC はまさにこの極限で、
         位相のそろった巨視的な波が物質を貫き、粒子数の確定性は放棄されています
-        （Josephson 効果はこの n–θ 共役性が直接見える実験です）。
+        （Josephson 効果はこの \(n\)–\(\theta\) 共役性が直接見える実験です）。
         逆に、各サイトの粒子数をきっちり1個に確定した状態—— Mott 絶縁体や、
         連続空間でその役割を果たす Wigner 結晶——では、位相は完全にばらばらになり、
         波としてのコヒーレンスは死にます。
-        <b>U/t を動かすことは、この不確定性関係の「どちら側に賭けるか」を動かすことです。</b>
-        U ≪ t なら波が勝ち、U ≫ t なら粒子が勝つ。どちらの極限も摂動論で手なずけられます。
-        しかし U ~ バンド幅では、小さな展開パラメータが存在せず、系は波と粒子の
+        <b>\(U/t\) を動かすことは、この不確定性関係の「どちら側に賭けるか」を動かすことです。</b>
+        \(U \ll t\) なら波が勝ち、\(U \gg t\) なら粒子が勝つ。どちらの極限も摂動論で手なずけられます。
+        しかし \(U \sim\) バンド幅では、小さな展開パラメータが存在せず、系は波と粒子の
         「あいだ」で身動きが取れなくなります。Hilbert 空間はサイト数に対して指数関数的に
         膨らみ、量子モンテカルロは符号問題に阻まれ、波動関数は強くエンタングルします。
         これが強相関電子系を非常に難しくし——そして同時に、高温超伝導のように
@@ -262,12 +261,12 @@
         fluctuate wildly. Superfluids, superconductors, and BECs live in exactly this limit: a
         macroscopic phase-locked wave runs through the material, and definiteness of particle
         number is given up (the Josephson effect is the direct experimental display of this
-        n–θ conjugacy). Conversely, a state with exactly one particle nailed to each site —
+        \(n\)–\(\theta\) conjugacy). Conversely, a state with exactly one particle nailed to each site —
         the Mott insulator, or its continuum cousin the Wigner crystal — has completely
         scrambled phases: wave coherence is dead.
-        <b>Tuning U/t means tuning which side of this uncertainty relation to bet on.</b>
-        For U ≪ t the wave wins; for U ≫ t the particle wins; both limits are tamed by
-        perturbation theory. But at U ~ bandwidth there is no small parameter: the system is
+        <b>Tuning \(U/t\) means tuning which side of this uncertainty relation to bet on.</b>
+        For \(U \ll t\) the wave wins; for \(U \gg t\) the particle wins; both limits are tamed by
+        perturbation theory. But at \(U \sim\) bandwidth there is no small parameter: the system is
         stuck between wave and particle. The Hilbert space grows exponentially with system
         size, quantum Monte Carlo hits the sign problem, and the wavefunction becomes strongly
         entangled. This is what makes strongly correlated electrons so hard — and, at the same
@@ -279,30 +278,30 @@
       <h4><span class="ja">Mott 転移を2つの極限から見る</span><span class="en">The Mott transition seen from the two limits</span></h4>
       <p class="ja">
         金属側から近づくと（Brinkman–Rice 描像）、相関は準粒子をどんどん重くします。
-        その「波らしさの残量」を測るのが準粒子重み Z で、有効質量は m*/m = 1/Z。
-        U を上げると Z → 0、つまり質量が発散したところで金属が死にます。
-        絶縁体側から近づくと（Mott–Hubbard 描像）、スペクトルは ±U/2 を中心とする
+        その「波らしさの残量」を測るのが準粒子重み \(Z\) で、有効質量は \(m^{*}/m = 1/Z\)。
+        \(U\) を上げると \(Z \to 0\)、つまり質量が発散したところで金属が死にます。
+        絶縁体側から近づくと（Mott–Hubbard 描像）、スペクトルは \(\pm U/2\) を中心とする
         2つの Hubbard バンド（電子を1個抜く／足すときのエネルギー）に分かれ、
-        U を下げるとギャップ ~ U − 2W が閉じたところで絶縁体が死にます（2W はバンド幅）。
+        \(U\) を下げるとギャップ \(\sim U - 2W\) が閉じたところで絶縁体が死にます（\(2W\) はバンド幅）。
         肝心なのは、この2つの見方が<b>同じ転移の別の顔</b>だということ。
         DMFT はこの2つを1枚のスペクトルの上で統一しました。3ピーク構造——
         中央の鋭い準粒子ピーク（波）と両脇の Hubbard バンド（粒子）の共存——がその答えで、
         上のシミュレーションでそのまま見ることができます。
-        2つの臨界値 U<sub>c1</sub> ≠ U<sub>c2</sub> が存在して共存領域を挟むことも、
+        2つの臨界値 \(U_{c1} \neq U_{c2}\) が存在して共存領域を挟むことも、
         DMFT が明らかにした構造です。
       </p>
       <p class="en">
         Approaching from the metal (the Brinkman–Rice picture), correlations make the
-        quasiparticles ever heavier. The quasiparticle weight Z measures the remaining
-        “waveness,” with m*/m = 1/Z; the metal dies where Z → 0, i.e., where the mass
+        quasiparticles ever heavier. The quasiparticle weight \(Z\) measures the remaining
+        “waveness,” with \(m^{*}/m = 1/Z\); the metal dies where \(Z \to 0\), i.e., where the mass
         diverges. Approaching from the insulator (the Mott–Hubbard picture), the spectrum
-        splits into two Hubbard bands centered at ±U/2 — the energies to remove or add one
-        electron — and the insulator dies where the gap ~ U − 2W closes (2W is the bandwidth). The crucial point is
+        splits into two Hubbard bands centered at \(\pm U/2\) — the energies to remove or add one
+        electron — and the insulator dies where the gap \(\sim U - 2W\) closes (\(2W\) is the bandwidth). The crucial point is
         that these are <b>two faces of the same transition</b>. DMFT unified them on a single
         spectrum: the three-peak structure — a sharp central quasiparticle peak (wave)
         coexisting with Hubbard bands on both sides (particle) — which you can see directly in
         the simulation above. That there are two distinct critical values
-        U<sub>c1</sub> ≠ U<sub>c2</sub> bracketing a coexistence region is likewise a
+        \(U_{c1} \neq U_{c2}\) bracketing a coexistence region is likewise a
         structure DMFT revealed.
       </p>
 
@@ -316,7 +315,7 @@
         「まわり」は、電子がそこへ飛び出してはまた戻ってくる <b>bath</b> であり、
         飛び出してから戻るまでの時間の記憶——つまり<b>振動数依存性</b>——を持ちます。
         これが「<b>動的</b>」平均場という名前の意味です。
-        まわりを周波数依存の混成関数 Δ(ω) を持つ bath に置き換えると、
+        まわりを周波数依存の混成関数 \(\Delta(\omega)\) を持つ bath に置き換えると、
         格子の問題は「1個の相関サイト＋無相関の bath」という
         <b>Anderson 不純物問題</b>に写像されます：
       </p>
@@ -330,7 +329,7 @@
         <b>bath</b> into which an electron hops out and from which it later returns, and it
         remembers the time in between — i.e., it is <b>frequency dependent</b>. That is what
         “<b>dynamical</b>” means. Replacing the environment by a bath with hybridization
-        function Δ(ω) maps the lattice problem onto an <b>Anderson impurity problem</b> — one
+        function \(\Delta(\omega)\) maps the lattice problem onto an <b>Anderson impurity problem</b> — one
         correlated site plus a noninteracting bath:
       </p>
       <div class="eq">\[
@@ -339,17 +338,17 @@
         \Sigma(\omega) = \mathcal{G}_0^{-1}(\omega) - G_{\mathrm{imp}}^{-1}(\omega).
       \]</div>
       <p class="ja">
-        ここで G<sub>0</sub> は bath だけを見た「裸の」伝播関数（Weiss 場）、
-        Σ は不純物問題を解いて得る自己エネルギーです。DMFT の近似の核心は、
-        <b>格子の自己エネルギーが波数によらない</b>（Σ(k, ω) → Σ(ω)）とすることです。
-        すると格子の局所 Green 関数は無相互作用の状態密度 D<sup>(0)</sup>(ε) だけで書けて、
+        ここで \(G_0\) は bath だけを見た「裸の」伝播関数（Weiss 場）、
+        \(\Sigma\) は不純物問題を解いて得る自己エネルギーです。DMFT の近似の核心は、
+        <b>格子の自己エネルギーが波数によらない</b>（\(\Sigma(k, \omega) \to \Sigma(\omega)\)）とすることです。
+        すると格子の局所 Green 関数は無相互作用の状態密度 \(D^{(0)}(\varepsilon)\) だけで書けて、
       </p>
       <p class="en">
-        Here G<sub>0</sub> is the “bare” propagator seen through the bath alone (the Weiss
-        field), and Σ is the self-energy obtained by solving the impurity problem. The core
+        Here \(G_0\) is the “bare” propagator seen through the bath alone (the Weiss
+        field), and \(\Sigma\) is the self-energy obtained by solving the impurity problem. The core
         approximation of DMFT is that <b>the lattice self-energy is momentum independent</b>,
-        Σ(k, ω) → Σ(ω). The local lattice Green function is then expressed through the
-        noninteracting density of states D<sup>(0)</sup>(ε) alone,
+        \(\Sigma(k, \omega) \to \Sigma(\omega)\). The local lattice Green function is then expressed through the
+        noninteracting density of states \(D^{(0)}(\varepsilon)\) alone,
       </p>
       <div class="eq">\[
         G_{\mathrm{loc}}(\omega) = \int d\varepsilon\,
@@ -358,34 +357,34 @@
       \]</div>
       <p class="ja">
         「不純物の見るまわり」と「格子の平均」が一致せよ、という<b>自己無撞着条件</b>で
-        ループが閉じます。手順は：Δ(ω) を仮定 → 不純物問題を解いて Σ を得る →
-        格子の G<sub>loc</sub> を計算 → 新しい Δ を作る → 収束するまで繰り返し。
+        ループが閉じます。手順は：\(\Delta(\omega)\) を仮定 → 不純物問題を解いて \(\Sigma\) を得る →
+        格子の \(G_{\mathrm{loc}}\) を計算 → 新しい \(\Delta\) を作る → 収束するまで繰り返し。
         重要なのは、この近似が<b>空間の揺らぎだけを凍結し、時間（量子）揺らぎは
         完全に残す</b>ことです。1サイトの上で電子が「居る／居ない」を量子力学的に
-        行き来する自由——上で述べた n と θ の戦いの現場——は、そっくり保たれています。
+        行き来する自由——上で述べた \(n\) と \(\theta\) の戦いの現場——は、そっくり保たれています。
         だからこそ DMFT は Mott 転移を捉えられるのです。
         しかもこの近似は単なる思いつきではなく、Metzner と Vollhardt が示したように、
-        空間次元 d → ∞ の極限（ホッピングを t = t*/2√d とスケール）で<b>厳密</b>になります。
-        Weiss の平均場が d → ∞ で厳密になるのと同じ構造です。
+        空間次元 \(d \to \infty\) の極限（ホッピングを \(t = t^{*}/2\sqrt{d}\) とスケール）で<b>厳密</b>になります。
+        Weiss の平均場が \(d \to \infty\) で厳密になるのと同じ構造です。
       </p>
       <p class="en">
         and the loop closes with the <b>self-consistency condition</b> that “the environment
-        the impurity sees” equal “the lattice average”: assume Δ(ω) → solve the impurity
-        problem for Σ → compute the lattice G<sub>loc</sub> → build a new Δ → iterate to
+        the impurity sees” equal “the lattice average”: assume \(\Delta(\omega)\) → solve the impurity
+        problem for \(\Sigma\) → compute the lattice \(G_{\mathrm{loc}}\) → build a new \(\Delta\) → iterate to
         convergence. The crucial feature of the approximation: it <b>freezes only spatial
         fluctuations while keeping temporal (quantum) fluctuations in full</b>. The freedom of
-        a site’s occupation to flicker quantum mechanically — the very battleground of n
-        versus θ described above — is retained intact. That is why DMFT can capture the Mott
+        a site’s occupation to flicker quantum mechanically — the very battleground of \(n\)
+        versus \(\theta\) described above — is retained intact. That is why DMFT can capture the Mott
         transition. Nor is the approximation ad hoc: as Metzner and Vollhardt showed, it
-        becomes <b>exact</b> in the limit of infinite spatial dimension d → ∞ (with hopping
-        scaled as t = t*/2√d) — the same structure by which the Weiss mean field becomes exact
-        at d → ∞.
+        becomes <b>exact</b> in the limit of infinite spatial dimension \(d \to \infty\) (with hopping
+        scaled as \(t = t^{*}/2\sqrt{d}\)) — the same structure by which the Weiss mean field becomes exact
+        at \(d \to \infty\).
       </p>
       <p class="ja">
-        このページでは Bethe 格子（配位数 → ∞）を使います。状態密度が半円形
+        このページでは Bethe 格子（配位数 \(\to \infty\)）を使います。状態密度が半円形
       </p>
       <p class="en">
-        This page uses the Bethe lattice (coordination number → ∞), whose density of states is
+        This page uses the Bethe lattice (coordination number \(\to \infty\)), whose density of states is
         semicircular,
       </p>
       <div class="eq">\[
@@ -394,8 +393,8 @@
         \Delta(\omega) = \frac{W^2}{4}\, G(\omega),
       \]</div>
       <p class="ja">
-        になり、自己無撞着条件が Δ = (W/2)²G という1行に簡単化されるからです
-        （W は半バンド幅で、W = 2t*。バンドは |ε| ≤ W に広がります）。
+        になり、自己無撞着条件が \(\Delta = (W/2)^2 G\) という1行に簡単化されるからです
+        （\(W\) は半バンド幅で、\(W = 2t^{*}\)。バンドは \(|\varepsilon| \le W\) に広がります）。
         残る仕事は不純物問題を解くことで、ここが DMFT の計算の心臓部です。
         数値くりこみ群（NRG）、連続時間量子モンテカルロ（CT-QMC）、厳密対角化などが
         使われます。このページでは、ブラウザで瞬時に解けて、かつ Mott 転移を定性的に
@@ -403,13 +402,13 @@
         DMFT は V<sub>2</sub>O<sub>3</sub> などの Mott 転移物質の相図
         （1次転移線と臨界終点——水と水蒸気の相図と同じ構造！）を説明し、
         密度汎関数理論と組んだ DFT+DMFT として実物質計算の標準手法になりました。
-        弱点もはっきりしています。Σ の波数依存性を捨てるため、
+        弱点もはっきりしています。\(\Sigma\) の波数依存性を捨てるため、
         d 波超伝導や擬ギャップのような短距離空間相関が主役の物理は単サイト DMFT では
         記述できず、クラスター DMFT やダイアグラム拡張が使われます。
       </p>
       <p class="en">
-        so that the self-consistency condition collapses to the single line Δ = (W/2)²G
-        (W is the half bandwidth, W = 2t*; the band extends over |ε| ≤ W). What remains is
+        so that the self-consistency condition collapses to the single line \(\Delta = (W/2)^2 G\)
+        (\(W\) is the half bandwidth, \(W = 2t^{*}\); the band extends over \(|\varepsilon| \le W\)). What remains is
         solving the impurity problem —
         the computational heart of DMFT — with the numerical renormalization group (NRG),
         continuous-time quantum Monte Carlo (CT-QMC), exact diagonalization, and others. This
@@ -419,21 +418,21 @@
         V<sub>2</sub>O<sub>3</sub> (a first-order line ending at a critical point — the same
         structure as the liquid–gas phase diagram!), and, combined with density functional
         theory as DFT+DMFT, became a standard tool for real materials. Its weakness is equally
-        clear: discarding the momentum dependence of Σ, single-site DMFT cannot describe
+        clear: discarding the momentum dependence of \(\Sigma\), single-site DMFT cannot describe
         physics dominated by short-range spatial correlations — d-wave superconductivity, the
         pseudogap — for which cluster DMFT and diagrammatic extensions are used.
       </p>
 
       <h4><span class="ja">このページの計算（IPT）</span><span class="en">Numerics on this page (IPT)</span></h4>
       <p class="ja">
-        不純物ソルバーには T = 0 の実周波数 IPT を使っています。Weiss 場 G<sub>0</sub> に
-        ついての2次摂動で自己エネルギーを作る方法で、半充填では小さい U（Fermi 液体）と
+        不純物ソルバーには \(T = 0\) の実周波数 IPT を使っています。Weiss 場 \(G_0\) に
+        ついての2次摂動で自己エネルギーを作る方法で、半充填では小さい \(U\)（Fermi 液体）と
         原子極限の両方を正しく再現する「補間理論」になっていることが知られています：
       </p>
       <p class="en">
-        The impurity solver is real-frequency IPT at T = 0: the self-energy is built at second
-        order in the Weiss field G<sub>0</sub>. At half filling this is known to interpolate
-        correctly between the small-U Fermi liquid and the atomic limit:
+        The impurity solver is real-frequency IPT at \(T = 0\): the self-energy is built at second
+        order in the Weiss field \(G_0\). At half filling this is known to interpolate
+        correctly between the small-\(U\) Fermi liquid and the atomic limit:
       </p>
       <div class="eq">\[
         \mathrm{Im}\,\Sigma(\omega) = -\pi U^2 \!\int\! d\varepsilon_1 d\varepsilon_2\,
@@ -441,61 +440,61 @@
         \left[ f_1 f_2 \bar f_3 + \bar f_1 \bar f_2 f_3 \right],
       \]</div>
       <p class="ja">
-        ここで A<sub>0</sub> = −Im G<sub>0</sub>/π、f は Fermi 関数（T = 0 では階段関数、
-        f̄ = 1 − f）、Re Σ は Kramers–Kronig 変換で作ります。この2重積分は畳み込みの
-        形をしているので、FFT で高速に計算できます（周波数格子 N = 4096 点、
-        ω ∈ [−6W, 6W]、微小幅 η = 0.005W）。自己無撞着ループは混合率 0.5 で
+        ここで \(A_0 = -\mathrm{Im}\,G_0/\pi\)、\(f\) は Fermi 関数（\(T = 0\) では階段関数、
+        \(\bar{f} = 1 - f\)）、\(\mathrm{Re}\,\Sigma\) は Kramers–Kronig 変換で作ります。この2重積分は畳み込みの
+        形をしているので、FFT で高速に計算できます（周波数格子 \(N = 4096\) 点、
+        \(\omega \in [-6W, 6W]\)、微小幅 \(\eta = 0.005W\)）。自己無撞着ループは混合率 0.5 で
         収束まで数十〜百数十回、1回の解に 0.1〜0.3 秒程度です。
         正直な但し書きを2つ。(1) IPT は近似ソルバーであり、転移点の値は
-        厳密な NRG の U<sub>c2</sub> ≈ 2.94W より大きめに出ます。IPT 本来（T = 0、η → 0）の
-        値は U<sub>c2</sub> ≈ 3.37W で、このページの設定では η のために ≈ 3.45–3.5W に
-        見えます（η を 0.01W → 0.0025W と下げると金属解の消失点が 3.5–3.6W → 3.40–3.42W と
-        下がり、η → 0 で 3.37W に収束することを別計算で確認しています）。
+        厳密な NRG の \(U_{c2} \approx 2.94W\) より大きめに出ます。IPT 本来（\(T = 0\)、\(\eta \to 0\)）の
+        値は \(U_{c2} \approx 3.37W\) で、このページの設定では \(\eta\) のために \(\approx 3.45\text{–}3.5W\) に
+        見えます（\(\eta\) を \(0.01W \to 0.0025W\) と下げると金属解の消失点が \(3.5\text{–}3.6W \to 3.40\text{–}3.42W\) と
+        下がり、\(\eta \to 0\) で \(3.37W\) に収束することを別計算で確認しています）。
         3ピーク構造・ピン止め・共存領域といった<b>構造</b>は正しく再現されます。
-        (2) η と有限格子のため、転移のごく近傍では Z の小さな尾が残るなど、
+        (2) \(\eta\) と有限格子のため、転移のごく近傍では \(Z\) の小さな尾が残るなど、
         鋭い特異性は少しなまります。これは模型や DMFT 自体の限界ではなく、
         このページの数値設定の限界です。
       </p>
       <p class="en">
-        where A<sub>0</sub> = −Im G<sub>0</sub>/π, f is the Fermi function (a step at T = 0,
-        f̄ = 1 − f), and Re Σ follows by Kramers–Kronig. The double integral is a chain of
-        convolutions, evaluated fast with FFTs (frequency grid N = 4096, ω ∈ [−6W, 6W],
-        broadening η = 0.005W). The self-consistency loop converges in some tens to a hundred
+        where \(A_0 = -\mathrm{Im}\,G_0/\pi\), \(f\) is the Fermi function (a step at \(T = 0\),
+        \(\bar{f} = 1 - f\)), and \(\mathrm{Re}\,\Sigma\) follows by Kramers–Kronig. The double integral is a chain of
+        convolutions, evaluated fast with FFTs (frequency grid \(N = 4096\), \(\omega \in [-6W, 6W]\),
+        broadening \(\eta = 0.005W\)). The self-consistency loop converges in some tens to a hundred
         iterations at mixing 0.5, about 0.1–0.3 s per solution. Two honest caveats:
         (1) IPT is an approximate solver — the transition values come out larger than the
-        essentially exact NRG value U<sub>c2</sub> ≈ 2.94W. The intrinsic IPT value (T = 0,
-        η → 0) is U<sub>c2</sub> ≈ 3.37W; with this page’s η it appears at ≈ 3.45–3.5W
-        (lowering η from 0.01W to 0.0025W moves the metal’s disappearance from 3.5–3.6W down
-        to 3.40–3.42W, converging to 3.37W as η → 0 — verified in a separate computation).
+        essentially exact NRG value \(U_{c2} \approx 2.94W\). The intrinsic IPT value (\(T = 0\),
+        \(\eta \to 0\)) is \(U_{c2} \approx 3.37W\); with this page’s \(\eta\) it appears at \(\approx 3.45\text{–}3.5W\)
+        (lowering \(\eta\) from \(0.01W\) to \(0.0025W\) moves the metal’s disappearance from \(3.5\text{–}3.6W\) down
+        to \(3.40\text{–}3.42W\), converging to \(3.37W\) as \(\eta \to 0\) — verified in a separate computation).
         The <b>structure</b> (three peaks, pinning, coexistence) is reproduced correctly.
-        (2) Because of η and the finite grid, sharp singularities are slightly smeared — e.g.,
-        a small tail of Z survives very close to the transition. These are limits of this
+        (2) Because of \(\eta\) and the finite grid, sharp singularities are slightly smeared — e.g.,
+        a small tail of \(Z\) survives very close to the transition. These are limits of this
         page’s numerical settings, not of the model or of DMFT itself.
       </p>
 
       <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
       <p class="ja" style="line-height:2.1;">
         ・J. Hubbard, Proc. R. Soc. London A <b>276</b>, 238 (1963)；M. C. Gutzwiller, Phys. Rev. Lett. <b>10</b>, 159 (1963)；J. Kanamori, Prog. Theor. Phys. <b>30</b>, 275 (1963)——同年に独立に模型を導入した3本。<br>
-        ・W. F. Brinkman and T. M. Rice, Phys. Rev. B <b>2</b>, 4302 (1970)——金属側からの Mott 転移（Z → 0）。<br>
+        ・W. F. Brinkman and T. M. Rice, Phys. Rev. B <b>2</b>, 4302 (1970)——金属側からの Mott 転移（\(Z \to 0\)）。<br>
         ・W. Metzner and D. Vollhardt, Phys. Rev. Lett. <b>62</b>, 324 (1989)——無限次元極限。DMFT の出発点。<br>
         ・A. Georges and G. Kotliar, Phys. Rev. B <b>45</b>, 6479 (1992)——不純物問題への写像と自己無撞着条件。<br>
         ・X. Y. Zhang, M. J. Rozenberg, and G. Kotliar, Phys. Rev. Lett. <b>70</b>, 1666 (1993)——IPT による Mott 転移。このページの計算の原型。<br>
         ・A. Georges, G. Kotliar, W. Krauth, and M. J. Rozenberg, Rev. Mod. Phys. <b>68</b>, 13 (1996)——DMFT の金字塔的レビュー。<br>
-        ・R. Bulla, Phys. Rev. Lett. <b>83</b>, 136 (1999)——NRG による T = 0 Mott 転移の決定版（U<sub>c2</sub> ≈ 2.94W、W は半バンド幅）。<br>
+        ・R. Bulla, Phys. Rev. Lett. <b>83</b>, 136 (1999)——NRG による \(T = 0\) Mott 転移の決定版（\(U_{c2} \approx 2.94W\)、\(W\) は半バンド幅）。<br>
         ・M. Imada, A. Fujimori, and Y. Tokura, Rev. Mod. Phys. <b>70</b>, 1039 (1998)——金属絶縁体転移の大レビュー。<br>
         ・G. Kotliar and D. Vollhardt, Phys. Today <b>57</b>(3), 53 (2004)——DMFT の読みやすい入門。<br>
-        ・<a href="../index.html#book-asano" style="color:var(--accent2);">浅野建一『固体電子の量子論』</a>（東京大学出版会）14.5 節——このページの計算は同書の規約に合わせた状態密度 D⁰(ε) を採用しています。動的平均場理論を2次摂動論と組み合わせた反復摂動法（IPT）——まさにこのページで解いている方法——が丁寧に説明されています。<br>
+        ・<a href="../index.html#book-asano" style="color:var(--accent2);">浅野建一『固体電子の量子論』</a>（東京大学出版会）14.5 節——このページの計算は同書の規約に合わせた状態密度 \(D^{(0)}(\varepsilon)\) を採用しています。動的平均場理論を2次摂動論と組み合わせた反復摂動法（IPT）——まさにこのページで解いている方法——が丁寧に説明されています。<br>
         ・<a href="../index.html#book-nagaosa-soukan" style="color:var(--accent2);">永長直人『電子相関における場の量子論』</a>（岩波書店）第4章——動的平均場理論の説明自体はわずか6ページほどですが、DMFT が近藤問題の発展として整理されているのが特徴で、4-1 節の近藤効果と併せて読むと勉強になります。<br>
         ・<a href="../index.html#book-shiba-soukan" style="color:var(--accent2);">斯波弘行『電子相関の物理』</a>（岩波書店）第5章——非常に標準的な説明が淡々となされていて、初見では難しく感じますが、一度 DMFT を習得してしまうと、この簡潔さが逆に頭の中のロジックの整理に最適だと気づきます。2冊目以降に読む本という立ち位置です。
       </p>
       <p class="en" style="line-height:2.1;">
         ・J. Hubbard, Proc. R. Soc. London A <b>276</b>, 238 (1963); M. C. Gutzwiller, Phys. Rev. Lett. <b>10</b>, 159 (1963); J. Kanamori, Prog. Theor. Phys. <b>30</b>, 275 (1963) — the three independent introductions of the model in the same year.<br>
-        ・W. F. Brinkman and T. M. Rice, Phys. Rev. B <b>2</b>, 4302 (1970) — the Mott transition from the metallic side (Z → 0).<br>
+        ・W. F. Brinkman and T. M. Rice, Phys. Rev. B <b>2</b>, 4302 (1970) — the Mott transition from the metallic side (\(Z \to 0\)).<br>
         ・W. Metzner and D. Vollhardt, Phys. Rev. Lett. <b>62</b>, 324 (1989) — the infinite-dimensional limit; the starting point of DMFT.<br>
         ・A. Georges and G. Kotliar, Phys. Rev. B <b>45</b>, 6479 (1992) — the mapping onto the impurity problem and the self-consistency condition.<br>
         ・X. Y. Zhang, M. J. Rozenberg, and G. Kotliar, Phys. Rev. Lett. <b>70</b>, 1666 (1993) — the Mott transition via IPT; the prototype of the computation on this page.<br>
         ・A. Georges, G. Kotliar, W. Krauth, and M. J. Rozenberg, Rev. Mod. Phys. <b>68</b>, 13 (1996) — the monumental DMFT review.<br>
-        ・R. Bulla, Phys. Rev. Lett. <b>83</b>, 136 (1999) — the definitive NRG study of the T = 0 Mott transition (U<sub>c2</sub> ≈ 2.94W, W the half bandwidth).<br>
+        ・R. Bulla, Phys. Rev. Lett. <b>83</b>, 136 (1999) — the definitive NRG study of the \(T = 0\) Mott transition (\(U_{c2} \approx 2.94W\), \(W\) the half bandwidth).<br>
         ・M. Imada, A. Fujimori, and Y. Tokura, Rev. Mod. Phys. <b>70</b>, 1039 (1998) — the grand review of metal–insulator transitions.<br>
         ・G. Kotliar and D. Vollhardt, Phys. Today <b>57</b>(3), 53 (2004) — a readable introduction to DMFT.<br>
         ・<a href="../index.html#book-asano" style="color:var(--accent2);">K. Asano, <i>Quantum Theory of Electrons in Solids</i></a> (Univ. of Tokyo Press, in Japanese), Sec. 14.5 — this page adopts the density-of-states convention of this book, which carefully explains DMFT combined with second-order perturbation theory, i.e., exactly the IPT solved here.<br>

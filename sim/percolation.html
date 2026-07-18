@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .sim-wrap { display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start; }
@@ -54,12 +54,12 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">2次元正方格子のパーコレーション</span><span class="en">Percolation on the 2D Square Lattice</span></h1>
     <p class="hero-sub ja">
-      各サイトを確率 <i>p</i> で占有するサイトパーコレーションです。
-      <i>p</i> を動かして、上下を貫くクラスターが現れる瞬間を観察してみてください。
+      各サイトを確率 \(p\) で占有するサイトパーコレーションです。
+      \(p\) を動かして、上下を貫くクラスターが現れる瞬間を観察してみてください。
     </p>
     <p class="hero-sub en">
-      Site percolation: each site is occupied with probability <i>p</i>.
-      Drag <i>p</i> and watch the moment a cluster spans the lattice from top to bottom.
+      Site percolation: each site is occupied with probability \(p\).
+      Drag \(p\) and watch the moment a cluster spans the lattice from top to bottom.
     </p>
   </section>
 
@@ -71,16 +71,16 @@
         </div>
         <div class="sim-controls">
           <div class="ctrl">
-            <label><span class="ja">占有確率</span><span class="en">Occupation probability</span> <i>p</i> = <span class="val" id="pVal">0.50</span></label>
+            <label><span class="ja">占有確率</span><span class="en">Occupation probability</span> \(p\) = <span class="val" id="pVal">0.50</span></label>
             <input type="range" id="pSlider" min="0" max="1" step="0.002" value="0.5">
           </div>
           <div class="ctrl">
-            <label><span class="ja">系のサイズ</span><span class="en">System size</span> <i>L</i> = <span class="val" id="lVal">128</span>（<i>L</i>×<i>L</i>）</label>
+            <label><span class="ja">系のサイズ</span><span class="en">System size</span> \(L\) = <span class="val" id="lVal">128</span>（\(L \times L\)）</label>
             <input type="range" id="lSlider" min="0" max="3" step="1" value="2">
           </div>
           <div class="ctrl">
             <button class="sim-btn" id="resampleBtn"><span class="ja">乱数を振り直す</span><span class="en">Resample</span></button>
-            <button class="sim-btn" id="pcBtn"><i>p</i> → <i>p</i><sub>c</sub></button>
+            <button class="sim-btn" id="pcBtn">\(p \to p_c\)</button>
           </div>
           <div class="obs">
             <span class="ja">貫通クラスター</span><span class="en">Spanning cluster</span>:
@@ -100,18 +100,18 @@
     <div class="card">
       <h3><span class="ja">解説</span><span class="en">About</span></h3>
       <p class="ja">
-        サイトパーコレーションでは、格子の各サイトが確率 <i>p</i> で独立に「占有」され、
+        サイトパーコレーションでは、格子の各サイトが確率 \(p\) で独立に「占有」され、
         最近接で隣り合う占有サイトの集まりをクラスターと呼びます。このページの実装では
-        各サイトに固定の乱数 <i>r</i><sub>i</sub> ∈ [0,1) を割り振り、
-        <i>r</i><sub>i</sub> &lt; <i>p</i> のとき占有としています。そのためスライダーで
-        <i>p</i> を動かすと、クラスターが連続的に成長・融合していく様子が見られます。
+        各サイトに固定の乱数 \(r_i \in [0,1)\) を割り振り、
+        \(r_i < p\) のとき占有としています。そのためスライダーで
+        \(p\) を動かすと、クラスターが連続的に成長・融合していく様子が見られます。
         熱揺らぎもハミルトニアンもない、純粋に幾何学だけの問題であることに注意してください。
       </p>
       <p class="en">
         In site percolation, each lattice site is independently "occupied" with probability
-        <i>p</i>, and maximal sets of nearest-neighbor occupied sites are called clusters.
+        \(p\), and maximal sets of nearest-neighbor occupied sites are called clusters.
         In this implementation every site carries a fixed random number
-        <i>r</i><sub>i</sub> ∈ [0,1) and is occupied when <i>r</i><sub>i</sub> &lt; <i>p</i>,
+        \(r_i \in [0,1)\) and is occupied when \(r_i < p\),
         so dragging the slider lets you watch clusters grow and merge continuously. Note
         that there is no thermal fluctuation and no Hamiltonian — this is a purely
         geometric problem.
@@ -127,12 +127,12 @@
       <div class="eq">\[ p_c \;\approx\; 0.592746 \]</div>
       <p class="ja">
         で、厳密値は知られていません（ちなみにボンドパーコレーションなら双対性から
-        厳密に <i>p</i><sub>c</sub> = 1/2 です）。<i>p</i> &gt; <i>p</i><sub>c</sub> で
+        厳密に \(p_c = 1/2\) です）。\(p > p_c\) で
         系を貫く無限クラスターが出現し、サイトがそこに属する割合が秩序変数になります。
       </p>
       <p class="en">
         (no exact value is known — though for bond percolation duality gives exactly
-        <i>p</i><sub>c</sub> = 1/2). For <i>p</i> &gt; <i>p</i><sub>c</sub> an infinite
+        \(p_c = 1/2\)). For \(p > p_c\) an infinite
         spanning cluster appears, and the fraction of sites belonging to it serves as the
         order parameter:
       </p>
@@ -160,31 +160,31 @@
       </p>
       <div class="eq">\[ D \;=\; \frac{91}{48} \;\approx\; 1.896 \]</div>
       <p class="ja">
-        のスカスカな図形になります。「<i>p</i> → <i>p</i><sub>c</sub>」ボタンを押して
+        のスカスカな図形になります。「\(p \to p_c\)」ボタンを押して
         最大クラスターを眺めると、あらゆるスケールに穴の空いたフラクタル構造が
-        見えるはずです。ここに現れた 5/36 や 187/91 のような分数の指数が
+        見えるはずです。ここに現れた \(5/36\) や \(187/91\) のような分数の指数が
         <b>厳密に</b>分かっている、というのがこの分野の驚くべきところです。
       </p>
       <p class="en">
-        — full of holes on every scale. Press the "<i>p</i> → <i>p</i><sub>c</sub>" button
+        — full of holes on every scale. Press the "\(p \to p_c\)" button
         and look at the largest cluster to see this fractal structure. The astonishing
-        thing is that fractional exponents like 5/36 and 187/91 are known
+        thing is that fractional exponents like \(5/36\) and \(187/91\) are known
         <b>exactly</b>.
       </p>
       <p class="ja">
-        なぜ厳密に分かるのか。鍵は、パーコレーションが <i>Q</i> 状態 Potts 模型と
+        なぜ厳密に分かるのか。鍵は、パーコレーションが \(Q\) 状態 Potts 模型と
         Fortuin–Kasteleyn 表現で結ばれていることです。
       </p>
       <p class="en">
         Why can they be known exactly? The key is that percolation is tied to the
-        <i>Q</i>-state Potts model through the Fortuin–Kasteleyn representation,
+        \(Q\)-state Potts model through the Fortuin–Kasteleyn representation,
       </p>
       <div class="eq">\[ Z_Q \;=\; \sum_{A \subseteq E} p^{|A|} \, (1-p)^{|E|-|A|} \, Q^{\,c(A)} \]</div>
       <p class="ja">
-        （<i>A</i> はボンドの部分集合、<i>c</i>(<i>A</i>) はそのクラスター数）。
-        パーコレーションはこの <i>Q</i> → 1 極限に対応します。この極限では分配関数は
-        自明（<i>Z</i> = 1）になるのに、相関関数は非自明なまま残る——この一見奇妙な
-        状況こそが、セントラルチャージ <i>c</i> = 0 の非ユニタリー（対数的）共形場理論の世界です。
+        （\(A\) はボンドの部分集合、\(c(A)\) はそのクラスター数）。
+        パーコレーションはこの \(Q \to 1\) 極限に対応します。この極限では分配関数は
+        自明（\(Z = 1\)）になるのに、相関関数は非自明なまま残る——この一見奇妙な
+        状況こそが、セントラルチャージ \(c = 0\) の非ユニタリー（対数的）共形場理論の世界です。
         「乱数を撒くだけ」の最も単純な相転移が、CFT の中でも特に手強いクラスで
         記述されるというギャップが、この模型の大きな魅力だと思います。
         さらに、臨界クラスターの境界線は SLE<sub>6</sub> と呼ばれる共形不変な
@@ -192,11 +192,11 @@
         貫通確率を与える Cardy の公式など、美しい厳密結果の宝庫です。
       </p>
       <p class="en">
-        (<i>A</i> runs over subsets of bonds and <i>c</i>(<i>A</i>) counts their clusters).
-        Percolation corresponds to the limit <i>Q</i> → 1. In this limit the partition
-        function becomes trivial (<i>Z</i> = 1) while correlation functions remain
+        (\(A\) runs over subsets of bonds and \(c(A)\) counts their clusters).
+        Percolation corresponds to the limit \(Q \to 1\). In this limit the partition
+        function becomes trivial (\(Z = 1\)) while correlation functions remain
         nontrivial — and this peculiar situation is precisely the realm of a non-unitary
-        (logarithmic) conformal field theory with central charge <i>c</i> = 0. The gap
+        (logarithmic) conformal field theory with central charge \(c = 0\). The gap
         between "just sprinkling random numbers" and one of the most demanding classes of
         CFT is, to me, the great charm of this model. Moreover, critical cluster boundaries
         are conformally invariant random curves described by SLE<sub>6</sub> (proven by
@@ -204,30 +204,30 @@
         abound.
       </p>
       <p class="ja">
-        遊び方のおすすめ：<i>p</i><sub>c</sub> 付近で「乱数を振り直す」を連打してみて
+        遊び方のおすすめ：\(p_c\) 付近で「乱数を振り直す」を連打してみて
         ください。貫通する／しないがサンプルごとに揺らぎます。実は
-        <i>p</i> = <i>p</i><sub>c</sub> における貫通確率は、系を大きくしても 0 にも 1 にも
+        \(p = p_c\) における貫通確率は、系を大きくしても 0 にも 1 にも
         ならず、アスペクト比だけで決まる普遍的な値に収束します（それを与えるのが
-        Cardy の公式です）。また <i>L</i> を 32 から 256 まで変えると、転移が
+        Cardy の公式です）。また \(L\) を 32 から 256 まで変えると、転移が
         どんどん鋭くなっていく有限サイズスケーリングも観察できます。
       </p>
       <p class="en">
-        Suggestions for play: near <i>p</i><sub>c</sub>, hit "Resample" repeatedly — whether
+        Suggestions for play: near \(p_c\), hit "Resample" repeatedly — whether
         the system percolates fluctuates from sample to sample. In fact, the crossing
-        probability at <i>p</i> = <i>p</i><sub>c</sub> converges, as the system grows, to a
+        probability at \(p = p_c\) converges, as the system grows, to a
         universal value that depends only on the aspect ratio (this is what Cardy's formula
-        gives). Varying <i>L</i> from 32 to 256 also lets you watch finite-size scaling
+        gives). Varying \(L\) from 32 to 256 also lets you watch finite-size scaling
         sharpen the transition.
       </p>
       <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
       <p class="ja" style="line-height:2.1;">
         ・D. Stauffer and A. Aharony, <i>Introduction to Percolation Theory</i>, 2nd ed. (Taylor &amp; Francis, 1994)——パーコレーション理論の定番教科書。<br>
-        ・M. E. J. Newman and R. M. Ziff, Phys. Rev. Lett. <b>85</b>, 4104 (2000)——高速アルゴリズムと <i>p</i><sub>c</sub> の高精度評価。<br>
+        ・M. E. J. Newman and R. M. Ziff, Phys. Rev. Lett. <b>85</b>, 4104 (2000)——高速アルゴリズムと \(p_c\) の高精度評価。<br>
         ・J. Cardy, Ann. Phys. <b>318</b>, 81 (2005)——SLE を物理向けに解説したレビュー。
       </p>
       <p class="en" style="line-height:2.1;">
         ・D. Stauffer and A. Aharony, <i>Introduction to Percolation Theory</i>, 2nd ed. (Taylor &amp; Francis, 1994) — the classic percolation textbook.<br>
-        ・M. E. J. Newman and R. M. Ziff, Phys. Rev. Lett. <b>85</b>, 4104 (2000) — fast algorithms and high-precision <i>p</i><sub>c</sub>.<br>
+        ・M. E. J. Newman and R. M. Ziff, Phys. Rev. Lett. <b>85</b>, 4104 (2000) — fast algorithms and high-precision \(p_c\).<br>
         ・J. Cardy, Ann. Phys. <b>318</b>, 81 (2005) — SLE reviewed for physicists.
       </p>
     </div>

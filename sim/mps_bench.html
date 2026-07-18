@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
   .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -40,7 +40,7 @@
     <p class="hero-sub ja">
       可解模型である1次元横磁場 Ising 模型を舞台に、行列積状態（MPS）に基づく
       無限系密度行列繰り込み群（iDMRG: infinite density matrix renormalization group）による
-      基底状態計算を厳密解と突き合わせます。唯一のパラメータであるボンド次元 χ を変えたとき、
+      基底状態計算を厳密解と突き合わせます。唯一のパラメータであるボンド次元 \(\chi\) を変えたとき、
       精度がどう変わるかに注目してください。これはシミュレーションではなく、
       事前に計算した結果の静止画です。
     </p>
@@ -48,7 +48,7 @@
       We benchmark ground-state calculations by the infinite density matrix renormalization
       group (iDMRG), a matrix-product-state (MPS) method, against the exact solution of the
       1D transverse-field Ising model. Watch how the accuracy responds
-      to the single control knob — the bond dimension χ. These are static, precomputed
+      to the single control knob — the bond dimension \(\chi\). These are static, precomputed
       figures rather than a live simulation.
     </p>
   </section>
@@ -58,19 +58,19 @@
       <h3><span class="ja">図1：基底エネルギー密度の誤差</span><span class="en">Fig. 1: Error in the ground-state energy density</span></h3>
       <div class="fig-box" id="figErr"></div>
       <p class="fig-cap ja">
-        基底エネルギー密度の厳密解との差 |Δ<i>e</i>| を横磁場 <i>h</i> に対して片対数プロット
-        したもの（iDMRG、単位胞2サイト）。臨界点 <i>h</i><sub>c</sub> = 1 から離れると、
-        χ = 8 程度ですでに誤差は 10<sup>−13</sup>〜10<sup>−15</sup>、つまり倍精度演算の丸め誤差の
+        基底エネルギー密度の厳密解との差 \(|\Delta e|\) を横磁場 \(h\) に対して片対数プロット
+        したもの（iDMRG、単位胞2サイト）。臨界点 \(h_c = 1\) から離れると、
+        \(\chi = 8\) 程度ですでに誤差は \(10^{-13}\)〜\(10^{-15}\)、つまり倍精度演算の丸め誤差の
         床に到達します。底に張り付いた点はアンザッツの限界ではなく計算機の限界です。
-        一方、臨界点近傍だけは有限の χ では誤差が残り、山になります。
+        一方、臨界点近傍だけは有限の \(\chi\) では誤差が残り、山になります。
       </p>
       <p class="fig-cap en">
-        Semi-log plot of the deviation |Δ<i>e</i>| of the ground-state energy density from the
-        exact value, versus the transverse field <i>h</i> (iDMRG, two-site unit
-        cell). Away from the critical point <i>h</i><sub>c</sub> = 1, already χ = 8 pushes the
-        error down to 10<sup>−13</sup>–10<sup>−15</sup> — the round-off floor of double-precision
+        Semi-log plot of the deviation \(|\Delta e|\) of the ground-state energy density from the
+        exact value, versus the transverse field \(h\) (iDMRG, two-site unit
+        cell). Away from the critical point \(h_c = 1\), already \(\chi = 8\) pushes the
+        error down to \(10^{-13}\)–\(10^{-15}\) — the round-off floor of double-precision
         arithmetic. The points sitting on that floor mark the limit of the computer, not of the
-        ansatz. Only near criticality does a finite χ leave a visible peak of residual error.
+        ansatz. Only near criticality does a finite \(\chi\) leave a visible peak of residual error.
       </p>
     </div>
 
@@ -78,50 +78,50 @@
       <h3><span class="ja">図2：磁化の厳密解との比較</span><span class="en">Fig. 2: Magnetizations vs the exact solution</span></h3>
       <div class="fig-box" id="figMag"></div>
       <p class="fig-cap ja">
-        実線が厳密解、記号が MPS です。横磁化 ⟨σ<sup><i>z</i></sup>⟩（赤）はどの χ でも
-        実線に重なるため χ = 32 のみ示しています。秩序変数 ⟨σ<sup><i>x</i></sup>⟩（青）は
-        <i>h</i> &lt; 1 で (1 − <i>h</i><sup>2</sup>)<sup>1/8</sup> に完全に一致する一方、
-        臨界点直上では有限の χ が「偽の秩序」を残すことが見えます（χ を増やすとゆっくり
-        減っていきます）。有限の χ は実効的に臨界点をわずかにずらすため、転移のごく近傍だけは
-        χ 依存性が残る、という典型的な有限エンタングルメント効果です。
+        実線が厳密解、記号が MPS です。横磁化 \(\langle \sigma^z \rangle\)（赤）はどの \(\chi\) でも
+        実線に重なるため \(\chi = 32\) のみ示しています。秩序変数 \(\langle \sigma^x \rangle\)（青）は
+        \(h &lt; 1\) で \((1 - h^2)^{1/8}\) に完全に一致する一方、
+        臨界点直上では有限の \(\chi\) が「偽の秩序」を残すことが見えます（\(\chi\) を増やすとゆっくり
+        減っていきます）。有限の \(\chi\) は実効的に臨界点をわずかにずらすため、転移のごく近傍だけは
+        \(\chi\) 依存性が残る、という典型的な有限エンタングルメント効果です。
       </p>
       <p class="fig-cap en">
-        Solid lines: exact; symbols: MPS. The transverse magnetization ⟨σ<sup><i>z</i></sup>⟩
-        (red) coincides with the exact curve for every χ, so only χ = 32 is shown. The order
-        parameter ⟨σ<sup><i>x</i></sup>⟩ (blue) reproduces (1 − <i>h</i><sup>2</sup>)<sup>1/8</sup>
-        perfectly for <i>h</i> &lt; 1, but right at the critical point a finite χ leaves a
-        spurious remnant order that decays only slowly with growing χ. A finite bond dimension
+        Solid lines: exact; symbols: MPS. The transverse magnetization \(\langle \sigma^z \rangle\)
+        (red) coincides with the exact curve for every \(\chi\), so only \(\chi = 32\) is shown. The order
+        parameter \(\langle \sigma^x \rangle\) (blue) reproduces \((1 - h^2)^{1/8}\)
+        perfectly for \(h &lt; 1\), but right at the critical point a finite \(\chi\) leaves a
+        spurious remnant order that decays only slowly with growing \(\chi\). A finite bond dimension
         effectively shifts the critical point slightly — a textbook finite-entanglement effect,
         confined to the immediate vicinity of the transition.
       </p>
     </div>
 
     <div class="card">
-      <h3><span class="ja">図3：臨界点 <i>h</i> = 1 での χ 依存性</span><span class="en">Fig. 3: χ-dependence at the critical point <i>h</i> = 1</span></h3>
+      <h3><span class="ja">図3：臨界点 \(h = 1\) での \(\chi\) 依存性</span><span class="en">Fig. 3: \(\chi\)-dependence at the critical point \(h = 1\)</span></h3>
       <div class="fig-grid">
         <div class="fig-box" id="figErrChi"></div>
         <div class="fig-box" id="figXiChi"></div>
       </div>
       <p class="fig-cap ja">
-        <b>(a)</b> 臨界点でのエネルギー誤差の χ 依存性（両対数）。χ を倍にするごとに誤差は
-        およそ1桁ずつ落ちていきます。<b>(b)</b> MPS の転送行列から求めた相関長 ξ(χ)。
-        臨界点では真の相関長は無限大ですが、有限の χ が保持できるエンタングルメントを
+        <b>(a)</b> 臨界点でのエネルギー誤差の \(\chi\) 依存性（両対数）。\(\chi\) を倍にするごとに誤差は
+        およそ1桁ずつ落ちていきます。<b>(b)</b> MPS の転送行列から求めた相関長 \(\xi(\chi)\)。
+        臨界点では真の相関長は無限大ですが、有限の \(\chi\) が保持できるエンタングルメントを
         頭打ちにするため、MPS は有限の相関長を持ちます。その成長は有限エンタングルメント・
-        スケーリング ξ ∝ χ<sup>κ</sup>（破線、Ising ユニバーサリティクラス <i>c</i> = 1/2 に対する理論値
-        κ ≈ 2.034）によく従います。実際 χ = 16 → 32 では ξ が 76 → 311 と、理論比
-        2<sup>2.03</sup> ≈ 4.1 倍で伸びています。白抜きの χ = 64 の点が直線から下に
+        スケーリング \(\xi \propto \chi^{\kappa}\)（破線、Ising ユニバーサリティクラス \(c = 1/2\) に対する理論値
+        \(\kappa \approx 2.034\)）によく従います。実際 \(\chi = 16 \to 32\) では \(\xi\) が 76 → 311 と、理論比
+        \(2^{2.03} \approx 4.1\) 倍で伸びています。白抜きの \(\chi = 64\) の点が直線から下に
         ずれているのは、同じ反復回数では収束しきらなかったためで、臨界点近傍で MPS を
-        収束させるコストが χ とともに急増することの現れです。
+        収束させるコストが \(\chi\) とともに急増することの現れです。
       </p>
       <p class="fig-cap en">
-        <b>(a)</b> Log-log plot of the energy error at criticality: each doubling of χ buys
-        roughly one decade of accuracy. <b>(b)</b> Correlation length ξ(χ) extracted from the
+        <b>(a)</b> Log-log plot of the energy error at criticality: each doubling of \(\chi\) buys
+        roughly one decade of accuracy. <b>(b)</b> Correlation length \(\xi(\chi)\) extracted from the
         MPS transfer matrix. At criticality the true correlation length is infinite, but a
-        finite χ caps the entanglement the state can hold, so the MPS acquires a finite ξ.
-        Its growth follows the finite-entanglement scaling ξ ∝ χ<sup>κ</sup> (dashed line;
-        the theoretical value κ ≈ 2.034 for the Ising universality class, <i>c</i> = 1/2).
-        Indeed, from χ = 16 to 32, ξ grows from 76 to 311 — the predicted factor of
-        2<sup>2.03</sup> ≈ 4.1. The open χ = 64 point falls below the line because it did not
+        finite \(\chi\) caps the entanglement the state can hold, so the MPS acquires a finite \(\xi\).
+        Its growth follows the finite-entanglement scaling \(\xi \propto \chi^{\kappa}\) (dashed line;
+        the theoretical value \(\kappa \approx 2.034\) for the Ising universality class, \(c = 1/2\)).
+        Indeed, from \(\chi = 16\) to 32, \(\xi\) grows from 76 to 311 — the predicted factor of
+        \(2^{2.03} \approx 4.1\). The open \(\chi = 64\) point falls below the line because it did not
         fully converge within the same sweep budget, illustrating how steeply the cost of
         converging an MPS grows near criticality.
       </p>
@@ -139,11 +139,11 @@
       </p>
       <div class="eq">\[ H \;=\; -J \sum_{i} \sigma^{x}_{i} \sigma^{x}_{i+1} \;-\; h \sum_{i} \sigma^{z}_{i} \]</div>
       <p class="ja">
-        です（以下 <i>J</i> = 1）。この模型は Jordan–Wigner 変換によって自由フェルミオンに
+        です（以下 \(J = 1\)）。この模型は Jordan–Wigner 変換によって自由フェルミオンに
         厳密に書き換えられ、分散
       </p>
       <p class="en">
-        (we set <i>J</i> = 1). The Jordan–Wigner transformation maps it exactly onto free
+        (we set \(J = 1\)). The Jordan–Wigner transformation maps it exactly onto free
         fermions with dispersion
       </p>
       <div class="eq">\[ \varepsilon(k) \;=\; 2\sqrt{1 + h^{2} - 2h\cos k} \]</div>
@@ -155,24 +155,24 @@
       </p>
       <div class="eq">\[ e(h) \;=\; -\frac{1}{2\pi} \int_{-\pi}^{\pi} \frac{\varepsilon(k)}{2}\, dk \]</div>
       <p class="ja">
-        で与えられ、横磁化 ⟨σ<sup><i>z</i></sup>⟩ も同様の <i>k</i> 積分で書けます。
+        で与えられ、横磁化 \(\langle \sigma^z \rangle\) も同様の \(k\) 積分で書けます。
         さらに Pfeuty (1970) により、秩序変数は
       </p>
       <p class="en">
-        and the transverse magnetization ⟨σ<sup><i>z</i></sup>⟩ is a similar <i>k</i>-integral.
+        and the transverse magnetization \(\langle \sigma^z \rangle\) is a similar \(k\)-integral.
         Moreover, Pfeuty (1970) showed that the order parameter takes the closed form
       </p>
       <div class="eq">\[ \langle \sigma^{x} \rangle \;=\; \left( 1 - h^{2} \right)^{1/8} \qquad (h < 1) \]</div>
       <p class="ja">
-        という閉じた形を取ることが知られています。<i>h</i><sub>c</sub> = 1 の量子相転移は
-        2次元古典 Ising 模型と同じユニバーサリティクラス（セントラルチャージ <i>c</i> = 1/2 の共形場理論）に属します。
+        という閉じた形を取ることが知られています。\(h_c = 1\) の量子相転移は
+        2次元古典 Ising 模型と同じユニバーサリティクラス（セントラルチャージ \(c = 1/2\) の共形場理論）に属します。
         つまりこの模型では、比べるべき「正解」がすべて手元にある——数値手法のベンチマークとして
         理想的な舞台です。
       </p>
       <p class="en">
-        The quantum phase transition at <i>h</i><sub>c</sub> = 1 belongs to the same
+        The quantum phase transition at \(h_c = 1\) belongs to the same
         universality class as the 2D classical Ising model — a conformal field theory with
-        central charge <i>c</i> = 1/2. In other words, every "right answer" is available in
+        central charge \(c = 1/2\). In other words, every "right answer" is available in
         closed form, making this model the ideal benchmark stage for a numerical method.
       </p>
 
@@ -180,10 +180,10 @@
       <p class="ja">
         MPS 側のデータは TeNPy を用いた無限系 DMRG（iDMRG）で計算しました。2サイトの単位胞を持つ
         無限一様 MPS を変分的に最適化する方法で、熱力学極限を有限サイズ効果なしに直接扱えます。
-        収束判定はエネルギーの変化が 10<sup>−13</sup> 程度に落ち着くまでスイープを繰り返す、
-        という素朴なものです。調整するパラメータは実質ボンド次元 χ だけで、
+        収束判定はエネルギーの変化が \(10^{-13}\) 程度に落ち着くまでスイープを繰り返す、
+        という素朴なものです。調整するパラメータは実質ボンド次元 \(\chi\) だけで、
         これが「MPS が保持できるエンタングルメントの量」を決めます
-        （2分割エンタングルメント・エントロピーの上限が ln χ）。
+        （2分割エンタングルメント・エントロピーの上限が \(\ln \chi\)）。
         図2の秩序変数を出すときは対称性を保存せず、わずかに対称性を破った初期状態から
         出発して自発的対称性の破れを再現させています。逆に図3の臨界スケーリングでは
         パリティ対称性を保存して計算しています。
@@ -192,9 +192,9 @@
         The MPS data were obtained with infinite-system DMRG (iDMRG) in TeNPy: a uniform
         infinite MPS with a two-site unit cell is optimized variationally, giving direct
         access to the thermodynamic limit with no finite-size effects. Convergence simply
-        means sweeping until the energy settles at the 10<sup>−13</sup> level. The only real
-        knob is the bond dimension χ, which caps the amount of entanglement the state can
-        carry (the bipartite entanglement entropy is bounded by ln χ). For the order parameter
+        means sweeping until the energy settles at the \(10^{-13}\) level. The only real
+        knob is the bond dimension \(\chi\), which caps the amount of entanglement the state can
+        carry (the bipartite entanglement entropy is bounded by \(\ln \chi\)). For the order parameter
         in Fig. 2 the calculation does not enforce the symmetry and starts from a slightly
         symmetry-broken state, so that spontaneous symmetry breaking can occur; for the
         critical scaling in Fig. 3, parity is conserved instead.
@@ -202,44 +202,44 @@
 
       <h4><span class="ja">なぜ、ここまで正確なのか</span><span class="en">Why is it this accurate?</span></h4>
       <p class="ja">
-        図1の凄みは、χ = 8 という「手のひらサイズ」の行列で誤差が丸め誤差の床に達する点です。
+        図1の凄みは、\(\chi = 8\) という「手のひらサイズ」の行列で誤差が丸め誤差の床に達する点です。
         理由はエンタングルメントの構造にあります。ギャップのある1次元基底状態は
         面積則を満たし、シュミット係数が指数関数的に減衰するため、
-        小さな χ の MPS で波動関数をほぼ厳密に表現できます。誤差はおおむね切り捨てた
-        シュミット係数の重みで決まり、χ に対して指数関数的に落ちます。
+        小さな \(\chi\) の MPS で波動関数をほぼ厳密に表現できます。誤差はおおむね切り捨てた
+        シュミット係数の重みで決まり、\(\chi\) に対して指数関数的に落ちます。
         「基底状態計算では1次元は解かれた問題」と言われるのはこのためです。
       </p>
       <p class="en">
-        The striking feature of Fig. 1 is that a palm-sized χ = 8 matrix already drives the
+        The striking feature of Fig. 1 is that a palm-sized \(\chi = 8\) matrix already drives the
         error onto the round-off floor. The reason is the structure of entanglement: gapped 1D
         ground states obey the area law, their Schmidt coefficients decay exponentially, and
-        so a small-χ MPS represents the wavefunction essentially exactly. The error tracks the
-        discarded Schmidt weight and falls exponentially in χ — this is why one says that 1D
+        so a small-\(\chi\) MPS represents the wavefunction essentially exactly. The error tracks the
+        discarded Schmidt weight and falls exponentially in \(\chi\) — this is why one says that 1D
         ground-state physics is a solved problem.
       </p>
       <p class="ja">
-        唯一の例外が臨界点です。<i>h</i> = 1 ではエンタングルメント・エントロピーが
-        <i>S</i> = (<i>c</i>/6) ln ξ のように対数発散するため、有限の χ では表現しきれません。
-        しかしここでも MPS は「壊れる」のではなく、上品に失敗します。χ が保持できる
+        唯一の例外が臨界点です。\(h = 1\) ではエンタングルメント・エントロピーが
+        \(S = (c/6) \ln \xi\) のように対数発散するため、有限の \(\chi\) では表現しきれません。
+        しかしここでも MPS は「壊れる」のではなく、上品に失敗します。\(\chi\) が保持できる
         エンタングルメントの上限が、実効的な相関長のカットオフとして働き、
       </p>
       <p class="en">
-        The single exception is the critical point. At <i>h</i> = 1 the entanglement entropy
-        diverges logarithmically, <i>S</i> = (<i>c</i>/6) ln ξ, which no finite χ can
+        The single exception is the critical point. At \(h = 1\) the entanglement entropy
+        diverges logarithmically, \(S = (c/6) \ln \xi\), which no finite \(\chi\) can
         accommodate. Yet even here the MPS does not break — it fails gracefully. The
         entanglement cap acts as an effective cutoff on the correlation length,
       </p>
       <div class="eq">\[ \xi(\chi) \;\propto\; \chi^{\kappa}, \qquad \kappa \;=\; \frac{6}{c\left( \sqrt{12/c} + 1 \right)} \;\approx\; 2.034 \quad (c = 1/2) \]</div>
       <p class="ja">
         という有限エンタングルメント・スケーリングに従います（Pollmann らによる 2009 年の結果）。
-        図3(b) はまさにこの法則を示しており、逆に言えば、χ を系統的に変えて外挿することで
+        図3(b) はまさにこの法則を示しており、逆に言えば、\(\chi\) を系統的に変えて外挿することで
         臨界指数やセントラルチャージまで抽出できるということです。有限サイズ・スケーリングの
-        「サイズ」の役割を χ が果たすわけです。
+        「サイズ」の役割を \(\chi\) が果たすわけです。
       </p>
       <p class="en">
         This finite-entanglement scaling (Pollmann et al., 2009) is exactly what Fig. 3(b)
         displays. Turned around, it means one can extract critical exponents and even the
-        central charge by systematically varying χ and extrapolating — the bond dimension
+        central charge by systematically varying \(\chi\) and extrapolating — the bond dimension
         plays the role that system size plays in ordinary finite-size scaling.
       </p>
 
@@ -265,13 +265,13 @@
         ・P. Pfeuty, Ann. Phys. <b>57</b>, 79 (1970)——横磁場 Ising 模型の厳密解。<br>
         ・S. R. White, Phys. Rev. Lett. <b>69</b>, 2863 (1992)——DMRG の原論文。<br>
         ・I. P. McCulloch, arXiv:0804.2509——iDMRG。<br>
-        ・F. Pollmann, S. Mukerjee, A. M. Turner, and J. E. Moore, Phys. Rev. Lett. <b>102</b>, 255701 (2009)——有限エンタングルメント・スケーリング（図3(b) の κ）。
+        ・F. Pollmann, S. Mukerjee, A. M. Turner, and J. E. Moore, Phys. Rev. Lett. <b>102</b>, 255701 (2009)——有限エンタングルメント・スケーリング（図3(b) の \(\kappa\)）。
       </p>
       <p class="en" style="line-height:2.1;">
         ・P. Pfeuty, Ann. Phys. <b>57</b>, 79 (1970) — the exact solution of the transverse-field Ising chain.<br>
         ・S. R. White, Phys. Rev. Lett. <b>69</b>, 2863 (1992) — the original DMRG paper.<br>
         ・I. P. McCulloch, arXiv:0804.2509 — iDMRG.<br>
-        ・F. Pollmann, S. Mukerjee, A. M. Turner, and J. E. Moore, Phys. Rev. Lett. <b>102</b>, 255701 (2009) — finite-entanglement scaling (the κ in Fig. 3(b)).
+        ・F. Pollmann, S. Mukerjee, A. M. Turner, and J. E. Moore, Phys. Rev. Lett. <b>102</b>, 255701 (2009) — finite-entanglement scaling (the \(\kappa\) in Fig. 3(b)).
       </p>
     </div>
   </section>
