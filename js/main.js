@@ -58,16 +58,36 @@ document.addEventListener("DOMContentLoaded", function () {
     var activate = function () {
       var hash = (location.hash || "#home").slice(1);
       var target = document.getElementById(hash);
-      if (!target || !target.classList.contains("panel")) {
-        target = document.getElementById("home");
+      var scrollTo = null;
+      // deep link: an id inside a panel (e.g. a specific book card) activates its panel,
+      // opens any collapsed <details> around it, and scrolls to it
+      if (target && !target.classList.contains("panel")) {
+        var panel = target.closest ? target.closest("section.panel") : null;
+        if (panel) {
+          scrollTo = target;
+          var det = target.closest("details");
+          while (det) {
+            det.open = true;
+            det = det.parentElement ? det.parentElement.closest("details") : null;
+          }
+          target = panel;
+        } else {
+          target = document.getElementById("home");
+        }
       }
+      if (!target) target = document.getElementById("home");
       panels.forEach(function (p) { p.classList.remove("active"); });
       if (target) target.classList.add("active");
       document.querySelectorAll(".nav-links a").forEach(function (a) {
         var href = a.getAttribute("href") || "";
         a.classList.toggle("current", href === "#" + (target ? target.id : ""));
       });
-      window.scrollTo(0, 0);
+      if (scrollTo) {
+        var el2 = scrollTo;
+        setTimeout(function () { el2.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+      } else {
+        window.scrollTo(0, 0);
+      }
     };
     window.addEventListener("hashchange", activate);
     activate();
