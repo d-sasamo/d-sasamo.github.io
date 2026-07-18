@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSH Model: Topological Edge States &amp; Wannier Centers — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .fig-box svg { display: block; width: 100%; height: auto; }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 700px) { .fig-grid { grid-template-columns: 1fr; } }
+  .fig-cap { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; margin-top: 0.8rem; }
+  .fig-cap b { color: var(--text); font-weight: 600; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; max-width: 340px; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .obs { font-size: 0.92rem; color: var(--text-dim); line-height: 2; }
+  .obs b { color: var(--text); font-weight: 600; }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+  .sticky-panel {
+    position: sticky; top: 10px; z-index: 30;
+    background: var(--bg);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 1rem 1.4rem 0.6rem; margin-bottom: 1.6rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  }
+  .sticky-panel .ctrl { margin-bottom: 0.7rem; }
+  .panel-row { display: flex; gap: 1.6rem; flex-wrap: wrap; align-items: flex-start; }
+  .panel-row > div { flex: 1 1 300px; }
+  .obs-compact { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; }
+  .obs-compact b { color: var(--text); font-weight: 600; }
+  @media (max-width: 700px) { .sticky-panel { position: static; } }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">SSH 模型：トポロジカルエッジ状態と Wannier 中心</span><span class="en">The SSH Model: Topological Edge States and Wannier Centers</span></h1>
+    <p class="hero-sub ja">
+      トポロジカル絶縁体の「最小模型」である Su–Schrieffer–Heeger（SSH）模型です。
+      ホッピング比 <i>w</i>/<i>v</i> を動かして、巻き付き数が跳ぶ瞬間、ゼロエネルギーの
+      エッジ状態が現れる瞬間、そして Wannier 中心がセル中心からボンド中心へ移る瞬間を
+      観察してみてください。
+    </p>
+    <p class="hero-sub en">
+      The Su–Schrieffer–Heeger (SSH) model — the minimal model of a topological insulator.
+      Drag the hopping ratio <i>w</i>/<i>v</i> and watch the winding number jump, zero-energy
+      edge states appear, and the Wannier centers shift from the cell centers to the bond
+      centers.
+    </p>
+  </section>
+
+  <section>
+    <div class="sticky-panel">
+      <div class="panel-row">
+        <div>
+          <div class="ctrl">
+            <label><span class="ja">セル間ホッピング</span><span class="en">Inter-cell hopping</span> <i>w</i>/<i>v</i> = <span class="val" id="wVal">1.80</span>（<i>v</i> = 1 <span class="ja">固定</span><span class="en">fixed</span>）</label>
+            <input type="range" id="wSlider" min="0" max="2.5" step="0.01" value="1.8">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">単位胞の数</span><span class="en">Number of unit cells</span> <i>N</i> = <span class="val" id="nVal">20</span>（2<i>N</i> <span class="ja">サイト、開放端</span><span class="en">sites, open ends</span>）</label>
+            <input type="range" id="nSlider" min="0" max="3" step="1" value="2">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="topoBtn"><span class="ja">トポロジカル相（w &gt; v）</span><span class="en">Topological (w &gt; v)</span></button>
+            <button class="sim-btn" id="trivBtn"><span class="ja">自明相（v &gt; w）</span><span class="en">Trivial (v &gt; w)</span></button>
+            <button class="sim-btn" id="critBtn"><span class="ja">臨界点 v = w</span><span class="en">Critical v = w</span></button>
+          </div>
+        </div>
+        <div class="obs-compact">
+          <span class="ja">巻き付き数</span><span class="en">Winding number</span> <i>W</i> = <b id="windVal">1</b>
+          ・ <span class="ja">ゼロモード数</span><span class="en">zero modes</span>: <b id="nzVal">2</b><br>
+          <span class="ja">Zak 位相</span><span class="en">Zak phase</span> γ/π = <b id="zakVal">1.000</b><br>
+          <span class="ja">Wannier 中心</span><span class="en">Wannier center</span> <i>x̄</i> = <b id="wanVal">1/2</b>
+          <span class="ja">（0：セル中心、1/2：ボンド中心）</span><span class="en">(0: cell center, 1/2: bond center)</span><br>
+          <span class="ja">最小固有エネルギー</span><span class="en">Smallest eigenenergy</span> |<i>E</i>|<sub>min</sub> = <b id="e0Val">—</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">鎖の模式図と Wannier 中心</span><span class="en">Chain schematic and Wannier centers</span></h3>
+      <div class="fig-box" id="figChain"></div>
+      <p class="fig-cap ja">
+        ● が A 副格子、■ が B 副格子です。結合線の太さがホッピングの大きさ
+        （セル内 <i>v</i>、セル間 <i>w</i>）を表し、◆ が下バンドの Wannier 中心の位置です。
+        <i>v</i> &gt; <i>w</i> では Wannier 中心はセルの中（<i>v</i> ボンド上）にあり、
+        鎖をセル境界で切っても何も切断されません。<i>w</i> &gt; <i>v</i> では Wannier 中心が
+        セル境界（<i>w</i> ボンド上）に移るため、端では Wannier 軌道が「半分に切られ」、
+        その残骸がゼロエネルギーのエッジ状態になります。
+      </p>
+      <p class="fig-cap en">
+        Circles: A sublattice; squares: B sublattice. Bond thickness indicates the hopping
+        strength (intra-cell <i>v</i>, inter-cell <i>w</i>), and the diamonds mark the Wannier
+        centers of the lower band. For <i>v</i> &gt; <i>w</i> the Wannier centers sit inside
+        the cells (on the <i>v</i> bonds), so terminating the chain at a cell boundary cuts
+        nothing. For <i>w</i> &gt; <i>v</i> they move to the cell boundaries (the <i>w</i>
+        bonds): the edge then slices a Wannier orbital in half, and the leftover half is the
+        zero-energy edge state.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">開放鎖のスペクトルとエッジ状態</span><span class="en">Spectrum of the open chain and the edge state</span></h3>
+      <div class="fig-grid">
+        <div class="fig-box" id="figSpec"></div>
+        <div class="fig-box" id="figEdge"></div>
+      </div>
+      <p class="fig-cap ja">
+        <b>左：</b>開放端の SSH 鎖の全固有エネルギーを <i>w</i>/<i>v</i> の関数として
+        描いたもの（縦の破線が現在の値）。<i>w</i>/<i>v</i> &gt; 1 でバルクギャップの
+        真ん中に赤い2本のミッドギャップ状態が現れます。厳密にゼロではなく、
+        両端のエッジ状態が鎖を貫いて混成するため指数関数的に小さい分裂
+        |<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> が残ります（上の観測値で確認できます）。
+        <b>右：</b>最小 |<i>E</i>| の状態の確率分布 |ψ|<sup>2</sup>。トポロジカル相では
+        2つのミッドギャップ状態を足し引きして左端に局在させたものを示しています。
+        端に指数関数的に局在し、しかも A 副格子（青）のみに振幅を持つこと——
+        カイラル対称性の帰結——に注目してください。
+      </p>
+      <p class="fig-cap en">
+        <b>Left:</b> all eigenenergies of the open SSH chain versus <i>w</i>/<i>v</i>
+        (the vertical dashed line marks the current value). For <i>w</i>/<i>v</i> &gt; 1 two
+        red mid-gap states appear in the bulk gap. They are not exactly at zero: the two edge
+        states hybridize across the finite chain, leaving an exponentially small splitting
+        |<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> (check the readout above).
+        <b>Right:</b> probability distribution |ψ|<sup>2</sup> of the lowest-|<i>E</i>| state.
+        In the topological phase we show the combination of the two mid-gap states localized
+        at the left edge. Note that it decays exponentially into the bulk and lives purely on
+        the A sublattice (blue) — a consequence of chiral symmetry.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">ベクトル d(k) の軌跡と巻き付き数</span><span class="en">The trajectory of d(k) and the winding number</span></h3>
+      <div class="fig-box" id="figLoop" style="max-width:460px; margin:0 auto;"></div>
+      <p class="fig-cap ja">
+        バルクハミルトニアン <i>h</i>(<i>k</i>) = <b>d</b>(<i>k</i>)·<b>σ</b> を特徴づける
+        ベクトル <b>d</b>(<i>k</i>) = (<i>v</i> + <i>w</i> cos <i>k</i>, <i>w</i> sin <i>k</i>) の
+        軌跡です。<i>k</i> が Brillouin 域を一周すると、<b>d</b> は中心 (<i>v</i>, 0)・
+        半径 <i>w</i> の円を一周します。この円が原点（×印）を囲むかどうか——
+        つまり <i>w</i> &gt; <i>v</i> かどうか——が巻き付き数 <i>W</i> を決めます。
+        原点はギャップが閉じる点なので、円が原点をまたぐ瞬間（<i>v</i> = <i>w</i>）を
+        経ない限り <i>W</i> は変われません。これがトポロジカルな保護の意味です。
+      </p>
+      <p class="fig-cap en">
+        The trajectory of the vector <b>d</b>(<i>k</i>) = (<i>v</i> + <i>w</i> cos <i>k</i>,
+        <i>w</i> sin <i>k</i>) characterizing the bulk Hamiltonian
+        <i>h</i>(<i>k</i>) = <b>d</b>(<i>k</i>)·<b>σ</b>. As <i>k</i> runs once around the
+        Brillouin zone, <b>d</b> traces a circle of radius <i>w</i> centered at (<i>v</i>, 0).
+        Whether this circle encloses the origin (the × mark) — i.e., whether
+        <i>w</i> &gt; <i>v</i> — determines the winding number <i>W</i>. Since the origin is
+        the gap-closing point, <i>W</i> cannot change without the circle sweeping through it
+        at <i>v</i> = <i>w</i>. That is what topological protection means.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+
+      <h4 style="margin-top:0.6rem;"><span class="ja">模型</span><span class="en">The model</span></h4>
+      <p class="ja">
+        SSH 模型は、Su–Schrieffer–Heeger（1979）がポリアセチレンの電子状態と
+        ソリトンを記述するために導入した、交代ホッピングを持つ1次元強束縛模型です。
+        単位胞に A・B の2サイトを持ち、
+      </p>
+      <p class="en">
+        The SSH model is a one-dimensional tight-binding model with alternating hoppings,
+        introduced by Su, Schrieffer, and Heeger (1979) to describe the electronic states and
+        solitons of polyacetylene. With two sites A and B per unit cell,
+      </p>
+      <div class="eq">\[ H \;=\; v \sum_{n} \left( c^{\dagger}_{\mathrm{A},n} c_{\mathrm{B},n} + \mathrm{h.c.} \right) \;+\; w \sum_{n} \left( c^{\dagger}_{\mathrm{B},n} c_{\mathrm{A},n+1} + \mathrm{h.c.} \right) \]</div>
+      <p class="ja">
+        と書けます（<i>v</i>, <i>w</i> &gt; 0 とします）。周期境界で Fourier 変換すると、
+        各波数 <i>k</i> ごとに 2×2 のブロッホハミルトニアン
+      </p>
+      <p class="en">
+        (we take <i>v</i>, <i>w</i> &gt; 0). Fourier transforming with periodic boundaries
+        gives, for each momentum <i>k</i>, the 2×2 Bloch Hamiltonian
+      </p>
+      <div class="eq">\[ h(k) \;=\; \begin{pmatrix} 0 &amp; v + w e^{-ik} \\ v + w e^{ik} &amp; 0 \end{pmatrix} \;=\; \mathbf{d}(k) \cdot \boldsymbol{\sigma}, \qquad \mathbf{d}(k) = \left( v + w\cos k,\; w \sin k,\; 0 \right) \]</div>
+      <p class="ja">
+        が得られ、バンドは <i>E</i><sub>±</sub>(<i>k</i>) = ±|<b>d</b>(<i>k</i>)| の2本です。
+        ギャップは |<i>v</i> − <i>w</i>| で、<i>v</i> = <i>w</i>（<i>k</i> = π）でのみ閉じます。
+        半分詰まった絶縁体として、<i>v</i> &gt; <i>w</i> の相と <i>w</i> &gt; <i>v</i> の相は
+        どちらも同じように「ただの絶縁体」に見えます——バルクのバンド構造だけを見ている限りは。
+      </p>
+      <p class="en">
+        with two bands <i>E</i><sub>±</sub>(<i>k</i>) = ±|<b>d</b>(<i>k</i>)|. The gap is
+        |<i>v</i> − <i>w</i>| and closes only at <i>v</i> = <i>w</i> (at <i>k</i> = π). At
+        half filling, the phases <i>v</i> &gt; <i>w</i> and <i>w</i> &gt; <i>v</i> both look
+        like perfectly ordinary insulators — as long as you only look at the bulk band
+        structure.
+      </p>
+
+      <h4><span class="ja">カイラル対称性</span><span class="en">Chiral symmetry</span></h4>
+      <p class="ja">
+        この模型のホッピングはすべて A 副格子と B 副格子の間を結び、同一副格子内を
+        結ぶ項がありません（二部格子構造）。その帰結として、副格子の符号を反転する
+        演算子 Γ = σ<sub><i>z</i></sub> に対して
+      </p>
+      <p class="en">
+        Every hopping in this model connects the A and B sublattices; there are no terms
+        within a sublattice (the lattice is bipartite). As a consequence, the operator
+        Γ = σ<sub><i>z</i></sub>, which flips the sign of one sublattice, satisfies
+      </p>
+      <div class="eq">\[ \Gamma\, h(k)\, \Gamma \;=\; -\,h(k) \]</div>
+      <p class="ja">
+        が成り立ちます。これがカイラル対称性（副格子対称性）です。3つの重要な帰結があります。
+        第一に、スペクトルは ±<i>E</i> で対称になります。第二に、<b>d</b>(<i>k</i>) の
+        <i>z</i> 成分が禁止されるため、軌跡は <i>d<sub>x</sub></i>–<i>d<sub>y</sub></i>
+        平面内の閉曲線に限られ、原点の周りの巻き付き数
+      </p>
+      <p class="en">
+        This is chiral (sublattice) symmetry, and it has three important consequences.
+        First, the spectrum is symmetric under <i>E</i> → −<i>E</i>. Second, the
+        <i>z</i>-component of <b>d</b>(<i>k</i>) is forbidden, so the trajectory is confined
+        to the <i>d<sub>x</sub></i>–<i>d<sub>y</sub></i> plane and the winding number about
+        the origin,
+      </p>
+      <div class="eq">\[ W \;=\; \frac{1}{2\pi} \oint dk \; \left( \hat{d}_x \,\partial_k \hat{d}_y - \hat{d}_y \,\partial_k \hat{d}_x \right) \;=\; \begin{cases} 0 &amp; (v &gt; w) \\ 1 &amp; (v &lt; w) \end{cases} \]</div>
+      <p class="ja">
+        が整数として定義できます。ギャップが開いている限り（軌跡が原点を通らない限り）、
+        <i>W</i> はホッピングの連続変形で変わりません。第三に、ゼロエネルギー状態は
+        カイラル演算子の固有状態に取れるため、A 副格子のみ、または B 副格子のみに
+        振幅を持ちます。右のエッジ状態のパネルで、青（A）だけが立っているのは
+        このためです。
+      </p>
+      <p class="en">
+        is well-defined as an integer. As long as the gap stays open (the loop avoids the
+        origin), <i>W</i> cannot change under any continuous deformation of the hoppings.
+        Third, zero-energy states can be chosen as eigenstates of the chiral operator, so
+        they live purely on the A sublattice or purely on the B sublattice — which is why
+        only the blue (A) bars appear in the edge-state panel.
+      </p>
+
+      <h4><span class="ja">バルク・エッジ対応</span><span class="en">Bulk–boundary correspondence</span></h4>
+      <p class="ja">
+        巻き付き数はバルク（周期境界）の量ですが、その帰結は端に現れます。開放端の
+        SSH 鎖では、片方の端あたりちょうど |<i>W</i>| 個のゼロエネルギー状態が現れます。
+        これがバルク・エッジ対応です。左のスペクトル図で <i>w</i>/<i>v</i> &gt; 1 の領域に
+        現れる2本のミッドギャップ状態が、左端と右端のエッジ状態に対応します
+        （有限の鎖では両者がわずかに混成し、|<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> の
+        分裂が生じます。<i>N</i> を増やすと分裂が指数関数的に消えていくのを
+        観測値で確認できます）。
+      </p>
+      <p class="en">
+        The winding number is a bulk (periodic-boundary) quantity, but its consequence
+        appears at the boundary: an open SSH chain hosts exactly |<i>W</i>| zero-energy
+        states per edge. This is the bulk–boundary correspondence. The two mid-gap states in
+        the spectrum panel for <i>w</i>/<i>v</i> &gt; 1 are the left- and right-edge states
+        (in a finite chain they hybridize slightly, with splitting
+        |<i>E</i>| ∼ (<i>v</i>/<i>w</i>)<sup><i>N</i></sup> — watch it vanish exponentially
+        as you increase <i>N</i>).
+      </p>
+      <p class="ja">
+        重要なのは、この対応の頑健さです。ホッピングを乱雑にしても——つまり
+        <i>v</i>, <i>w</i> をサイトごとにランダムに変えても——カイラル対称性を保つ限り
+        （副格子内ホッピングやオンサイトポテンシャルを入れない限り）、エッジ状態は
+        厳密にゼロエネルギーに留まり続けます。エッジ状態を消す唯一の方法は、
+        バルクのギャップを閉じるか、対称性を壊すことです。「対称性に守られた
+        トポロジカル相（SPT 相）」という言葉の意味が、この最小模型に凝縮されています。
+      </p>
+      <p class="en">
+        What matters is the robustness of this correspondence. Make the hoppings disordered —
+        random <i>v</i>, <i>w</i> from site to site — and as long as chiral symmetry is
+        preserved (no intra-sublattice hopping, no on-site potentials), the edge states stay
+        pinned exactly at zero energy. The only ways to remove them are to close the bulk gap
+        or to break the symmetry. The phrase "symmetry-protected topological (SPT) phase" is
+        this minimal model in a nutshell.
+      </p>
+
+      <h4><span class="ja">Zak 位相と Wannier 中心</span><span class="en">The Zak phase and Wannier centers</span></h4>
+      <p class="ja">
+        巻き付き数と同じ情報は、下バンドのブロッホ状態 |<i>u</i>(<i>k</i>)⟩ の
+        Berry 位相——1次元では Zak 位相と呼ばれます——にも書き込まれています。
+      </p>
+      <p class="en">
+        The same information carried by the winding number is also encoded in the Berry
+        phase of the lower-band Bloch states |<i>u</i>(<i>k</i>)⟩ — in one dimension, the
+        Zak phase:
+      </p>
+      <div class="eq">\[ \gamma \;=\; i \oint dk \; \langle u(k) | \partial_k u(k) \rangle \;=\; \pi W \pmod{2\pi} \]</div>
+      <p class="ja">
+        このページでは γ を離散 Berry 位相（Wilson ループ）として数値的に計算しており、
+        自明相で 0、トポロジカル相で π にぴったり量子化されるのが観測値で見えます。
+        Zak 位相の物理的な意味を与えるのが Wannier 軌道です。バンドのブロッホ状態を
+        重ね合わせて作る局在軌道（Wannier 軌道）の中心位置は
+      </p>
+      <p class="en">
+        On this page γ is computed numerically as a discrete Berry phase (a Wilson loop),
+        and the readout shows it quantized exactly to 0 in the trivial phase and π in the
+        topological phase. The physical meaning of the Zak phase is provided by the Wannier
+        orbitals: the center of the localized orbital built by superposing the Bloch states
+        of the band sits at
+      </p>
+      <div class="eq">\[ \bar{x} \;=\; \frac{\gamma}{2\pi} \pmod{1} \]</div>
+      <p class="ja">
+        （単位胞の長さを1とした座標）で与えられます。つまり γ = 0 の自明相では
+        Wannier 中心は単位胞の中心（<i>v</i> ボンドの上）にあり、γ = π の
+        トポロジカル相ではセルの境界（<i>w</i> ボンドの上）にあります。
+        これは電子の電気分極そのものでもあり（modern theory of polarization）、
+        トポロジカル相は分極 <i>P</i> = <i>e</i>/2（単位胞あたり）を持ちます。
+      </p>
+      <p class="en">
+        (in units where the unit cell has length 1). So in the trivial phase (γ = 0) the
+        Wannier centers sit at the middle of the unit cell, on the <i>v</i> bonds; in the
+        topological phase (γ = π) they sit at the cell boundary, on the <i>w</i> bonds. This
+        is nothing but the electronic polarization (the modern theory of polarization): the
+        topological phase carries <i>P</i> = <i>e</i>/2 per unit cell.
+      </p>
+      <p class="ja">
+        この描像を使うと、エッジ状態の存在が一枚の絵で理解できます。上の模式図で、
+        鎖はいつもセルの境界で終わります。自明相では Wannier 中心はすべてセルの内部に
+        あるので、端で何も傷つきません。ところがトポロジカル相では Wannier 中心が
+        セル境界のボンド上にあるため、端はちょうど Wannier 軌道を半分に切ってしまいます。
+        切り残された「半分の軌道」が行き場を失い、ギャップの真ん中——カイラル対称性が
+        許す唯一の場所であるゼロエネルギー——に取り残される。これがエッジ状態です。
+      </p>
+      <p class="en">
+        With this picture, the existence of edge states can be understood in a single image.
+        In the schematic above, the chain always terminates at a cell boundary. In the
+        trivial phase all Wannier centers lie inside the cells, so the termination wounds
+        nothing. In the topological phase the Wannier centers sit on the boundary bonds, so
+        the edge slices a Wannier orbital in half. The stranded half-orbital has nowhere to
+        go and gets stuck in the middle of the gap — at zero energy, the only place chiral
+        symmetry allows. That is the edge state.
+      </p>
+      <p class="ja">
+        ひとつ注意すべき点があります。Zak 位相の値そのものは単位胞の取り方
+        （原点の選び方）に依存します。A–B をセルとするか B–A をセルとするかで
+        γ は 0 と π が入れ替わります。物理的に意味があるのは、対称性
+        （ここではカイラル対称性や反転対称性）が γ を 0 か π に量子化すること、
+        そして2つの相の「差」が π であることです。実際、どちらの相が「自明」かは
+        端の切り方に依存する、というのは上の Wannier の絵からも明らかです。
+      </p>
+      <p class="en">
+        One caveat: the value of the Zak phase itself depends on the choice of unit cell
+        (the choice of origin) — taking A–B versus B–A as the cell swaps γ = 0 and π. What
+        is physical is that symmetry (here chiral or inversion) quantizes γ to 0 or π, and
+        that the two phases differ by π. Indeed, which phase is "trivial" depends on how the
+        chain is cut — as the Wannier picture above makes obvious.
+      </p>
+
+      <h4><span class="ja">このページの計算と参考書</span><span class="en">Numerics on this page, and further reading</span></h4>
+      <p class="ja">
+        スペクトルとエッジ状態は
+        開放端の 2<i>N</i>×2<i>N</i> ホッピング行列を Jacobi 法で対角化したもの、
+        Zak 位相は下バンドのブロッホ状態の重なり ⟨<i>u</i>(<i>k<sub>j</sub></i>)|<i>u</i>(<i>k</i><sub><i>j</i>+1</sub>)⟩ の
+        積の偏角（離散 Berry 位相）、巻き付き数は <b>d</b>(<i>k</i>) の偏角の巻き数として
+        数値的に評価しています。
+      </p>
+      <p class="en">
+        The spectrum and edge states are obtained by Jacobi diagonalization of the open-chain 2<i>N</i>×2<i>N</i> hopping matrix, the Zak
+        phase as the phase of the product of overlaps
+        ⟨<i>u</i>(<i>k<sub>j</sub></i>)|<i>u</i>(<i>k</i><sub><i>j</i>+1</sub>)⟩ (a discrete
+        Berry phase), and the winding number as the numerical winding of the phase of
+        <b>d</b>(<i>k</i>).
+      </p>
+      <p class="ja">
+        SSH 模型から始めてトポロジカルバンド理論を体系的に学ぶには、
+        <a href="../index.html#book-asboth" style="color:var(--accent2);">Asbóth–Oroszlány–Pályi <i>A Short Course on Topological Insulators</i></a> が
+        最適です。同書の第1章はまるごと SSH 模型に充てられており、このページの内容
+        （カイラル対称性、巻き付き数、バルク・エッジ対応）を丁寧に展開したのち、
+        Berry 位相・Chern 数・2次元のトポロジカル絶縁体へと進んでいきます。
+      </p>
+      <p class="en">
+        To go from the SSH model to a systematic account of topological band theory, the
+        best starting point is <a href="../index.html#book-asboth" style="color:var(--accent2);">Asbóth–Oroszlány–Pályi, <i>A Short Course on Topological
+        Insulators</i></a>. Its entire first chapter is devoted
+        to the SSH model, developing exactly the material on this page — chiral symmetry,
+        winding numbers, bulk–boundary correspondence — before moving on to Berry phases,
+        Chern numbers, and two-dimensional topological insulators.
+      </p>
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・W. P. Su, J. R. Schrieffer, and A. J. Heeger, Phys. Rev. Lett. <b>42</b>, 1698 (1979)——SSH 模型の原論文。<br>
+        ・J. Zak, Phys. Rev. Lett. <b>62</b>, 2747 (1989)——Zak 位相。<br>
+        ・R. D. King-Smith and D. Vanderbilt, Phys. Rev. B <b>47</b>, 1651 (1993)——分極の現代理論。<br>
+        ・<a href="../index.html#book-asboth" style="color:var(--accent2);">J. K. Asb&oacute;th, L. Oroszl&aacute;ny, and A. P&aacute;lyi, <i>A Short Course on Topological Insulators</i></a> (Springer, 2016; arXiv:1509.02295)——第1章がまるごと SSH 模型です。<br>
+        ・<a href="../index.html#book-koshino" style="color:var(--accent2);">越野幹人『グラフェンの物理学 —ディラック電子とトポロジカル物性の基礎—』</a>（内田老鶴圃）第6章——SSH 模型とトポロジカル物性の日本語解説。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・W. P. Su, J. R. Schrieffer, and A. J. Heeger, Phys. Rev. Lett. <b>42</b>, 1698 (1979) — the original SSH paper.<br>
+        ・J. Zak, Phys. Rev. Lett. <b>62</b>, 2747 (1989) — the Zak phase.<br>
+        ・R. D. King-Smith and D. Vanderbilt, Phys. Rev. B <b>47</b>, 1651 (1993) — the modern theory of polarization.<br>
+        ・<a href="../index.html#book-asboth" style="color:var(--accent2);">J. K. Asb&oacute;th, L. Oroszl&aacute;ny, and A. P&aacute;lyi, <i>A Short Course on Topological Insulators</i></a> (Springer, 2016; arXiv:1509.02295) — Chapter 1 is devoted to the SSH model.<br>
+        ・<a href="../index.html#book-koshino" style="color:var(--accent2);">M. Koshino, <i>グラフェンの物理学 (Physics of Graphene)</i></a>, Uchida Rokakuho, Chapter 6 — a Japanese exposition of the SSH model and topological phases.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var BLUE = '#4187d6', RED = '#c85c5c', PURPLE = '#8a63d2', ORANGE = '#dd8b3f';
+  var NS = [10, 15, 20, 30];
+  var w = 1.8, N = 20;
+  var sweepCache = {};   // N -> {ws:[], evs:[[...]]}
+
+  function colors() {
+    var isLight = document.body.classList.contains('light');
+    return {
+      bg: isLight ? '#ffffff' : '#0d1220',
+      fg: isLight ? '#1c2433' : '#dfe5f0',
+      sub: isLight ? '#4a5568' : '#a8b2c4'
+    };
+  }
+
+  // ----- symmetric eigen (cyclic Jacobi) -----
+  function jacobiEig(Ain, d, wantVec) {
+    var A = new Float64Array(Ain);
+    var V = null, i, j, k;
+    if (wantVec) {
+      V = new Float64Array(d * d);
+      for (i = 0; i < d; i++) V[i * d + i] = 1;
+    }
+    for (var sweep = 0; sweep < 60; sweep++) {
+      var off = 0;
+      for (i = 0; i < d; i++) for (j = i + 1; j < d; j++) off += A[i * d + j] * A[i * d + j];
+      if (off < 1e-22) break;
+      for (i = 0; i < d - 1; i++) {
+        for (j = i + 1; j < d; j++) {
+          var apq = A[i * d + j];
+          if (Math.abs(apq) < 1e-14) continue;
+          var app = A[i * d + i], aqq = A[j * d + j];
+          var theta = 0.5 * (aqq - app) / apq;
+          var t = (theta >= 0 ? 1 : -1) / (Math.abs(theta) + Math.sqrt(theta * theta + 1));
+          var c = 1 / Math.sqrt(t * t + 1), s = t * c;
+          for (k = 0; k < d; k++) {
+            var aik = A[i * d + k], ajk = A[j * d + k];
+            A[i * d + k] = c * aik - s * ajk;
+            A[j * d + k] = s * aik + c * ajk;
+          }
+          for (k = 0; k < d; k++) {
+            var aki = A[k * d + i], akj = A[k * d + j];
+            A[k * d + i] = c * aki - s * akj;
+            A[k * d + j] = s * aki + c * akj;
+          }
+          if (wantVec) {
+            for (k = 0; k < d; k++) {
+              var vki = V[k * d + i], vkj = V[k * d + j];
+              V[k * d + i] = c * vki - s * vkj;
+              V[k * d + j] = s * vki + c * vkj;
+            }
+          }
+        }
+      }
+    }
+    var ev = new Float64Array(d);
+    for (i = 0; i < d; i++) ev[i] = A[i * d + i];
+    return { ev: ev, V: V };
+  }
+
+  function buildH(Ncells, vv, ww) {
+    var d = 2 * Ncells;
+    var H = new Float64Array(d * d);
+    for (var n = 0; n < Ncells; n++) {
+      H[(2 * n) * d + (2 * n + 1)] = H[(2 * n + 1) * d + (2 * n)] = vv;
+      if (n < Ncells - 1) {
+        H[(2 * n + 1) * d + (2 * n + 2)] = H[(2 * n + 2) * d + (2 * n + 1)] = ww;
+      }
+    }
+    return H;
+  }
+
+  function sortedEv(ev) {
+    var a = Array.prototype.slice.call(ev);
+    a.sort(function (x, y) { return x - y; });
+    return a;
+  }
+
+  // ----- topological quantities -----
+  function zakPhase(vv, ww) {
+    var Nk = 600, re = 1, im = 0, j;
+    var ux = [], uy = []; // lower-band eigenvector: ( -q/|q|, 1 )/sqrt2, q = v + w e^{ik}
+    for (j = 0; j < Nk; j++) {
+      var k = 2 * Math.PI * j / Nk;
+      var qr = vv + ww * Math.cos(k), qi = ww * Math.sin(k);
+      var qa = Math.sqrt(qr * qr + qi * qi);
+      if (qa < 1e-12) return NaN;
+      ux.push([-qr / qa, -qi / qa]); // complex first component (times 1/sqrt2, cancels in overlaps)
+    }
+    for (j = 0; j < Nk; j++) {
+      var a = ux[j], b = ux[(j + 1) % Nk];
+      // overlap = (conj(a)*b + 1)/2
+      var or_ = (a[0] * b[0] + a[1] * b[1] + 1) / 2;
+      var oi_ = (a[0] * b[1] - a[1] * b[0]) / 2;
+      var nr = re * or_ - im * oi_, ni = re * oi_ + im * or_;
+      re = nr; im = ni;
+    }
+    return -Math.atan2(im, re); // gamma in (-pi, pi]
+  }
+
+  function windingNumber(vv, ww) {
+    if (Math.abs(vv - ww) < 1e-9) return NaN;
+    return ww > vv ? 1 : 0;
+  }
+
+  // ----- figure helpers (SVG) -----
+  function Fig(W, H) {
+    var c = colors();
+    var f = { W: W, H: H, o: [], c: c };
+    f.o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">');
+    f.o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + c.bg + '"/>');
+    f.line = function (xa, ya, xb, yb, color, wd, dash) {
+      f.o.push('<line x1="' + xa + '" y1="' + ya + '" x2="' + xb + '" y2="' + yb +
+        '" stroke="' + color + '" stroke-width="' + wd + '"' +
+        (dash ? ' stroke-dasharray="' + dash + '"' : '') + ' stroke-linecap="round"/>');
+    };
+    f.text = function (x, y, s, size, fill, anchor, extra) {
+      f.o.push('<text x="' + x + '" y="' + y + '" text-anchor="' + (anchor || 'middle') +
+        '" font-family="' + SERIF + '" font-size="' + size + '" fill="' + fill + '"' +
+        (extra || '') + '>' + s + '</text>');
+    };
+    f.done = function (id) {
+      f.o.push('</svg>');
+      document.getElementById(id).innerHTML = f.o.join('');
+    };
+    return f;
+  }
+
+  // ----- Fig: chain schematic with Wannier centers -----
+  function drawChain() {
+    var f = Fig(880, 168);
+    var cells = 6, x0 = 60, cellW = (880 - 2 * x0) / cells, y = 70;
+    var topo = w > 1;
+    var i;
+    // bonds
+    for (i = 0; i < cells; i++) {
+      var xA = x0 + i * cellW + cellW * 0.25, xB = x0 + i * cellW + cellW * 0.75;
+      f.line(xA, y, xB, y, f.c.fg, Math.max(1, 6 * 1 / Math.max(1, w)), null);           // v bond
+      if (i < cells - 1) {
+        var xA2 = x0 + (i + 1) * cellW + cellW * 0.25;
+        f.line(xB, y, xA2, y, f.c.fg, Math.max(1, 6 * w / Math.max(1, w)), null);        // w bond
+      }
+      // cell box
+      f.o.push('<rect x="' + (x0 + i * cellW + 4) + '" y="' + (y - 34) + '" width="' + (cellW - 8) +
+        '" height="68" fill="none" stroke="' + f.c.sub + '" stroke-width="0.8" stroke-dasharray="4,4" rx="10"/>');
+      f.text(x0 + i * cellW + cellW / 2, y - 42, '<tspan font-style="italic">n</tspan> = ' + (i + 1), 15, f.c.sub);
+    }
+    // sites
+    for (i = 0; i < cells; i++) {
+      var xa = x0 + i * cellW + cellW * 0.25, xb = x0 + i * cellW + cellW * 0.75;
+      f.o.push('<circle cx="' + xa + '" cy="' + y + '" r="9" fill="' + BLUE + '"/>');
+      f.o.push('<rect x="' + (xb - 8) + '" y="' + (y - 8) + '" width="16" height="16" fill="' + RED + '"/>');
+      f.text(xa, y + 28, 'A', 16, BLUE);
+      f.text(xb, y + 28, 'B', 16, RED);
+    }
+    // labels v / w on first bonds
+    f.text(x0 + cellW * 0.5, y - 12, '<tspan font-style="italic">v</tspan>', 18, f.c.fg);
+    f.text(x0 + cellW * 1.0, y - 12, '<tspan font-style="italic">w</tspan>', 18, f.c.fg);
+    // Wannier centers
+    for (i = 0; i < cells; i++) {
+      var xw = topo ? x0 + i * cellW + cellW * 1.0 : x0 + i * cellW + cellW * 0.5;
+      if (topo && i === cells - 1) break;
+      f.o.push('<path d="M ' + xw + ' ' + (y + 34) + ' l 7 9 l -7 9 l -7 -9 Z" fill="' + PURPLE + '"/>');
+    }
+    var lgx = 440 - 40;
+    f.o.push('<path d="M ' + lgx + ' ' + (y + 66) + ' l 6 8 l -6 8 l -6 -8 Z" fill="' + PURPLE + '"/>');
+    f.text(lgx + 14, y + 78, 'Wannier', 16, PURPLE, 'start');
+    f.done('figChain');
+  }
+
+  // ----- Fig: spectrum sweep -----
+  function getSweep(Ncells) {
+    if (sweepCache[Ncells]) return sweepCache[Ncells];
+    var ws = [], evs = [];
+    for (var t = 0; t <= 2.5001; t += 0.05) {
+      ws.push(t);
+      evs.push(sortedEv(jacobiEig(buildH(Ncells, 1, t), 2 * Ncells, false).ev));
+    }
+    sweepCache[Ncells] = { ws: ws, evs: evs };
+    return sweepCache[Ncells];
+  }
+
+  function drawSpec() {
+    var f = Fig(460, 420);
+    var mL = 58, mR = 16, mT = 20, mB = 56;
+    var pw = f.W - mL - mR, ph = f.H - mT - mB;
+    var x1 = 2.5, yE = 3.7;
+    var px = function (x) { return (mL + x / x1 * pw).toFixed(1); };
+    var py = function (e) { return (mT + ph / 2 - e / yE * ph / 2).toFixed(1); };
+    f.o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + f.c.fg + '" stroke-width="1.4"/>');
+    var i, j;
+    for (i = 0; i <= 5; i++) {
+      var X = px(i * 0.5);
+      f.line(X, mT + ph, X, mT + ph - 6, f.c.fg, 1.1);
+      f.line(X, mT, X, mT + 6, f.c.fg, 1.1);
+      f.text(X, mT + ph + 20, (i * 0.5).toFixed(1), 16, f.c.fg);
+    }
+    for (i = -3; i <= 3; i++) {
+      var Y = py(i);
+      f.line(mL, Y, mL + 6, Y, f.c.fg, 1.1);
+      f.line(mL + pw, Y, mL + pw - 6, Y, f.c.fg, 1.1);
+      f.text(mL - 10, parseFloat(Y) + 4, String(i), 16, f.c.fg, 'end');
+    }
+    f.text(mL + pw / 2, f.H - 12, '<tspan font-style="italic">w</tspan>/<tspan font-style="italic">v</tspan>', 19, f.c.fg);
+    var ymid = mT + ph / 2;
+    f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="19" fill="' + f.c.fg +
+      '"><tspan font-style="italic">E</tspan>/<tspan font-style="italic">v</tspan></text>');
+    var sw = getSweep(N), d = 2 * N;
+    for (j = 0; j < d; j++) {
+      var mid = (j === N - 1 || j === N);
+      var pts = [];
+      for (i = 0; i < sw.ws.length; i++) pts.push(px(sw.ws[i]) + ',' + py(sw.evs[i][j]));
+      f.o.push('<polyline points="' + pts.join(' ') + '" fill="none" stroke="' +
+        (mid ? RED : f.c.sub) + '" stroke-width="' + (mid ? 2.2 : 0.9) + '" opacity="' +
+        (mid ? 1 : 0.55) + '"/>');
+    }
+    f.line(px(w), mT, px(w), mT + ph, PURPLE, 1.4, '6,5');
+    f.text(mL + 14, mT + 22, '(a)', 18, f.c.fg, 'start');
+    f.done('figSpec');
+  }
+
+  // ----- Fig: edge state -----
+  function drawEdge() {
+    var f = Fig(460, 420);
+    var mL = 58, mR = 16, mT = 20, mB = 56;
+    var pw = f.W - mL - mR, ph = f.H - mT - mB;
+    var d = 2 * N;
+    var r = jacobiEig(buildH(N, 1, w), d, true);
+    var idx = [];
+    for (var i = 0; i < d; i++) idx.push(i);
+    idx.sort(function (a, b) { return Math.abs(r.ev[a]) - Math.abs(r.ev[b]); });
+    var psi = new Float64Array(d);
+    var topo = w > 1;
+    if (topo) {
+      // combine two mid-gap states into the left-localized one
+      var s1 = idx[0], s2 = idx[1], k;
+      var p = new Float64Array(d), m = new Float64Array(d);
+      for (k = 0; k < d; k++) {
+        p[k] = (r.V[k * d + s1] + r.V[k * d + s2]) / Math.SQRT2;
+        m[k] = (r.V[k * d + s1] - r.V[k * d + s2]) / Math.SQRT2;
+      }
+      var wpL = 0, wmL = 0;
+      for (k = 0; k < d / 2; k++) { wpL += p[k] * p[k]; wmL += m[k] * m[k]; }
+      psi = (wpL > wmL) ? p : m;
+    } else {
+      for (var k2 = 0; k2 < d; k2++) psi[k2] = r.V[k2 * d + idx[0]];
+    }
+    var pmax = 0;
+    for (i = 0; i < d; i++) pmax = Math.max(pmax, psi[i] * psi[i]);
+    var px = function (site) { return mL + (site + 0.5) / d * pw; };
+    var py = function (p2) { return mT + ph - p2 / (pmax * 1.12) * ph; };
+    f.o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + f.c.fg + '" stroke-width="1.4"/>');
+    var bw = Math.max(2, pw / d * 0.62);
+    for (i = 0; i < d; i++) {
+      var p2 = psi[i] * psi[i];
+      var X = px(i), Y = py(p2);
+      f.o.push('<rect x="' + (X - bw / 2) + '" y="' + Y + '" width="' + bw + '" height="' +
+        (mT + ph - Y) + '" fill="' + (i % 2 === 0 ? BLUE : RED) + '" opacity="0.9"/>');
+    }
+    // x ticks: cell numbers
+    var step = N <= 20 ? 5 : 10;
+    for (i = 0; i < N; i += step) {
+      var Xt = mL + (2 * i + 1) / d * pw;
+      f.line(Xt, mT + ph, Xt, mT + ph - 6, f.c.fg, 1.1);
+      f.text(Xt, mT + ph + 20, String(i + 1), 16, f.c.fg);
+    }
+    f.text(mL + pw / 2, f.H - 12, '<tspan font-style="italic">n</tspan> (cell)', 18, f.c.fg);
+    var ymid = mT + ph / 2;
+    f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="19" fill="' + f.c.fg +
+      '">|ψ|<tspan dy="-6" font-size="13">2</tspan></text>');
+    // legend
+    f.o.push('<rect x="' + (mL + pw - 120) + '" y="' + (mT + 14) + '" width="11" height="11" fill="' + BLUE + '"/>');
+    f.text(mL + pw - 103, mT + 24, 'A', 16, f.c.fg, 'start');
+    f.o.push('<rect x="' + (mL + pw - 74) + '" y="' + (mT + 14) + '" width="11" height="11" fill="' + RED + '"/>');
+    f.text(mL + pw - 57, mT + 24, 'B', 16, f.c.fg, 'start');
+    f.text(mL + 14, mT + 22, '(b)', 18, f.c.fg, 'start');
+    f.done('figEdge');
+    return r; // reuse eigenvalues for readouts
+  }
+
+  // ----- Fig: d(k) loop -----
+  function drawLoop() {
+    var f = Fig(460, 440);
+    var mL = 62, mR = 20, mT = 22, mB = 58;
+    var pw = f.W - mL - mR, ph = f.H - mT - mB;
+    var R = 3.7;   // coordinate range [-R/2 .. R]  x, [-R*ph/pw.. ] keep aspect
+    var xmin = -1.6, xmax = 3.9;
+    var scale = pw / (xmax - xmin);
+    var ymax = ph / 2 / scale;
+    var px = function (x) { return (mL + (x - xmin) * scale).toFixed(1); };
+    var py = function (y) { return (mT + ph / 2 - y * scale).toFixed(1); };
+    f.o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + f.c.fg + '" stroke-width="1.4"/>');
+    var i;
+    for (i = Math.ceil(xmin); i <= Math.floor(xmax); i++) {
+      var X = px(i);
+      f.line(X, mT + ph, X, mT + ph - 6, f.c.fg, 1.1);
+      f.line(X, mT, X, mT + 6, f.c.fg, 1.1);
+      f.text(X, mT + ph + 20, String(i), 16, f.c.fg);
+    }
+    for (i = Math.ceil(-ymax); i <= Math.floor(ymax); i++) {
+      var Y = py(i);
+      f.line(mL, Y, mL + 6, Y, f.c.fg, 1.1);
+      f.line(mL + pw, Y, mL + pw - 6, Y, f.c.fg, 1.1);
+      f.text(mL - 10, parseFloat(Y) + 4, String(i), 16, f.c.fg, 'end');
+    }
+    // axes through origin
+    f.line(px(xmin), py(0), px(xmax), py(0), f.c.sub, 0.8);
+    f.line(px(0), mT, px(0), mT + ph, f.c.sub, 0.8);
+    f.text(mL + pw / 2, f.H - 12, '<tspan font-style="italic">d</tspan><tspan dy="4" font-size="13">x</tspan>', 19, f.c.fg);
+    var ymid = mT + ph / 2;
+    f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="19" fill="' + f.c.fg +
+      '"><tspan font-style="italic">d</tspan><tspan dy="4" font-size="13">y</tspan></text>');
+    // circle
+    f.o.push('<circle cx="' + px(1) + '" cy="' + py(0) + '" r="' + (w * scale).toFixed(1) +
+      '" fill="' + BLUE + '" fill-opacity="0.08" stroke="' + BLUE + '" stroke-width="2.4"/>');
+    // direction arrow at k = pi/2 (top of circle): tangent points in -x direction
+    var ax = 1, ay = w;
+    f.o.push('<path d="M ' + px(ax + 0.13) + ' ' + py(ay - 0.03) + ' L ' + px(ax - 0.14) + ' ' + py(ay) +
+      ' L ' + px(ax + 0.13) + ' ' + py(ay + 0.03) + ' Z" fill="' + BLUE + '"/>');
+    // origin
+    var ox = parseFloat(px(0)), oy = parseFloat(py(0));
+    f.line(ox - 7, oy - 7, ox + 7, oy + 7, RED, 2.2);
+    f.line(ox - 7, oy + 7, ox + 7, oy - 7, RED, 2.2);
+    // center marker
+    f.o.push('<circle cx="' + px(1) + '" cy="' + py(0) + '" r="3" fill="' + f.c.sub + '"/>');
+    f.text(parseFloat(px(1)), parseFloat(py(0)) - 10, '(<tspan font-style="italic">v</tspan>, 0)', 16, f.c.sub);
+    var Wn = windingNumber(1, w);
+    f.text(mL + pw - 16, mT + 26, '<tspan font-style="italic">W</tspan> = ' + (isNaN(Wn) ? '—' : Wn), 20, f.c.fg, 'end');
+    f.done('figLoop');
+  }
+
+  // ----- readouts -----
+  function fmtE(e) {
+    if (e === 0) return '0';
+    if (e >= 0.01) return e.toFixed(3);
+    var n = Math.floor(Math.log10(e));
+    return (e / Math.pow(10, n)).toFixed(2) + '×10<sup>' + n + '</sup>';
+  }
+
+  function updateAll() {
+    document.getElementById('wVal').textContent = w.toFixed(2);
+    document.getElementById('nVal').textContent = String(N);
+    drawChain();
+    drawSpec();
+    var r = drawEdge();
+    drawLoop();
+    var d = 2 * N, emin = Infinity;
+    for (var i = 0; i < d; i++) emin = Math.min(emin, Math.abs(r.ev[i]));
+    var Wn = windingNumber(1, w);
+    var g = zakPhase(1, w);
+    document.getElementById('windVal').textContent = isNaN(Wn) ? '—（ギャップレス/gapless）' : String(Wn);
+    document.getElementById('zakVal').textContent = isNaN(g) ? '—' : Math.abs(g / Math.PI).toFixed(3);
+    document.getElementById('wanVal').textContent = isNaN(g) ? '—' : (Math.abs(g) > Math.PI / 2 ? '1/2' : '0');
+    document.getElementById('e0Val').innerHTML = fmtE(emin);
+    document.getElementById('nzVal').textContent = isNaN(Wn) ? '—' : String(2 * Wn);
+  }
+
+  document.getElementById('wSlider').addEventListener('input', function () {
+    w = parseFloat(this.value);
+    updateAll();
+  });
+  document.getElementById('nSlider').addEventListener('input', function () {
+    N = NS[parseInt(this.value, 10)];
+    updateAll();
+  });
+  document.getElementById('topoBtn').addEventListener('click', function () {
+    w = 2.0; document.getElementById('wSlider').value = '2';
+    updateAll();
+  });
+  document.getElementById('trivBtn').addEventListener('click', function () {
+    w = 0.5; document.getElementById('wSlider').value = '0.5';
+    updateAll();
+  });
+  document.getElementById('critBtn').addEventListener('click', function () {
+    w = 1.0; document.getElementById('wSlider').value = '1';
+    updateAll();
+  });
+
+  updateAll();
+  new MutationObserver(function () { updateAll(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>

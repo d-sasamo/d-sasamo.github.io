@@ -38,14 +38,16 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">MPS はどこまで正確か？— 横磁場 Ising 模型によるベンチマーク</span><span class="en">How Accurate Is an MPS? — Benchmark on the Transverse-Field Ising Model</span></h1>
     <p class="hero-sub ja">
-      可解模型である1次元横磁場 Ising 模型を舞台に、行列積状態（MPS）による基底状態計算（iDMRG）を
-      厳密解と突き合わせます。唯一のパラメータであるボンド次元 χ を変えたとき、
+      可解模型である1次元横磁場 Ising 模型を舞台に、行列積状態（MPS）に基づく
+      無限系密度行列繰り込み群（iDMRG: infinite density matrix renormalization group）による
+      基底状態計算を厳密解と突き合わせます。唯一のパラメータであるボンド次元 χ を変えたとき、
       精度がどう変わるかに注目してください。これはシミュレーションではなく、
       事前に計算した結果の静止画です。
     </p>
     <p class="hero-sub en">
-      We benchmark matrix-product-state (MPS) ground-state calculations (iDMRG) against the
-      exact solution of the 1D transverse-field Ising model. Watch how the accuracy responds
+      We benchmark ground-state calculations by the infinite density matrix renormalization
+      group (iDMRG), a matrix-product-state (MPS) method, against the exact solution of the
+      1D transverse-field Ising model. Watch how the accuracy responds
       to the single control knob — the bond dimension χ. These are static, precomputed
       figures rather than a live simulation.
     </p>
@@ -57,14 +59,14 @@
       <div class="fig-box" id="figErr"></div>
       <p class="fig-cap ja">
         基底エネルギー密度の厳密解との差 |Δ<i>e</i>| を横磁場 <i>h</i> に対して片対数プロット
-        したもの（無限系 iDMRG、単位胞2サイト）。臨界点 <i>h</i><sub>c</sub> = 1 から離れると、
+        したもの（iDMRG、単位胞2サイト）。臨界点 <i>h</i><sub>c</sub> = 1 から離れると、
         χ = 8 程度ですでに誤差は 10<sup>−13</sup>〜10<sup>−15</sup>、つまり倍精度演算の丸め誤差の
         床に到達します。底に張り付いた点はアンザッツの限界ではなく計算機の限界です。
         一方、臨界点近傍だけは有限の χ では誤差が残り、山になります。
       </p>
       <p class="fig-cap en">
         Semi-log plot of the deviation |Δ<i>e</i>| of the ground-state energy density from the
-        exact value, versus the transverse field <i>h</i> (infinite-system iDMRG, two-site unit
+        exact value, versus the transverse field <i>h</i> (iDMRG, two-site unit
         cell). Away from the critical point <i>h</i><sub>c</sub> = 1, already χ = 8 pushes the
         error down to 10<sup>−13</sup>–10<sup>−15</sup> — the round-off floor of double-precision
         arithmetic. The points sitting on that floor mark the limit of the computer, not of the
@@ -258,6 +260,19 @@
         machine precision. One ansatz, invincible or helpless depending on the entanglement
         structure of the target — that contrast is what makes tensor networks fascinating.
       </p>
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・P. Pfeuty, Ann. Phys. <b>57</b>, 79 (1970)——横磁場 Ising 模型の厳密解。<br>
+        ・S. R. White, Phys. Rev. Lett. <b>69</b>, 2863 (1992)——DMRG の原論文。<br>
+        ・I. P. McCulloch, arXiv:0804.2509——iDMRG。<br>
+        ・F. Pollmann, S. Mukerjee, A. M. Turner, and J. E. Moore, Phys. Rev. Lett. <b>102</b>, 255701 (2009)——有限エンタングルメント・スケーリング（図3(b) の κ）。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・P. Pfeuty, Ann. Phys. <b>57</b>, 79 (1970) — the exact solution of the transverse-field Ising chain.<br>
+        ・S. R. White, Phys. Rev. Lett. <b>69</b>, 2863 (1992) — the original DMRG paper.<br>
+        ・I. P. McCulloch, arXiv:0804.2509 — iDMRG.<br>
+        ・F. Pollmann, S. Mukerjee, A. M. Turner, and J. E. Moore, Phys. Rev. Lett. <b>102</b>, 255701 (2009) — finite-entanglement scaling (the κ in Fig. 3(b)).
+      </p>
     </div>
   </section>
 </main>
@@ -315,8 +330,8 @@
 
   function pow10Label(f, n, cx, cy, anchor) {
     f.o.push('<text x="' + cx + '" y="' + cy + '" text-anchor="' + (anchor || 'middle') +
-      '" font-family="' + SERIF + '" font-size="14" fill="' + f.c.fg + '">10' +
-      '<tspan dy="-6" font-size="10">' + n + '</tspan></text>');
+      '" font-family="' + SERIF + '" font-size="17" fill="' + f.c.fg + '">10' +
+      '<tspan dy="-6" font-size="12">' + n + '</tspan></text>');
   }
 
   function marker(f, X, Y, color, filled, shape) {
@@ -341,7 +356,7 @@
       var X = px(g), major = Math.abs(g * 2 - Math.round(g * 2)) < 1e-9;
       f.line(X, f.mT + f.ph, X, f.mT + f.ph - (major ? 7 : 4), f.c.fg, 1.1);
       f.line(X, f.mT, X, f.mT + (major ? 7 : 4), f.c.fg, 1.1);
-      if (major) f.text(X, f.mT + f.ph + 22, g.toFixed(1), 14, f.c.fg);
+      if (major) f.text(X, f.mT + f.ph + 22, g.toFixed(1), 17, f.c.fg);
     }
     // y ticks (decades)
     for (var n = -16; n <= -2; n++) {
@@ -352,12 +367,12 @@
     }
     // g_c line
     f.line(px(1), f.mT, px(1), f.mT + f.ph, f.c.sub, 1.2, '5,5');
-    f.text(px(1), f.mT - 7, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'middle');
+    f.text(px(1), f.mT - 7, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="13">c</tspan>', 18, f.c.sub, 'middle');
     // axis labels
-    f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 19, f.c.fg);
+    f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 22, f.c.fg);
     var ymid = f.mT + f.ph / 2;
     f.o.push('<text x="26" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 26 ' + ymid +
-      ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
+      ')" font-family="' + SERIF + '" font-size="21" fill="' + f.c.fg +
       '">|Δ<tspan font-style="italic">e</tspan>|</text>');
     // series
     for (var ci = 0; ci < DATA.chis.length; ci++) {
@@ -376,7 +391,7 @@
     for (ci = 0; ci < DATA.chis.length; ci++) {
       var col2 = CHI_COL[DATA.chis[ci]];
       marker(f, lx + ci * entryW, ly - 5, col2, true);
-      f.text(lx + ci * entryW + 14, ly, '<tspan font-style="italic">χ</tspan> = ' + DATA.chis[ci], 15, f.c.fg, 'start');
+      f.text(lx + ci * entryW + 14, ly, '<tspan font-style="italic">χ</tspan> = ' + DATA.chis[ci], 18, f.c.fg, 'start');
     }
     f.done('figErr');
   }
@@ -392,17 +407,17 @@
       var X = px(g), major = Math.abs(g * 2 - Math.round(g * 2)) < 1e-9;
       f.line(X, f.mT + f.ph, X, f.mT + f.ph - (major ? 7 : 4), f.c.fg, 1.1);
       f.line(X, f.mT, X, f.mT + (major ? 7 : 4), f.c.fg, 1.1);
-      if (major) f.text(X, f.mT + f.ph + 22, g.toFixed(1), 14, f.c.fg);
+      if (major) f.text(X, f.mT + f.ph + 22, g.toFixed(1), 17, f.c.fg);
     }
     for (var v = 0; v <= 1.001; v += 0.05) {
       var Y = py(v), maj = Math.abs(v * 5 - Math.round(v * 5)) < 1e-9;
       f.line(f.mL, Y, f.mL + (maj ? 7 : 4), Y, f.c.fg, 1.1);
       f.line(f.mL + f.pw, Y, f.mL + f.pw - (maj ? 7 : 4), Y, f.c.fg, 1.1);
-      if (maj) f.text(f.mL - 12, parseFloat(Y) + 5, v.toFixed(1), 14, f.c.fg, 'end');
+      if (maj) f.text(f.mL - 12, parseFloat(Y) + 5, v.toFixed(1), 17, f.c.fg, 'end');
     }
     f.line(px(1), f.mT, px(1), f.mT + f.ph, f.c.sub, 1.2, '5,5');
-    f.text(px(1), f.mT - 8, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'middle');
-    f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 19, f.c.fg);
+    f.text(px(1), f.mT - 8, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="13">c</tspan>', 18, f.c.sub, 'middle');
+    f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 22, f.c.fg);
     var BLUE = '#4187d6', RED = '#c85c5c';
     // exact curves
     function curve(xs, ys, col, upto) {
@@ -428,18 +443,18 @@
       marker(f, px(DATA.gs[i]), py(DATA.sz32[i]), '#8a63d2', true, 'sq');
     }
     // labels on curves
-    f.text(px(0.42), py(0.86), '⟨σ<tspan dy="-7" font-size="11" font-style="italic">x</tspan><tspan dy="7">⟩</tspan>', 17, BLUE);
-    f.text(px(1.5), py(0.70), '⟨σ<tspan dy="-7" font-size="11" font-style="italic">z</tspan><tspan dy="7">⟩</tspan>', 17, RED);
+    f.text(px(0.42), py(0.86), '⟨σ<tspan dy="-7" font-size="13" font-style="italic">x</tspan><tspan dy="7">⟩</tspan>', 20, BLUE);
+    f.text(px(1.5), py(0.70), '⟨σ<tspan dy="-7" font-size="13" font-style="italic">z</tspan><tspan dy="7">⟩</tspan>', 20, RED);
     // legend
     var lx = f.mL + f.pw - 250, ly = f.mT + f.ph - 96;
     f.line(lx, ly - 5, lx + 26, ly - 5, f.c.fg, 2.4);
-    f.text(lx + 34, ly, '<tspan>exact</tspan>', 14, f.c.fg, 'start');
+    f.text(lx + 34, ly, '<tspan>exact</tspan>', 17, f.c.fg, 'start');
     marker(f, lx + 8, ly + 19, CHI_COL[2], false);
-    f.text(lx + 34, ly + 24, 'MPS <tspan font-style="italic">χ</tspan> = 2', 14, f.c.fg, 'start');
+    f.text(lx + 34, ly + 24, 'MPS <tspan font-style="italic">χ</tspan> = 2', 17, f.c.fg, 'start');
     marker(f, lx + 8, ly + 43, CHI_COL[8], false);
-    f.text(lx + 34, ly + 48, 'MPS <tspan font-style="italic">χ</tspan> = 8', 14, f.c.fg, 'start');
+    f.text(lx + 34, ly + 48, 'MPS <tspan font-style="italic">χ</tspan> = 8', 17, f.c.fg, 'start');
     marker(f, lx + 8, ly + 67, CHI_COL[32], true);
-    f.text(lx + 34, ly + 72, 'MPS <tspan font-style="italic">χ</tspan> = 32', 14, f.c.fg, 'start');
+    f.text(lx + 34, ly + 72, 'MPS <tspan font-style="italic">χ</tspan> = 32', 17, f.c.fg, 'start');
     f.done('figMag');
   }
 
@@ -450,9 +465,9 @@
       var X = px(Math.log10(ticks[i]));
       f.line(X, f.mT + f.ph, X, f.mT + f.ph - 7, f.c.fg, 1.1);
       f.line(X, f.mT, X, f.mT + 7, f.c.fg, 1.1);
-      f.text(X, f.mT + f.ph + 22, String(ticks[i]), 14, f.c.fg);
+      f.text(X, f.mT + f.ph + 22, String(ticks[i]), 17, f.c.fg);
     }
-    f.text(f.mL + f.pw / 2, f.H - 12, '<tspan font-style="italic">χ</tspan>', 19, f.c.fg);
+    f.text(f.mL + f.pw / 2, f.H - 12, '<tspan font-style="italic">χ</tspan>', 22, f.c.fg);
   }
 
   function drawErrChi() {
@@ -470,7 +485,7 @@
     }
     var ymid = f.mT + f.ph / 2;
     f.o.push('<text x="24" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 24 ' + ymid +
-      ')" font-family="' + SERIF + '" font-size="17" fill="' + f.c.fg +
+      ')" font-family="' + SERIF + '" font-size="20" fill="' + f.c.fg +
       '">|Δ<tspan font-style="italic">e</tspan>| (<tspan font-style="italic">h</tspan> = 1)</text>');
     var pts = [];
     for (var i = 0; i < DATA.crit.length; i++) {
@@ -481,7 +496,7 @@
     for (i = 0; i < DATA.crit.length; i++) {
       marker(f, px(Math.log10(DATA.crit[i].chi)), py(Math.log10(DATA.crit[i].err)), CHI_COL[16], true);
     }
-    f.text(f.mL + f.pw - 34, f.mT + 24, '(a)', 16, f.c.fg, 'start');
+    f.text(f.mL + f.pw - 34, f.mT + 24, '(a)', 19, f.c.fg, 'start');
     f.done('figErrChi');
   }
 
@@ -507,7 +522,7 @@
     }
     var ymid = f.mT + f.ph / 2;
     f.o.push('<text x="24" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 24 ' + ymid +
-      ')" font-family="' + SERIF + '" font-size="17" fill="' + f.c.fg +
+      ')" font-family="' + SERIF + '" font-size="20" fill="' + f.c.fg +
       '"><tspan font-style="italic">ξ</tspan>(<tspan font-style="italic">χ</tspan>)</text>');
     // guide: xi = 76 * (chi/16)^2.034 drawn chi in [3, 72]
     var KAP = 2.034;
@@ -516,13 +531,13 @@
     var yB = Math.log10(76.0) + KAP * (gB - Math.log10(16));
     f.line(px(gA), py(yA), px(gB), py(yB), f.c.sub, 1.5, '7,6');
     f.o.push('<text x="' + px(Math.log10(13)) + '" y="' + py(0.95) + '" font-family="' + SERIF +
-      '" font-size="15" fill="' + f.c.sub + '">∝ <tspan font-style="italic" font-size="16">χ</tspan>' +
-      '<tspan dy="-7" font-size="11">2.034</tspan></text>');
+      '" font-size="18" fill="' + f.c.sub + '">∝ <tspan font-style="italic" font-size="19">χ</tspan>' +
+      '<tspan dy="-7" font-size="13">2.034</tspan></text>');
     for (var i = 0; i < DATA.crit.length; i++) {
       var d = DATA.crit[i];
       marker(f, px(Math.log10(d.chi)), py(Math.log10(d.xi)), CHI_COL[16], d.chi !== 64);
     }
-    f.text(f.mL + 16, f.mT + 24, '(b)', 16, f.c.fg, 'start');
+    f.text(f.mL + 16, f.mT + 24, '(b)', 19, f.c.fg, 'start');
     f.done('figXiChi');
   }
 

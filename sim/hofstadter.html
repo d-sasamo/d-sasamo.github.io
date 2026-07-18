@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hofstadter Butterfly — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .fig-box svg { display: block; width: 100%; height: auto; }
+  .fig-cap { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; margin-top: 0.8rem; }
+  .fig-cap b { color: var(--text); font-weight: 600; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; max-width: 340px; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+  .sticky-panel {
+    position: sticky; top: 10px; z-index: 30;
+    background: var(--bg);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 1rem 1.4rem 0.6rem; margin-bottom: 1.6rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  }
+  .sticky-panel .ctrl { margin-bottom: 0.7rem; }
+  .panel-row { display: flex; gap: 1.6rem; flex-wrap: wrap; align-items: flex-start; }
+  .panel-row > div { flex: 1 1 300px; }
+  .obs-compact { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; }
+  .obs-compact b { color: var(--text); font-weight: 600; }
+  @media (max-width: 700px) { .sticky-panel { position: static; } }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">Hofstadter バタフライ：磁場中の格子電子が描くフラクタル</span><span class="en">The Hofstadter Butterfly: A Fractal Drawn by Lattice Electrons in a Magnetic Field</span></h1>
+    <p class="hero-sub ja">
+      正方格子の強束縛電子に一様磁場をかけると、エネルギースペクトルは
+      磁束 φ の関数として「蝶」の形のフラクタルを描きます。
+      ギャップを量子化 Hall 伝導度（Chern 数）で色分けする表示も試してみてください。
+    </p>
+    <p class="hero-sub en">
+      Put tight-binding electrons on a square lattice in a uniform magnetic field, and the
+      energy spectrum, as a function of the flux φ, draws a butterfly-shaped fractal. Try
+      the display mode that colors each gap by its quantized Hall conductance (Chern
+      number).
+    </p>
+  </section>
+
+  <section>
+    <div class="sticky-panel">
+      <div class="panel-row">
+        <div>
+          <div class="ctrl">
+            <label><span class="ja">注目する磁束</span><span class="en">Selected flux</span> φ = <i>p</i>/<i>q</i>：<i>p</i> = <span class="val" id="pVal">1</span></label>
+            <input type="range" id="pSlider" min="1" max="4" step="1" value="1">
+          </div>
+          <div class="ctrl">
+            <label><i>q</i> = <span class="val" id="qVal">5</span></label>
+            <input type="range" id="qSlider" min="2" max="12" step="1" value="5">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="chernBtn"><span class="ja">Chern 数の色分け: OFF</span><span class="en">Chern colors: OFF</span></button>
+            <button class="sim-btn" id="b13"><span>φ = 1/3</span></button>
+            <button class="sim-btn" id="b15"><span>φ = 1/5</span></button>
+            <button class="sim-btn" id="b25"><span>φ = 2/5</span></button>
+          </div>
+        </div>
+        <div class="obs-compact">
+          <span class="ja">既約分数</span><span class="en">Reduced fraction</span>: φ = <b id="fracVal">1/5</b><br>
+          <span class="ja">磁気単位胞のサイト数・バンド数</span><span class="en">Magnetic cell sites / bands</span>: <b id="nbandVal">5</b><br>
+          <span class="ja">ギャップの Chern 数</span><span class="en">Gap Chern numbers</span> <i>t<sub>r</sub></i>: <b id="chernsVal">+1, +2, −2, −1</b><br>
+          <span class="ja">（ギャップ中の Hall 伝導度は σ<sub>xy</sub> = <i>t<sub>r</sub></i> e<sup>2</sup>/h）</span>
+          <span class="en">(Hall conductance in gap r: σ<sub>xy</sub> = <i>t<sub>r</sub></i> e<sup>2</sup>/h)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">バタフライ</span><span class="en">The butterfly</span></h3>
+      <div class="fig-box" id="figFly"></div>
+      <p class="fig-cap ja">
+        横軸が1プラケットあたりの磁束 φ（磁束量子 h/e 単位）、縦軸がエネルギーです。
+        φ = <i>p</i>/<i>q</i>（既約分数）ごとに、スペクトルは q 本のバンドに分かれます。
+        黒がバンド（許容エネルギー）、色付きの領域がギャップで、色はそのギャップに
+        Fermi 準位があるときの Hall 伝導度 σ<sub>xy</sub> = <i>t</i> e<sup>2</sup>/h の
+        整数 <i>t</i> を表します（暖色が <i>t</i> &gt; 0、寒色が <i>t</i> &lt; 0）。
+        縦の破線が現在選択中の φ です。分母 q ≤ 41 のすべての既約分数について、
+        その場で q×q 行列を対角化して描いています。
+      </p>
+      <p class="fig-cap en">
+        Horizontal axis: magnetic flux φ per plaquette (in units of the flux quantum h/e);
+        vertical axis: energy. At each reduced fraction φ = <i>p</i>/<i>q</i> the spectrum
+        splits into q bands. Black marks the bands (allowed energies); the colored regions
+        are gaps, colored by the integer <i>t</i> in the Hall conductance
+        σ<sub>xy</sub> = <i>t</i> e<sup>2</sup>/h obtained when the Fermi level lies in that
+        gap (warm colors: <i>t</i> &gt; 0; cool: <i>t</i> &lt; 0). The dashed vertical line
+        marks the currently selected φ. Everything is diagonalized on the fly, for all
+        reduced fractions with q ≤ 41.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">選んだ φ = <i>p</i>/<i>q</i> でのスペクトル</span><span class="en">Spectrum at the selected φ = <i>p</i>/<i>q</i></span></h3>
+      <div class="fig-box" id="figSpec" style="max-width:520px; margin:0 auto;"></div>
+      <p class="fig-cap ja">
+        選択した磁束でのバンド（黒い帯）とギャップです。各ギャップに、そのギャップの
+        Chern 数 <i>t<sub>r</sub></i>（＝Fermi 準位がそこにあるときの Hall 伝導度）を
+        記しています。<i>r</i> 番目のギャップの整数は Diophantine 方程式
+        <i>r</i> = <i>q</i> <i>s<sub>r</sub></i> + <i>p</i> <i>t<sub>r</sub></i>
+        （|<i>t<sub>r</sub></i>| ≤ <i>q</i>/2）の一意な解として決まります。
+        q を大きくすると、バンドが細く、ギャップの数が増えていき、
+        バタフライの「断面」がどんどん細かくなっていくのがわかります。
+      </p>
+      <p class="fig-cap en">
+        Bands (black) and gaps at the selected flux. Each gap is labeled by its Chern
+        number <i>t<sub>r</sub></i> — the Hall conductance when the Fermi level sits in it.
+        The integer for the <i>r</i>-th gap is the unique solution of the Diophantine
+        equation <i>r</i> = <i>q</i> <i>s<sub>r</sub></i> + <i>p</i> <i>t<sub>r</sub></i>
+        with |<i>t<sub>r</sub></i>| ≤ <i>q</i>/2. Increasing q makes the bands thinner and
+        the gaps more numerous — the cross-section of the butterfly grows ever finer.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+
+      <h4 style="margin-top:0.6rem;"><span class="ja">磁場を格子に入れる：パイエルス位相</span><span class="en">Putting a magnetic field on a lattice: the Peierls phase</span></h4>
+      <p class="ja">
+        まず、磁場を知らなくても大丈夫なところから始めます。量子力学では、電荷 −e の
+        粒子が磁場中を動くとき、磁場そのものではなくベクトルポテンシャル
+        <b>A</b>（<b>B</b> = ∇×<b>A</b>）が波動関数に作用します。粒子が経路に沿って
+        動くと、波動関数は位相
+      </p>
+      <p class="en">
+        Let us start from a point that requires no prior knowledge of magnetic lattice
+        problems. In quantum mechanics, a particle of charge −e moving in a magnetic field
+        couples not to the field itself but to the vector potential <b>A</b>
+        (<b>B</b> = ∇×<b>A</b>): moving along a path, the wavefunction acquires the phase
+      </p>
+      <div class="eq">\[ \exp\!\left( -\frac{ie}{\hbar} \int_{\mathrm{path}} \mathbf{A} \cdot d\boldsymbol{\ell} \right) \]</div>
+      <p class="ja">
+        を獲得します（Aharonov–Bohm 位相）。格子模型でこれを取り込む処方が
+        パイエルス置換です：サイト <i>j</i> から <i>i</i> へのホッピング振幅に、
+        そのボンドに沿った <b>A</b> の線積分を位相として付けます。
+      </p>
+      <p class="en">
+        (the Aharonov–Bohm phase). The recipe for building this into a lattice model is the
+        Peierls substitution: attach to each hopping amplitude the line integral of
+        <b>A</b> along that bond,
+      </p>
+      <div class="eq">\[ t \, c^{\dagger}_{i} c_{j} \;\longrightarrow\; t \, e^{i \theta_{ij}}\, c^{\dagger}_{i} c_{j}, \qquad \theta_{ij} = -\frac{e}{\hbar} \int_{j}^{i} \mathbf{A} \cdot d\boldsymbol{\ell} \]</div>
+      <p class="ja">
+        個々の位相 θ<sub><i>ij</i></sub> はゲージの取り方（<b>A</b> の選び方）に依存するので、
+        それ自体に物理的な意味はありません。物理的なのは、閉じたループを一周したときの
+        位相の和——ループを貫く磁束——だけです。最小のループである1プラケット
+        （格子の1マス）を貫く磁束を磁束量子 h/e で測ったものを
+      </p>
+      <p class="en">
+        The individual phases θ<sub><i>ij</i></sub> depend on the gauge (the choice of
+        <b>A</b>) and carry no physical meaning by themselves. What is physical is only the
+        sum of phases around a closed loop — the magnetic flux through it. Measuring the
+        flux through the smallest loop, a single plaquette, in units of the flux quantum
+        h/e defines
+      </p>
+      <div class="eq">\[ \phi \;=\; \frac{B a^{2}}{h/e} \]</div>
+      <p class="ja">
+        と書き、これがこの問題の唯一のパラメータになります（<i>a</i> は格子定数）。
+        電子が1マスの周りを一周すると位相 2πφ を拾う、と言ってもよいです。
+        定義から明らかに φ と φ + 1 は区別できず（位相は 2π の整数倍だけ不定）、
+        φ → −φ は時間反転なのでスペクトルは φ ∈ [0, 1] だけ調べれば十分です。
+        ちなみに通常の固体で φ ∼ 1 にするには数万テスラが必要です——
+        バタフライの観測がなぜ難しいか、の伏線です。
+      </p>
+      <p class="en">
+        with lattice constant <i>a</i> — the single parameter of the problem. Equivalently:
+        an electron encircling one plaquette picks up the phase 2πφ. By construction φ and
+        φ + 1 are indistinguishable (phases are defined mod 2π), and φ → −φ is time
+        reversal, so it suffices to study φ ∈ [0, 1]. Incidentally, reaching φ ∼ 1 in an
+        ordinary crystal takes tens of thousands of tesla — a foreshadowing of why
+        observing the butterfly is hard.
+      </p>
+
+      <h4><span class="ja">Landau ゲージと Harper 方程式</span><span class="en">The Landau gauge and the Harper equation</span></h4>
+      <p class="ja">
+        計算には便利なゲージを選びます。Landau ゲージ <b>A</b> = (0, <i>Bx</i>, 0) を取ると、
+        位相が付くのは <i>y</i> 方向のボンドだけで、その位相は列の位置 <i>m</i>（<i>x</i> = <i>ma</i>）
+        だけで決まります：θ = 2πφ<i>m</i>。このゲージでは <i>y</i> 方向の並進対称性が
+        生き残っているので、波動関数を ψ<sub><i>mn</i></sub> = e<sup>i<i>k</i><sub>y</sub><i>n</i></sup> ψ<sub><i>m</i></sub> と
+        置けて、Schrödinger 方程式は1次元の差分方程式
+      </p>
+      <p class="en">
+        For the calculation we pick a convenient gauge. In the Landau gauge
+        <b>A</b> = (0, <i>Bx</i>, 0), only the <i>y</i>-bonds carry phases, and the phase
+        depends only on the column index <i>m</i> (<i>x</i> = <i>ma</i>): θ = 2πφ<i>m</i>.
+        Translation symmetry along <i>y</i> survives, so with
+        ψ<sub><i>mn</i></sub> = e<sup>i<i>k</i><sub>y</sub><i>n</i></sup> ψ<sub><i>m</i></sub>
+        the Schrödinger equation collapses to a one-dimensional difference equation,
+      </p>
+      <div class="eq">\[ \psi_{m+1} + \psi_{m-1} + 2 \cos\!\left( 2\pi \phi\, m + k_{y} \right) \psi_{m} \;=\; \frac{E}{t}\, \psi_{m} \]</div>
+      <p class="ja">
+        に帰着します。これが Harper 方程式（Harper 1955）です。
+        2次元の磁場の問題が、周期 1/φ の「疑似ポテンシャル」を持つ1次元の
+        強束縛模型に化けた、と読めます。
+      </p>
+      <p class="en">
+        known as the Harper equation (Harper 1955). The 2D
+        magnetic problem has turned into a 1D tight-binding model in a quasi-potential of
+        period 1/φ.
+      </p>
+
+      <h4><span class="ja">有理数の魔法：φ = p/q で q 本のバンド</span><span class="en">The magic of rational numbers: q bands at φ = p/q</span></h4>
+      <p class="ja">
+        ここからがこの問題の核心です。磁束が有理数 φ = <i>p</i>/<i>q</i>（既約分数）の
+        とき、Harper 方程式のポテンシャル cos(2πφ<i>m</i>) は <i>m</i> について周期 <i>q</i> を
+        持ちます。つまり、もとの格子の並進対称性は磁場によって壊れますが、
+        <i>q</i> サイトを1つの単位胞（磁気単位胞）とする、より粗い並進対称性が
+        回復します。Bloch の定理がこの磁気単位胞に対して使えるので、
+        スペクトルはちょうど <i>q</i> 本の磁気 Bloch バンドに分かれます。
+      </p>
+      <p class="en">
+        Here is the heart of the problem. When the flux is rational, φ = <i>p</i>/<i>q</i>
+        (in lowest terms), the potential cos(2πφ<i>m</i>) in the Harper equation is periodic
+        in <i>m</i> with period <i>q</i>. The magnetic field destroys the original lattice
+        translation symmetry, but a coarser one — with a magnetic unit cell of <i>q</i>
+        sites — survives. Bloch's theorem then applies to the magnetic cell, and the
+        spectrum splits into exactly <i>q</i> magnetic Bloch bands.
+      </p>
+      <p class="ja">
+        すると奇妙なことが起こります。φ = 1/2 では2本、φ = 0.499… ≈ 499/1000 では
+        1000 本のバンド。物理的にはほとんど同じ磁場なのに、バンドの数は分母 <i>q</i> で
+        決まるので、φ をほんの少し動かすだけでスペクトルの構造が激変するのです。
+        無理数の φ では周期性が完全に失われ（非整合）、スペクトルは滑らかなバンドではなく
+        カントール集合——測度ゼロの無限に細かい点の集合——になります
+        （このスペクトルが本当にカントール集合であることは
+        「Ten Martini 問題」として長年の未解決問題で、2009年に Avila と Jitomirskaya に
+        よって証明されました）。有理数と無理数がスペクトルの形を支配する——
+        この数論的な敏感さこそが、バタフライがフラクタルになる理由です。
+      </p>
+      <p class="en">
+        This has a strange consequence. At φ = 1/2 there are two bands; at
+        φ = 0.499… ≈ 499/1000, a thousand. Physically almost identical fields — yet the
+        number of bands is set by the denominator <i>q</i>, so an infinitesimal change of φ
+        completely reorganizes the spectrum. At irrational φ the periodicity is lost
+        altogether (incommensurate), and the spectrum is not a set of smooth bands but a
+        Cantor set — an infinitely fine set of measure zero. (That this spectrum truly
+        is a Cantor set was the famous "Ten Martini problem," proven by
+        Avila and Jitomirskaya in 2009.) Number theory dictating spectra — this arithmetic
+        sensitivity is precisely why the butterfly is a fractal.
+      </p>
+      <p class="ja">
+        Hofstadter（1976）は、この q バンドのスペクトルを多数の有理数について並べて
+        描き、自己相似なフラクタル構造——バタフライ——を発見しました。
+        バタフライの任意の一部を拡大すると、そこに再び（歪んだ）バタフライ全体が
+        現れます。大きな翼の中の小さな翼は、連分数展開の各段に対応しています。
+      </p>
+      <p class="en">
+        Hofstadter (1976) plotted the q-band spectra over many rationals and discovered the
+        self-similar fractal structure — the butterfly. Magnify any part of it and a
+        (distorted) copy of the whole reappears; the small wings inside the large ones
+        correspond to the successive levels of the continued-fraction expansion of φ.
+      </p>
+
+      <h4><span class="ja">ギャップに書き込まれた整数：TKNN と Diophantine 方程式</span><span class="en">Integers written in the gaps: TKNN and the Diophantine equation</span></h4>
+      <p class="ja">
+        バタフライの美しさは形だけではありません。各ギャップには整数が隠れています。
+        Fermi 準位が <i>r</i> 番目のギャップ（下から <i>r</i> 本のバンドが詰まった状態）に
+        あるとき、Hall 伝導度は
+      </p>
+      <p class="en">
+        The beauty of the butterfly is not only its shape: an integer hides in every gap.
+        With the Fermi level in the <i>r</i>-th gap (the lowest <i>r</i> bands filled), the
+        Hall conductance is
+      </p>
+      <div class="eq">\[ \sigma_{xy} \;=\; t_{r}\, \frac{e^{2}}{h}, \qquad r \;=\; q\, s_{r} + p\, t_{r}, \quad |t_{r}| \le \frac{q}{2} \]</div>
+      <p class="ja">
+        で与えられます。<i>t<sub>r</sub></i> は Diophantine 方程式（整数方程式）の一意な解で、
+        詰まったバンドの Chern 数の和に等しい——これが Thouless–Kohmoto–Nightingale–den Nijs
+        （TKNN, 1982）の結果です。量子 Hall 効果の伝導度の量子化が、バンドの
+        トポロジカル不変量（Chern 数）に由来することを初めて示した仕事であり、
+        その舞台がまさにこの Hofstadter 模型でした。上のバタフライの色分け表示は、
+        各ギャップをこの <i>t</i> で塗ったものです（Avron らによる「colored butterfly」）。
+        同じ色のギャップが φ を変えながら連続的につながっていく様子は、
+        Hall 伝導度がギャップが閉じない限り変化できないというトポロジカルな
+        剛性の現れです。
+      </p>
+      <p class="en">
+        Here <i>t<sub>r</sub></i> is the unique solution of the Diophantine (integer)
+        equation above, and it equals the sum of the Chern numbers of the filled bands —
+        the celebrated result of Thouless–Kohmoto–Nightingale–den Nijs (TKNN, 1982). It was
+        the first demonstration that the quantized Hall conductance is a topological
+        invariant of bands (a Chern number), and its stage was exactly the Hofstadter
+        model. The colored display above paints each gap by this <i>t</i> (the "colored
+        butterfly" of Avron and collaborators). The way same-colored gaps thread
+        continuously through changing φ expresses topological rigidity: σ<sub>xy</sub>
+        cannot change unless a gap closes.
+      </p>
+      <p class="ja">
+        小さな φ の極限では、この描像は連続系の Landau 準位に接続します。
+        バタフライの左下から扇状に伸びる細いバンドの列が Landau 準位
+        <i>E<sub>n</sub></i> ∝ (<i>n</i> + 1/2)φ で、<i>n</i> 番目の準位の下のギャップの
+        色（<i>t</i> = <i>n</i>）は、通常の整数量子 Hall 効果の σ<sub>xy</sub> = <i>n</i>e<sup>2</sup>/h に
+        そのまま対応します。
+      </p>
+      <p class="en">
+        In the small-φ limit this picture connects to the continuum Landau levels: the fan
+        of thin bands emanating from the lower-left corner of the butterfly is
+        <i>E<sub>n</sub></i> ∝ (<i>n</i> + 1/2)φ, and the color <i>t</i> = <i>n</i> of the
+        gap below the <i>n</i>-th level is precisely the ordinary integer quantum Hall
+        σ<sub>xy</sub> = <i>n</i>e<sup>2</sup>/h.
+      </p>
+
+      <h4><span class="ja">実験：モアレがバタフライを現実にした</span><span class="en">Experiments: moiré made the butterfly real</span></h4>
+      <p class="ja">
+        原子スケールの格子（<i>a</i> ∼ 0.3 nm）で φ ∼ 1 を得るには数万テスラが必要で、
+        長らくバタフライは「原理的には正しいが見えない」スペクトルでした。
+        突破口は人工的に大きな格子を作ることです。グラフェンを六方晶窒化ホウ素（hBN）に
+        少しだけ角度をずらして重ねると、周期 ∼10 nm の<a href="moire.html" style="color:var(--accent2);">モアレ超格子</a>が生まれ、
+        必要な磁場が (10 nm/0.3 nm)<sup>2</sup> ∼ 1000 分の1——数十テスラ——まで下がります。
+        2013年、この方法でバタフライの構造（フラクタルなミニギャップと量子化 Hall 伝導度）が
+        実際に観測されました。ほかにも冷却原子系で人工ゲージ場により Harper–Hofstadter
+        ハミルトニアンを実装する実験や、マイクロ波共振器による音響的・電磁気的な
+        類似実験が行われています。
+      </p>
+      <p class="en">
+        With atomic lattice constants (<i>a</i> ∼ 0.3 nm), reaching φ ∼ 1 would take tens
+        of thousands of tesla, and for decades the butterfly remained a spectrum that was
+        "right in principle, invisible in practice." The breakthrough was to make the
+        lattice artificially large: stacking graphene on hexagonal boron nitride (hBN) at a
+        small twist angle creates a <a href="moire.html" style="color:var(--accent2);">moiré superlattice</a> of period ∼10 nm, reducing the
+        required field by (10 nm / 0.3 nm)<sup>2</sup> ∼ 1000 — down to tens of tesla. In
+        2013 the butterfly's structure — fractal minigaps with quantized Hall conductance —
+        was observed this way. Cold-atom experiments have also engineered the
+        Harper–Hofstadter Hamiltonian with artificial gauge fields, and microwave
+        resonators have realized acoustic/electromagnetic analogues.
+      </p>
+
+      <h4><span class="ja">このページの計算</span><span class="en">Numerics on this page</span></h4>
+      <p class="ja">
+        φ = <i>p</i>/<i>q</i> ごとに、Harper 方程式に磁気 Bloch 位相を付けた q×q 行列を
+        構成し、Jacobi 法で対角化しています。バンドの端（各バンドの最小・最大エネルギー）は
+        (<i>k<sub>x</sub></i>, <i>k<sub>y</sub></i>) = (0, 0) と (π/<i>q</i>, π/<i>q</i>) の
+        2点の固有値で厳密に得られることが知られているので、この2点だけを対角化して
+        バンドの区間を描いています（事前に Brillouin 域を細かくサンプリングした計算と
+        照合し、厳密に一致することを確認済みです）。ギャップの Chern 数は上の
+        Diophantine 方程式を解いて割り当てています。分母は q ≤ 41 まで、
+        すべて既約分数について計算しています。
+      </p>
+      <p class="en">
+        For each φ = <i>p</i>/<i>q</i>, a q×q matrix — the Harper equation with magnetic
+        Bloch phases — is built and diagonalized with the Jacobi method. The band edges
+        (the minimum and maximum energy of each band) are known to be attained exactly at
+        the two momenta (<i>k<sub>x</sub></i>, <i>k<sub>y</sub></i>) = (0, 0) and
+        (π/<i>q</i>, π/<i>q</i>), so only these two points are diagonalized to draw each
+        band interval (verified beforehand against dense Brillouin-zone sampling — the
+        agreement is exact). Gap Chern numbers are assigned by solving the Diophantine
+        equation above. All reduced fractions with q ≤ 41 are included.
+      </p>
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・D. R. Hofstadter, Phys. Rev. B <b>14</b>, 2239 (1976)——バタフライの原論文。<br>
+        ・D. J. Thouless, M. Kohmoto, M. P. Nightingale, and M. den Nijs, Phys. Rev. Lett. <b>49</b>, 405 (1982)——TKNN。<br>
+        ・J. E. Avron, D. Osadchy, and R. Seiler, Phys. Today <b>56</b>(8), 38 (2003)——Chern 数で色分けしたカラーバタフライ。<br>
+        ・C. R. Dean <i>et al.</i>, Nature <b>497</b>, 598 (2013)——モアレ超格子でのバタフライ観測。<br>
+        ・A. Avila and S. Jitomirskaya, Ann. Math. <b>170</b>, 303 (2009)——Ten Martini 問題の解決。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・D. R. Hofstadter, Phys. Rev. B <b>14</b>, 2239 (1976) — the original butterfly paper.<br>
+        ・D. J. Thouless, M. Kohmoto, M. P. Nightingale, and M. den Nijs, Phys. Rev. Lett. <b>49</b>, 405 (1982) — TKNN.<br>
+        ・J. E. Avron, D. Osadchy, and R. Seiler, Phys. Today <b>56</b>(8), 38 (2003) — the Chern-colored butterfly.<br>
+        ・C. R. Dean <i>et al.</i>, Nature <b>497</b>, 598 (2013) — observation in moir&eacute; superlattices.<br>
+        ・A. Avila and S. Jitomirskaya, Ann. Math. <b>170</b>, 303 (2009) — the solution of the Ten Martini problem.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var PURPLE = '#8a63d2';
+  var QMAX = 41;
+  var pSel = 1, qSel = 5, chernOn = false;
+
+  function colors() {
+    var isLight = document.body.classList.contains('light');
+    return {
+      bg: isLight ? '#ffffff' : '#0d1220',
+      fg: isLight ? '#1c2433' : '#dfe5f0',
+      sub: isLight ? '#4a5568' : '#a8b2c4'
+    };
+  }
+
+  // Chern color palette: warm for t>0, cool for t<0
+  var TCOL = {
+    1: '#e05252', 2: '#e0913f', 3: '#d9b93a', 4: '#c47ab0',
+    '-1': '#4187d6', '-2': '#3aa88f', '-3': '#8a63d2', '-4': '#63b7d9'
+  };
+  function tColor(t) { return TCOL[t] || '#9aa0aa'; }
+
+  function gcd(a, b) { while (b) { var r = a % b; a = b; b = r; } return a; }
+
+  // ----- real symmetric Jacobi (eigenvalues only) -----
+  function jacobiVals(A, d) {
+    for (var sweep = 0; sweep < 60; sweep++) {
+      var off = 0, i, j, k;
+      for (i = 0; i < d; i++) for (j = i + 1; j < d; j++) off += A[i*d+j]*A[i*d+j];
+      if (off < 1e-20) break;
+      for (i = 0; i < d - 1; i++) {
+        for (j = i + 1; j < d; j++) {
+          var apq = A[i*d+j];
+          if (Math.abs(apq) < 1e-13) continue;
+          var theta = 0.5 * (A[j*d+j] - A[i*d+i]) / apq;
+          var t = (theta >= 0 ? 1 : -1) / (Math.abs(theta) + Math.sqrt(theta*theta + 1));
+          var c = 1 / Math.sqrt(t*t + 1), s = t * c;
+          for (k = 0; k < d; k++) {
+            var aik = A[i*d+k], ajk = A[j*d+k];
+            A[i*d+k] = c*aik - s*ajk;
+            A[j*d+k] = s*aik + c*ajk;
+          }
+          for (k = 0; k < d; k++) {
+            var aki = A[k*d+i], akj = A[k*d+j];
+            A[k*d+i] = c*aki - s*akj;
+            A[k*d+j] = s*aki + c*akj;
+          }
+        }
+      }
+    }
+    var ev = [];
+    for (var m = 0; m < d; m++) ev.push(A[m*d+m]);
+    ev.sort(function (a, b) { return a - b; });
+    return ev;
+  }
+
+  // Harper matrix, gauge with real off-diagonals and corner = ±1
+  function harperVals(p, q, corner, ky) {
+    if (q === 1) return [2 * Math.cos(ky) + 2 * corner]; // trivial (phi integer)
+    var A = new Float64Array(q * q);
+    for (var m = 0; m < q; m++) {
+      A[m*q+m] = 2 * Math.cos(2 * Math.PI * p / q * m + ky);
+      if (m < q - 1) { A[m*q+m+1] += 1; A[(m+1)*q+m] += 1; }
+    }
+    A[0*q+(q-1)] += corner; A[(q-1)*q+0] += corner;
+    return jacobiVals(A, q);
+  }
+
+  // band intervals for phi = p/q: edges at (kx,ky)=(0,0) and (pi/q,pi/q)
+  function bandIntervals(p, q) {
+    var e1 = harperVals(p, q, 1, 0);
+    var e2 = harperVals(p, q, (q % 2 === 0) ? -1 : -1, Math.PI / q);
+    // corner for kx=pi/q is e^{i q kx} = e^{i pi} = -1 for all q
+    var lo = [], hi = [];
+    for (var i = 0; i < q; i++) {
+      lo.push(Math.min(e1[i], e2[i]));
+      hi.push(Math.max(e1[i], e2[i]));
+    }
+    return { lo: lo, hi: hi };
+  }
+
+  function tLabel(r, p, q) {
+    for (var t = -Math.floor(q / 2); t <= Math.floor(q / 2); t++) {
+      if (((r - p * t) % q + q) % q === 0) return t;
+    }
+    return null;
+  }
+
+  // ----- butterfly data (computed once) -----
+  var FLY = null;
+  function computeFly() {
+    if (FLY) return FLY;
+    var list = [];
+    // trivial columns phi = 0 and 1: single band [-4, 4]
+    list.push({ p: 0, q: 1, phi: 0, lo: [-4], hi: [4] });
+    list.push({ p: 1, q: 1, phi: 1, lo: [-4], hi: [4] });
+    for (var q = 2; q <= QMAX; q++) {
+      for (var p = 1; p < q; p++) {
+        if (gcd(p, q) !== 1) continue;
+        var b = bandIntervals(p, q);
+        list.push({ p: p, q: q, phi: p / q, lo: b.lo, hi: b.hi });
+      }
+    }
+    list.sort(function (a, b) { return a.phi - b.phi; });
+    // Farey-tiling column edges: midpoints to neighbors
+    for (var i = 0; i < list.length; i++) {
+      list[i].xL = (i === 0) ? 0 : (list[i - 1].phi + list[i].phi) / 2;
+      list[i].xR = (i === list.length - 1) ? 1 : (list[i].phi + list[i + 1].phi) / 2;
+    }
+    FLY = list;
+    return FLY;
+  }
+
+  // ----- figures -----
+  function drawFly() {
+    var c = colors();
+    var W = 880, H = 660;
+    var mL = 64, mR = 22, mT = 52, mB = 56;
+    var pw = W - mL - mR, ph = H - mT - mB;
+    var px = function (phi) { return mL + phi * pw; };
+    var py = function (e) { return mT + ph / 2 - e / 4.3 * ph / 2; };
+    var o = [];
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">');
+    o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + c.bg + '"/>');
+    var fly = computeFly(), i, j;
+    function rect(arr, x1, x2, e1, e2) {
+      arr.push('M' + x1 + ' ' + py(e1).toFixed(1) + 'H' + x2 + 'V' + py(e2).toFixed(1) + 'H' + x1 + 'Z');
+    }
+    // colored gaps (tiled columns, behind bands)
+    if (chernOn) {
+      var paths = {};
+      for (i = 0; i < fly.length; i++) {
+        var d = fly[i];
+        var x1 = px(d.xL).toFixed(1), x2 = px(d.xR).toFixed(1);
+        for (j = 0; j < d.q - 1; j++) {
+          if (d.lo[j + 1] - d.hi[j] < 1e-6) continue;
+          var t = tLabel(j + 1, d.p, d.q);
+          var key = (t === null || Math.abs(t) > 4) ? 'x' : String(t);
+          if (!paths[key]) paths[key] = [];
+          rect(paths[key], x1, x2, d.hi[j], d.lo[j + 1]);
+        }
+      }
+      for (var key2 in paths) {
+        var col = key2 === 'x' ? '#9aa0aa' : tColor(parseInt(key2, 10));
+        o.push('<path d="' + paths[key2].join('') + '" fill="' + col + '" opacity="0.6"/>');
+      }
+    }
+    // bands (tiled black rectangles)
+    var bp = [];
+    for (i = 0; i < fly.length; i++) {
+      var d2 = fly[i];
+      var x1b = px(d2.xL).toFixed(1), x2b = px(d2.xR).toFixed(1);
+      for (j = 0; j < d2.q; j++) {
+        var eLo = d2.lo[j], eHi = d2.hi[j];
+        if (py(eLo) - py(eHi) < 1.0) { var em = (eLo + eHi) / 2, half = 0.5 * 4.3 * 2 / ph; eLo = em - half; eHi = em + half; }
+        rect(bp, x1b, x2b, eHi, eLo);
+      }
+    }
+    o.push('<path d="' + bp.join('') + '" fill="' + c.fg + '"/>');
+    // frame + ticks
+    o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + c.fg + '" stroke-width="1.4"/>');
+    for (i = 0; i <= 4; i++) {
+      var X = px(i / 4);
+      o.push('<line x1="' + X + '" y1="' + (mT + ph) + '" x2="' + X + '" y2="' + (mT + ph - 7) +
+        '" stroke="' + c.fg + '" stroke-width="1.1"/>');
+      o.push('<text x="' + X + '" y="' + (mT + ph + 22) + '" text-anchor="middle" font-family="' +
+        SERIF + '" font-size="17" fill="' + c.fg + '">' + ['0', '1/4', '1/2', '3/4', '1'][i] + '</text>');
+    }
+    for (i = -4; i <= 4; i += 2) {
+      var Y = py(i);
+      o.push('<line x1="' + mL + '" y1="' + Y + '" x2="' + (mL + 7) + '" y2="' + Y +
+        '" stroke="' + c.fg + '" stroke-width="1.1"/>');
+      o.push('<text x="' + (mL - 10) + '" y="' + (Y + 5) + '" text-anchor="end" font-family="' +
+        SERIF + '" font-size="17" fill="' + c.fg + '">' + i + '</text>');
+    }
+    o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 12) + '" text-anchor="middle" font-family="' +
+      SERIF + '" font-size="21" fill="' + c.fg + '">φ</text>');
+    var ymid = mT + ph / 2;
+    o.push('<text x="22" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 22 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="20" fill="' + c.fg +
+      '"><tspan font-style="italic">E</tspan>/<tspan font-style="italic">t</tspan></text>');
+    // legend: single row above the frame (never overlaps data)
+    if (chernOn) {
+      var order = [1, 2, 3, 4, -1, -2, -3, -4];
+      var entryW = 92, lx = mL + (pw - entryW * order.length) / 2, ly = 32;
+      for (i = 0; i < order.length; i++) {
+        var col2 = tColor(order[i]);
+        var Xl = lx + i * entryW;
+        o.push('<line x1="' + Xl + '" y1="' + (ly - 4) + '" x2="' + (Xl + 20) + '" y2="' + (ly - 4) +
+          '" stroke="' + col2 + '" stroke-width="5" opacity="0.75"/>');
+        o.push('<text x="' + (Xl + 26) + '" y="' + ly + '" font-family="' + SERIF +
+          '" font-size="16" fill="' + c.fg + '"><tspan font-style="italic">t</tspan> = ' +
+          (order[i] > 0 ? '+' : '−') + Math.abs(order[i]) + '</text>');
+      }
+    }
+    // current phi marker
+    var g = gcd(pSel, qSel), pr = pSel / g, qr = qSel / g;
+    var Xm = px(pr / qr);
+    o.push('<line x1="' + Xm + '" y1="' + mT + '" x2="' + Xm + '" y2="' + (mT + ph) +
+      '" stroke="' + PURPLE + '" stroke-width="1.6" stroke-dasharray="6,5" opacity="0.9"/>');
+    o.push('</svg>');
+    document.getElementById('figFly').innerHTML = o.join('');
+  }
+
+  function drawSpec() {
+    var c = colors();
+    var W = 520, H = 480;
+    var mL = 64, mR = 30, mT = 20, mB = 50;
+    var pw = W - mL - mR, ph = H - mT - mB;
+    var py = function (e) { return mT + ph / 2 - e / 4.3 * ph / 2; };
+    var g = gcd(pSel, qSel), p = pSel / g, q = qSel / g;
+    var b = bandIntervals(p, q);
+    var o = [];
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">');
+    o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + c.bg + '"/>');
+    o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + c.fg + '" stroke-width="1.4"/>');
+    var i;
+    for (i = -4; i <= 4; i++) {
+      var Y = py(i);
+      o.push('<line x1="' + mL + '" y1="' + Y + '" x2="' + (mL + (i % 2 === 0 ? 7 : 4)) + '" y2="' + Y +
+        '" stroke="' + c.fg + '" stroke-width="1.1"/>');
+      if (i % 2 === 0) o.push('<text x="' + (mL - 10) + '" y="' + (Y + 5) +
+        '" text-anchor="end" font-family="' + SERIF + '" font-size="17" fill="' + c.fg + '">' + i + '</text>');
+    }
+    var ymid = mT + ph / 2;
+    o.push('<text x="22" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 22 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="20" fill="' + c.fg +
+      '"><tspan font-style="italic">E</tspan>/<tspan font-style="italic">t</tspan></text>');
+    // bands as filled blocks
+    var bx = mL + 18, bw = pw - 160;
+    for (i = 0; i < q; i++) {
+      var yTop = py(b.hi[i]), yBot = py(b.lo[i]);
+      o.push('<rect x="' + bx + '" y="' + yTop.toFixed(1) + '" width="' + bw + '" height="' +
+        Math.max(2, yBot - yTop).toFixed(1) + '" fill="' + c.fg + '" opacity="0.85" rx="2"/>');
+    }
+    // gap labels
+    for (i = 0; i < q - 1; i++) {
+      var gapLo = b.hi[i], gapHi = b.lo[i + 1];
+      if (gapHi - gapLo < 0.02) continue;
+      var t = tLabel(i + 1, p, q);
+      var Yg = py((gapLo + gapHi) / 2);
+      var col = tColor(t);
+      o.push('<line x1="' + (bx + bw + 8) + '" y1="' + Yg + '" x2="' + (bx + bw + 30) + '" y2="' + Yg +
+        '" stroke="' + col + '" stroke-width="4" opacity="0.8"/>');
+      o.push('<text x="' + (bx + bw + 38) + '" y="' + (parseFloat(Yg) + 5) + '" font-family="' + SERIF +
+        '" font-size="17" fill="' + c.fg + '"><tspan font-style="italic">t</tspan> = ' +
+        (t > 0 ? '+' : (t < 0 ? '−' : '')) + Math.abs(t) + '</text>');
+    }
+    o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 14) + '" text-anchor="middle" font-family="' +
+      SERIF + '" font-size="18" fill="' + c.fg + '">φ = ' + p + '/' + q + '</text>');
+    o.push('</svg>');
+    document.getElementById('figSpec').innerHTML = o.join('');
+  }
+
+  function updateObs() {
+    var g = gcd(pSel, qSel), p = pSel / g, q = qSel / g;
+    document.getElementById('fracVal').textContent = p + '/' + q;
+    document.getElementById('nbandVal').textContent = String(q);
+    var ts = [];
+    for (var r = 1; r < q; r++) {
+      var t = tLabel(r, p, q);
+      ts.push((t > 0 ? '+' : (t < 0 ? '−' : '')) + Math.abs(t));
+    }
+    document.getElementById('chernsVal').textContent = ts.length ? ts.join(', ') : '—';
+  }
+
+  function updateAll() {
+    document.getElementById('pVal').textContent = String(pSel);
+    document.getElementById('qVal').textContent = String(qSel);
+    drawFly();
+    drawSpec();
+    updateObs();
+  }
+
+  document.getElementById('qSlider').addEventListener('input', function () {
+    qSel = parseInt(this.value, 10);
+    if (pSel >= qSel) pSel = qSel - 1;
+    var ps = document.getElementById('pSlider');
+    ps.max = String(qSel - 1);
+    ps.value = String(pSel);
+    updateAll();
+  });
+  document.getElementById('pSlider').addEventListener('input', function () {
+    pSel = parseInt(this.value, 10);
+    updateAll();
+  });
+  document.getElementById('chernBtn').addEventListener('click', function () {
+    chernOn = !chernOn;
+    this.querySelectorAll('.ja')[0].textContent = 'Chern 数の色分け: ' + (chernOn ? 'ON' : 'OFF');
+    this.querySelectorAll('.en')[0].textContent = 'Chern colors: ' + (chernOn ? 'ON' : 'OFF');
+    drawFly();
+  });
+  function setPQ(p, q) {
+    pSel = p; qSel = q;
+    document.getElementById('qSlider').value = String(q);
+    var ps = document.getElementById('pSlider');
+    ps.max = String(q - 1); ps.value = String(p);
+    updateAll();
+  }
+  document.getElementById('b13').addEventListener('click', function () { setPQ(1, 3); });
+  document.getElementById('b15').addEventListener('click', function () { setPQ(1, 5); });
+  document.getElementById('b25').addEventListener('click', function () { setPQ(2, 5); });
+
+  updateAll();
+  new MutationObserver(function () { updateAll(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>

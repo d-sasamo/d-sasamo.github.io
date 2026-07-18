@@ -59,13 +59,13 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">MPS/TEBD による量子スピン鎖の実時間ダイナミクス</span><span class="en">Real-Time Quantum Spin-Chain Dynamics with MPS/TEBD</span></h1>
     <p class="hero-sub ja">
-      行列積状態（MPS）を TEBD で時間発展させる、正真正銘のテンソルネットワーク計算が
-      ブラウザの中で走っています。横磁場 Ising 模型と XXZ 模型のクエンチダイナミクスを、
+      行列積状態（MPS）を TEBD で時間発展させる、正真正銘のテンソルネットワーク計算です。
+      横磁場 Ising 模型と XXZ 模型のクエンチダイナミクスを、
       エンタングルメントエントロピーの成長とともに観察してみてください。
     </p>
     <p class="hero-sub en">
-      A genuine tensor-network computation — a matrix product state evolved by TEBD — is
-      running inside your browser. Watch quench dynamics of the transverse-field Ising and
+      A genuine tensor-network computation — a matrix product state evolved by TEBD.
+      Watch quench dynamics of the transverse-field Ising and
       XXZ chains, together with the growth of entanglement entropy.
     </p>
   </section>
@@ -339,6 +339,19 @@
         cold atoms and quantum computers draws such expectations — and why, I believe,
         analytic approaches built on physical pictures (such as the parton constructions I
         use in my research) will remain essential for two-dimensional dynamics.
+      </p>
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・G. Vidal, Phys. Rev. Lett. <b>91</b>, 147902 (2003); <b>93</b>, 040502 (2004)——TEBD の原論文。<br>
+        ・U. Schollw&ouml;ck, Ann. Phys. <b>326</b>, 96 (2011)——MPS/DMRG の定番レビュー。<br>
+        ・J. Hauschild and F. Pollmann, SciPost Phys. Lect. Notes <b>5</b> (2018)——TeNPy。<br>
+        ・M. Fishman, S. R. White, and E. M. Stoudenmire, SciPost Phys. Codebases <b>4</b> (2022)——ITensor。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・G. Vidal, Phys. Rev. Lett. <b>91</b>, 147902 (2003); <b>93</b>, 040502 (2004) — the original TEBD papers.<br>
+        ・U. Schollw&ouml;ck, Ann. Phys. <b>326</b>, 96 (2011) — the standard MPS/DMRG review.<br>
+        ・J. Hauschild and F. Pollmann, SciPost Phys. Lect. Notes <b>5</b> (2018) — TeNPy.<br>
+        ・M. Fishman, S. R. White, and E. M. Stoudenmire, SciPost Phys. Codebases <b>4</b> (2022) — ITensor.
       </p>
     </div>
   </section>
@@ -718,20 +731,20 @@ function drawChart() {
   for (var t = 0; t <= tMax + 1e-9; t += tTick) {
     var X = px(t);
     o.push('<line x1="' + X + '" y1="' + (mT + ph) + '" x2="' + X + '" y2="' + (mT + ph - 6) + '" stroke="' + fg + '" stroke-width="1.1"/>');
-    o.push('<text x="' + X + '" y="' + (mT + ph + 20) + '" text-anchor="middle" font-family="' + SERIF + '" font-size="14" fill="' + fg + '">' + t + '</text>');
+    o.push('<text x="' + X + '" y="' + (mT + ph + 20) + '" text-anchor="middle" font-family="' + SERIF + '" font-size="17" fill="' + fg + '">' + t + '</text>');
   }
   for (var s = 0; s <= sMax + 1e-9; s += 1) {
     var Y = py(s);
     o.push('<line x1="' + mL + '" y1="' + Y + '" x2="' + (mL + 6) + '" y2="' + Y + '" stroke="' + fg + '" stroke-width="1.1"/>');
-    o.push('<text x="' + (mL - 8) + '" y="' + (parseFloat(Y) + 5) + '" text-anchor="end" font-family="' + SERIF + '" font-size="14" fill="' + fg + '">' + s + '</text>');
+    o.push('<text x="' + (mL - 8) + '" y="' + (parseFloat(Y) + 5) + '" text-anchor="end" font-family="' + SERIF + '" font-size="17" fill="' + fg + '">' + s + '</text>');
   }
-  o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 14) + '" text-anchor="middle" font-family="' + SERIF + '" font-size="17" font-style="italic" fill="' + fg + '">t</text>');
+  o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 14) + '" text-anchor="middle" font-family="' + SERIF + '" font-size="20" font-style="italic" fill="' + fg + '">t</text>');
   var ymid = mT + ph / 2;
-  o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid + ')" font-family="' + SERIF + '" font-size="17" fill="' + fg + '"><tspan font-style="italic">S</tspan><tspan dy="4" font-size="12">mid</tspan></text>');
+  o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid + ')" font-family="' + SERIF + '" font-size="20" fill="' + fg + '"><tspan font-style="italic">S</tspan><tspan dy="4" font-size="15">mid</tspan></text>');
   // ln chi dashed
   var yChi = py(Math.log(CHI));
   o.push('<line x1="' + mL + '" y1="' + yChi + '" x2="' + (mL + pw) + '" y2="' + yChi + '" stroke="' + sub + '" stroke-width="1.4" stroke-dasharray="7,6"/>');
-  o.push('<text x="' + (mL + pw - 8) + '" y="' + (parseFloat(yChi) - 7) + '" text-anchor="end" font-family="' + SERIF + '" font-size="14" fill="' + sub + '">ln <tspan font-style="italic">χ</tspan></text>');
+  o.push('<text x="' + (mL + pw - 8) + '" y="' + (parseFloat(yChi) - 7) + '" text-anchor="end" font-family="' + SERIF + '" font-size="17" fill="' + sub + '">ln <tspan font-style="italic">χ</tspan></text>');
   if (sHist.length > 1) {
     var pts = [];
     for (var i = 0; i < sHist.length; i++) pts.push(px(sHist[i][0]) + ',' + py(sHist[i][1]));

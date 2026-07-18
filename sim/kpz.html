@@ -199,8 +199,8 @@
         厳密に求められていて、なんとランダム行列理論の Tracy–Widom 分布に従うことが
         知られています（初期条件が平坦か曲面かで GOE/GUE が切り替わる、という
         美しいおまけ付きです）。この普遍性は液晶乱流の実験（竹内・佐野）でも
-        観測されています。理論の入り口としては、教科書タブで紹介している
-        M. Kardar 先生の <i>Statistical Physics of Fields</i> の §9.6 が感動的なので、
+        観測されています。理論の入り口としては、
+        <a href="../index.html#book-kardar-spf" style="color:var(--accent2);">M. Kardar 先生の <i>Statistical Physics of Fields</i></a> の §9.6 が感動的なので、
         ぜひそちらもどうぞ。
       </p>
       <p class="en">
@@ -209,8 +209,21 @@
         Tracy–Widom distributions of random matrix theory (with the beautiful twist that
         flat versus curved initial conditions select GOE versus GUE). This universality has
         even been observed in liquid-crystal turbulence experiments (Takeuchi–Sano). For
-        the theory, Section 9.6 of M. Kardar's <i>Statistical Physics of Fields</i> —
-        reviewed in the Textbooks tab — is breathtaking; do have a look.
+        the theory, Section 9.6 of <a href="../index.html#book-kardar-spf" style="color:var(--accent2);">M. Kardar's <i>Statistical Physics of Fields</i></a>
+        is breathtaking; do have a look.
+      </p>
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・M. Kardar, G. Parisi, and Y.-C. Zhang, Phys. Rev. Lett. <b>56</b>, 889 (1986)——KPZ 方程式の原論文。<br>
+        ・J. M. Kim and J. M. Kosterlitz, Phys. Rev. Lett. <b>62</b>, 2289 (1989)——このページでも使っている RSOS 模型。<br>
+        ・A.-L. Barab&aacute;si and H. E. Stanley, <i>Fractal Concepts in Surface Growth</i> (Cambridge UP, 1995)——界面成長の定番教科書。<br>
+        ・T. Sasamoto and H. Spohn, Phys. Rev. Lett. <b>104</b>, 230602 (2010)——KPZ 方程式の厳密解。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・M. Kardar, G. Parisi, and Y.-C. Zhang, Phys. Rev. Lett. <b>56</b>, 889 (1986) — the original KPZ paper.<br>
+        ・J. M. Kim and J. M. Kosterlitz, Phys. Rev. Lett. <b>62</b>, 2289 (1989) — the RSOS model used on this page.<br>
+        ・A.-L. Barab&aacute;si and H. E. Stanley, <i>Fractal Concepts in Surface Growth</i> (Cambridge UP, 1995) — the standard surface-growth textbook.<br>
+        ・T. Sasamoto and H. Spohn, Phys. Rev. Lett. <b>104</b>, 230602 (2010) — an exact solution of the KPZ equation.
       </p>
     </div>
   </section>
@@ -324,8 +337,8 @@
 
     function pow10(n, cx, cy, anchor) {
       o.push('<text x="' + cx + '" y="' + cy + '" text-anchor="' + (anchor || 'middle') +
-        '" font-family="' + SERIF + '" font-size="15" fill="' + fg + '">10' +
-        '<tspan dy="-7" font-size="11">' + n + '</tspan></text>');
+        '" font-family="' + SERIF + '" font-size="18" fill="' + fg + '">10' +
+        '<tspan dy="-7" font-size="13">' + n + '</tspan></text>');
     }
 
     o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
@@ -360,10 +373,10 @@
     }
 
     o.push('<text x="' + (mL + pw / 2) + '" y="' + (H - 16) +
-      '" text-anchor="middle" font-family="' + SERIF + '" font-size="19" font-style="italic" fill="' + fg + '">t</text>');
+      '" text-anchor="middle" font-family="' + SERIF + '" font-size="22" font-style="italic" fill="' + fg + '">t</text>');
     var ymid = mT + ph / 2;
     o.push('<text x="26" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 26 ' + ymid + ')"' +
-      ' font-family="' + SERIF + '" font-size="19" fill="' + fg + '">' +
+      ' font-family="' + SERIF + '" font-size="22" fill="' + fg + '">' +
       '<tspan font-style="italic">W</tspan>(<tspan font-style="italic">t</tspan>)</text>');
 
     function guide(slope, lxA, lyA, len) {
@@ -371,8 +384,8 @@
     }
     function guideLabel(lx, ly, exp) {
       o.push('<text x="' + px(lx) + '" y="' + py(ly) + '" font-family="' + SERIF +
-        '" font-size="15" fill="' + sub + '">\u221d <tspan font-style="italic" font-size="16">t</tspan>' +
-        '<tspan dy="-7" font-size="11">' + exp + '</tspan></text>');
+        '" font-size="18" fill="' + sub + '">\u221d <tspan font-style="italic" font-size="19">t</tspan>' +
+        '<tspan dy="-7" font-size="13">' + exp + '</tspan></text>');
     }
     guide(0.5, 0.3, 0.35, 3.2);
     guideLabel(2.02, 1.46, '1/2');
@@ -391,9 +404,9 @@
 
     var lx0 = mL + 18, ly0 = mT + 26;
     line(lx0, ly0 - 5, lx0 + 30, ly0 - 5, BLUE, 2.4);
-    o.push('<text x="' + (lx0 + 38) + '" y="' + ly0 + '" font-family="Inter, sans-serif" font-size="14" fill="' + fg + '">random deposition</text>');
+    o.push('<text x="' + (lx0 + 38) + '" y="' + ly0 + '" font-family="Inter, sans-serif" font-size="17" fill="' + fg + '">random deposition</text>');
     line(lx0, ly0 + 19, lx0 + 30, ly0 + 19, RED, 2.4);
-    o.push('<text x="' + (lx0 + 38) + '" y="' + (ly0 + 24) + '" font-family="Inter, sans-serif" font-size="14" fill="' + fg + '">RSOS (KPZ)</text>');
+    o.push('<text x="' + (lx0 + 38) + '" y="' + (ly0 + 24) + '" font-family="Inter, sans-serif" font-size="17" fill="' + fg + '">RSOS (KPZ)</text>');
 
     o.push('</svg>');
     document.getElementById('wChart').innerHTML = o.join('');

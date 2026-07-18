@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Twisted Bilayer Graphene: Moiré Pattern &amp; Flat Bands — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .fig-box svg { display: block; width: 100%; height: auto; }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 700px) { .fig-grid { grid-template-columns: 1fr; } }
+  #moireCanvas { display: block; width: 100%; height: auto; }
+  .fig-cap { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; margin-top: 0.8rem; }
+  .fig-cap b { color: var(--text); font-weight: 600; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; max-width: 340px; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+  .sticky-panel {
+    position: sticky; top: 10px; z-index: 30;
+    background: var(--bg);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 1rem 1.4rem 0.6rem; margin-bottom: 1.6rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  }
+  .sticky-panel .ctrl { margin-bottom: 0.7rem; }
+  .panel-row { display: flex; gap: 1.6rem; flex-wrap: wrap; align-items: flex-start; }
+  .panel-row > div { flex: 1 1 300px; }
+  .obs-compact { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; }
+  .obs-compact b { color: var(--text); font-weight: 600; }
+  @media (max-width: 700px) { .sticky-panel { position: static; } }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">ねじれ2層グラフェン：モアレ模様と平坦バンド</span><span class="en">Twisted Bilayer Graphene: Moiré Patterns and Flat Bands</span></h1>
+    <p class="hero-sub ja">
+      完全に重なった2枚のハニカム格子（θ = 0）から出発して、ねじれ角 θ を
+      少しずつ回してみてください。長周期のモアレ模様が浮かび上がり、
+      連続体模型で計算したモアレバンドが連動して変形していきます。
+      θ ≈ 1.05° の「魔法角」でバンドがほぼ平坦になります。
+    </p>
+    <p class="hero-sub en">
+      Start from two perfectly aligned honeycomb lattices (θ = 0) and slowly turn the
+      twist angle: a long-period moiré pattern emerges, and the continuum-model moiré
+      bands deform in lockstep — becoming nearly flat at the magic angle θ ≈ 1.05°.
+    </p>
+  </section>
+
+  <section>
+    <div class="card">
+      <h3><span class="ja">実空間：2枚のハニカム格子とモアレ模様</span><span class="en">Real space: two honeycomb lattices and the moiré pattern</span></h3>
+      <div class="ctrl" style="margin-top:0.6rem;">
+        <label><span class="ja">ねじれ角</span><span class="en">Twist angle</span> θ = <span class="val" id="thVal">0.00</span>°</label>
+        <input type="range" id="thSlider" min="0" max="8" step="0.01" value="0">
+      </div>
+      <div class="ctrl">
+        <button class="sim-btn" id="r0"><span>θ = 0°</span></button>
+        <button class="sim-btn" id="r082"><span>θ = 0.82°</span></button>
+        <button class="sim-btn" id="r105"><span class="ja">魔法角 1.05°</span><span class="en">Magic 1.05°</span></button>
+        <button class="sim-btn" id="r147"><span>θ = 1.47°</span></button>
+        <button class="sim-btn" id="r265"><span>θ = 2.65°</span></button>
+        <button class="sim-btn" id="r5"><span>θ = 5°</span></button>
+      </div>
+      <p class="obs-compact" style="margin-bottom:0.9rem;">
+        <span class="ja">モアレ周期</span><span class="en">Moiré period</span> <i>L</i><sub>M</sub> = <b id="lmVal">—</b>
+        ・ <span class="ja">モアレ単位胞あたりの原子数</span><span class="en">atoms per moiré cell</span> ≈ <b id="natVal">—</b>
+      </p>
+      <div class="fig-box"><canvas id="moireCanvas" width="1760" height="1120" style="width:100%;"></canvas></div>
+      <p class="fig-cap ja">
+        黒いハニカムシートが1層目（＋θ/2 回転）、赤いシートが2層目（−θ/2 回転、
+        ひと回り大きく描いてあるので縁が見えます）です。θ = 0 では2枚は完全に重なり、
+        ただのハニカム格子にしか見えません。ところが θ を少し回すと、
+        六角形が重なって濃く見える場所（AA 積層）と、ずれて網目が細かく見える場所
+        （AB/BA 積層）が交互に現れ、周期
+        <i>L</i><sub>M</sub> = <i>a</i>/[2 sin(θ/2)] の三角格子模様——モアレ模様——が
+        浮かび上がります。視野と格子の大きさは固定で、起きているのは2枚の相対回転だけです。
+        θ を小さくするほど模様は大きく育っていきます（矢印が <i>L</i><sub>M</sub>）。
+      </p>
+      <p class="fig-cap en">
+        The black honeycomb sheet is layer 1 (rotated by +θ/2); the red sheet is layer 2
+        (−θ/2, drawn slightly larger so its edge stays visible). At θ = 0 the two sheets
+        coincide perfectly and look like a single honeycomb. Turn θ slightly and regions
+        where the hexagons align (AA stacking) alternate with regions where they interleave
+        (AB/BA), revealing the triangular moiré pattern of period
+        <i>L</i><sub>M</sub> = <i>a</i>/[2 sin(θ/2)]. The field of view and lattice scale are
+        fixed — the only thing changing is the relative rotation. As θ decreases the pattern
+        grows (the arrow marks <i>L</i><sub>M</sub>).
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">運動量空間：モアレバンド構造</span><span class="en">Momentum space: the moiré band structure</span></h3>
+      <p style="color:var(--text-dim); font-size:0.95rem; margin-top:0.4rem;">
+        <span class="ja">
+          まずは大きめの θ から出発して、スライダーを少しずつ下げてみてください。
+          赤い Dirac 錐がだんだん押しつぶされ、「魔法角 1.05°」のボタンを押すと、
+          灰色のバンドに挟まれた<b>ほぼ完全に平坦な赤いバンド</b>が現れます——
+          これが強相関物理と超伝導の舞台になる平坦バンドです。
+        </span>
+        <span class="en">
+          Start from a large θ and lower the slider step by step: the red Dirac cone gets
+          squeezed flatter and flatter, and hitting the "Magic 1.05°" button reveals an
+          <b>almost perfectly flat red band</b> sandwiched between the gray bands — the flat
+          band on which correlated physics and superconductivity play out.
+        </span>
+      </p>
+      <div class="ctrl" style="margin-top:0.6rem;">
+        <label><span class="ja">ねじれ角</span><span class="en">Twist angle</span> θ = <span class="val" id="thBandVal">2.65</span>°<span class="ja">（基底の打ち切りの都合で 0.5° から。連続体模型自体は小さな θ でも有効です）</span><span class="en"> (from 0.5° — a basis-truncation limit of this page; the continuum model itself remains valid at smaller θ)</span></label>
+        <input type="range" id="thBandSlider" min="0.5" max="8" step="0.01" value="2.65">
+      </div>
+      <div class="ctrl">
+        <button class="sim-btn" id="b082"><span>θ = 0.82°</span></button>
+        <button class="sim-btn" id="b105"><span class="ja">魔法角 1.05°</span><span class="en">Magic 1.05°</span></button>
+        <button class="sim-btn" id="b147"><span>θ = 1.47°</span></button>
+        <button class="sim-btn" id="b265"><span>θ = 2.65°</span></button>
+        <button class="sim-btn" id="b5"><span>θ = 5°</span></button>
+      </div>
+      <p class="obs-compact" style="margin-bottom:0.9rem;">
+        <span class="ja">Dirac 点のずれ</span><span class="en">Dirac-point mismatch</span> <i>q</i><sub>θ</sub> = <b id="qthVal">—</b>
+        ・ ε<sub>θ</sub> = ħ<i>v</i><i>q</i><sub>θ</sub>/2 = <b id="epsVal">—</b>
+        ・ <i>u</i>′/ε<sub>θ</sub> = <b id="ratVal">—</b><br>
+        <span class="ja">中央バンドの幅</span><span class="en">Central bandwidth</span> <i>W</i> = <b id="wVal">—</b>
+        ・ <span class="ja">速度繰り込み</span><span class="en">Velocity renormalization</span> <i>v</i>*/<i>v</i> ≈ <b id="vVal">—</b>
+      </p>
+      <div class="fig-box" id="figBands" style="max-width:640px; margin:0 auto;"></div>
+      <p class="fig-cap ja">
+        連続体模型で計算したモアレバンドの3次元表示（バレー ξ = +）。
+        底面の六角形が波数空間のモアレ Brillouin ゾーン（γ が中心、頂点の κ と κ′ が
+        1層目・2層目の Dirac 点の位置）で、その上にエネルギー窓 ±0.25 eV に入る
+        すべてのバンドを半透明のシートとして描いています（電荷中性点を挟む中央の
+        2枚だけ赤系で色付け）。κ と κ′ では Dirac 円錐が
+        ギャップを開かずに生き残っています。θ を下げていくと円錐の傾き
+        （電子の速度）が下がってバンド全体が押しつぶされ、θ ≈ 1.05° で赤い2枚が
+        数十 meV 幅の平坦な板になります——これが魔法角の平坦バンドです。
+        上の読み出しで幅 <i>W</i> と <i>v</i>*/<i>v</i> の変化を追ってみてください。
+      </p>
+      <p class="fig-cap en">
+        A three-dimensional view of the continuum-model moiré bands (valley ξ = +). The
+        hexagon at the base is the moiré Brillouin zone in momentum space (γ at the
+        center; the corners κ and κ′ host the Dirac points of layers 1 and 2), and every
+        band entering the energy window ±0.25 eV is drawn as a translucent sheet (the two
+        central bands straddling charge neutrality are tinted red). The Dirac cones at κ and κ′ survive without gapping; as θ decreases the
+        cone slope — the electron velocity — drops, the spectrum gets squeezed, and at
+        θ ≈ 1.05° the two red sheets collapse into a nearly flat slab a few tens of meV
+        thick: the magic-angle flat band. Track <i>W</i> and <i>v</i>*/<i>v</i> in the
+        readouts above.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+
+      <h4 style="margin-top:0.6rem;"><span class="ja">モアレ模様：うなりの2次元版</span><span class="en">Moiré patterns: beats in two dimensions</span></h4>
+      <p class="ja">
+        振動数のわずかに違う2つの音を同時に鳴らすと、差の振動数
+        <i>f</i><sub>1</sub> − <i>f</i><sub>2</sub> でゆっくり振動する「うなり」が
+        聞こえます。モアレ模様はこの空間版です。2枚の格子はほぼ同じ波数を持ちますが、
+        角度 θ だけ回転しているため、逆格子ベクトルが
+      </p>
+      <p class="en">
+        Play two tones of slightly different frequencies and you hear a beat, oscillating
+        slowly at the difference frequency <i>f</i><sub>1</sub> − <i>f</i><sub>2</sub>. A
+        moiré pattern is the spatial version. The two lattices carry nearly the same wave
+        vectors, but the rotation by θ leaves a small mismatch between their reciprocal
+        vectors,
+      </p>
+      <div class="eq">\[ \mathbf{G}^{\mathrm{M}}_{j} \;=\; \mathbf{b}_{j} - \mathbf{b}'_{j}, \qquad |\mathbf{G}^{\mathrm{M}}| = 2b \sin(\theta/2) \]</div>
+      <p class="ja">
+        だけ食い違います。この「差の波数」が作る長波長の変調がモアレ模様であり、
+        その実空間周期が
+      </p>
+      <p class="en">
+        and this difference wave vector generates a long-wavelength modulation — the moiré —
+        whose real-space period is
+      </p>
+      <div class="eq">\[ L_{\mathrm{M}} \;=\; \frac{a}{2 \sin(\theta/2)} \;\approx\; \frac{a}{\theta} \quad (\theta \ll 1) \]</div>
+      <p class="ja">
+        です。角度に反比例して伸びるのがポイントで、θ = 1° なら
+        <i>L</i><sub>M</sub> ≈ 14 nm、モアレ単位胞1個に1万個を超える炭素原子が入ります。
+        単位胞の中では、局所的な積層の仕方が AA（六角形が完全に重なる）→ AB → BA と
+        場所とともにゆっくり一巡します。なお実際の試料では格子が自発的に歪み（格子緩和）、
+        エネルギーの低い AB/BA 積層の三角形ドメインが広がって AA 領域が縮む、
+        という再構成が起こることも知られています。
+      </p>
+      <p class="en">
+        The inverse dependence on angle is the point: at θ = 1°,
+        <i>L</i><sub>M</sub> ≈ 14 nm and a single moiré cell contains more than ten
+        thousand carbon atoms. Within the cell, the local stacking slowly cycles through
+        AA (hexagons perfectly aligned), AB, and BA. In real samples the lattice also
+        relaxes: the low-energy AB/BA regions grow into triangular domains while the AA
+        regions shrink.
+      </p>
+
+      <h4><span class="ja">連続体模型：原子を忘れ、モアレだけを残す</span><span class="en">The continuum model: forget the atoms, keep the moiré</span></h4>
+      <p class="ja">
+        一般の θ では2枚の格子は正確には整合せず、系全体には厳密な意味での結晶周期が
+        ありません。それでも θ が小さければ、原子スケール <i>a</i> とモアレスケール
+        <i>L</i><sub>M</sub> がよく分離しているので、原子構造を粗視化して
+        「モアレ周期だけを持つ有効理論」を作れます。それが連続体模型
+        （Bistritzer–Macdonald 型模型）です。各層の低エネルギー電子は
+        Dirac ハミルトニアンで記述し、層間の飛び移りを、モアレ周期で変調された
+        結合 <i>U</i>(<b>r</b>) として取り込みます：
+      </p>
+      <p class="en">
+        At generic θ the two lattices are incommensurate — strictly speaking the system has
+        no crystal period at all. But for small θ the atomic scale <i>a</i> and the moiré
+        scale <i>L</i><sub>M</sub> are well separated, so one can coarse-grain the atomic
+        structure into an effective theory that knows only the moiré period: the continuum
+        (Bistritzer–MacDonald) model. Each layer contributes a Dirac Hamiltonian, and the
+        interlayer tunneling enters as a coupling <i>U</i>(<b>r</b>) modulated with the
+        moiré period:
+      </p>
+      <div class="eq">\[ \mathcal{H} \;=\; \begin{pmatrix} H_{0} &amp; U^{\dagger} \\ U &amp; H_{0} \end{pmatrix}, \qquad U(\mathbf{r}) \;=\; \sum_{j=1}^{3} e^{i \mathbf{q}_{j} \cdot \mathbf{r}}\, T_{j} \]</div>
+      <p class="ja">
+        ここで <b>q</b><sub>1,2,3</sub> は、回転によってずれた2層の Dirac 点の差
+        （大きさ <i>q</i><sub>θ</sub> = 2<i>K</i> sin(θ/2)、120° 対称の3本）で、
+        <i>T<sub>j</sub></i> は 2×2 の結合行列です。その成分には2つのパラメータが
+        入ります：AA 領域での層間結合 <i>u</i> と、AB/BA 領域での結合 <i>u</i>′ です
+        （格子緩和で AA 領域が縮み層間距離も開くため、<i>u</i> &lt; <i>u</i>′ と
+        なります。このページでは <i>u</i> = 0.079 eV、<i>u</i>′ = 0.098 eV を
+        使っています）。
+      </p>
+      <p class="en">
+        Here <b>q</b><sub>1,2,3</sub> are the three 120°-symmetric offsets between the
+        Dirac points of the two rotated layers (of magnitude
+        <i>q</i><sub>θ</sub> = 2<i>K</i> sin(θ/2)), and <i>T<sub>j</sub></i> are 2×2
+        coupling matrices containing two parameters: the interlayer coupling <i>u</i> in
+        the AA regions and <i>u</i>′ in the AB/BA regions (lattice relaxation shrinks the
+        AA regions and widens their interlayer distance, so <i>u</i> &lt; <i>u</i>′; this
+        page uses <i>u</i> = 0.079 eV, <i>u</i>′ = 0.098 eV).
+      </p>
+      <p class="ja">
+        バンド計算は普通の Bloch 電子と同じ手順でできます。1層目の波数 <b>k</b> の状態は、
+        <i>U</i> を1回かけるごとに2層目の <b>k</b> + <b>q</b><sub><i>j</i></sub> の状態と
+        混成し、それを繰り返すとモアレ逆格子ベクトルの分だけ離れた平面波の集合が
+        閉じた基底を作ります。低エネルギーのバンドには Dirac 点の近くの波だけが効くので、
+        有限個（このページでは各層7個、行列サイズ 28×28）で打ち切って対角化すれば
+        十分です。この最小の打ち切りでも、魔法角付近の中央バンド幅は収束計算と
+        1〜2割以内で一致し、バンドが潰れていく様子は正しく再現されます。
+      </p>
+      <p class="en">
+        Band structures then follow the ordinary Bloch procedure: a layer-1 state at
+        <b>k</b> hybridizes, through <i>U</i>, with layer-2 states at
+        <b>k</b> + <b>q</b><sub><i>j</i></sub>, and iterating generates a closed set of
+        plane waves separated by moiré reciprocal vectors. Only waves near the Dirac
+        points matter at low energy, so truncating to a finite set (seven waves per layer
+        here — a 28×28 matrix) suffices: even this minimal truncation reproduces the
+        central bandwidth near the magic angle to within 10–20% of the converged value,
+        and the band flattening faithfully.
+      </p>
+
+      <h4><span class="ja">2つのエネルギースケールの競争と魔法角</span><span class="en">A competition of two energy scales, and the magic angle</span></h4>
+      <p class="ja">
+        モアレバンドの形を決めるのは、たった2つのスケールの比です。ひとつは層間結合の
+        強さ <i>u</i>′ ∼ 0.1 eV——これは θ にほとんど依存しません。もうひとつは、
+        ずれた2つの Dirac 円錐が交わる高さ
+      </p>
+      <p class="en">
+        The shape of the moiré bands is controlled by the ratio of just two scales. One is
+        the interlayer coupling <i>u</i>′ ∼ 0.1 eV, essentially independent of θ. The
+        other is the energy at which the two displaced Dirac cones intersect,
+      </p>
+      <div class="eq">\[ \varepsilon_{\theta} \;=\; \frac{\hbar v\, q_{\theta}}{2} \;\propto\; \theta \]</div>
+      <p class="ja">
+        です。θ が大きいうちは ε<sub>θ</sub> ≫ <i>u</i>′ で、層間結合は円錐の交線に
+        小さなギャップを開ける摂動にすぎません。ところが θ を下げると ε<sub>θ</sub> は
+        θ に比例して小さくなり、θ ≈ 1° で <i>u</i>′/ε<sub>θ</sub> が 1 を超えます。
+        ここでは層間結合はもはや摂動ではなく、Dirac 円錐は原形をとどめない
+        モアレバンドに再構成されます。摂動論の範囲でも前兆は見えていて、
+        Dirac 点の速度は
+      </p>
+      <p class="en">
+        For large θ, ε<sub>θ</sub> ≫ <i>u</i>′ and the interlayer coupling is a small
+        perturbation that merely opens minigaps along the cone intersections. As θ
+        decreases, ε<sub>θ</sub> shrinks linearly, and around θ ≈ 1° the ratio
+        <i>u</i>′/ε<sub>θ</sub> exceeds one: the coupling is no longer perturbative and
+        the Dirac cones are reorganized into moiré bands beyond recognition. Perturbation
+        theory already announces this: the Dirac-point velocity renormalizes as
+      </p>
+      <div class="eq">\[ \frac{v^{*}}{v} \;=\; \frac{1 - 3\alpha^{2}}{1 + 6\alpha^{2}}, \qquad \alpha = \frac{u'}{\hbar v\, q_{\theta}} \]</div>
+      <p class="ja">
+        と繰り込まれ（等方結合 <i>u</i> = <i>u</i>′ の場合の式）、α = 1/√3 で
+        ゼロになります。これが第一魔法角のおおまかな位置で、実際の計算では
+        θ ≈ 1.05° 付近で中央の2本のバンドの幅が数 meV まで潰れます。
+        上のシミュレーションで θ を 3° から魔法角までゆっくり下げると、
+        赤いバンドが平らに潰れていく一部始終が見られます。
+        ちなみに Dirac 点そのものは魔法角でもギャップを開けずに生き残ります——
+        これは系の対称性が保護する縮退です。
+      </p>
+      <p class="en">
+        (the isotropic-coupling formula, <i>u</i> = <i>u</i>′), vanishing at α = 1/√3.
+        That is roughly the first magic angle; in the actual calculation the two central
+        bands collapse to a few meV around θ ≈ 1.05°. Slide θ slowly from 3° down to the
+        magic angle above and you can watch the red bands flatten in real time. The Dirac
+        points themselves survive ungapped even at the magic angle — a degeneracy
+        protected by the symmetries of the system.
+      </p>
+
+      <h4><span class="ja">平坦バンドの先：超伝導とモアレ物質科学</span><span class="en">Beyond the flat band: superconductivity and moiré materials</span></h4>
+      <p class="ja">
+        バンドが平坦になるとは、電子の運動エネルギーが事実上消えるということです。
+        すると相対的に電子間相互作用が支配的になり、系は強相関電子系として振る舞います。
+        2018年、魔法角付近のねじれ2層グラフェンで、モアレバンドの部分充填における
+        相関絶縁体と、それに隣接する超伝導（転移温度 ∼1 K）が発見されると、
+        この分野は爆発的に広がりました。特筆すべきは制御性です：ねじれ角という
+        たった1つの幾何学的パラメータ（しかも 0.1° 単位の精度が要る！）で、
+        同じ炭素のシートが半金属にも、Mott 的絶縁体にも、超伝導体にもなる。
+        以後、グラフェン多層系や遷移金属ダイカルコゲナイドなど様々な2次元物質を
+        モアレ積層する「モアレ物質科学」が生まれ、分数 Chern 絶縁体のような
+        新奇な相の舞台にもなっています。<a href="hofstadter.html" style="color:var(--accent2);">Hofstadter バタフライのページ</a>で触れた
+        「モアレ超格子でバタフライを観測する」話も、この同じ舞台装置の上にあります。
+      </p>
+      <p class="en">
+        A flat band means the electronic kinetic energy has effectively vanished, so
+        interactions take over and the system behaves as a strongly correlated electron
+        system. The 2018 discovery of correlated insulators at partial fillings of the
+        moiré bands — and of superconductivity (<i>T</i><sub>c</sub> ∼ 1 K) right next to
+        them — in magic-angle twisted bilayer graphene set off an explosion. What is
+        remarkable is the control: a single geometric parameter, the twist angle (tuned to
+        within ∼0.1°!), turns the same carbon sheets into a semimetal, a Mott-like
+        insulator, or a superconductor. The field of moiré materials — twisting graphene
+        multilayers, transition-metal dichalcogenides, and more — grew from here, hosting
+        exotic phases up to fractional Chern insulators. The moiré-superlattice
+        observation of the Hofstadter butterfly mentioned on <a href="hofstadter.html" style="color:var(--accent2);">the butterfly page</a> sits on
+        this very same stage.
+      </p>
+
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・R. Bistritzer and A. H. MacDonald, PNAS <b>108</b>, 12233 (2011)
+        ——連続体模型の原論文。<br>
+        ・N. N. T. Nam and M. Koshino, Phys. Rev. B <b>96</b>, 075311 (2017)
+        ——格子緩和を取り込んだパラメータ（<i>u</i> = 0.079 eV, <i>u</i>′ = 0.098 eV）はこちらに基づきます。<br>
+        ・<a href="../index.html#book-koshino" style="color:var(--accent2);">越野幹人『グラフェンの物理学 —ディラック電子とトポロジカル物性の基礎—』</a>（内田老鶴圃）
+        第9章「モアレ2次元物質」——体系的な解説として最良です。このページの記号の取り方も
+        同書に合わせています。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・R. Bistritzer and A. H. MacDonald, PNAS <b>108</b>, 12233 (2011)
+        — the original continuum-model paper.<br>
+        ・N. N. T. Nam and M. Koshino, Phys. Rev. B <b>96</b>, 075311 (2017)
+        — source of the relaxed parameters (<i>u</i> = 0.079 eV, <i>u</i>′ = 0.098 eV).<br>
+        ・<a href="../index.html#book-koshino" style="color:var(--accent2);">M. Koshino, <i>グラフェンの物理学 (Physics of Graphene)</i></a>, Uchida Rokakuho,
+        Chapter 9 — the best systematic exposition; this page follows its notation.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var BLUE = '#4187d6', RED = '#c85c5c', PURPLE = '#8a63d2';
+  var A = 0.246;              // nm
+  var HV = 0.5944;            // eV nm
+  var UAA = 0.079, UAB = 0.098;
+  var theta = 0;              // degrees (real-space panel)
+  var thetaBand = 2.65;       // degrees (band panel, >= 0.5)
+
+  function colors() {
+    var isLight = document.body.classList.contains('light');
+    return {
+      bg: isLight ? '#ffffff' : '#0d1220',
+      fg: isLight ? '#1c2433' : '#dfe5f0',
+      sub: isLight ? '#4a5568' : '#a8b2c4'
+    };
+  }
+
+  // ===== complex Hermitian Jacobi (eigenvalues only) =====
+  function hermJacobiVals(re, im, n) {
+    for (var sweep = 0; sweep < 60; sweep++) {
+      var off = 0;
+      for (var p = 0; p < n; p++) for (var q = p + 1; q < n; q++)
+        off += re[p*n+q]*re[p*n+q] + im[p*n+q]*im[p*n+q];
+      if (off < 1e-22) break;
+      for (var p2 = 0; p2 < n - 1; p2++) for (var q2 = p2 + 1; q2 < n; q2++) {
+        var hr = re[p2*n+q2], hi = im[p2*n+q2];
+        var r = Math.hypot(hr, hi);
+        if (r < 1e-14) continue;
+        var cph = hr / r, sph = hi / r;
+        var app = re[p2*n+p2], aqq = re[q2*n+q2];
+        var thta = 0.5 * Math.atan2(2 * r, app - aqq);
+        var c = Math.cos(thta), s = Math.sin(thta);
+        for (var k = 0; k < n; k++) {
+          var apr = re[k*n+p2], api = im[k*n+p2];
+          var aqr = re[k*n+q2], aqi = im[k*n+q2];
+          var eqr = cph*aqr + sph*aqi, eqi = cph*aqi - sph*aqr;
+          re[k*n+p2] = c*apr + s*eqr;  im[k*n+p2] = c*api + s*eqi;
+          var epr = cph*apr - sph*api, epi = cph*api + sph*apr;
+          re[k*n+q2] = -s*epr + c*aqr; im[k*n+q2] = -s*epi + c*aqi;
+        }
+        for (var k2 = 0; k2 < n; k2++) {
+          var bpr = re[p2*n+k2], bpi = im[p2*n+k2];
+          var bqr = re[q2*n+k2], bqi = im[q2*n+k2];
+          var fqr = cph*bqr - sph*bqi, fqi = cph*bqi + sph*bqr;
+          re[p2*n+k2] = c*bpr + s*fqr;  im[p2*n+k2] = c*bpi + s*fqi;
+          var fpr = cph*bpr + sph*bpi, fpi = cph*bpi - sph*bpr;
+          re[q2*n+k2] = -s*fpr + c*bqr; im[q2*n+k2] = -s*fpi + c*bqi;
+        }
+      }
+    }
+    var vals = [];
+    for (var d = 0; d < n; d++) vals.push(re[d*n+d]);
+    vals.sort(function (a, b) { return a - b; });
+    return vals;
+  }
+
+  // ===== continuum model =====
+  function rot2(v, ang) {
+    var c = Math.cos(ang), s = Math.sin(ang);
+    return [c*v[0] - s*v[1], s*v[0] + c*v[1]];
+  }
+
+  function geometry(thDeg) {
+    var th = thDeg * Math.PI / 180;
+    var K = 4 * Math.PI / (3 * A);
+    var qth = 2 * K * Math.sin(th / 2);
+    var q1 = [0, -qth];
+    var q2 = rot2(q1, 2 * Math.PI / 3), q3 = rot2(q1, -2 * Math.PI / 3);
+    var G1 = [q1[0] - q2[0], q1[1] - q2[1]];
+    var G2 = [q2[0] - q3[0], q2[1] - q3[1]];
+    return { qth: qth, q1: q1, q3: q3, G1: G1, G2: G2 };
+  }
+
+  // first-shell wave set (7 waves per layer)
+  var MS = [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1]];
+  var MIDX = {};
+  MS.forEach(function (m, i) { MIDX[m[0] + ',' + m[1]] = i; });
+  var DMS = [[0, 0], [-1, 0], [-1, -1]];   // q1, q2 = q1 - G1, q3 = q1 - G1 - G2
+  var TRE = [], TIM = [];
+  for (var j = 0; j < 3; j++) {
+    var ph = 2 * Math.PI / 3 * j;
+    TRE.push([[UAA, UAB * Math.cos(ph)], [UAB * Math.cos(ph), UAA]]);
+    TIM.push([[0, -UAB * Math.sin(ph)], [UAB * Math.sin(ph), 0]]);
+  }
+
+  function bandsAtK(geo, kx, ky) {
+    var N = MS.length, dim = 4 * N;
+    var re = new Float64Array(dim * dim), im = new Float64Array(dim * dim);
+    for (var i = 0; i < N; i++) {
+      var g = [MS[i][0] * geo.G1[0] + MS[i][1] * geo.G2[0],
+               MS[i][0] * geo.G1[1] + MS[i][1] * geo.G2[1]];
+      var p1 = [kx + g[0], ky + g[1]];
+      var p2 = [kx + g[0] + geo.q1[0], ky + g[1] + geo.q1[1]];
+      // layer 1 Dirac block at rows 2i
+      re[(2*i)*dim + (2*i+1)] = HV * p1[0]; im[(2*i)*dim + (2*i+1)] = -HV * p1[1];
+      re[(2*i+1)*dim + (2*i)] = HV * p1[0]; im[(2*i+1)*dim + (2*i)] = HV * p1[1];
+      var o = 2 * N;
+      re[(o+2*i)*dim + (o+2*i+1)] = HV * p2[0]; im[(o+2*i)*dim + (o+2*i+1)] = -HV * p2[1];
+      re[(o+2*i+1)*dim + (o+2*i)] = HV * p2[0]; im[(o+2*i+1)*dim + (o+2*i)] = HV * p2[1];
+      for (var jj = 0; jj < 3; jj++) {
+        var key = (MS[i][0] + DMS[jj][0]) + ',' + (MS[i][1] + DMS[jj][1]);
+        if (!(key in MIDX)) continue;
+        var i2 = MIDX[key];
+        for (var r = 0; r < 2; r++) for (var cc = 0; cc < 2; cc++) {
+          // U block: layer2 row (o+2*i2+r), layer1 col (2*i+cc)
+          re[(o+2*i2+r)*dim + (2*i+cc)] += TRE[jj][r][cc];
+          im[(o+2*i2+r)*dim + (2*i+cc)] += TIM[jj][r][cc];
+          // Hermitian conjugate
+          re[(2*i+cc)*dim + (o+2*i2+r)] += TRE[jj][r][cc];
+          im[(2*i+cc)*dim + (o+2*i2+r)] -= TIM[jj][r][cc];
+        }
+      }
+    }
+    return hermJacobiVals(re, im, dim);
+  }
+
+  // ===== real-space moiré canvas =====
+  var bandCache = {};
+  function drawMoire() {
+    var cv = document.getElementById('moireCanvas');
+    var ctx = cv.getContext('2d');
+    var c = colors();
+    var isLight = document.body.classList.contains('light');
+    var W = cv.width / 2, H = cv.height / 2;   // logical size; drawn at 2x resolution
+    ctx.setTransform(2, 0, 0, 2, 0, 0);
+    ctx.fillStyle = c.bg;
+    ctx.fillRect(0, 0, W, H);
+    var th = theta * Math.PI / 180;
+    var LM = theta > 1e-6 ? A / (2 * Math.sin(th / 2)) : Infinity;
+    var field = 42;                    // nm across the width (fixed)
+    var scale = W / field;
+    var cx = W / 2, cy = H / 2;
+    var a1 = [A, 0], a2 = [A / 2, A * Math.sqrt(3) / 2];
+    var dAB = [A / 2, A / (2 * Math.sqrt(3))];
+    var deltas = [dAB, [dAB[0] - a1[0], dAB[1] - a1[1]], [dAB[0] - a2[0], dAB[1] - a2[1]]];
+    // two perfectly registered sheets (AA stacking at theta = 0); the red sheet is
+    // slightly larger so both sheets stay visible without shifting the lattices
+    var layers = [
+      { ang: -th / 2, col: '#b23c3c', side: 40.0, alpha: 0.8 },
+      { ang: +th / 2, col: (isLight ? '#22262e' : '#d9dee8'), side: 34.0, alpha: 0.85 }
+    ];
+    for (var L = 0; L < 2; L++) {
+      var lay = layers[L];
+      var side = lay.side;
+      var nmax = Math.ceil(side / A) + 2;
+      var ca = Math.cos(lay.ang), sa = Math.sin(lay.ang);
+      ctx.strokeStyle = lay.col;
+      ctx.globalAlpha = lay.alpha;
+      ctx.lineWidth = 0.7;
+      ctx.beginPath();
+      for (var m = -nmax; m <= nmax; m++) {
+        for (var n = -nmax; n <= nmax; n++) {
+          var Ax = m * a1[0] + n * a2[0], Ay = m * a1[1] + n * a2[1];
+          if (Math.abs(Ax) > side / 2 || Math.abs(Ay) > side / 2) continue;
+          for (var b = 0; b < 3; b++) {
+            var Bx = Ax + deltas[b][0], By = Ay + deltas[b][1];
+            if (Math.abs(Bx) > side / 2 || Math.abs(By) > side / 2) continue;
+            var x1 = ca * Ax - sa * Ay, y1 = sa * Ax + ca * Ay;
+            var x2 = ca * Bx - sa * By, y2 = sa * Bx + ca * By;
+            ctx.moveTo(cx + x1 * scale, cy - y1 * scale);
+            ctx.lineTo(cx + x2 * scale, cy - y2 * scale);
+          }
+        }
+      }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+    // L_M arrow (from the AA region at the sheet center)
+    var showArrow = isFinite(LM) && LM * scale < W * 0.8;
+    if (showArrow) {
+      var arrLen = LM * scale;
+      var ax0 = cx, ay0 = cy, ax1 = cx, ay1 = cy - arrLen;
+      ctx.strokeStyle = c.fg; ctx.fillStyle = c.fg;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath(); ctx.moveTo(ax0, ay0); ctx.lineTo(ax1, ay1); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(ax1, ay1);
+      ctx.lineTo(ax1 - 6, ay1 + 11);
+      ctx.lineTo(ax1 + 6, ay1 + 11);
+      ctx.closePath(); ctx.fill();
+      ctx.font = '600 19px Georgia, serif';
+      ctx.fillText('Lₘ', ax1 + 9, ay1 + 8);
+    }
+    // scale bar
+    var barNm = 5, barPx = barNm * scale;
+    ctx.strokeStyle = c.fg; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(W - 30 - barPx, H - 26); ctx.lineTo(W - 30, H - 26); ctx.stroke();
+    ctx.font = '15px Inter, sans-serif'; ctx.fillStyle = c.fg;
+    ctx.textAlign = 'center';
+    ctx.fillText(barNm + ' nm', W - 30 - barPx / 2, H - 34);
+    ctx.textAlign = 'start';
+  }
+
+  // ===== 3D band surfaces over the moiré unit cell (rhombus in k-space) =====
+  var GRID = 19;   // grid points per axis
+  function foldK(geo, kx, ky) {
+    // translate k by moiré reciprocal vectors so it sits closest to the midpoint of the
+    // two Dirac points, where the truncated plane-wave basis is most accurate
+    var cx0 = -geo.q1[0] / 2, cy0 = -geo.q1[1] / 2;
+    var best = Infinity, bx = kx, by = ky;
+    for (var m = -2; m <= 2; m++) {
+      for (var n = -2; n <= 2; n++) {
+        var tx = kx + m * geo.G1[0] + n * geo.G2[0];
+        var ty = ky + m * geo.G1[1] + n * geo.G2[1];
+        var d = (tx - cx0) * (tx - cx0) + (ty - cy0) * (ty - cy0);
+        if (d < best) { best = d; bx = tx; by = ty; }
+      }
+    }
+    return [bx, by];
+  }
+
+  // hexagonal BZ mesh: the hexagon (corners at gamma ± q_j) is tiled by 3 rhombi,
+  // each spanned by two adjacent corner vectors (V, V') with V + V' = middle corner
+  var NSUB_FAST = 12, NSUB_FINE = 40;   // mesh density: coarse while dragging, fine when idle
+  function computeGrid(thDeg, NSUB) {
+    var geo = geometry(thDeg);
+    var gam = [geo.q3[0], geo.q3[1]];
+    var q1 = geo.q1, qth = geo.qth;
+    var q2 = rot2(q1, 2 * Math.PI / 3), q3 = rot2(q1, -2 * Math.PI / 3);
+    var pairs = [[q2, q3], [q3, q1], [q1, q2]];   // V + V' = -q1, -q2, -q3 (middle corners)
+    var rhombi = [];
+    for (var r = 0; r < 3; r++) {
+      var Va = pairs[r][0], Vb = pairs[r][1];
+      var E = [], KU = [];
+      for (var i = 0; i <= NSUB; i++) {
+        E.push([]); KU.push([]);
+        for (var j = 0; j <= NSUB; j++) {
+          var sfrac = i / NSUB, tfrac = j / NSUB;
+          var kx = gam[0] + sfrac * Va[0] + tfrac * Vb[0];
+          var ky = gam[1] + sfrac * Va[1] + tfrac * Vb[1];
+          var kf = foldK(geo, kx, ky);
+          E[i].push(bandsAtK(geo, kf[0], kf[1]));
+          KU[i].push([(kx - gam[0]) / qth, (ky - gam[1]) / qth]);  // k relative to gamma, units of q_theta
+        }
+      }
+      rhombi.push({ E: E, K: KU });
+    }
+    return { rhombi: rhombi, geo: geo };
+  }
+
+  function shade(hex, f) {
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    r = Math.round(r * f + 255 * 0.06 * (1 - f)); g = Math.round(g * f); b = Math.round(b * f);
+    return 'rgb(' + Math.min(255, r) + ',' + Math.min(255, g) + ',' + Math.min(255, b) + ')';
+  }
+
+  function drawBands(fine) {
+    var c = colors();
+    if (thetaBand < 0.5) {
+      var Wp = 700, Hp = 620;
+      document.getElementById('figBands').innerHTML =
+        '<svg viewBox="0 0 ' + Wp + ' ' + Hp + '" xmlns="http://www.w3.org/2000/svg">' +
+        '<rect x="0" y="0" width="' + Wp + '" height="' + Hp + '" fill="' + c.bg + '"/>' +
+        '<text x="' + (Wp / 2) + '" y="' + (Hp / 2 - 10) + '" text-anchor="middle" font-family="' + SERIF +
+        '" font-size="17" fill="' + c.sub + '">θ ≥ 0.5° でモアレバンドを表示します</text>' +
+        '<text x="' + (Wp / 2) + '" y="' + (Hp / 2 + 48) + '" text-anchor="middle" font-family="' + SERIF +
+        '" font-size="13" fill="' + c.sub + '">（このページの平面波基底の打ち切りによる制限で、連続体模型自体は小さな θ でも有効です）</text>' +
+        '<text x="' + (Wp / 2) + '" y="' + (Hp / 2 + 20) + '" text-anchor="middle" font-family="' + SERIF +
+        '" font-size="15" fill="' + c.sub + '">moiré bands are shown for θ ≥ 0.5°</text></svg>';
+      return null;
+    }
+    var NSUB = fine ? NSUB_FINE : NSUB_FAST;
+    var key = thetaBand.toFixed(2) + '_' + NSUB;
+    if (!bandCache[key]) { bandCache[key] = computeGrid(thetaBand, NSUB); bandCache[key].nsub = NSUB; }
+    var B = bandCache[key];
+    var W = 700, H = 980;
+    var cx = W / 2 + 14, cy = 482;
+    // energy window: fixed +-0.25 eV for small angles (textbook style), widening with
+    // theta so the steep Dirac cones stay in view at large twist angles
+    var qthB = 2 * (4 * Math.PI / (3 * A)) * Math.sin(thetaBand * Math.PI / 360);
+    // window covers the Dirac-cone tips at gamma (E = hv*q_theta) at large twist angles
+    var Emax = Math.max(0.25, 1.06 * HV * qthB);
+    var sE = 370 / Emax;
+    var Sxy = 175, PSI = 18 * Math.PI / 180, TILT = 0.18;
+    var cosP = Math.cos(PSI), sinP = Math.sin(PSI);
+    function proj(ku, e) {
+      var kxr = ku[0] * cosP - ku[1] * sinP;
+      var kyr = ku[0] * sinP + ku[1] * cosP;
+      return [cx + Sxy * kxr, cy - TILT * Sxy * kyr - sE * e, kyr];
+    }
+    var o = [];
+    o.push('<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg">');
+    o.push('<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + c.bg + '"/>');
+    var isLight = document.body.classList.contains('light');
+    // hexagon corners (units of q_theta, relative to gamma), sorted by angle
+    var qu1 = [0, -1], qu2 = rot2(qu1, 2 * Math.PI / 3), qu3 = rot2(qu1, -2 * Math.PI / 3);
+    var corners = [qu2, [-qu1[0], -qu1[1]], qu3, [-qu2[0], -qu2[1]], qu1, [-qu3[0], -qu3[1]]];
+    function hexOutline(e, wd) {
+      var pts = corners.map(function (u) { var p = proj(u, e); return p[0].toFixed(1) + ',' + p[1].toFixed(1); });
+      o.push('<polygon points="' + pts.join(' ') + '" fill="none" stroke="' + c.sub + '" stroke-width="' + wd + '"/>');
+    }
+    hexOutline(-Emax, 1.1);
+    for (var ci = 0; ci < 6; ci++) {
+      var pb = proj(corners[ci], -Emax), pt = proj(corners[ci], Emax);
+      o.push('<line x1="' + pb[0].toFixed(1) + '" y1="' + pb[1].toFixed(1) + '" x2="' + pt[0].toFixed(1) +
+        '" y2="' + pt[1].toFixed(1) + '" stroke="' + c.sub + '" stroke-width="0.9"/>');
+    }
+    // E axis at far left
+    var axp = proj([-1.35, 0], 0);
+    var ax = axp[0] - 30, ayMid = cy;
+    o.push('<line x1="' + ax + '" y1="' + (ayMid - sE * Emax) + '" x2="' + ax + '" y2="' + (ayMid + sE * Emax) +
+      '" stroke="' + c.fg + '" stroke-width="1.3"/>');
+    var tick = Emax > 0.33 ? 0.2 : 0.1;
+    for (var et = -Math.floor(Emax / tick) * tick; et <= Emax * 0.999; et += tick) {
+      var Yt = ayMid - sE * et;
+      o.push('<line x1="' + ax + '" y1="' + Yt.toFixed(1) + '" x2="' + (ax + 6) + '" y2="' + Yt.toFixed(1) +
+        '" stroke="' + c.fg + '" stroke-width="1.1"/>');
+      o.push('<text x="' + (ax - 10) + '" y="' + (Yt + 6).toFixed(1) + '" text-anchor="end" font-family="' + SERIF +
+        '" font-size="18" fill="' + c.fg + '">' + (Math.abs(et) < 1e-9 ? '0' : et.toFixed(1)) + '</text>');
+    }
+    o.push('<text x="' + (ax - 44) + '" y="' + ayMid + '" text-anchor="middle" transform="rotate(-90 ' +
+      (ax - 44) + ' ' + ayMid + ')" font-family="' + SERIF + '" font-size="22" fill="' + c.fg +
+      '"><tspan font-style="italic">E</tspan> (eV)</text>');
+    // surfaces: central 4 bands over the 3 rhombi, painter algorithm
+    var dim = B.rhombi[0].E[0][0].length, c0 = dim / 2;
+    var bandIdx = [];
+    for (var jdx = 0; jdx < dim; jdx++) bandIdx.push(jdx);   // every band entering the window
+    var quads = [];
+    for (var rr = 0; rr < 3; rr++) {
+      var R = B.rhombi[rr];
+      for (var bi = 0; bi < bandIdx.length; bi++) {
+        var j = bandIdx[bi];
+        var central = (j === c0 - 1 || j === c0);
+        for (var i = 0; i < NSUB; i++) {
+          for (var jj = 0; jj < NSUB; jj++) {
+            var e00 = R.E[i][jj][j], e10 = R.E[i + 1][jj][j];
+            var e11 = R.E[i + 1][jj + 1][j], e01 = R.E[i][jj + 1][j];
+            var em = (e00 + e10 + e11 + e01) / 4;
+            if (Math.abs(em) > Emax) continue;
+            // drop spurious near-vertical quads created by band-index jumps at the
+            // k-folding seams (their corner energies differ far more than any true band can)
+            var spread = Math.max(e00, e10, e11, e01) - Math.min(e00, e10, e11, e01);
+            if (spread > Math.max(0.09, 3 * HV * B.geo.qth / NSUB)) continue;
+            var k00 = R.K[i][jj], k10 = R.K[i + 1][jj], k11 = R.K[i + 1][jj + 1], k01 = R.K[i][jj + 1];
+            var kmy = (k00[0] + k11[0]) / 2 * sinP + (k00[1] + k11[1]) / 2 * cosP;
+            quads.push({
+              d: kmy, e: em, central: central,
+              p: [[k00, e00], [k10, e10], [k11, e11], [k01, e01]],
+              slope: (e10 - e00 + e11 - e01) * NSUB / 2
+            });
+          }
+        }
+      }
+    }
+    // sort far-to-near in fine depth bins; within a bin, group by shade so that
+    // consecutive quads can be merged into few <path> elements
+    for (var qq = 0; qq < quads.length; qq++) {
+      var q0 = quads[qq];
+      var f0 = Math.max(0.55, Math.min(1.0, 0.88 + q0.slope * 1.3));
+      q0.f = Math.round(f0 * 12) / 12;
+      q0.bin = Math.round(q0.d * 120);
+    }
+    quads.sort(function (a, b) {
+      return (b.bin - a.bin) || (a.central - b.central) || (a.f - b.f) || (a.e - b.e);
+    });
+    // book-style rendering: translucent near-monochrome sheets with a fine mesh.
+    // Shading is quantized and consecutive same-colored quads are merged into a single
+    // <path>, which keeps the DOM small even at high mesh densities.
+    var meshCol = isLight ? '#5a6478' : '#a8b2c4';
+    var runFill = null, runD = [], runs = [];
+    for (var qi = 0; qi < quads.length; qi++) {
+      var q = quads[qi];
+      var base = q.central ? (isLight ? '#cf9d9d' : '#b98787') : (isLight ? '#c3cbd6' : '#7d8699');
+      var fill = shade(base, q.f);
+      var d = '';
+      for (var pi = 0; pi < 4; pi++) {
+        var ec = Math.max(-Emax * 1.01, Math.min(Emax * 1.01, q.p[pi][1]));
+        var pr = proj(q.p[pi][0], ec);
+        d += (pi === 0 ? 'M' : 'L') + pr[0].toFixed(1) + ' ' + pr[1].toFixed(1);
+      }
+      d += 'Z';
+      if (fill !== runFill) {
+        if (runD.length) runs.push([runFill, runD.join('')]);
+        runFill = fill; runD = [];
+      }
+      runD.push(d);
+    }
+    if (runD.length) runs.push([runFill, runD.join('')]);
+    for (var ri = 0; ri < runs.length; ri++) {
+      o.push('<path d="' + runs[ri][1] + '" fill="' + runs[ri][0] + '" fill-opacity="0.6" fill-rule="evenodd" stroke="' +
+        meshCol + '" stroke-width="0.18" stroke-opacity="0.26"/>');
+    }
+    hexOutline(Emax, 1.1);
+    // labels: kappa at corner -q3 (front-right), kappa' at adjacent corner q1 (front), gamma center
+    var pk = proj([-qu3[0], -qu3[1]], -Emax);
+    o.push('<text x="' + (pk[0] + 6) + '" y="' + (pk[1] + 20) + '" text-anchor="middle" font-family="' + SERIF +
+      '" font-size="20" font-style="italic" fill="' + c.fg + '">κ</text>');
+    var pkp = proj(qu1, -Emax);
+    o.push('<text x="' + (pkp[0] - 6) + '" y="' + (pkp[1] + 20) + '" text-anchor="middle" font-family="' + SERIF +
+      '" font-size="20" font-style="italic" fill="' + c.fg + '">κ′</text>');
+    var pg = proj([0, 0], -Emax);
+    o.push('<text x="' + pg[0] + '" y="' + (pg[1] + 20) + '" text-anchor="middle" font-family="' + SERIF +
+      '" font-size="20" font-style="italic" fill="' + c.sub + '">γ</text>');
+    o.push('<text x="' + (W - 20) + '" y="34" text-anchor="end" font-family="' + SERIF +
+      '" font-size="21" fill="' + c.fg + '">θ = ' + thetaBand.toFixed(2) + '°</text>');
+    o.push('</svg>');
+    document.getElementById('figBands').innerHTML = o.join('');
+    return B;
+  }
+
+  // ===== readouts =====
+  function updateObsReal() {
+    var th = theta * Math.PI / 180;
+    var LM = theta > 1e-6 ? A / (2 * Math.sin(th / 2)) : Infinity;
+    document.getElementById('lmVal').textContent = isFinite(LM) ? LM.toFixed(2) + ' nm' : '∞';
+    document.getElementById('natVal').textContent = isFinite(LM) ? Math.round(4 * LM * LM / (A * A)).toLocaleString() : '—';
+  }
+
+  function updateObsBand(B) {
+    var th = thetaBand * Math.PI / 180;
+    var K = 4 * Math.PI / (3 * A);
+    var qth = 2 * K * Math.sin(th / 2);
+    var eps = HV * qth / 2;
+    document.getElementById('qthVal').textContent = qth.toFixed(3) + ' nm⁻¹';
+    document.getElementById('epsVal').textContent = (eps >= 0.1 ? eps.toFixed(3) + ' eV' : (eps * 1000).toFixed(1) + ' meV');
+    document.getElementById('ratVal').textContent = eps > 1e-9 ? (UAB / eps).toFixed(2) : '—';
+    if (!B) {
+      document.getElementById('wVal').textContent = '—';
+      document.getElementById('vVal').textContent = '—';
+      return;
+    }
+    var dim = B.rhombi[0].E[0][0].length, c0 = dim / 2, lo = 1e9, hi = -1e9;
+    var NSUB = B.nsub;
+    for (var rr = 0; rr < 3; rr++) {
+      for (var iu = 0; iu <= NSUB; iu++) for (var iv = 0; iv <= NSUB; iv++) {
+        var e1 = B.rhombi[rr].E[iu][iv][c0 - 1], e2 = B.rhombi[rr].E[iu][iv][c0];
+        lo = Math.min(lo, e1, e2); hi = Math.max(hi, e1, e2);
+      }
+    }
+    document.getElementById('wVal').textContent = ((hi - lo) * 1000).toFixed(1) + ' meV';
+    var dk = 0.01 * qth;
+    var eK = bandsAtK(B.geo, 0, 0), eK2 = bandsAtK(B.geo, dk, 0);
+    var vr = Math.abs(eK2[c0] - eK[c0]) / (dk * HV);
+    document.getElementById('vVal').textContent = Math.max(0, Math.min(1, vr)).toFixed(2);
+  }
+
+  var pending = null, refine = null;
+  function renderBands(fine) {
+    var B = drawBands(fine);
+    updateObsBand(B);
+    if (!fine) {
+      if (refine) clearTimeout(refine);
+      refine = setTimeout(function () { var Bf = drawBands(true); updateObsBand(Bf); }, 450);
+    }
+  }
+  function updateAll() {
+    document.getElementById('thVal').textContent = theta.toFixed(2);
+    document.getElementById('thBandVal').textContent = thetaBand.toFixed(2);
+    drawMoire();
+    updateObsReal();
+    renderBands(true);
+  }
+  function requestBandUpdate() {
+    document.getElementById('thBandVal').textContent = thetaBand.toFixed(2);
+    if (pending) clearTimeout(pending);
+    if (refine) clearTimeout(refine);
+    pending = setTimeout(function () { renderBands(false); }, 90);
+  }
+
+  document.getElementById('thSlider').addEventListener('input', function () {
+    theta = parseFloat(this.value);
+    document.getElementById('thVal').textContent = theta.toFixed(2);
+    drawMoire();
+    updateObsReal();
+  });
+  function setRealTheta(t) {
+    theta = t;
+    document.getElementById('thSlider').value = String(t);
+    document.getElementById('thVal').textContent = t.toFixed(2);
+    drawMoire();
+    updateObsReal();
+  }
+  [['r0', 0], ['r5', 5], ['r265', 2.65], ['r147', 1.47], ['r105', 1.05], ['r082', 0.82]].forEach(function (bt) {
+    document.getElementById(bt[0]).addEventListener('click', function () { setRealTheta(bt[1]); });
+  });
+  document.getElementById('thBandSlider').addEventListener('input', function () {
+    thetaBand = parseFloat(this.value);
+    requestBandUpdate();
+  });
+  function setBandTheta(t) {
+    thetaBand = t;
+    document.getElementById('thBandSlider').value = String(t);
+    document.getElementById('thBandVal').textContent = t.toFixed(2);
+    renderBands(true);
+  }
+  document.getElementById('b5').addEventListener('click', function () { setBandTheta(5.0); });
+  document.getElementById('b265').addEventListener('click', function () { setBandTheta(2.65); });
+  document.getElementById('b147').addEventListener('click', function () { setBandTheta(1.47); });
+  document.getElementById('b105').addEventListener('click', function () { setBandTheta(1.05); });
+  document.getElementById('b082').addEventListener('click', function () { setBandTheta(0.82); });
+
+  updateAll();
+  new MutationObserver(function () { bandCache = {}; updateAll(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>

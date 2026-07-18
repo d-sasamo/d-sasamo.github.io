@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kane–Mele Model: Quantum Spin Hall Insulator — Daiki Sasamoto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<script>window.MathJax = { tex: { displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+  .fig-box { width: 100%; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .fig-box svg { display: block; width: 100%; height: auto; }
+  .fig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  @media (max-width: 700px) { .fig-grid { grid-template-columns: 1fr; } }
+  .fig-cap { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; margin-top: 0.8rem; }
+  .fig-cap b { color: var(--text); font-weight: 600; }
+  .ctrl { margin-bottom: 1.3rem; }
+  .ctrl label { display: block; font-size: 0.9rem; margin-bottom: 0.35rem; color: var(--text); }
+  .ctrl input[type="range"] { width: 100%; max-width: 340px; accent-color: var(--accent2); }
+  .ctrl .val { color: var(--accent2); font-weight: 600; }
+  .sim-btn {
+    border: 1px solid var(--border); background: var(--card); color: var(--text);
+    border-radius: 999px; padding: 0.45rem 1.1rem; font-size: 0.9rem;
+    cursor: pointer; margin: 0 0.5rem 0.5rem 0; transition: border-color 0.2s;
+  }
+  .sim-btn:hover { border-color: var(--accent2); }
+  .eq { margin: 0.6rem 0 1.1rem; overflow-x: auto; }
+  .sticky-panel {
+    position: sticky; top: 10px; z-index: 30;
+    background: var(--bg);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: 1rem 1.4rem 0.6rem; margin-bottom: 1.6rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+  }
+  .sticky-panel .ctrl { margin-bottom: 0.7rem; }
+  .panel-row { display: flex; gap: 1.6rem; flex-wrap: wrap; align-items: flex-start; }
+  .panel-row > div { flex: 1 1 300px; }
+  .obs-compact { font-size: 0.9rem; color: var(--text-dim); line-height: 1.9; }
+  .obs-compact b { color: var(--text); font-weight: 600; }
+  @media (max-width: 700px) { .sticky-panel { position: static; } }
+</style>
+</head>
+<body class="lang-ja light">
+<div class="bg-glow"></div>
+
+<header>
+  <nav class="nav">
+    <a class="nav-logo" href="../index.html">D. Sasamoto</a>
+    <ul class="nav-links">
+      <li><a href="../index.html#notes"><span class="ja">← ノート</span><span class="en">← Notes</span></a></li>
+      <li><a href="../index.html"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
+      <li><button class="lang-btn" id="langBtn">English</button></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1 style="font-size:2rem;"><span class="ja">Kane–Mele 模型：量子スピンHall絶縁体</span><span class="en">The Kane–Mele Model: A Quantum Spin Hall Insulator</span></h1>
+    <p class="hero-sub ja">
+      グラフェンにスピン軌道相互作用を入れると、Z<sub>2</sub> トポロジカル絶縁体——
+      量子スピン Hall 絶縁体——が生まれます。スピン軌道相互作用 λ<sub>SO</sub> と
+      副格子ポテンシャル λ<sub>v</sub> を動かして、K 点でギャップが閉じ直る瞬間と、
+      ヘリカルエッジ状態が現れて消える瞬間を観察してみてください。
+    </p>
+    <p class="hero-sub en">
+      Add spin–orbit coupling to graphene and you get a Z<sub>2</sub> topological
+      insulator — the quantum spin Hall insulator. Drag the spin–orbit coupling
+      λ<sub>SO</sub> and the sublattice potential λ<sub>v</sub>, and watch the gap close
+      and reopen at the K points while helical edge states appear and disappear.
+    </p>
+  </section>
+
+  <section>
+    <div class="sticky-panel">
+      <div class="panel-row">
+        <div>
+          <div class="ctrl">
+            <label><span class="ja">スピン軌道相互作用</span><span class="en">Spin–orbit coupling</span> λ<sub>SO</sub>/<i>t</i> = <span class="val" id="soVal">0.060</span></label>
+            <input type="range" id="soSlider" min="0" max="0.15" step="0.005" value="0.06">
+          </div>
+          <div class="ctrl">
+            <label><span class="ja">副格子ポテンシャル</span><span class="en">Sublattice potential</span> λ<sub>v</sub>/<i>t</i> = <span class="val" id="lvVal">0.15</span></label>
+            <input type="range" id="lvSlider" min="0" max="1" step="0.01" value="0.15">
+          </div>
+          <div class="ctrl">
+            <button class="sim-btn" id="qshBtn"><span class="ja">QSH 相</span><span class="en">QSH phase</span></button>
+            <button class="sim-btn" id="trivBtn"><span class="ja">自明相</span><span class="en">Trivial</span></button>
+            <button class="sim-btn" id="critBtn"><span class="ja">転移点</span><span class="en">Critical</span></button>
+            <button class="sim-btn" id="grBtn"><span class="ja">グラフェン</span><span class="en">Graphene</span></button>
+          </div>
+        </div>
+        <div class="obs-compact">
+          <span class="ja">スピン Chern 数</span><span class="en">Spin Chern numbers</span>:
+          <i>C</i><sub>↑</sub> = <b id="cuVal">−1</b>, <i>C</i><sub>↓</sub> = <b id="cdVal">+1</b><br>
+          Z<sub>2</sub> <span class="ja">指数</span><span class="en">index</span> ν = <b id="z2Val">1</b>
+          ・ <span class="ja">相</span><span class="en">phase</span>: <b id="phaseVal">QSH</b><br>
+          <span class="ja">バルクギャップ</span><span class="en">Bulk gap</span> Δ/<i>t</i> = <b id="gapVal">0.62</b><br>
+          <span class="ja">転移線</span><span class="en">Transition line</span>: λ<sub>v</sub> = 3√3 λ<sub>SO</sub> = <b id="critVal">0.31</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">格子とスピン軌道ホッピング</span><span class="en">Lattice and spin–orbit hopping</span></h3>
+      <div class="fig-box" id="figLattice"></div>
+      <p class="fig-cap ja">
+        蜂の巣格子。● が A 副格子（＋λ<sub>v</sub>）、■ が B 副格子（−λ<sub>v</sub>）で、
+        実線が最近接ホッピング <i>t</i> です。矢印は第2近接（同一副格子内）の
+        スピン軌道ホッピング ±iλ<sub>SO</sub> の符号 ν<sub><i>ij</i></sub> を表します：
+        矢印の向きにホップするとき、スピン ↑ には ＋iλ<sub>SO</sub>、
+        スピン ↓ には −iλ<sub>SO</sub> が付きます。逆向きなら符号が反転します。
+        ν<sub><i>ij</i></sub> の符号は「2ステップの経路が左に曲がるか右に曲がるか」で
+        決まっています。
+        つまりスピン ↑ と ↓ は、互いに逆向きの「磁束」を感じる Haldane 模型に従います。
+      </p>
+      <p class="fig-cap en">
+        The honeycomb lattice. Circles: A sublattice (+λ<sub>v</sub>); squares: B sublattice
+        (−λ<sub>v</sub>); solid lines: nearest-neighbor hopping <i>t</i>. The arrows show the
+        sign ν<sub><i>ij</i></sub> of the next-nearest-neighbor (same-sublattice) spin–orbit
+        hopping ±iλ<sub>SO</sub>: hopping along the arrows picks up +iλ<sub>SO</sub> for
+        spin ↑ and −iλ<sub>SO</sub> for spin ↓, and the opposite sign against them. The
+        sign ν<sub><i>ij</i></sub> encodes whether the two-step path bends left or right.
+        Each spin species thus lives in a Haldane model with opposite effective flux.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">バルクバンドとリボンのバンド</span><span class="en">Bulk bands and ribbon bands</span></h3>
+      <div class="fig-grid">
+        <div class="fig-box" id="figBulk"></div>
+        <div class="fig-box" id="figRibbon"></div>
+      </div>
+      <p class="fig-cap ja">
+        <b>左：</b>バルクのバンド構造（Γ–K–M–K′–Γ、青＝スピン ↑、赤＝スピン ↓）。
+        ギャップの大きさはスピン s と谷（K か K′）に依存する Dirac 質量
+        <i>m</i> = λ<sub>v</sub> + 3√3 s λ<sub>SO</sub> η（η = ∓1 が K/K′）で決まります。
+        λ<sub>v</sub> を増やしていくと、スピン ↑ は K で、スピン ↓ は K′ で
+        ギャップが一度閉じて開き直します——これがトポロジカル転移です。
+        <b>右：</b>ジグザグリボン（幅 <i>N</i> = 10 セル）のバンド構造。
+        QSH 相ではギャップを斜めに横断する4本のエッジ状態（各エッジに
+        スピン ↑↓ の対）が見え、同じエッジではスピン ↑ と ↓ が逆向きに走ります
+        （ヘリカルエッジ状態）。自明相ではエッジ状態はギャップから離れ、
+        バンドに吸収されます。
+      </p>
+      <p class="fig-cap en">
+        <b>Left:</b> bulk band structure along Γ–K–M–K′–Γ (blue = spin ↑, red = spin ↓).
+        The gap is set by the Dirac mass <i>m</i> = λ<sub>v</sub> + 3√3 s λ<sub>SO</sub> η,
+        which depends on the spin s and the valley (η = ∓1 for K/K′). As λ<sub>v</sub>
+        grows, the gap closes and reopens at K for spin ↑ and at K′ for spin ↓ — the
+        topological transition. <b>Right:</b> band structure of a zigzag ribbon
+        (<i>N</i> = 10 cells wide). In the QSH phase four edge branches cross the gap
+        (a Kramers pair of spins on each edge), with ↑ and ↓ propagating in opposite
+        directions along the same edge — helical edge states. In the trivial phase the
+        edge states detach from the gap and merge into the bulk bands.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">位相図</span><span class="en">Phase diagram</span></h3>
+      <div class="fig-box" id="figPhase" style="max-width:520px; margin:0 auto;"></div>
+      <p class="fig-cap ja">
+        (λ<sub>SO</sub>, λ<sub>v</sub>) 平面の位相図。● が現在のパラメータです。
+        境界線 λ<sub>v</sub> = 3√3 λ<sub>SO</sub> 上でだけバルクギャップが閉じ、
+        Z<sub>2</sub> 指数が 1（QSH）から 0（自明）へ切り替わります。
+        線上以外ではどう動いてもギャップは開いたままなので、
+        QSH 相の中でパラメータを連続的に変えてもエッジ状態は消えません。
+      </p>
+      <p class="fig-cap en">
+        Phase diagram in the (λ<sub>SO</sub>, λ<sub>v</sub>) plane; the dot marks the
+        current parameters. The bulk gap closes only on the boundary line
+        λ<sub>v</sub> = 3√3 λ<sub>SO</sub>, where the Z<sub>2</sub> index switches between
+        1 (QSH) and 0 (trivial). Away from the line the gap stays open, so the edge states
+        survive any continuous change of parameters within the QSH phase.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3><span class="ja">解説</span><span class="en">About</span></h3>
+
+      <h4 style="margin-top:0.6rem;"><span class="ja">模型：グラフェン＋スピン軌道相互作用</span><span class="en">The model: graphene plus spin–orbit coupling</span></h4>
+      <p class="ja">
+        Kane–Mele 模型（2005）は、蜂の巣格子上のグラフェンに、対称性が許す
+        スピン軌道相互作用を付け加えた模型です。
+      </p>
+      <p class="en">
+        The Kane–Mele model (2005) is graphene on the honeycomb lattice, supplemented with
+        the spin–orbit couplings allowed by symmetry:
+      </p>
+      <div class="eq">\[ H \;=\; t \sum_{\langle i,j \rangle} c^{\dagger}_{i} c_{j} \;+\; i \lambda_{\mathrm{SO}} \sum_{\langle\langle i,j \rangle\rangle} \nu_{ij}\, c^{\dagger}_{i} s^{z} c_{j} \;+\; \lambda_{v} \sum_{i} \xi_{i}\, c^{\dagger}_{i} c_{i} \]</div>
+      <p class="ja">
+        第1項は最近接ホッピング、第3項は A/B 副格子で符号 ξ<sub><i>i</i></sub> = ±1 を変える
+        ポテンシャル（反転対称性を破る項）です。核心は第2項——第2近接（同一副格子内）を結ぶ
+        純虚数ホッピングで、s<sup><i>z</i></sup> はスピン、符号
+        ν<sub><i>ij</i></sub> = ±1 はホップの経路が左回りか右回りかで決まります
+        （上の格子図の矢印）。この項は時間反転対称性を保ちます：
+        虚数ホッピング i → −i の反転が、スピン s<sup><i>z</i></sup> → −s<sup><i>z</i></sup> の
+        反転でちょうど打ち消されるからです。
+      </p>
+      <p class="en">
+        The first term is the nearest-neighbor hopping; the third is a staggered potential
+        with ξ<sub><i>i</i></sub> = ±1 on the A/B sublattices (it breaks inversion symmetry).
+        The heart of the model is the second term — a purely imaginary hopping between
+        next-nearest neighbors (within a sublattice), where s<sup><i>z</i></sup> is the spin
+        and the sign ν<sub><i>ij</i></sub> = ±1 depends on whether the two-step path turns
+        left or right (the arrows in the lattice figure). This term respects time-reversal
+        symmetry: flipping i → −i is exactly compensated by flipping the spin
+        s<sup><i>z</i></sup> → −s<sup><i>z</i></sup>.
+      </p>
+
+      <h4><span class="ja">Haldane 模型の2枚のコピー</span><span class="en">Two copies of the Haldane model</span></h4>
+      <p class="ja">
+        s<sup><i>z</i></sup> が保存する限り（Rashba 項がない限り）、ハミルトニアンは
+        スピン ↑ とスピン ↓ のブロックに完全に分解します。各ブロックは
+        Haldane 模型——蜂の巣格子上で正味の磁束なしに量子 Hall 効果を実現する
+        有名な模型——そのものであり、しかも2つのブロックは互いに時間反転の関係に
+        あるため、実効磁束の符号が逆です。運動量空間では、スピン s のブロックは
+      </p>
+      <p class="en">
+        As long as s<sup><i>z</i></sup> is conserved (no Rashba term), the Hamiltonian
+        decouples into spin-↑ and spin-↓ blocks. Each block is precisely the Haldane
+        model — the famous realization of the quantum Hall effect on the honeycomb lattice
+        without net magnetic flux — and the two blocks, being time-reversed partners, carry
+        opposite effective flux. In momentum space the spin-s block reads
+      </p>
+      <div class="eq">\[ h_{s}(\mathbf{k}) \;=\; \begin{pmatrix} \lambda_{v} + s \lambda_{\mathrm{SO}}\, \gamma(\mathbf{k}) &amp; f(\mathbf{k}) \\ f^{*}(\mathbf{k}) &amp; -\lambda_{v} - s \lambda_{\mathrm{SO}}\, \gamma(\mathbf{k}) \end{pmatrix}, \qquad \gamma(\mathbf{k}) = 2 \sum_{i=1}^{3} \sin(\mathbf{k} \cdot \mathbf{a}_{i}) \]</div>
+      <p class="ja">
+        で、<i>f</i>(<b>k</b>) はグラフェンの最近接ホッピング因子です。Dirac 点 K, K′ では
+        <i>f</i> = 0、γ = ∓3√3 となり、質量項
+      </p>
+      <p class="en">
+        where <i>f</i>(<b>k</b>) is the graphene nearest-neighbor factor. At the Dirac
+        points K and K′ one has <i>f</i> = 0 and γ = ∓3√3, so the Dirac mass becomes
+      </p>
+      <div class="eq">\[ m_{s}(\mathrm{K}/\mathrm{K}') \;=\; \lambda_{v} \mp 3\sqrt{3}\, s\, \lambda_{\mathrm{SO}} \]</div>
+      <p class="ja">
+        となります。2バンドの Dirac 模型では、下バンドの Chern 数は2つの谷の質量の符号で
+      </p>
+      <p class="en">
+        For a two-band Dirac model the Chern number of the lower band is fixed by the signs
+        of the two valley masses,
+      </p>
+      <div class="eq">\[ C_{s} \;=\; \frac{1}{2} \left[ \mathrm{sgn}\, m_{s}(\mathrm{K}) - \mathrm{sgn}\, m_{s}(\mathrm{K}') \right] \]</div>
+      <p class="ja">
+        と書けます（このページの読み出しもこの式で計算しています。別途 Fukui–Hatsugai の
+        格子 Berry 曲率法でも数値的に確認済みです）。λ<sub>v</sub> &lt; 3√3 λ<sub>SO</sub> では
+        <i>C</i><sub>↑</sub> = −1, <i>C</i><sub>↓</sub> = +1：2つのスピンが逆符号の
+        量子 Hall 状態にある、というのが量子スピン Hall（QSH）相の実体です。
+        全体の Chern 数は <i>C</i><sub>↑</sub> + <i>C</i><sub>↓</sub> = 0——時間反転対称な系で
+        Hall 伝導度が消えるのは当然ですが、スピンごとに見れば非自明、というわけです。
+      </p>
+      <p class="en">
+        (the readouts on this page use this formula; it has also been checked numerically
+        with the Fukui–Hatsugai lattice Berry-curvature method). For
+        λ<sub>v</sub> &lt; 3√3 λ<sub>SO</sub> one finds <i>C</i><sub>↑</sub> = −1 and
+        <i>C</i><sub>↓</sub> = +1: the two spin species sit in quantum Hall states of
+        opposite sign — that is the substance of the quantum spin Hall (QSH) phase. The
+        total Chern number <i>C</i><sub>↑</sub> + <i>C</i><sub>↓</sub> = 0, as it must be in
+        a time-reversal-invariant system, yet each spin sector is separately nontrivial.
+      </p>
+
+      <h4><span class="ja">時間反転対称性と Z<sub>2</sub> 指数</span><span class="en">Time-reversal symmetry and the Z<sub>2</sub> index</span></h4>
+      <p class="ja">
+        スピン 1/2 の系では時間反転演算子は Θ<sup>2</sup> = −1 を満たし、
+        Kramers の定理により、時間反転不変な運動量（1次元エッジなら <i>k</i> = 0, π）で
+        すべての状態が2重に縮退します。この縮退が、ヘリカルエッジ状態の交差点を
+        守っています：交差を裂いてギャップを開けることは Kramers 縮退を破ることに
+        なるため、時間反転対称性を保つ摂動では不可能なのです。
+      </p>
+      <p class="en">
+        For spin-1/2 systems the time-reversal operator obeys Θ<sup>2</sup> = −1, and
+        Kramers' theorem forces every state at a time-reversal-invariant momentum
+        (<i>k</i> = 0, π for a 1D edge) to be doubly degenerate. This degeneracy is what
+        protects the crossing of the helical edge branches: splitting it open would violate
+        Kramers' theorem, which no time-reversal-preserving perturbation can do.
+      </p>
+      <p class="ja">
+        s<sup><i>z</i></sup> が保存する場合、Z<sub>2</sub> 指数は単純に
+        ν = <i>C</i><sub>↑</sub> mod 2 です。しかし Kane–Mele の本当の発見は、
+        s<sup><i>z</i></sup> 保存が壊れても（次節の Rashba 項を入れても）意味を持ち続ける
+        Z<sub>2</sub> 不変量 ν ∈ {0, 1} が定義できることでした。整数（Z）ではなく
+        2値（Z<sub>2</sub>）なのは、エッジの Kramers 対が2組あると、時間反転を保ったまま
+        対消滅できてしまうからです：守られるのは「Kramers 対の数の偶奇」だけなのです。
+      </p>
+      <p class="en">
+        When s<sup><i>z</i></sup> is conserved the Z<sub>2</sub> index is simply
+        ν = <i>C</i><sub>↑</sub> mod 2. The real discovery of Kane and Mele, however, was
+        that a Z<sub>2</sub> invariant ν ∈ {0, 1} remains well-defined even when
+        s<sup><i>z</i></sup> conservation is destroyed (by the Rashba term of the next
+        section). The invariant is two-valued rather than an integer because two Kramers
+        pairs of edge states can annihilate each other without breaking time reversal: only
+        the parity of the number of Kramers pairs is protected.
+      </p>
+
+      <h4><span class="ja">ヘリカルエッジ状態と後方散乱の禁止</span><span class="en">Helical edge states and forbidden backscattering</span></h4>
+      <p class="ja">
+        QSH 相のエッジには、右向きに走るスピン ↑ と左向きに走るスピン ↓ の
+        1組の Kramers 対が住んでいます（ヘリカル液体）。この2つは互いの時間反転
+        パートナーなので、不純物による弾性後方散乱 |<i>k</i>, ↑⟩ → |−<i>k</i>, ↓⟩ の
+        振幅は、不純物が非磁性（時間反転対称）である限り厳密に消えます。
+        直感的には、スピンを π 回転させながら戻る2つの経路（時計回りと反時計回り）が
+        位相 −1 で干渉して打ち消し合うためです。かくして QSH のエッジ伝導は
+        非磁性不純物に対して量子化された値 2<i>e</i><sup>2</sup>/<i>h</i>
+        （両エッジ合計）を保ちます。磁性不純物や磁場は時間反転を破るので、
+        この保護は失われます。
+      </p>
+      <p class="en">
+        The edge of a QSH insulator hosts one Kramers pair: a right-moving spin-↑ branch
+        and a left-moving spin-↓ branch (a helical liquid). Since the two are each other's
+        time-reversal partners, the elastic backscattering amplitude
+        |<i>k</i>, ↑⟩ → |−<i>k</i>, ↓⟩ off any nonmagnetic (time-reversal-symmetric)
+        impurity vanishes exactly. Intuitively, the two paths that rotate the spin by π —
+        clockwise and counterclockwise — interfere with a relative phase of −1 and cancel.
+        The edge conductance therefore stays quantized at 2<i>e</i><sup>2</sup>/<i>h</i>
+        (both edges together) against nonmagnetic disorder. Magnetic impurities or a
+        magnetic field break time reversal and destroy the protection.
+      </p>
+
+      <h4><span class="ja">Rashba 項を入れると何が起こるか</span><span class="en">What the Rashba term does</span></h4>
+      <p class="ja">
+        基板や電場があると、対称性は最近接の Rashba 型スピン軌道項
+        λ<sub>R</sub>（s<sup><i>x</i></sup>, s<sup><i>y</i></sup> を含む項）も許します。
+        これは s<sup><i>z</i></sup> の保存を壊すため、「スピン ↑ の Chern 数」という
+        言葉自体が意味を失います。それでも Kane–Mele が示したように、Z<sub>2</sub> 指数と
+        ヘリカルエッジ状態は λ<sub>R</sub> がバルクギャップを閉じるまで
+        （λ<sub>v</sub> = 0 なら λ<sub>R</sub> ≲ 2√3 λ<sub>SO</sub> 程度まで）生き残ります。
+        トポロジカルな保護の拠り所が「スピンの保存」ではなく「時間反転対称性」に
+        あることを示す、決定的なポイントです。このページのシミュレーションは
+        見通しのよい s<sup><i>z</i></sup> 保存の場合（λ<sub>R</sub> = 0）に限っていますが、
+        物理の本質はこの範囲で全部見えます。
+      </p>
+      <p class="en">
+        A substrate or an electric field also allows a nearest-neighbor Rashba spin–orbit
+        term λ<sub>R</sub> (involving s<sup><i>x</i></sup>, s<sup><i>y</i></sup>), which
+        destroys s<sup><i>z</i></sup> conservation — the very phrase "spin-↑ Chern number"
+        loses its meaning. Yet, as Kane and Mele showed, the Z<sub>2</sub> index and the
+        helical edge states survive until λ<sub>R</sub> closes the bulk gap (for
+        λ<sub>v</sub> = 0, up to λ<sub>R</sub> ≲ 2√3 λ<sub>SO</sub>). This is the decisive
+        point: the protection rests on time-reversal symmetry, not on spin conservation.
+        The simulation on this page sticks to the transparent s<sup><i>z</i></sup>-conserving
+        case (λ<sub>R</sub> = 0), where all the essential physics is already visible.
+      </p>
+
+      <h4><span class="ja">現実の物質へ</span><span class="en">To real materials</span></h4>
+      <p class="ja">
+        皮肉なことに、グラフェン自身のスピン軌道ギャップは μeV 程度と極小で、
+        Kane–Mele 機構の QSH 効果は観測できていません。しかしこの提案が引き金となり、
+        Bernevig–Hughes–Zhang（BHZ）による HgTe/CdTe 量子井戸の理論提案（2006）と
+        Würzburg グループによる観測（2007）で量子スピン Hall 効果は現実になりました。
+        その後、Z<sub>2</sub> 分類は3次元に拡張され（強いトポロジカル絶縁体、
+        Bi<sub>2</sub>Se<sub>3</sub> 系など）、単層 WTe<sub>2</sub> での QSH 観測や、
+        ビスマスやスタネンなど「重い元素の蜂の巣格子」での Kane–Mele 物理の探索へと
+        つながっていきます。トポロジカル物質科学というひとつの分野が、
+        この2枚の短い論文から始まりました。
+      </p>
+      <p class="en">
+        Ironically, the spin–orbit gap of graphene itself is tiny — of order μeV — and the
+        Kane–Mele QSH effect has never been observed there. But the proposal triggered the
+        Bernevig–Hughes–Zhang (BHZ) theory of HgTe/CdTe quantum wells (2006) and the
+        observation by the Würzburg group (2007), which made the quantum spin Hall effect
+        real. The Z<sub>2</sub> classification was then extended to three dimensions
+        (strong topological insulators, the Bi<sub>2</sub>Se<sub>3</sub> family), followed by
+        QSH observations in monolayer WTe<sub>2</sub> and the ongoing search for Kane–Mele
+        physics in heavy-element honeycombs such as bismuthene and stanene. An entire
+        field — topological materials science — grew out of these two short papers.
+      </p>
+
+      <h4><span class="ja">このページの計算</span><span class="en">Numerics on this page</span></h4>
+      <p class="ja">
+        リボンのバンド構造は、ジグザグリボン（幅 10 セル、20 サイト）の
+        Bloch ハミルトニアン <i>H</i>(<i>k<sub>x</sub></i>) を各 <i>k<sub>x</sub></i> で
+        複素 Hermite 行列として構成し、Jacobi 法で対角化しています
+        （ν<sub><i>ij</i></sub> は経路の外積の符号から自動生成）。スピン ↓ のバンドは
+        時間反転対称性 <i>E</i><sub>↓</sub>(<i>k</i>) = <i>E</i><sub>↑</sub>(−<i>k</i>) を
+        使ってスピン ↑ から折り返しています。バルクバンドは 2×2 ブロックの
+        固有値 ±√(|<i>f</i>|<sup>2</sup> + <i>d<sub>z</sub></i><sup>2</sup>) をそのまま
+        描いています。SSH のページと同様、実装は Python（NumPy）での独立計算と
+        照合済みです。
+      </p>
+      <p class="en">
+        The ribbon bands are obtained by building the Bloch Hamiltonian
+        <i>H</i>(<i>k<sub>x</sub></i>) of a zigzag ribbon (10 cells, 20 sites wide) as a
+        complex Hermitian matrix at each <i>k<sub>x</sub></i> and diagonalizing it with the
+        Jacobi method (the signs ν<sub><i>ij</i></sub> are generated automatically from the
+        cross product of the two hop vectors). The spin-↓ bands are obtained from spin ↑ via
+        time reversal, <i>E</i><sub>↓</sub>(<i>k</i>) = <i>E</i><sub>↑</sub>(−<i>k</i>). The
+        bulk bands are the closed-form eigenvalues
+        ±√(|<i>f</i>|<sup>2</sup> + <i>d<sub>z</sub></i><sup>2</sup>) of the 2×2 blocks. As
+        with the SSH page, the implementation has been validated against an independent
+        Python (NumPy) calculation.
+      </p>
+      <h4><span class="ja">参考文献</span><span class="en">References</span></h4>
+      <p class="ja" style="line-height:2.1;">
+        ・C. L. Kane and E. J. Mele, Phys. Rev. Lett. <b>95</b>, 226801 (2005); <b>95</b>, 146802 (2005)——量子スピン Hall 効果と Z<sub>2</sub> 指数の原論文。<br>
+        ・F. D. M. Haldane, Phys. Rev. Lett. <b>61</b>, 2015 (1988)——Haldane 模型。<br>
+        ・B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Science <b>314</b>, 1757 (2006)——HgTe 量子井戸の理論提案（BHZ）。<br>
+        ・M. K&ouml;nig <i>et al.</i>, Science <b>318</b>, 766 (2007)——量子スピン Hall 効果の観測。
+      </p>
+      <p class="en" style="line-height:2.1;">
+        ・C. L. Kane and E. J. Mele, Phys. Rev. Lett. <b>95</b>, 226801 (2005); <b>95</b>, 146802 (2005) — the original QSH and Z<sub>2</sub> papers.<br>
+        ・F. D. M. Haldane, Phys. Rev. Lett. <b>61</b>, 2015 (1988) — the Haldane model.<br>
+        ・B. A. Bernevig, T. L. Hughes, and S.-C. Zhang, Science <b>314</b>, 1757 (2006) — the BHZ proposal for HgTe quantum wells.<br>
+        ・M. K&ouml;nig <i>et al.</i>, Science <b>318</b>, 766 (2007) — observation of the quantum spin Hall effect.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© 2026 Daiki Sasamoto</p>
+</footer>
+
+<script src="../js/main.js"></script>
+<script>
+(function () {
+  var SERIF = "Georgia, 'Times New Roman', serif";
+  var BLUE = '#4187d6', RED = '#c85c5c', PURPLE = '#8a63d2';
+  var SQ3 = Math.sqrt(3);
+  var lso = 0.06, lv = 0.15;
+  var W = 10, NAT = 2 * W, NK = 97;
+
+  function colors() {
+    var isLight = document.body.classList.contains('light');
+    return {
+      bg: isLight ? '#ffffff' : '#0d1220',
+      fg: isLight ? '#1c2433' : '#dfe5f0',
+      sub: isLight ? '#4a5568' : '#a8b2c4'
+    };
+  }
+
+  // ===== geometry =====
+  var A1 = [1, 0], A2 = [0.5, SQ3 / 2], DAB = [0.5, 0.5 / SQ3];
+  var pos = [], subl = [];
+  for (var n0 = 0; n0 < W; n0++) {
+    pos.push([n0 * A2[0], n0 * A2[1]]); subl.push(0);
+    pos.push([n0 * A2[0] + DAB[0], n0 * A2[1] + DAB[1]]); subl.push(1);
+  }
+  var DNN = 1 / SQ3, DN2 = 1.0;
+  // bond lists: {i,j,m,typ, nu}
+  var bonds = [];
+  (function buildBonds() {
+    var i, j, m, m2, l;
+    function dist(p, q) { return Math.hypot(q[0] - p[0], q[1] - p[1]); }
+    for (m = -1; m <= 1; m++) {
+      for (i = 0; i < NAT; i++) {
+        for (j = 0; j < NAT; j++) {
+          var pj = [pos[j][0] + m * A1[0], pos[j][1] + m * A1[1]];
+          var r = dist(pos[i], pj);
+          if (Math.abs(r - DNN) < 1e-6) {
+            bonds.push({ i: i, j: j, m: m, typ: 0, nu: 0 });
+          } else if (Math.abs(r - DN2) < 1e-6 && subl[i] === subl[j]) {
+            var nu = 0;
+            for (m2 = -1; m2 <= 1 && nu === 0; m2++) {
+              for (l = 0; l < NAT; l++) {
+                var pl = [pos[l][0] + m2 * A1[0], pos[l][1] + m2 * A1[1]];
+                var d1 = [pl[0] - pos[i][0], pl[1] - pos[i][1]];
+                if (Math.abs(Math.hypot(d1[0], d1[1]) - DNN) > 1e-6) continue;
+                var d2 = [pj[0] - pl[0], pj[1] - pl[1]];
+                if (Math.abs(Math.hypot(d2[0], d2[1]) - DNN) > 1e-6) continue;
+                nu = (d1[0] * d2[1] - d1[1] * d2[0]) > 0 ? 1 : -1;
+                break;
+              }
+            }
+            bonds.push({ i: i, j: j, m: m, typ: 1, nu: nu });
+          }
+        }
+      }
+    }
+  })();
+
+  // ===== complex Hermitian Jacobi (eigenvalues) =====
+  function hermJacobiVals(re, im, n) {
+    for (var sweep = 0; sweep < 60; sweep++) {
+      var off = 0;
+      for (var p = 0; p < n; p++) for (var q = p + 1; q < n; q++)
+        off += re[p*n+q]*re[p*n+q] + im[p*n+q]*im[p*n+q];
+      if (off < 1e-20) break;
+      for (var p2 = 0; p2 < n - 1; p2++) for (var q2 = p2 + 1; q2 < n; q2++) {
+        var hr = re[p2*n+q2], hi = im[p2*n+q2];
+        var r = Math.hypot(hr, hi);
+        if (r < 1e-13) continue;
+        var cph = hr / r, sph = hi / r;
+        var app = re[p2*n+p2], aqq = re[q2*n+q2];
+        var theta = 0.5 * Math.atan2(2 * r, app - aqq);
+        var c = Math.cos(theta), s = Math.sin(theta);
+        for (var k = 0; k < n; k++) {
+          var apr = re[k*n+p2], api = im[k*n+p2];
+          var aqr = re[k*n+q2], aqi = im[k*n+q2];
+          var eqr = cph*aqr + sph*aqi, eqi = cph*aqi - sph*aqr;
+          re[k*n+p2] = c*apr + s*eqr;  im[k*n+p2] = c*api + s*eqi;
+          var epr = cph*apr - sph*api, epi = cph*api + sph*apr;
+          re[k*n+q2] = -s*epr + c*aqr; im[k*n+q2] = -s*epi + c*aqi;
+        }
+        for (var k2 = 0; k2 < n; k2++) {
+          var bpr = re[p2*n+k2], bpi = im[p2*n+k2];
+          var bqr = re[q2*n+k2], bqi = im[q2*n+k2];
+          var fqr = cph*bqr - sph*bqi, fqi = cph*bqi + sph*bqr;
+          re[p2*n+k2] = c*bpr + s*fqr;  im[p2*n+k2] = c*bpi + s*fqi;
+          var fpr = cph*bpr + sph*bpi, fpi = cph*bpi - sph*bpr;
+          re[q2*n+k2] = -s*fpr + c*bqr; im[q2*n+k2] = -s*fpi + c*bqi;
+        }
+      }
+    }
+    var vals = [];
+    for (var d = 0; d < n; d++) vals.push(re[d*n+d]);
+    vals.sort(function (a, b) { return a - b; });
+    return vals;
+  }
+
+  function ribbonBands() {
+    // spin up only; spin down = mirror k -> 2pi - k
+    var out = [];
+    for (var ik = 0; ik < NK; ik++) {
+      var kx = 2 * Math.PI * ik / (NK - 1);
+      var re = new Float64Array(NAT * NAT), im = new Float64Array(NAT * NAT);
+      for (var i = 0; i < NAT; i++) re[i * NAT + i] = lv * (subl[i] === 0 ? 1 : -1);
+      for (var b = 0; b < bonds.length; b++) {
+        var bd = bonds[b];
+        var cph = Math.cos(kx * bd.m), sph = Math.sin(kx * bd.m);
+        if (bd.typ === 0) {
+          re[bd.i * NAT + bd.j] += cph;
+          im[bd.i * NAT + bd.j] += sph;
+        } else {
+          // + i * lso * nu * e^{i k m}  (spin up)
+          re[bd.i * NAT + bd.j] += -lso * bd.nu * sph;
+          im[bd.i * NAT + bd.j] += lso * bd.nu * cph;
+        }
+      }
+      out.push(hermJacobiVals(re, im, NAT));
+    }
+    return out;
+  }
+
+  // ===== bulk bands along Gamma-K-M-K'-Gamma =====
+  var B1 = [2 * Math.PI, -2 * Math.PI / SQ3], B2 = [0, 4 * Math.PI / SQ3];
+  function kAt(c1, c2) { return [c1 * B1[0] + c2 * B2[0], c1 * B1[1] + c2 * B2[1]]; }
+  var GAMMA = [0, 0], KPT = kAt(2 / 3, 1 / 3), MPT = kAt(0.5, 0.5), KP = kAt(1 / 3, 2 / 3);
+  var DELTAS = [DAB, [DAB[0] - A1[0], DAB[1] - A1[1]], [DAB[0] - A2[0], DAB[1] - A2[1]]];
+  var NNN = [A1, [-A2[0], -A2[1]], [A2[0] - A1[0], A2[1] - A1[1]]];
+  function bulkE(k, s) {
+    var fr = 0, fi = 0, g = 0, i;
+    for (i = 0; i < 3; i++) {
+      var ph = k[0] * DELTAS[i][0] + k[1] * DELTAS[i][1];
+      fr += Math.cos(ph); fi += Math.sin(ph);
+    }
+    for (i = 0; i < 3; i++) g += Math.sin(k[0] * NNN[i][0] + k[1] * NNN[i][1]);
+    g *= 2;
+    var dz = lv + s * lso * g;
+    return Math.sqrt(fr * fr + fi * fi + dz * dz);
+  }
+
+  // ===== figure helpers =====
+  function Fig(Wd, Ht) {
+    var c = colors();
+    var f = { W: Wd, H: Ht, o: [], c: c };
+    f.o.push('<svg viewBox="0 0 ' + Wd + ' ' + Ht + '" xmlns="http://www.w3.org/2000/svg">');
+    f.o.push('<rect x="0" y="0" width="' + Wd + '" height="' + Ht + '" fill="' + c.bg + '"/>');
+    f.line = function (xa, ya, xb, yb, color, wd, dash) {
+      f.o.push('<line x1="' + xa + '" y1="' + ya + '" x2="' + xb + '" y2="' + yb +
+        '" stroke="' + color + '" stroke-width="' + wd + '"' +
+        (dash ? ' stroke-dasharray="' + dash + '"' : '') + ' stroke-linecap="round"/>');
+    };
+    f.text = function (x, y, s, size, fill, anchor, extra) {
+      f.o.push('<text x="' + x + '" y="' + y + '" text-anchor="' + (anchor || 'middle') +
+        '" font-family="' + SERIF + '" font-size="' + size + '" fill="' + fill + '"' +
+        (extra || '') + '>' + s + '</text>');
+    };
+    f.done = function (id) {
+      f.o.push('</svg>');
+      document.getElementById(id).innerHTML = f.o.join('');
+    };
+    return f;
+  }
+
+  // ===== Fig: lattice schematic (static geometry, arrows for nu) =====
+  function drawLattice() {
+    var f = Fig(880, 300);
+    var s = 78, ox = 150, oy = 205;
+    function X(p) { return ox + p[0] * s; }
+    function Y(p) { return oy - p[1] * s; }
+    var i, j;
+    var atoms = [];
+    for (i = -1; i <= 6; i++) {
+      for (j = 0; j < 2; j++) {
+        var base = [i * A1[0] + j * A2[0], i * A1[1] + j * A2[1]];
+        atoms.push({ p: base, s: 0 });
+        atoms.push({ p: [base[0] + DAB[0], base[1] + DAB[1]], s: 1 });
+      }
+    }
+    // NN bonds
+    for (i = 0; i < atoms.length; i++) {
+      for (j = 0; j < atoms.length; j++) {
+        if (atoms[i].s !== 0 || atoms[j].s !== 1) continue;
+        var d = Math.hypot(atoms[j].p[0] - atoms[i].p[0], atoms[j].p[1] - atoms[i].p[1]);
+        if (Math.abs(d - DNN) < 1e-6) {
+          f.line(X(atoms[i].p), Y(atoms[i].p), X(atoms[j].p), Y(atoms[j].p), f.c.sub, 2);
+        }
+      }
+    }
+    // nu = +1 arrows (spin up) on the A triangle around the B site at S + dAB
+    f.o.push('<defs><marker id="arrowKM" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">' +
+      '<path d="M0,0 L6,3 L0,6 Z" fill="' + PURPLE + '"/></marker></defs>');
+    var S = [2, 0];
+    var tri = [S, [S[0] + A2[0], S[1] + A2[1]], [S[0] + A1[0], S[1] + A1[1]]];  // 0 -> a2 -> a1 -> 0
+    var cB = [S[0] + DAB[0], S[1] + DAB[1]];
+    for (i = 0; i < 3; i++) {
+      var p1 = tri[i], p2 = tri[(i + 1) % 3];
+      var x1 = X(p1), y1 = Y(p1), x2 = X(p2), y2 = Y(p2);
+      var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      var awx = mx - X(cB), awy = my - Y(cB);
+      var al = Math.hypot(awx, awy); awx /= al; awy /= al;   // outward from B center
+      var cxp = mx + awx * 26, cyp = my + awy * 26;
+      // shrink endpoints toward control so arrows don't sit on the atoms
+      var sx = x1 + (cxp - x1) * 0.22, sy = y1 + (cyp - y1) * 0.22;
+      var ex = x2 + (cxp - x2) * 0.22, ey = y2 + (cyp - y2) * 0.22;
+      f.o.push('<path d="M ' + sx.toFixed(1) + ' ' + sy.toFixed(1) +
+        ' Q ' + cxp.toFixed(1) + ' ' + cyp.toFixed(1) + ' ' + ex.toFixed(1) + ' ' + ey.toFixed(1) +
+        '" fill="none" stroke="' + PURPLE + '" stroke-width="2.2" marker-end="url(#arrowKM)"/>');
+    }
+    // atoms on top
+    for (i = 0; i < atoms.length; i++) {
+      var px = X(atoms[i].p), py = Y(atoms[i].p);
+      if (atoms[i].s === 0) f.o.push('<circle cx="' + px + '" cy="' + py + '" r="8" fill="' + BLUE + '"/>');
+      else f.o.push('<rect x="' + (px - 7) + '" y="' + (py - 7) + '" width="14" height="14" fill="' + RED + '"/>');
+    }
+    // labels (ASCII parens for font safety inside SVG)
+    var pA = [-1, 0], pB = [-1 + DAB[0], DAB[1]];
+    f.text(X(pA), Y(pA) + 28, 'A (+λ<tspan dy="3" font-size="12">v</tspan><tspan dy="-3">)</tspan>', 16, BLUE);
+    f.text(X(pB) - 14, Y(pB) - 12, 'B (−λ<tspan dy="3" font-size="12">v</tspan><tspan dy="-3">)</tspan>', 16, RED, 'end');
+    var mid = [(0 + DAB[0]) / 2 + 0.02, (0 + DAB[1]) / 2];
+    f.text(X(mid) + 12, Y(mid) + 5, '<tspan font-style="italic">t</tspan>', 18, f.c.fg, 'start');
+    f.text(X(tri[1]), Y(tri[1]) - 46, '+iλ<tspan dy="3" font-size="12">SO</tspan><tspan dy="-3"> (spin ↑)</tspan>', 17, PURPLE);
+    f.done('figLattice');
+  }
+
+  // ===== Fig: bulk bands =====
+  function drawBulk() {
+    var f = Fig(460, 420);
+    var mL = 52, mR = 14, mT = 20, mB = 46;
+    var pw = f.W - mL - mR, ph = f.H - mT - mB;
+    var segs = [[GAMMA, KPT], [KPT, MPT], [MPT, KP], [KP, GAMMA]];
+    var labels = ['Γ', 'K', 'M', 'K′', 'Γ'];
+    var NPS = 50, total = segs.length * NPS;
+    var Emax = 3.4;
+    var px = function (t) { return (mL + t / total * pw).toFixed(1); };
+    var py = function (e) { return (mT + ph / 2 - e / Emax * ph / 2).toFixed(1); };
+    f.o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + f.c.fg + '" stroke-width="1.4"/>');
+    var i, si, sgn, sp;
+    for (i = 0; i <= segs.length; i++) {
+      var Xb = px(i * NPS);
+      if (i > 0 && i < segs.length) f.line(Xb, mT, Xb, mT + ph, f.c.sub, 0.8);
+      f.text(Xb, mT + ph + 20, labels[i], 17, f.c.fg);
+    }
+    for (i = -3; i <= 3; i++) {
+      var Yt = py(i);
+      f.line(mL, Yt, mL + 6, Yt, f.c.fg, 1.1);
+      f.line(mL + pw, Yt, mL + pw - 6, Yt, f.c.fg, 1.1);
+      f.text(mL - 8, parseFloat(Yt) + 4, String(i), 15, f.c.fg, 'end');
+    }
+    var ymid = mT + ph / 2;
+    f.o.push('<text x="16" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 16 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
+      '"><tspan font-style="italic">E</tspan>/<tspan font-style="italic">t</tspan></text>');
+    for (sp = 1; sp >= -1; sp -= 2) {
+      var col = (sp === 1) ? BLUE : RED;
+      for (sgn = -1; sgn <= 1; sgn += 2) {
+        var pts = [];
+        for (si = 0; si < segs.length; si++) {
+          for (i = 0; i <= NPS; i++) {
+            var tpar = i / NPS;
+            var k = [segs[si][0][0] * (1 - tpar) + segs[si][1][0] * tpar,
+                     segs[si][0][1] * (1 - tpar) + segs[si][1][1] * tpar];
+            pts.push(px(si * NPS + i) + ',' + py(sgn * bulkE(k, sp)));
+          }
+        }
+        f.o.push('<polyline points="' + pts.join(' ') + '" fill="none" stroke="' + col +
+          '" stroke-width="1.9" opacity="' + (sp === 1 ? 0.95 : 0.75) + '"/>');
+      }
+    }
+    // legend
+    f.line(mL + 16, mT + 18, mL + 42, mT + 18, BLUE, 2.4);
+    f.text(mL + 48, mT + 22, '↑', 17, f.c.fg, 'start');
+    f.line(mL + 76, mT + 18, mL + 102, mT + 18, RED, 2.4);
+    f.text(mL + 108, mT + 22, '↓', 17, f.c.fg, 'start');
+    f.done('figBulk');
+  }
+
+  // ===== Fig: ribbon bands =====
+  function drawRibbon() {
+    var f = Fig(460, 420);
+    var mL = 52, mR = 14, mT = 20, mB = 46;
+    var pw = f.W - mL - mR, ph = f.H - mT - mB;
+    var Emax = 3.4;
+    var px = function (ik) { return mL + ik / (NK - 1) * pw; };
+    var py = function (e) { return mT + ph / 2 - e / Emax * ph / 2; };
+    f.o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + f.c.fg + '" stroke-width="1.4"/>');
+    var i, j;
+    var xlabels = ['0', 'π', '2π'];
+    for (i = 0; i <= 2; i++) {
+      var Xb = px((NK - 1) * i / 2);
+      f.line(Xb, mT + ph, Xb, mT + ph - 6, f.c.fg, 1.1);
+      if (i === 1) f.line(Xb, mT, Xb, mT + ph, f.c.sub, 0.7, '4,5');
+      f.text(Xb, mT + ph + 20, xlabels[i], 17, f.c.fg);
+    }
+    for (i = -3; i <= 3; i++) {
+      var Yt = py(i);
+      f.line(mL, Yt, mL + 6, Yt, f.c.fg, 1.1);
+      f.line(mL + pw, Yt, mL + pw - 6, Yt, f.c.fg, 1.1);
+      f.text(mL - 8, Yt + 4, String(i), 15, f.c.fg, 'end');
+    }
+    f.text(mL + pw / 2, f.H - 10, '<tspan font-style="italic">k</tspan><tspan dy="4" font-size="13">x</tspan>', 18, f.c.fg);
+    var ymid = mT + ph / 2;
+    f.o.push('<text x="16" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 16 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
+      '"><tspan font-style="italic">E</tspan>/<tspan font-style="italic">t</tspan></text>');
+    var bands = ribbonBands();
+    var oDn = [], oUp = [];
+    for (i = 0; i < NK; i++) {
+      for (j = 0; j < NAT; j++) {
+        var e = bands[i][j];
+        if (Math.abs(e) > Emax) continue;
+        oUp.push('<circle cx="' + px(i).toFixed(1) + '" cy="' + py(e).toFixed(1) + '" r="1.5"/>');
+        // spin down: E_dn(k) = E_up(2pi - k)
+        oDn.push('<circle cx="' + px(NK - 1 - i).toFixed(1) + '" cy="' + py(e).toFixed(1) + '" r="1.5"/>');
+      }
+    }
+    f.o.push('<g fill="' + RED + '" opacity="0.65">' + oDn.join('') + '</g>');
+    f.o.push('<g fill="' + BLUE + '" opacity="0.75">' + oUp.join('') + '</g>');
+    f.line(mL + 16, mT + 18, mL + 42, mT + 18, BLUE, 2.4);
+    f.text(mL + 48, mT + 22, '↑', 17, f.c.fg, 'start');
+    f.line(mL + 76, mT + 18, mL + 102, mT + 18, RED, 2.4);
+    f.text(mL + 108, mT + 22, '↓', 17, f.c.fg, 'start');
+    f.done('figRibbon');
+  }
+
+  // ===== Fig: phase diagram =====
+  function drawPhase() {
+    var f = Fig(520, 400);
+    var mL = 64, mR = 20, mT = 22, mB = 58;
+    var pw = f.W - mL - mR, ph = f.H - mT - mB;
+    var xmax = 0.15, ymax = 1.0;
+    var px = function (x) { return mL + x / xmax * pw; };
+    var py = function (y) { return mT + ph - y / ymax * ph; };
+    // QSH wedge: lv < 3sqrt3 lso
+    var xTop = ymax / (3 * SQ3); // lso where boundary exits top: 1/(3sqrt3)=0.192 > 0.15 -> exits right edge
+    var yRight = 3 * SQ3 * xmax; // 0.779
+    f.o.push('<polygon points="' + px(0) + ',' + py(0) + ' ' + px(xmax) + ',' + py(0) + ' ' +
+      px(xmax) + ',' + py(yRight) + '" fill="' + BLUE + '" fill-opacity="0.13"/>');
+    f.o.push('<rect x="' + mL + '" y="' + mT + '" width="' + pw + '" height="' + ph +
+      '" fill="none" stroke="' + f.c.fg + '" stroke-width="1.4"/>');
+    f.line(px(0), py(0), px(xmax), py(yRight), f.c.fg, 2, null);
+    var i;
+    for (i = 0; i <= 3; i++) {
+      var xv = i * 0.05, X = px(xv);
+      f.line(X, mT + ph, X, mT + ph - 6, f.c.fg, 1.1);
+      f.text(X, mT + ph + 22, xv.toFixed(2), 17, f.c.fg);
+    }
+    for (i = 0; i <= 5; i++) {
+      var yv = i * 0.2, Y = py(yv);
+      f.line(mL, Y, mL + 6, Y, f.c.fg, 1.1);
+      f.text(mL - 9, Y + 4, yv.toFixed(1), 17, f.c.fg, 'end');
+    }
+    f.text(mL + pw / 2, f.H - 12, 'λ<tspan dy="4" font-size="15">SO</tspan><tspan dy="-4">/</tspan><tspan font-style="italic">t</tspan>', 20, f.c.fg);
+    var ymid = mT + ph / 2;
+    f.o.push('<text x="20" y="' + ymid + '" text-anchor="middle" transform="rotate(-90 20 ' + ymid +
+      ')" font-family="' + SERIF + '" font-size="18" fill="' + f.c.fg +
+      '">λ<tspan dy="4" font-size="15">v</tspan><tspan dy="-4">/</tspan><tspan font-style="italic">t</tspan></text>');
+    f.text(px(0.105), py(0.18), 'QSH (ν = 1)', 21, BLUE, 'middle', ' font-weight="600"');
+    f.text(px(0.045), py(0.72), 'ν = 0', 21, f.c.fg, 'middle', ' font-weight="600"');
+    f.text(px(0.094), py(0.90), 'λ<tspan dy="4" font-size="13">v</tspan><tspan dy="-4"> = 3√</tspan><tspan text-decoration="overline">3</tspan><tspan> λ</tspan><tspan dy="4" font-size="13">SO</tspan>', 18, f.c.sub, 'start');
+    // current point
+    f.o.push('<circle cx="' + px(lso) + '" cy="' + py(Math.min(lv, ymax)) + '" r="7" fill="' + PURPLE +
+      '" stroke="' + f.c.bg + '" stroke-width="2"/>');
+    f.done('figPhase');
+  }
+
+  // ===== readouts =====
+  function updateObs() {
+    var crit = 3 * SQ3 * lso;
+    var mK = lv - crit, mKp = lv + crit;    // spin up masses
+    var cu, cd, z2, phase;
+    var gap = 2 * Math.min(Math.abs(mK), Math.abs(mKp));
+    if (lso === 0 && lv === 0) {
+      cu = '—'; cd = '—'; z2 = '—';
+      phase = document.body.classList.contains('x') ? '' : '半金属 / semimetal';
+    } else if (Math.abs(mK) < 1e-9) {
+      cu = '—'; cd = '—'; z2 = '—';
+      phase = 'ギャップレス（転移点）/ gapless';
+    } else {
+      var c = (Math.sign(mK) - Math.sign(mKp)) / 2;   // spin up
+      cu = (c === 0 ? '0' : (c > 0 ? '+1' : '−1'));
+      cd = (c === 0 ? '0' : (c > 0 ? '−1' : '+1'));
+      z2 = String(Math.abs(c) % 2);
+      phase = (Math.abs(c) === 1) ? 'QSH' : '自明 / trivial';
+    }
+    document.getElementById('cuVal').textContent = cu;
+    document.getElementById('cdVal').textContent = cd;
+    document.getElementById('z2Val').textContent = z2;
+    document.getElementById('phaseVal').textContent = phase;
+    document.getElementById('gapVal').textContent = gap.toFixed(3);
+    document.getElementById('critVal').textContent = crit.toFixed(3);
+  }
+
+  function updateAll() {
+    document.getElementById('soVal').textContent = lso.toFixed(3);
+    document.getElementById('lvVal').textContent = lv.toFixed(2);
+    drawLattice();
+    drawBulk();
+    drawRibbon();
+    drawPhase();
+    updateObs();
+  }
+
+  document.getElementById('soSlider').addEventListener('input', function () {
+    lso = parseFloat(this.value); updateAll();
+  });
+  document.getElementById('lvSlider').addEventListener('input', function () {
+    lv = parseFloat(this.value); updateAll();
+  });
+  function setParams(a, b) {
+    lso = a; lv = b;
+    document.getElementById('soSlider').value = String(a);
+    document.getElementById('lvSlider').value = String(b);
+    updateAll();
+  }
+  document.getElementById('qshBtn').addEventListener('click', function () { setParams(0.06, 0.15); });
+  document.getElementById('trivBtn').addEventListener('click', function () { setParams(0.06, 0.6); });
+  document.getElementById('critBtn').addEventListener('click', function () { setParams(0.06, Math.round(3 * SQ3 * 0.06 * 100) / 100); });
+  document.getElementById('grBtn').addEventListener('click', function () { setParams(0, 0); });
+
+  updateAll();
+  new MutationObserver(function () { updateAll(); }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+})();
+</script>
+</body>
+</html>
