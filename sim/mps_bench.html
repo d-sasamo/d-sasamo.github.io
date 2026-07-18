@@ -352,7 +352,7 @@
     }
     // g_c line
     f.line(px(1), f.mT, px(1), f.mT + f.ph, f.c.sub, 1.2, '5,5');
-    f.text(parseFloat(px(1)) + 6, f.mT + 18, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'start');
+    f.text(px(1), f.mT - 7, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'middle');
     // axis labels
     f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 19, f.c.fg);
     var ymid = f.mT + f.ph / 2;
@@ -372,7 +372,7 @@
       }
     }
     // legend: single horizontal row above the frame (never overlaps data)
-    var entryW = 105, lx = f.mL + (f.pw - entryW * DATA.chis.length) / 2, ly = 34;
+    var entryW = 105, lx = f.mL + (f.pw - entryW * DATA.chis.length) / 2, ly = 22;
     for (ci = 0; ci < DATA.chis.length; ci++) {
       var col2 = CHI_COL[DATA.chis[ci]];
       marker(f, lx + ci * entryW, ly - 5, col2, true);
@@ -401,7 +401,7 @@
       if (maj) f.text(f.mL - 12, parseFloat(Y) + 5, v.toFixed(1), 14, f.c.fg, 'end');
     }
     f.line(px(1), f.mT, px(1), f.mT + f.ph, f.c.sub, 1.2, '5,5');
-    f.text(parseFloat(px(1)) + 6, f.mT + 18, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'start');
+    f.text(px(1), f.mT - 8, '<tspan font-style="italic">h</tspan><tspan dy="4" font-size="11">c</tspan>', 15, f.c.sub, 'middle');
     f.text(f.mL + f.pw / 2, f.H - 14, '<tspan font-style="italic">h</tspan>', 19, f.c.fg);
     var BLUE = '#4187d6', RED = '#c85c5c';
     // exact curves
