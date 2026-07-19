@@ -43,11 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ===== Email (assembled to avoid scrapers) =====
+  // ===== Email (assembled to avoid scrapers; displayed with "_at_" instead of "@") =====
   var el = document.getElementById("emailLink");
   if (el) {
-    var addr = ["sasamoto.daiki.r6", "dc.tohoku.ac.jp"].join("@");
-    el.href = "mailto:" + addr;
+    var addr = ["sasamoto.daiki.r6", "dc.tohoku.ac.jp"].join("_at_");
+    el.removeAttribute("href");
     el.textContent = addr;
   }
 
