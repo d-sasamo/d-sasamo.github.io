@@ -1856,10 +1856,13 @@
       <summary><span class="ja">物理ノート</span><span class="en">Physics Notes</span></summary>
       <div class="group-body">
         <!-- ★ ノート（PDFへのリンクなど）はここに追加してください -->
-        <p style="color:var(--text-dim); font-style:italic; padding:0.5rem 0.4rem;">
-          <span class="ja">準備中です…（工事中）</span>
-          <span class="en">Coming soon... (under construction)</span>
-        </p>
+        <div class="card">
+          <h3><a href="sim/quantum_stat.html" style="color:var(--text); text-decoration:none;"><span class="ja">はじめての量子統計</span><span class="en">A First Course in Quantum Statistics</span> <span style="color:var(--accent2);">→</span></a></h3>
+          <p style="color:var(--text-dim); font-size:0.95rem;">
+            <span class="ja">量子統計の基礎をまとめたノートです。フェルミ粒子とボース粒子の統計性の違いが、物理量にどのように反映されるのかを理解できます。</span>
+            <span class="en">A note on the basics of quantum statistics: how the differing statistics of fermions and bosons are reflected in physical quantities.</span>
+          </p>
+        </div>
       </div>
     </details>
 
@@ -1874,13 +1877,13 @@
               占有確率 \(p\) をスライダーで動かして、クラスターが成長・融合し、
               \(p_c \approx 0.5927\) で系を貫くクラスターが出現する様子を観察できます。
               「乱数を撒くだけ」の単純な相転移なのに、そのユニバーサリティクラスは
-              \(c = 0\) の非ユニタリーCFTで記述される、という深い模型です。
+              \(c = 0\) の非ユニタリーな共形場理論（CFT: Conformal Field Theory）で記述される、という深い模型です。
             </span>
             <span class="en">
               Drag the occupation probability \(p\) to watch clusters grow, merge, and — at
               \(p_c \approx 0.5927\) — span the lattice. A phase transition as simple
               as sprinkling random numbers, yet its universality class is described by a
-              non-unitary CFT with \(c = 0\).
+              non-unitary conformal field theory (CFT) with \(c = 0\).
             </span>
           </p>
         </div>
@@ -1920,13 +1923,13 @@
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
               正方格子上の Heisenberg スピンを Landau–Lifshitz–Gilbert 方程式で実時間発展させます。
-              DMI と磁場のスライダーを動かすと磁気スカーミオンが核生成し、
+              Dzyaloshinskii–Moriya 相互作用（DMI）と磁場のスライダーを動かすと磁気スカーミオンが核生成し、
               トポロジカル電荷 \(Q\) がライブで整数値を刻みます。スカーミオンを1個植えて
               安定性を確かめたり、磁場でつぶして \(Q\) が跳ぶ瞬間を見たりできます。
             </span>
             <span class="en">
               Heisenberg spins on the square lattice evolved in real time by the
-              Landau–Lifshitz–Gilbert equation. Drag the DMI and field sliders to nucleate
+              Landau–Lifshitz–Gilbert equation. Drag the Dzyaloshinskii–Moriya interaction (DMI) and field sliders to nucleate
               magnetic skyrmions, with the topological charge \(Q\) ticking through
               integers live — seed a single skyrmion, test its stability, or crush it with
               the field and watch \(Q\) jump.
@@ -1952,14 +1955,14 @@
           <h3><a href="sim/tebd.html" style="color:var(--text); text-decoration:none;"><span class="ja">MPS/TEBD による量子スピン鎖の実時間ダイナミクス</span><span class="en">Quantum Spin-Chain Dynamics with MPS/TEBD</span> <span style="color:var(--accent2);">→</span></a></h3>
           <p style="color:var(--text-dim); font-size:0.95rem;">
             <span class="ja">
-              行列積状態（MPS）を TEBD で時間発展させる本物のテンソルネットワーク計算です。
+              行列積状態（MPS）を TEBD（Time-Evolving Block Decimation）で時間発展させるテンソルネットワーク計算です。
               横磁場 Ising・XXZ 鎖のクエンチで光円錐の広がりを見ながら、
               エンタングルメントエントロピーが \(\ln \chi\) の壁に迫っていく様子——
               「なぜ量子ダイナミクスは難しいのか」——を体感できます
               （実装は厳密対角化・TeNPy と照合済み）。
             </span>
             <span class="en">
-              A genuine tensor-network computation — an MPS evolved by TEBD. Watch light cones spread in quenches of the transverse-field Ising
+              A tensor-network computation — an MPS evolved by TEBD (time-evolving block decimation). Watch light cones spread in quenches of the transverse-field Ising
               and XXZ chains while the entanglement entropy climbs toward the \(\ln \chi\)
               wall: feel first-hand why quantum dynamics is hard (implementation validated
               against exact diagonalization and TeNPy).
