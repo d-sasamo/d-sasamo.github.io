@@ -51,7 +51,7 @@
     <h1 style="font-size:2rem;"><span class="ja">Hubbard 模型と Mott 転移：動的平均場理論（DMFT）</span><span class="en">The Hubbard Model and the Mott Transition: Dynamical Mean-Field Theory (DMFT)</span></h1>
     <p class="hero-sub ja">
       「電子は波か、粒子か」——強相関電子系のいちばん深い問いを、最も単純な模型で体験するページです。
-      半充填 Hubbard 模型（Bethe 格子）を動的平均場理論（DMFT）で解いて、
+      半充填 Hubbard 模型（Bethe 格子）を動的平均場理論（DMFT: Dynamical Mean-Field Theory）で解いて、
       スペクトル関数 \(A(\omega)\) が金属から Mott 絶縁体へ変わる瞬間を観察できます。
     </p>
     <p class="hero-sub en">
@@ -66,7 +66,7 @@
     <div class="card">
       <h3><span class="ja">スペクトル関数 \(A(\omega)\)：金属から Mott 絶縁体へ</span><span class="en">Spectral function \(A(\omega)\): from metal to Mott insulator</span></h3>
       <p class="ja" style="line-height:2;">
-        スライダーで相互作用 \(U\) を変えると、DMFT（不純物ソルバーは IPT）をその場で解き直します。
+        スライダーで相互作用 \(U\) を変えると、DMFT（不純物ソルバーは反復摂動論 IPT: Iterated Perturbation Theory）をその場で解き直します。
         \(U\) を上げていくと、中央の準粒子ピークが痩せながら、\(\pm U/2\) に Hubbard バンドが育ち、
         <b>3ピーク構造</b>を経て、あるところで中央のピークが消えて<b> Mott ギャップ</b>が開きます。
         解は直前の解を種にして解かれる（＝履歴に依存する）ので、\(U\) を上げてから下げると
@@ -74,8 +74,8 @@
         「金属の種」「絶縁体の種」ボタンで種を選び直せます。
       </p>
       <p class="en" style="line-height:2;">
-        Moving the slider re-solves the DMFT self-consistency loop (with the IPT impurity
-        solver) on the spot. As \(U\) grows, the central quasiparticle peak sharpens and loses weight while
+        Moving the slider re-solves the DMFT self-consistency loop (with the iterated
+        perturbation theory, IPT, impurity solver) on the spot. As \(U\) grows, the central quasiparticle peak sharpens and loses weight while
         Hubbard bands build up at \(\pm U/2\) — the <b>three-peak structure</b> — until the central
         peak disappears and the <b>Mott gap</b> opens. Each solution is seeded by the previous
         one (i.e., it depends on history), so sweeping \(U\) up and then down can land on
@@ -240,7 +240,8 @@
       \]</div>
       <p class="ja">
         位相 \(\theta\) がそろった状態——コヒーレントな波——を作ろうとすれば、各サイトの粒子数は
-        大きく揺らがなければなりません。超流動や超伝導、BEC はまさにこの極限で、
+        大きく揺らがなければなりません。超流動や超伝導、ボース–アインシュタイン凝縮（BEC: Bose–Einstein Condensate）は
+        まさにこの極限で、
         位相のそろった巨視的な波が物質を貫き、粒子数の確定性は放棄されています
         （Josephson 効果はこの \(n\)–\(\theta\) 共役性が直接見える実験です）。
         逆に、各サイトの粒子数をきっちり1個に確定した状態—— Mott 絶縁体や、
@@ -258,7 +259,8 @@
       </p>
       <p class="en">
         To build a phase-coherent state — a coherent wave — the on-site particle numbers must
-        fluctuate wildly. Superfluids, superconductors, and BECs live in exactly this limit: a
+        fluctuate wildly. Superfluids, superconductors, and Bose–Einstein condensates (BECs)
+        live in exactly this limit: a
         macroscopic phase-locked wave runs through the material, and definiteness of particle
         number is given up (the Josephson effect is the direct experimental display of this
         \(n\)–\(\theta\) conjugacy). Conversely, a state with exactly one particle nailed to each site —
@@ -396,7 +398,7 @@
         になり、自己無撞着条件が \(\Delta = (W/2)^2 G\) という1行に簡単化されるからです
         （\(W\) は半バンド幅で、\(W = 2t^{*}\)。バンドは \(|\varepsilon| \le W\) に広がります）。
         残る仕事は不純物問題を解くことで、ここが DMFT の計算の心臓部です。
-        数値くりこみ群（NRG）、連続時間量子モンテカルロ（CT-QMC）、厳密対角化などが
+        数値くりこみ群（NRG: Numerical Renormalization Group）、連続時間量子モンテカルロ（CT-QMC: Continuous-Time Quantum Monte Carlo）、厳密対角化などが
         使われます。このページでは、ブラウザで瞬時に解けて、かつ Mott 転移を定性的に
         正しく再現することが知られている<b>反復摂動論（IPT）</b>を使っています（下記）。
         DMFT は V<sub>2</sub>O<sub>3</sub> などの Mott 転移物質の相図

@@ -88,20 +88,20 @@
             <label><span class="ja">単位胞の数</span><span class="en">Number of unit cells</span> \(N\) = <span class="val" id="nVal">20</span>（\(2N\) <span class="ja">サイト、開放端</span><span class="en">sites, open ends</span>）</label>
             <input type="range" id="nSlider" min="0" max="3" step="1" value="2">
           </div>
-          <div class="ctrl">
-            <button class="sim-btn" id="topoBtn"><span class="ja">トポロジカル相（w &gt; v）</span><span class="en">Topological (w &gt; v)</span></button>
-            <button class="sim-btn" id="trivBtn"><span class="ja">自明相（v &gt; w）</span><span class="en">Trivial (v &gt; w)</span></button>
-            <button class="sim-btn" id="critBtn"><span class="ja">臨界点 v = w</span><span class="en">Critical v = w</span></button>
-          </div>
         </div>
         <div class="obs-compact">
           <span class="ja">巻き付き数</span><span class="en">Winding number</span> \(W =\) <b id="windVal">1</b>
           ・ <span class="ja">ゼロモード数</span><span class="en">zero modes</span>: <b id="nzVal">2</b><br>
           <span class="ja">Zak 位相</span><span class="en">Zak phase</span> \(\gamma/\pi =\) <b id="zakVal">1.000</b><br>
           <span class="ja">Wannier 中心</span><span class="en">Wannier center</span> \(\bar{x} =\) <b id="wanVal">1/2</b>
-          <span class="ja">（0：セル中心、1/2：ボンド中心）</span><span class="en">(0: cell center, 1/2: bond center)</span><br>
+          <span class="ja">（\(0\)：セル中心、\(1/2\)：ボンド中心）</span><span class="en">(\(0\): cell center, \(1/2\): bond center)</span><br>
           <span class="ja">最小固有エネルギー</span><span class="en">Smallest eigenenergy</span> \(|E|_{\mathrm{min}} =\) <b id="e0Val">—</b>
         </div>
+      </div>
+      <div class="ctrl" style="margin-top:0.6rem; margin-bottom:0;">
+        <button class="sim-btn" id="topoBtn"><span class="ja">トポロジカル相 \(w&gt;v\)</span><span class="en">Topological \(w&gt;v\)</span></button>
+        <button class="sim-btn" id="trivBtn"><span class="ja">自明相 \(v&gt;w\)</span><span class="en">Trivial \(v&gt;w\)</span></button>
+        <button class="sim-btn" id="critBtn"><span class="ja">臨界点 \(v=w\)</span><span class="en">Critical \(v=w\)</span></button>
       </div>
     </div>
 
@@ -284,7 +284,7 @@
         （副格子内ホッピングやオンサイトポテンシャルを入れない限り）、エッジ状態は
         厳密にゼロエネルギーに留まり続けます。エッジ状態を消す唯一の方法は、
         バルクのギャップを閉じるか、対称性を壊すことです。「対称性に守られた
-        トポロジカル相（SPT 相）」という言葉の意味が、この最小模型に凝縮されています。
+        トポロジカル相（SPT: Symmetry-Protected Topological）」という言葉の意味が、この最小模型に凝縮されています。
       </p>
       <p class="en">
         What matters is the robustness of this correspondence. Make the hoppings disordered —

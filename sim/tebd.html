@@ -59,12 +59,14 @@
   <section class="hero" style="padding-bottom:1rem;">
     <h1 style="font-size:2rem;"><span class="ja">MPS/TEBD による量子スピン鎖の実時間ダイナミクス</span><span class="en">Real-Time Quantum Spin-Chain Dynamics with MPS/TEBD</span></h1>
     <p class="hero-sub ja">
-      行列積状態（MPS）を TEBD で時間発展させるテンソルネットワーク計算です。
+      行列積状態（MPS: Matrix Product State）を TEBD（Time-Evolving Block Decimation）で時間発展させる
+      テンソルネットワーク計算です。
       横磁場 Ising 模型と XXZ 模型のクエンチダイナミクスを、
       エンタングルメントエントロピーの成長とともに観察してみてください。
     </p>
     <p class="hero-sub en">
-      A tensor-network computation: a matrix product state evolved in real time by TEBD.
+      A tensor-network computation: a matrix product state evolved in real time by TEBD
+      (time-evolving block decimation).
       Watch quench dynamics of the transverse-field Ising and
       XXZ chains, together with the growth of entanglement entropy.
     </p>
@@ -76,8 +78,8 @@
         <div class="sim-canvas-box">
           <canvas id="hmCanvas" width="32" height="160"></canvas>
           <div class="hm-caption">
-            <span class="ja">横軸＝サイト \(i\)、縦軸＝時間（下向きに進行）<br>色＝\(\langle \sigma^z_i \rangle\)（赤 = +1, 青 = −1）</span>
-            <span class="en">horizontal = site \(i\), vertical = time (downward)<br>color = \(\langle \sigma^z_i \rangle\) (red = +1, blue = −1)</span>
+            <span class="ja">横軸＝サイト \(i\)、縦軸＝時間（下向きに進行）<br>色＝\(\langle \sigma^z_i \rangle\)（赤 = \(+1\)、青 = \(-1\)）</span>
+            <span class="en">horizontal = site \(i\), vertical = time (downward)<br>color = \(\langle \sigma^z_i \rangle\) (red = \(+1\), blue = \(-1\))</span>
           </div>
         </div>
         <div class="sim-controls">
@@ -145,7 +147,7 @@
         for \(N = 40\), about \(10^{12}\) complex numbers, too many even to store.
         Enter the matrix product state (MPS):
       </p>
-      <div class="eq">\[ |\psi\rangle \;=\; \sum_{s_1,\dots,s_N} A^{[1]s_1} A^{[2]s_2} \cdots A^{[N]s_N} \, |s_1 s_2 \cdots s_N\rangle \]</div>
+      <div class="eq">\[ |\psi\rangle \;=\; \sum_{s_1,\dots,s_N} A^{[1]}_{s_1} A^{[2]}_{s_2} \cdots A^{[N]}_{s_N} \, |s_1 s_2 \cdots s_N\rangle \]</div>
       <p class="ja">
         各サイトに置いた \(\chi \times \chi\) 行列の積で振幅を表す形で、パラメータ数は
         およそ \(N \cdot 2 \cdot \chi^2\) 個。\(\chi\)（ボンド次元）が、切り捨てずに
@@ -174,9 +176,9 @@
       </p>
       <p class="ja">
         この構造を最初に突き止めて実用にしたのが、S. R. White の密度行列繰り込み群
-        （DMRG, 1992）です。DMRG は今日では「MPS 上の変分法」として理解されており、
+        （DMRG: Density Matrix Renormalization Group, 1992）です。DMRG は今日では「MPS 上の変分法」として理解されており、
         1次元強相関系では圧倒的な精度を誇る事実上の標準手法になっています。
-        凝縮系物理での戦績は輝かしく、S = 1 反強磁性鎖の Haldane ギャップの精密決定、
+        凝縮系物理での戦績は輝かしく、\(S = 1\) 反強磁性鎖の Haldane ギャップの精密決定、
         梯子系や近藤格子の研究、そして円筒形の格子に巻いて「幅の狭い2次元」へ拡張する
         使い方では、カゴメ格子反強磁性体のスピン液体基底状態（Yan–Huse–White, 2011）や
         Hubbard 模型のストライプ秩序の解明など、2次元の強相関問題にも決定的な証拠を
@@ -205,7 +207,7 @@
       </p>
       <div class="eq">\[ e^{-iH\,\delta t} \;\approx\; e^{-iH_{\mathrm{odd}}\,\delta t/2} \; e^{-iH_{\mathrm{even}}\,\delta t} \; e^{-iH_{\mathrm{odd}}\,\delta t/2} \;+\; O(\delta t^{3}) \]</div>
       <p class="ja">
-        で小さな2サイトゲートの列に直し、ゲートを掛けるたびに特異値分解（SVD）で
+        で小さな2サイトゲートの列に直し、ゲートを掛けるたびに特異値分解（SVD: Singular Value Decomposition）で
         Schmidt 係数の大きい \(\chi\) 個だけを残します。画面の「累積打ち切り誤差」が、
         この切り捨ての合計です。実装は素の JavaScript ですが中身は本物で、
         厳密対角化（\(N = 10\)）と \(10^{-5}\) 程度（Trotter 誤差の桁）、
@@ -316,7 +318,8 @@
         最後に、2次元の話をしなければフェアではありません。2次元では面積則が
         \(S \propto L\)（境界の長さ）となるため、MPS を蛇行させて張る方法では
         \(\chi \sim e^{L}\) が必要になります。2次元専用のテンソル
-        ネットワークである PEPS は状態の<b>表現</b>としては優れていますが、期待値を
+        ネットワークである PEPS（Projected Entangled Pair States）は
+        状態の<b>表現</b>としては優れていますが、期待値を
         計算するための縮約が厳密には #P 困難で、近似縮約も高コストです。円筒に巻いた
         DMRG は幅 10 サイト程度が実用限界。そこへさらに、クエンチ後のエンタングルメントの
         線形成長が重なる実時間ダイナミクスは、現在の古典計算機にとって最も困難な問題の
@@ -329,7 +332,7 @@
       <p class="en">
         Finally, fairness demands a word about two dimensions. In 2D the area law reads
         \(S \propto L\) (the boundary length), so a snaked MPS needs
-        \(\chi \sim e^{L}\). PEPS — the genuinely 2D tensor network — is an
+        \(\chi \sim e^{L}\). PEPS (projected entangled pair states) — the genuinely 2D tensor network — is an
         excellent <b>representation</b> of states, but contracting it to compute
         expectation values is #P-hard exactly, and costly even approximately. Cylinder
         DMRG tops out around widths of ten sites. Add the linear post-quench growth of

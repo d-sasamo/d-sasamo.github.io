@@ -62,7 +62,7 @@
     <h1 style="font-size:2rem;"><span class="ja">Kane–Mele 模型：量子スピンHall絶縁体</span><span class="en">The Kane–Mele Model: A Quantum Spin Hall Insulator</span></h1>
     <p class="hero-sub ja">
       グラフェンにスピン軌道相互作用を入れると、\(\mathbb{Z}_2\) トポロジカル絶縁体——
-      量子スピン Hall（QSH）絶縁体——が生まれます。スピン軌道相互作用 \(\lambda_{\mathrm{SO}}\) と
+      量子スピン Hall（QSH: Quantum Spin Hall）絶縁体——が生まれます。スピン軌道相互作用 \(\lambda_{\mathrm{SO}}\) と
       副格子ポテンシャル \(\lambda_v\) を動かして、K 点でギャップが閉じ直る瞬間と、
       ヘリカルエッジ状態が現れて消える瞬間を観察してみてください。
     </p>
@@ -192,20 +192,20 @@
       </p>
       <div class="eq">\[ H \;=\; t \sum_{\langle i,j \rangle} c^{\dagger}_{i} c_{j} \;+\; i \lambda_{\mathrm{SO}} \sum_{\langle\langle i,j \rangle\rangle} \nu_{ij}\, c^{\dagger}_{i} s^{z} c_{j} \;+\; \lambda_{v} \sum_{i} \xi_{i}\, c^{\dagger}_{i} c_{i} \]</div>
       <p class="ja">
-        第1項は最近接ホッピング、第3項は A/B 副格子で符号 \(\xi_i\) = ±1 を変える
+        第1項は最近接ホッピング、第3項は A/B 副格子で符号 \(\xi_i = \pm 1\) を変える
         ポテンシャル（反転対称性を破る項）です。核心は第2項——第2近接（同一副格子内）を結ぶ
         純虚数ホッピングで、\(s^z\) はスピン、符号
-        \(\nu_{ij}\) = ±1 はホップの経路が左回りか右回りかで決まります
+        \(\nu_{ij} = \pm 1\) はホップの経路が左回りか右回りかで決まります
         （上の格子図の矢印）。この項は時間反転対称性を保ちます：
         虚数ホッピング \(i \to -i\) の反転が、スピン \(s^z \to -s^z\) の
         反転でちょうど打ち消されるからです。
       </p>
       <p class="en">
         The first term is the nearest-neighbor hopping; the third is a staggered potential
-        with \(\xi_i\) = ±1 on the A/B sublattices (it breaks inversion symmetry).
+        with \(\xi_i = \pm 1\) on the A/B sublattices (it breaks inversion symmetry).
         The heart of the model is the second term — a purely imaginary hopping between
         next-nearest neighbors (within a sublattice), where \(s^z\) is the spin
-        and the sign \(\nu_{ij}\) = ±1 depends on whether the two-step path turns
+        and the sign \(\nu_{ij} = \pm 1\) depends on whether the two-step path turns
         left or right (the arrows in the lattice figure). This term respects time-reversal
         symmetry: flipping \(i \to -i\) is exactly compensated by flipping the spin
         \(s^z \to -s^z\).
@@ -247,31 +247,30 @@
       <p class="ja">
         と書けます（このページの読み出しもこの式で計算しています。別途 Fukui–Hatsugai の
         格子 Berry 曲率法でも数値的に確認済みです）。\(\lambda_v < 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) では
-        \(C_\uparrow\) = −1, \(C_\downarrow\) = +1：2つのスピンが逆符号の
+        \(C_\uparrow = -1\)、\(C_\downarrow = +1\)：2つのスピンが逆符号の
         量子 Hall 状態にある、というのが量子スピン Hall（QSH）相の実体です。
-        全体の Chern 数は \(C_\uparrow\) + \(C_\downarrow\) = 0——時間反転対称な系で
+        全体の Chern 数は \(C_\uparrow + C_\downarrow = 0\)——時間反転対称な系で
         Hall 伝導度が消えるのは当然ですが、スピンごとに見れば非自明、というわけです。
       </p>
       <p class="en">
         (the readouts on this page use this formula; it has also been checked numerically
         with the Fukui–Hatsugai lattice Berry-curvature method). For
-        \(\lambda_v < 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) one finds \(C_\uparrow\) = −1 and
-        \(C_\downarrow\) = +1: the two spin species sit in quantum Hall states of
+        \(\lambda_v < 3\sqrt{3}\,\lambda_{\mathrm{SO}}\) one finds \(C_\uparrow = -1\) and\n        \(C_\downarrow = +1\): the two spin species sit in quantum Hall states of
         opposite sign — that is the substance of the quantum spin Hall (QSH) phase. The
-        total Chern number \(C_\uparrow\) + \(C_\downarrow\) = 0, as it must be in
+        total Chern number \(C_\uparrow + C_\downarrow = 0\), as it must be in
         a time-reversal-invariant system, yet each spin sector is separately nontrivial.
       </p>
 
       <h4><span class="ja">時間反転対称性と \(\mathbb{Z}_2\) 指数</span><span class="en">Time-reversal symmetry and the \(\mathbb{Z}_2\) index</span></h4>
       <p class="ja">
-        スピン 1/2 の系では時間反転演算子は \(\Theta^2 = -1\) を満たし、
+        スピン \(1/2\) の系では時間反転演算子は \(\Theta^2 = -1\) を満たし、
         Kramers の定理により、時間反転不変な運動量（1次元エッジなら \(k = 0, \pi\)）で
         すべての状態が2重に縮退します。この縮退が、ヘリカルエッジ状態の交差点を
         守っています：交差を裂いてギャップを開けることは Kramers 縮退を破ることに
         なるため、時間反転対称性を保つ摂動では不可能なのです。
       </p>
       <p class="en">
-        For spin-1/2 systems the time-reversal operator obeys \(\Theta^2 = -1\), and
+        For spin-\(1/2\) systems the time-reversal operator obeys \(\Theta^2 = -1\), and
         Kramers' theorem forces every state at a time-reversal-invariant momentum
         (\(k = 0, \pi\) for a 1D edge) to be doubly degenerate. This degeneracy is what
         protects the crossing of the helical edge branches: splitting it open would violate
@@ -281,7 +280,7 @@
         \(s^z\) が保存する場合、\(\mathbb{Z}_2\) 指数は単純に
         \(\nu = C_\uparrow \bmod 2\) です。しかし Kane–Mele の本当の発見は、
         \(s^z\) 保存が壊れても（次節の Rashba 項を入れても）意味を持ち続ける
-        \(\mathbb{Z}_2\) 不変量 \(\nu \in \{0, 1\}\) が定義できることでした。整数（Z）ではなく
+        \(\mathbb{Z}_2\) 不変量 \(\nu \in \{0, 1\}\) が定義できることでした。整数（\(\mathbb{Z}\)）ではなく
         2値（\(\mathbb{Z}_2\)）なのは、エッジの Kramers 対が2組あると、時間反転を保ったまま
         対消滅できてしまうからです：守られるのは「Kramers 対の数の偶奇」だけなのです。
       </p>
@@ -301,8 +300,8 @@
         1組の Kramers 対が住んでいます（ヘリカル液体）。この2つは互いの時間反転
         パートナーなので、不純物による弾性後方散乱 \(|k, \uparrow\rangle \to |{-k}, \downarrow\rangle\) の
         振幅は、不純物が非磁性（時間反転対称）である限り厳密に消えます。
-        直感的には、スピンを π 回転させながら戻る2つの経路（時計回りと反時計回り）が
-        位相 −1 で干渉して打ち消し合うためです。かくして QSH のエッジ伝導は
+        直感的には、スピンを \(\pi\) 回転させながら戻る2つの経路（時計回りと反時計回り）が
+        位相 \(-1\) で干渉して打ち消し合うためです。かくして QSH のエッジ伝導は
         非磁性不純物に対して量子化された値 \(2e^2/h\)
         （両エッジ合計）を保ちます。磁性不純物や磁場は時間反転を破るので、
         この保護は失われます。
@@ -312,8 +311,8 @@
         and a left-moving spin-↓ branch (a helical liquid). Since the two are each other's
         time-reversal partners, the elastic backscattering amplitude
         \(|k, \uparrow\rangle \to |{-k}, \downarrow\rangle\) off any nonmagnetic (time-reversal-symmetric)
-        impurity vanishes exactly. Intuitively, the two paths that rotate the spin by π —
-        clockwise and counterclockwise — interfere with a relative phase of −1 and cancel.
+        impurity vanishes exactly. Intuitively, the two paths that rotate the spin by \(\pi\) —
+        clockwise and counterclockwise — interfere with a relative phase of \(-1\) and cancel.
         The edge conductance therefore stays quantized at \(2e^2/h\)
         (both edges together) against nonmagnetic disorder. Magnetic impurities or a
         magnetic field break time reversal and destroy the protection.
@@ -375,7 +374,7 @@
         複素 Hermite 行列として構成し、Jacobi 法で対角化しています
         （\(\nu_{ij}\) は経路の外積の符号から自動生成）。スピン ↓ のバンドは
         時間反転対称性 \(E_\downarrow(k) = E_\uparrow(-k)\) を
-        使ってスピン ↑ から折り返しています。バルクバンドは 2×2 ブロックの
+        使ってスピン ↑ から折り返しています。バルクバンドは \(2\times 2\) ブロックの
         固有値 \(\pm\sqrt{|f|^2 + d_z^2}\) をそのまま
         描いています。SSH のページと同様、実装は Python（NumPy）での独立計算と
         照合済みです。
@@ -388,7 +387,7 @@
         cross product of the two hop vectors). The spin-↓ bands are obtained from spin ↑ via
         time reversal, \(E_\downarrow(k) = E_\uparrow(-k)\). The
         bulk bands are the closed-form eigenvalues
-        \(\pm\sqrt{|f|^2 + d_z^2}\) of the 2×2 blocks. As
+        \(\pm\sqrt{|f|^2 + d_z^2}\) of the \(2\times 2\) blocks. As
         with the SSH page, the implementation has been validated against an independent
         Python (NumPy) calculation.
       </p>

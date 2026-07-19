@@ -85,8 +85,10 @@
           </div>
           <div class="ctrl">
             <button class="sim-btn" id="chernBtn"><span class="ja">Chern 数の色分け: OFF</span><span class="en">Chern colors: OFF</span></button>
-            <button class="sim-btn" id="b13"><span>\(\phi = 1/3\)</span></button>
+          </div>
+          <div class="ctrl">
             <button class="sim-btn" id="b15"><span>\(\phi = 1/5\)</span></button>
+            <button class="sim-btn" id="b13"><span>\(\phi = 1/3\)</span></button>
             <button class="sim-btn" id="b25"><span>\(\phi = 2/5\)</span></button>
           </div>
         </div>
@@ -151,38 +153,34 @@
 
       <h4 style="margin-top:0.6rem;"><span class="ja">磁場を格子に入れる：パイエルス位相</span><span class="en">Putting a magnetic field on a lattice: the Peierls phase</span></h4>
       <p class="ja">
-        まず、磁場を知らなくても大丈夫なところから始めます。量子力学では、電荷 −e の
+        まず、磁場を知らなくても大丈夫なところから始めます。量子力学では、電荷 \(-e\) の
         粒子が磁場中を動くとき、磁場そのものではなくベクトルポテンシャル
-        <b>A</b>（<b>B</b> = ∇×<b>A</b>）が波動関数に作用します。粒子が経路に沿って
+        \(\boldsymbol{A}\)（\(\boldsymbol{B} = \nabla\times\boldsymbol{A}\)）が波動関数に作用します。粒子が経路に沿って
         動くと、波動関数は位相
       </p>
       <p class="en">
         Let us start from a point that requires no prior knowledge of magnetic lattice
-        problems. In quantum mechanics, a particle of charge −e moving in a magnetic field
-        couples not to the field itself but to the vector potential <b>A</b>
-        (<b>B</b> = ∇×<b>A</b>): moving along a path, the wavefunction acquires the phase
+        problems. In quantum mechanics, a particle of charge \(-e\) moving in a magnetic field
+        couples not to the field itself but to the vector potential \(\boldsymbol{A}\)\n        (\(\boldsymbol{B} = \nabla\times\boldsymbol{A}\)): moving along a path, the wavefunction acquires the phase
       </p>
       <div class="eq">\[ \exp\!\left( -\frac{ie}{\hbar} \int_{\mathrm{path}} \boldsymbol{A} \cdot d\boldsymbol{\ell} \right) \]</div>
       <p class="ja">
         を獲得します（Aharonov–Bohm 位相）。格子模型でこれを取り込む処方が
-        パイエルス置換です：サイト <i>j</i> から <i>i</i> へのホッピング振幅に、
-        そのボンドに沿った <b>A</b> の線積分を位相として付けます。
+        パイエルス置換です：サイト \(j\) から \(i\) へのホッピング振幅に、\n        そのボンドに沿った \(\boldsymbol{A}\) の線積分を位相として付けます。
       </p>
       <p class="en">
         (the Aharonov–Bohm phase). The recipe for building this into a lattice model is the
-        Peierls substitution: attach to each hopping amplitude the line integral of
-        <b>A</b> along that bond,
+        Peierls substitution: attach to each hopping amplitude the line integral of\n        \(\boldsymbol{A}\) along that bond,
       </p>
       <div class="eq">\[ t \, c^{\dagger}_{i} c_{j} \;\longrightarrow\; t \, e^{i \theta_{ij}}\, c^{\dagger}_{i} c_{j}, \qquad \theta_{ij} = -\frac{e}{\hbar} \int_{j}^{i} \boldsymbol{A} \cdot d\boldsymbol{\ell} \]</div>
       <p class="ja">
-        個々の位相 θ<sub><i>ij</i></sub> はゲージの取り方（<b>A</b> の選び方）に依存するので、
+        個々の位相 \(\theta_{ij}\) はゲージの取り方（\(\boldsymbol{A}\) の選び方）に依存するので、
         それ自体に物理的な意味はありません。物理的なのは、閉じたループを一周したときの
         位相の和——ループを貫く磁束——だけです。最小のループである1プラケット
         （格子の1マス）を貫く磁束を磁束量子 \(h/e\) で測ったものを
       </p>
       <p class="en">
-        The individual phases θ<sub><i>ij</i></sub> depend on the gauge (the choice of
-        <b>A</b>) and carry no physical meaning by themselves. What is physical is only the
+        The individual phases \(\theta_{ij}\) depend on the gauge (the choice of\n        \(\boldsymbol{A}\)) and carry no physical meaning by themselves. What is physical is only the
         sum of phases around a closed loop — the magnetic flux through it. Measuring the
         flux through the smallest loop, a single plaquette, in units of the flux quantum
         \(h/e\) defines
@@ -340,7 +338,7 @@
         長らくバタフライは「原理的には正しいが見えない」スペクトルでした。
         突破口は人工的に大きな格子を作ることです。グラフェンを六方晶窒化ホウ素（hBN）に
         少しだけ角度をずらして重ねると、周期 ∼10 nm の<a href="moire.html" style="color:var(--accent2);">モアレ超格子</a>が生まれ、
-        必要な磁場が (10 nm/0.3 nm)<sup>2</sup> ∼ 1000 分の1——数十テスラ——まで下がります。
+        必要な磁場が \((10\,\mathrm{nm}/0.3\,\mathrm{nm})^2 \approx 1000\) 分の1——数十テスラ——まで下がります。
         2013年、この方法でバタフライの構造（フラクタルなミニギャップと量子化 Hall 伝導度）が
         実際に観測されました。ほかにも冷却原子系で人工ゲージ場により Harper–Hofstadter
         ハミルトニアンを実装する実験や、マイクロ波共振器による音響的・電磁気的な
@@ -352,7 +350,7 @@
         "right in principle, invisible in practice." The breakthrough was to make the
         lattice artificially large: stacking graphene on hexagonal boron nitride (hBN) at a
         small twist angle creates a <a href="moire.html" style="color:var(--accent2);">moiré superlattice</a> of period ∼10 nm, reducing the
-        required field by (10 nm / 0.3 nm)<sup>2</sup> ∼ 1000 — down to tens of tesla. In
+        required field by \((10\,\mathrm{nm}/0.3\,\mathrm{nm})^2 \approx 1000\) — down to tens of tesla. In
         2013 the butterfly's structure — fractal minigaps with quantized Hall conductance —
         was observed this way. Cold-atom experiments have also engineered the
         Harper–Hofstadter Hamiltonian with artificial gauge fields, and microwave

@@ -53,11 +53,13 @@
     <h1 style="font-size:2rem;"><span class="ja">LLG 方程式によるスピンダイナミクスとスカーミオン</span><span class="en">LLG Spin Dynamics &amp; Skyrmions</span></h1>
     <p class="hero-sub ja">
       正方格子上の Heisenberg スピンを Landau–Lifshitz–Gilbert（LLG）方程式で実時間発展させます。
-      DMI と磁場を入れると、トポロジカル電荷を持つ渦構造——スカーミオン——が生まれます。
+      Dzyaloshinskii–Moriya 相互作用（DMI）と磁場を入れると、
+      トポロジカル電荷を持つ渦構造——スカーミオン——が生まれます。
     </p>
     <p class="hero-sub en">
       Heisenberg spins on the square lattice evolved in real time by the
-      Landau–Lifshitz–Gilbert (LLG) equation. Turn on DMI and a magnetic field, and
+      Landau–Lifshitz–Gilbert (LLG) equation. Turn on the Dzyaloshinskii–Moriya interaction
+      (DMI) and a magnetic field, and
       topologically charged whirls — skyrmions — emerge.
     </p>
   </section>
@@ -91,7 +93,7 @@
           </div>
           <div class="ctrl">
             <button class="sim-btn" id="randBtn"><span class="ja">ランダム初期化</span><span class="en">Randomize</span></button>
-            <button class="sim-btn" id="upBtn"><span class="ja">+z に揃える</span><span class="en">Align +z</span></button>
+            <button class="sim-btn" id="upBtn"><span class="ja">\(+z\) に揃える</span><span class="en">Align \(+z\)</span></button>
             <button class="sim-btn" id="seedBtn"><span class="ja">スカーミオンを植える</span><span class="en">Seed a skyrmion</span></button>
             <button class="sim-btn" id="pauseBtn"><span class="ja">一時停止</span><span class="en">Pause</span></button>
           </div>
@@ -100,8 +102,8 @@
             \(Q\) = <b id="qVal">0.0</b><br>
             <span class="ja">磁化</span><span class="en">Magnetization</span> \(m_z\) = <b id="mzVal">0.00</b><br>
             <span class="legend">
-              <span class="ja">色相＝面内の向き、白＝+z、黒＝−z、矢印＝局所平均の面内成分</span>
-              <span class="en">hue = in-plane angle, white = +z, black = −z, arrows = locally averaged in-plane component</span><br>
+              <span class="ja">色相＝面内の向き、白＝\(+z\)、黒＝\(-z\)、矢印＝局所平均の面内成分</span>
+              <span class="en">hue = in-plane angle, white = \(+z\), black = \(-z\), arrows = locally averaged in-plane component</span><br>
               <span class="ja">周期境界条件、Heun 法（確率的 LLG）</span>
               <span class="en">Periodic boundaries, Heun integration (stochastic LLG)</span>
             </span>
@@ -186,7 +188,7 @@
       <p class="ja">
         遊び方のおすすめ：デフォルト（\(D = 0.8\), \(B = 0.25\)）で「ランダム初期化」を
         押すと、乱れた配置から緩和してスカーミオンが自発的に核生成し、\(Q\) が整数値に
-        落ち着きます。「+z に揃える」→「スカーミオンを植える」で1個だけ置いて、
+        落ち着きます。「\(+z\) に揃える」→「スカーミオンを植える」で1個だけ置いて、
         安定に生き続けることを確かめるのも面白いです。そこから磁場 \(B\) を上げていくと
         スカーミオンが縮んでいき、ある値でつぶれて \(Q\) が跳びます（トポロジカル
         保護の破れは格子スケールでしか起こせません）。\(D = 0\) に戻すとただの強磁性体に
@@ -195,7 +197,7 @@
       <p class="en">
         Suggestions for play: with the defaults (\(D = 0.8\), \(B = 0.25\)), press
         "Randomize" and watch skyrmions nucleate spontaneously as the disordered state
-        relaxes, with \(Q\) settling onto an integer. Or "Align +z" then "Seed a
+        relaxes, with \(Q\) settling onto an integer. Or "Align \(+z\)" then "Seed a
         skyrmion" to place a single one and verify it lives on stably. Raising \(B\)
         shrinks it until it collapses — \(Q\) jumps, since topological protection can
         only fail at the lattice scale. Set \(D = 0\) to recover a plain ferromagnet,
