@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Yusei+Magic&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
-<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], tags: 'ams' }, svg: { fontCache: 'global' } };</script>
+<script>window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']], tags: 'ams' }, svg: { fontCache: 'global', displayOverflow: 'linebreak', linebreaks: { inline: false } } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js" async></script>
 <style>
   .toy-title-wrap {
@@ -52,7 +52,22 @@
   .c8 { color: #9bc734; --rot:  4deg; --dy: -4px; }  /* 統 green(か)   */
   .c9 { color: #39639f; --rot: -5deg; --dy: 3px; }   /* 計 blue(い)    */
   @media (max-width: 520px) {
-    .toy-title span { -webkit-text-stroke-width: 5px; }
+    .toy-title { font-size: clamp(1.9rem, 9.4vw, 3.2rem); }
+    .toy-title span {
+      -webkit-text-stroke-width: 4px;
+      text-shadow:
+        0 2px 0 rgba(120,80,40,0.26),
+        0 4px 2px rgba(0,0,0,0.20),
+        0 6px 8px rgba(0,0,0,0.26);
+    }
+    .toy-title-wrap { padding: 1.1rem 0.2rem; margin: 1.4rem 0 0.8rem; }
+    .card { padding: 1.15rem 0.95rem; }
+    .card h2 { font-size: 1.22rem; }
+    .keybox { padding: 0.5rem 0.8rem; }
+    .col-body { padding: 0.1rem 0.8rem 0.9rem; }
+    details.column > summary { padding: 0.8rem 0.8rem; font-size: 0.95rem; }
+    table.sym { font-size: 0.85rem; }
+    table.sym td { padding: 0.4rem 0.45rem; }
   }
 
   /* ---- theory content ---- */
