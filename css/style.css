@@ -260,3 +260,14 @@ details.book-group .group-body .card { background: rgba(255,255,255,0.03); }
 }
 .nav-links a.current { color: var(--text); }
 body.has-panels section.panel { padding-top: 3.5rem; min-height: 55vh; }
+
+/* ---- mobile nav & type ---- */
+@media (max-width: 640px) {
+  .nav { padding: 0.7rem 0.8rem; }
+  .nav-logo { font-size: 0.95rem; }
+  .nav-links { gap: 0.65rem; }
+  .nav-links a { font-size: 0.86rem; white-space: nowrap; }
+  .nav-links li { white-space: nowrap; }
+  .lang-btn { padding: 0.32rem 0.65rem; font-size: 0.8rem; }
+  .hero-sub { font-size: 0.98rem; }
+}
