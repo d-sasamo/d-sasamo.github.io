@@ -189,11 +189,11 @@
       </ul>
       <p class="small ja" style="margin-top:1rem;">
         全体を通して、スピンの大きさは \(s=\dfrac12\) を主な例にとり、スピン縮退度を \(g=2s+1=2\) と書きます（同じ運動状態に \(g\) 個のスピン状態が乗る、という意味の因子です）。
-        スピン \(0\) のボース粒子（液体 \(^4\mathrm{He}\) や冷却原子気体）を扱うときだけ \(g=1\) と読み替えてください。温度依存の熱力学量は、<a href="#s3-5">§3.5</a> の<a href="#fig1">図 1</a> に数値計算の結果としてまとめてあります。
+        スピン \(0\) のボース粒子（液体 \(^4\mathrm{He}\)）を扱うときは \(g=1\) と読み替えてください（冷却原子は一般にスピン \(0\) ではありませんが、単一の内部状態に偏極させて使うため、実効的に \(g=1\) です）。温度依存の熱力学量は、<a href="#s3-5">§3.5</a> の<a href="#fig1">図 1</a> に数値計算の結果としてまとめてあります。
       </p>
       <p class="small en" style="margin-top:1rem;">
         Throughout, the main example is spin \(s=\dfrac12\), and we write the spin degeneracy as \(g=2s+1=2\) (the factor counting how many spin states ride on each orbital state).
-        Only for genuine spin-\(0\) bosons (liquid \(^4\mathrm{He}\), cold atoms) should you read \(g=1\). The temperature dependence of the thermodynamic quantities is collected, from the numerics, in <a href="#fig1">Fig. 1</a> of <a href="#s3-5">§3.5</a>.
+        Read \(g=1\) for genuine spin-\(0\) bosons (liquid \(^4\mathrm{He}\)); cold atoms are generally not spin \(0\), but are polarised into a single internal state, so effectively \(g=1\) as well. The temperature dependence of the thermodynamic quantities is collected, from the numerics, in <a href="#fig1">Fig. 1</a> of <a href="#s3-5">§3.5</a>.
       </p>
     </div>
   </section>
@@ -255,10 +255,10 @@
       \]</div>
       <p class="ja">
         と書けます（\(\hat P\Psi_\sigma=\sigma\Psi_\sigma\) を確かめてみてください）。ここで二つの粒子を<b>同じ状態</b>に入れてみます（\(b=a\)）。\(\sigma=+1\) なら \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) となり、何の問題もありません。ところが \(\sigma=-1\) では
-      </p>
+      （なお、先頭の \(\dfrac{1}{\sqrt2}\) で正しく規格化されるのは、\(\psi_a\) と \(\psi_b\) が互いに直交する場合です。）</p>
       <p class="en">
         (check that \(\hat P\Psi_\sigma=\sigma\Psi_\sigma\)). Now try to put both particles in the <b>same</b> state, \(b=a\). For \(\sigma=+1\) we get \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) — perfectly fine. But for \(\sigma=-1\),
-      </p>
+       (The prefactor \(\dfrac{1}{\sqrt2}\) normalises the state correctly only when \(\psi_a\) and \(\psi_b\) are mutually orthogonal.)</p>
       <div class="eq">\[
         \Psi_-(x_1,x_2)=\frac{1}{\sqrt2}\Bigl[\,\psi_a(x_1)\,\psi_a(x_2)-\psi_a(x_1)\,\psi_a(x_2)\,\Bigr]=0.
       \]</div>
@@ -276,7 +276,7 @@
 
       <h3 id="s1-4"><span class="ja">1.4　「誰がどこ」から「どこに何個」へ</span><span class="en">1.4　From "who is where" to "how many in each state"</span></h3>
       <p class="ja">
-        区別できない粒子の多体状態を指定するのに、「どの粒子がどの状態にいるか」を語る必要はもうありません。ラベルに意味がないのだから、意味を持つ情報は<b>「各一粒子状態 \(q\) に何個の粒子が入っているか」</b>——占有数の組 \(\{n_q\}\)——だけです。多体状態は \(|n_{q_1},n_{q_2},n_{q_3},\cdots\rangle\) というケットで完全に指定でき、いま見た通り、許される \(n_q\) の値が二つの世界で違います。この「数の言葉」への乗り換えが、次節からの統計力学を驚くほど簡単にしてくれます。
+        区別できない粒子の多体状態を指定するのに、「どの粒子がどの状態にいるか」を語る必要はもうありません。ラベルに意味がないのだから、意味を持つ情報は<b>「各一粒子状態 \(q\) に何個の粒子が入っているか」</b>——占有数の組 \(\{n_q\}\)——だけです。相互作用のない系のエネルギー固有状態——フォック基底の各基底状態——は \(|n_{q_1},n_{q_2},n_{q_3},\cdots\rangle\) というケットで指定できます（一般の量子状態は、これらの重ね合わせです）。そして、いま見た通り、許される \(n_q\) の値が二つの世界で違います。この「数の言葉」への乗り換えが、次節からの統計力学を驚くほど簡単にしてくれます。
       </p>
       <p class="en">
         To specify a many-body state of indistinguishable particles we no longer need to say "which particle is in which state". Since the labels mean nothing, the only meaningful information is <b>how many particles occupy each single-particle state \(q\)</b> — the set of occupation numbers \(\{n_q\}\). The many-body state is completely specified by the ket \(|n_{q_1},n_{q_2},n_{q_3},\cdots\rangle\), and as we have just seen, the allowed values of \(n_q\) differ between the two worlds. This switch to counting language is what makes the statistical mechanics of the coming sections astonishingly simple.
@@ -352,10 +352,10 @@
       </p>
 
       <p class="ja">
-        三次元では二回交換が「何もしない」と連続変形でつながるので、交換の位相 \(e^{i\theta}\) は \(e^{2i\theta}=1\) を満たすしかなく、\(\sigma=\pm1\)——ボース統計とフェルミ統計だけが許されます。二次元ではその制約が消え、<b>任意の位相 \(e^{i\theta}\) が許されます</b>。any（任意の）phase を持てる粒子、という意味で<b>エニオン（anyon）</b>と呼ばれます。数学的には、三次元の交換が「置換群」で記述されるのに対し、二次元の交換は紐の絡み方まで区別する「組みひも群」で記述される、と言い換えられます。これは絵空事ではなく、強磁場中の二次元電子系（分数量子ホール効果）の準粒子はエニオンであると予言され、2020年前後の干渉実験で統計位相が直接確認されました。この先で組み立てていく量子統計は「\(\pm1\) の世界」の物理です。次元を一つ落とすだけで統計性そのものが連続パラメータになる——<b>統計性はトポロジーの産物</b>なのです。
+        三次元では二回交換が「何もしない」と連続変形でつながるので、交換の位相 \(e^{i\theta}\) は \(e^{2i\theta}=1\) を満たすしかなく、\(\sigma=\pm1\)——ボース統計とフェルミ統計だけが許されます。二次元ではその制約が消え、<b>任意の位相 \(e^{i\theta}\) が許されます</b>。any（任意の）phase を持てる粒子、という意味で<b>エニオン（anyon）</b>と呼ばれます。数学的には、三次元の交換が「置換群」で記述されるのに対し、二次元の交換は紐の絡み方まで区別する「組みひも群」で記述される、と言い換えられます。これは絵空事ではなく、強磁場中の二次元電子系（分数量子ホール効果）の準粒子はエニオンであると予言され、2020年前後の干渉実験で、分数量子ホール系の（アーベル型）準粒子について統計位相が直接確認されました。この先で組み立てていく量子統計は「\(\pm1\) の世界」の物理です。次元を一つ落とすだけで統計性そのものが連続パラメータになる——<b>統計性はトポロジーの産物</b>なのです。
       </p>
       <p class="en">
-        In 3D, double exchange deforms continuously into "doing nothing", so the exchange phase \(e^{i\theta}\) must satisfy \(e^{2i\theta}=1\): only \(\sigma=\pm1\), Bose or Fermi. In 2D that constraint evaporates and <b>any phase \(e^{i\theta}\) is allowed</b> — hence <b>anyons</b>. Mathematically, 3D exchanges form the permutation group, while 2D exchanges form the braid group, which remembers how strands wind. And this is not science fiction: quasiparticles of the fractional quantum Hall effect were predicted to be anyons, and interference experiments around 2020 confirmed their statistical phase directly. The quantum statistics we build from here on is the physics of the "\(\pm1\) world"; drop one dimension and statistics itself becomes a continuous parameter — <b>statistics is a child of topology</b>.
+        In 3D, double exchange deforms continuously into "doing nothing", so the exchange phase \(e^{i\theta}\) must satisfy \(e^{2i\theta}=1\): only \(\sigma=\pm1\), Bose or Fermi. In 2D that constraint evaporates and <b>any phase \(e^{i\theta}\) is allowed</b> — hence <b>anyons</b>. Mathematically, 3D exchanges form the permutation group, while 2D exchanges form the braid group, which remembers how strands wind. And this is not science fiction: quasiparticles of the fractional quantum Hall effect were predicted to be anyons, and interference experiments around 2020 confirmed the statistical phase directly for (abelian) fractional-quantum-Hall quasiparticles. The quantum statistics we build from here on is the physics of the "\(\pm1\) world"; drop one dimension and statistics itself becomes a continuous parameter — <b>statistics is a child of topology</b>.
       </p>
         </div>
       </details>
@@ -642,10 +642,10 @@
         =\frac{1}{T}\left(x+\frac{1}{k_{\mathrm B}}\frac{\partial\mu}{\partial T}\right)\frac{e^{x}}{(e^{x}-\sigma)^{2}} .
       \]</div>
       <p class="ja">
-        ここで粒子数一定の条件 \(\sum_q\dfrac{\partial\bar n_q}{\partial T}=\left(\dfrac{\partial N}{\partial T}\right)_{\!N}=0\) に注目します（そもそも \(\dfrac{\partial\mu}{\partial T}\) の値は、この条件から決まります）。この零を使うと、\(C=\sum_q\varepsilon_q\,\dfrac{\partial\bar n_q}{\partial T}\) から \(\mu\sum_q\dfrac{\partial\bar n_q}{\partial T}=0\) を自由に引けるので、\(\varepsilon_q\) を \(\varepsilon_q-\mu=k_{\mathrm B}T\,x\) に置き換えられます：
+        ここで粒子数一定の条件 \(\sum_q\dfrac{\partial\bar n_q}{\partial T}=\dfrac{dN}{dT}=0\) に注目します。ここでの温度微分は、\(N\) を一定に保つよう \(\mu(T)\) が動くぶんまで込めた全微分です——そもそも \(\dfrac{\partial\mu}{\partial T}\) の値は、条件 \(0=\left(\dfrac{\partial N}{\partial T}\right)_{\!\mu}+\left(\dfrac{\partial N}{\partial\mu}\right)_{\!T}\dfrac{\partial\mu}{\partial T}\) から決まります。この零を使うと、\(C=\sum_q\varepsilon_q\,\dfrac{\partial\bar n_q}{\partial T}\) から \(\mu\sum_q\dfrac{\partial\bar n_q}{\partial T}=0\) を自由に引けるので、\(\varepsilon_q\) を \(\varepsilon_q-\mu=k_{\mathrm B}T\,x\) に置き換えられます：
       </p>
       <p class="en">
-        Now use particle-number conservation, \(\sum_q\dfrac{\partial\bar n_q}{\partial T}=\left(\dfrac{\partial N}{\partial T}\right)_{\!N}=0\) — indeed, this very condition is what determines \(\dfrac{\partial\mu}{\partial T}\). Since we may freely subtract \(\mu\sum_q\dfrac{\partial\bar n_q}{\partial T}=0\) from \(C=\sum_q\varepsilon_q\,\dfrac{\partial\bar n_q}{\partial T}\), we can replace \(\varepsilon_q\) by \(\varepsilon_q-\mu=k_{\mathrm B}T\,x\):
+        Now use particle-number conservation, \(\sum_q\dfrac{\partial\bar n_q}{\partial T}=\dfrac{dN}{dT}=0\) — a total derivative, including the drift of \(\mu(T)\) that keeps \(N\) fixed; indeed \(\dfrac{\partial\mu}{\partial T}\) is determined precisely by \(0=\left(\dfrac{\partial N}{\partial T}\right)_{\!\mu}+\left(\dfrac{\partial N}{\partial\mu}\right)_{\!T}\dfrac{\partial\mu}{\partial T}\). Since we may freely subtract \(\mu\sum_q\dfrac{\partial\bar n_q}{\partial T}=0\) from \(C=\sum_q\varepsilon_q\,\dfrac{\partial\bar n_q}{\partial T}\), we can replace \(\varepsilon_q\) by \(\varepsilon_q-\mu=k_{\mathrm B}T\,x\):
       </p>
       <div class="eq">\begin{equation}\label{eq:C}
         \begin{aligned}
@@ -679,16 +679,16 @@
       </div>
 
       <p class="ja">
-        フェルミ分布は 1926 年に二度、独立に発見されています。まず2月、ローマの24歳のフェルミが、パウリの排他原理（<a href="#s1-3">1.3</a>）を理想気体に課すと何が起きるかを計算しました。数か月後、ケンブリッジのディラックが、波動関数の反対称性（\(\sigma=-1\)）から同じ分布を導きます。自分の先行に気づいたフェルミは丁寧な手紙をディラックに送り、ディラックは以後これを「フェルミ統計」と呼びました。のちに \(\sigma=-1\) の粒子を <b>fermion</b>、\(\sigma=+1\) の粒子を <b>boson</b> と命名したのもディラックです。
+        フェルミ分布は 1926 年、フェルミとディラックによって相次いで独立に発見されました。まず2月、ローマの24歳のフェルミが、パウリの排他原理（<a href="#s1-3">1.3</a>）を理想気体に課すと何が起きるかを計算しました。数か月後、ケンブリッジのディラックが、波動関数の反対称性（\(\sigma=-1\)）から同じ分布を導きます。自分の先行に気づいたフェルミは丁寧な手紙をディラックに送り、ディラックは以後これを「フェルミ統計」と呼びました。のちに \(\sigma=-1\) の粒子を <b>fermion</b>、\(\sigma=+1\) の粒子を <b>boson</b> と命名したのもディラックです。
       </p>
       <p class="en">
-        The Fermi distribution was discovered twice, independently, in 1926. In February the 24-year-old Fermi in Rome worked out what happens to the ideal gas once Pauli's exclusion principle (<a href="#s1-3">1.3</a>) is imposed. A few months later Dirac, in Cambridge, derived the same distribution from the antisymmetry of the wavefunction (\(\sigma=-1\)). Fermi, noticing his priority, sent Dirac a polite letter; Dirac thereafter called it "Fermi statistics" — and it was Dirac, too, who later coined the names <b>fermion</b> (\(\sigma=-1\)) and <b>boson</b> (\(\sigma=+1\)).
+        The Fermi distribution was discovered independently, in quick succession, by Fermi and then Dirac in 1926. In February the 24-year-old Fermi in Rome worked out what happens to the ideal gas once Pauli's exclusion principle (<a href="#s1-3">1.3</a>) is imposed. A few months later Dirac, in Cambridge, derived the same distribution from the antisymmetry of the wavefunction (\(\sigma=-1\)). Fermi, noticing his priority, sent Dirac a polite letter; Dirac thereafter called it "Fermi statistics" — and it was Dirac, too, who later coined the names <b>fermion</b> (\(\sigma=-1\)) and <b>boson</b> (\(\sigma=+1\)).
       </p>
       <p class="ja">
-        フェルミは「桁の物理」の達人としても伝説です。1945年のトリニティ核実験では、爆風が届いた瞬間に紙片を落とし、それが流された距離だけから爆発の規模を桁で言い当てました。「シカゴにピアノの調律師は何人いる?」のような概算が今も<b>フェルミ問題</b>と呼ばれるのはこのためです。ローマ時代のあだ名は「教皇（il Papa）」——物理のことでは決して間違えないから、だそうです。
+        フェルミは「桁の物理」の達人としても伝説です。1945年のトリニティ核実験では、爆風が届いた瞬間に紙片を落とし、それが流された距離だけから爆発の規模を桁で言い当てました。こうした桁の見積もりはフェルミの日頃の流儀で、「シカゴにピアノの調律師は何人いる?」のような概算問題が今も<b>フェルミ問題</b>と呼ばれるのは、その流儀に因みます——トリニティの紙片は、その代表例です。ローマ時代のあだ名は「教皇（il Papa）」——物理のことでは決して間違えないから、だそうです。
       </p>
       <p class="en">
-        Fermi is also legendary as a master of order-of-magnitude physics. At the 1945 Trinity test he dropped scraps of paper as the blast wave arrived and estimated the yield from how far they were blown. Estimation puzzles like "how many piano tuners are in Chicago?" are still called <b>Fermi problems</b> in his honour. His Rome nickname was "the Pope" (il Papa): in physics, it was said, he was infallible.
+        Fermi is also legendary as a master of order-of-magnitude physics. At the 1945 Trinity test he dropped scraps of paper as the blast wave arrived and estimated the yield from how far they were blown. Such order-of-magnitude reasoning was his everyday style; estimation puzzles like "how many piano tuners are in Chicago?" are still called <b>Fermi problems</b> after that style, the Trinity scraps being its most famous display. His Rome nickname was "the Pope" (il Papa): in physics, it was said, he was infallible.
       </p>
               <p class="credit"><span class="ja">写真：</span><span class="en">Photos: </span><a href="https://commons.wikimedia.org/wiki/File:Enrico_Fermi_1943-49.jpg" target="_blank" rel="noopener">Fermi</a>（U.S. DOE）· <a href="https://commons.wikimedia.org/wiki/File:Paul_Dirac,_1933.jpg" target="_blank" rel="noopener">Dirac (1933)</a>（Nobel Foundation）— Wikimedia Commons<span class="ja">（パブリックドメイン）</span><span class="en"> (public domain)</span></p>
         </div>
@@ -698,11 +698,11 @@
 
   <section>
     <div class="card" id="s33">
-      <h2><span class="secnum">3</span><span class="ja">一粒子エネルギー状態密度と三次元理想気体</span><span class="en">The density of states and the 3D ideal gas</span></h2>
+      <h2><span class="secnum">3</span><span class="ja">一粒子状態密度と三次元理想気体</span><span class="en">The density of states and the 3D ideal gas</span></h2>
 
       <h3 id="s3-1"><span class="ja">3.1　状態密度 \(D(\varepsilon)\) という道具</span><span class="en">3.1　The density of states as a tool</span></h3>
       <p class="ja">
-        前節の量はどれも \(\sum_q(\cdots)\) の形をしています。個々の状態 \(q\) の詳細は要らず、必要なのは「一粒子エネルギーが軸上にどう分布しているか」だけ —— これを<b>一粒子エネルギー状態密度</b>で捉えます。
+        前節の量はどれも \(\sum_q(\cdots)\) の形をしています。個々の状態 \(q\) の詳細は要らず、必要なのは「一粒子エネルギーが軸上にどう分布しているか」だけ —— これを<b>一粒子状態密度</b>で捉えます。
       </p>
       <p class="en">
         Every quantity in the last section is of the form \(\sum_q(\cdots)\). The details of each state \(q\) are irrelevant; all we need is how the single-particle energies are distributed along the energy axis. That is captured by the <b>single-particle density of states</b>,
@@ -746,10 +746,10 @@
       </p>
       <h3 id="s3-2"><span class="ja">3.2　自由粒子の状態密度</span><span class="en">3.2　Density of states of free particles</span></h3>
       <p class="ja">
-        質量 \(m\)、スピン \(s\) の単原子分子 \(N\) 個が、体積 \(V\) の容器に閉じ込められた系を考えます。外場はなし。スピン \(0\) のボース粒子系（\(^4\mathrm{He}\)、冷却原子）と、スピン \(\dfrac12\) のフェルミ粒子系（金属電子、\(^3\mathrm{He}\)）を念頭に置きます。
+        質量 \(m\)、スピン \(s\) の粒子 \(N\) 個が、体積 \(V\) の容器に閉じ込められた系を考えます。外場はなし。スピン \(0\) のボース粒子系（\(^4\mathrm{He}\)）と、スピン \(\dfrac12\) のフェルミ粒子系（金属電子、\(^3\mathrm{He}\)）を念頭に置きます（冷却原子気体は、単一の内部状態に偏極させた \(g=1\) の一成分気体として扱えます）。
       </p>
       <p class="en">
-        Consider \(N\) monatomic particles of mass \(m\) and spin \(s\) in a box of volume \(V\), with no external field. Keep in mind the spin-\(0\) Bose gas (\(^4\mathrm{He}\), cold atoms) and the spin-\(\dfrac12\) Fermi gas (metallic electrons, \(^3\mathrm{He}\)).
+        Consider \(N\) particles of mass \(m\) and spin \(s\) in a box of volume \(V\), with no external field. Keep in mind the spin-\(0\) Bose gas (\(^4\mathrm{He}\)) and the spin-\(\dfrac12\) Fermi gas (metallic electrons, \(^3\mathrm{He}\)); a cold-atom gas, polarised into a single internal state, can be treated as a one-component gas with \(g=1\).
       </p>
       <p class="ja">
         一辺 \(L\) の立方体（\(V=L^3\)）に周期境界条件を課すと、一粒子の固有状態は平面波 \(e^{i\boldsymbol{k}\cdot\boldsymbol{r}}\) です。境界条件 \(e^{ik_x(x+L)}=e^{ik_x x}\) は \(e^{ik_xL}=1\) を要求するので、波数は \(\boldsymbol{k}=\dfrac{2\pi}{L}(n_x,n_y,n_z)\)（\(n_x,n_y,n_z\) は整数）に量子化されます。外場がないのでスピンはエネルギーに関与せず、
@@ -1841,7 +1841,7 @@
         \lambda_T = \frac{h}{\sqrt{2\pi m k_{\mathrm B} T}} = \sqrt{\frac{2\pi\hbar^2}{m k_{\mathrm B} T}}\;\propto\; T^{-1/2},
       \]</div>
       <p class="ja">
-        すなわち温度 \(T\) の粒子の量子的な「にじみ」の大きさ。もうひとつは<b>フガシティ</b> \(z\equiv e^{\beta\mu}\)。この二つを道具に、積分 \(\eqref{eq:NUint}\) の \(N\) を、途中を飛ばさずに書き換えていきます。まず状態密度 \(\eqref{eq:dos}\) を代入し、分布関数の \(e^{\beta(\varepsilon-\mu)}\) をフガシティで \(z^{-1}e^{\beta\varepsilon}\) と書きます：
+        すなわち温度 \(T\) の粒子の量子的な「にじみ」の大きさ——熱的な波束の空間的な広がりの目安です。もうひとつは<b>フガシティ</b> \(z\equiv e^{\beta\mu}\)。この二つを道具に、積分 \(\eqref{eq:NUint}\) の \(N\) を、途中を飛ばさずに書き換えていきます。まず状態密度 \(\eqref{eq:dos}\) を代入し、分布関数の \(e^{\beta(\varepsilon-\mu)}\) をフガシティで \(z^{-1}e^{\beta\varepsilon}\) と書きます：
       </p>
       <p class="en">
         the quantum "blur" of a particle at temperature \(T\). The second is the <b>fugacity</b> \(z\equiv e^{\beta\mu}\). Armed with these two, let us rewrite \(N\) of \(\eqref{eq:NUint}\) without skipping a step. Insert the density of states \(\eqref{eq:dos}\) and write \(e^{\beta(\varepsilon-\mu)}=z^{-1}e^{\beta\varepsilon}\) in the distribution:
@@ -1877,10 +1877,10 @@
         (The definition and basic properties of \(\Gamma(\nu)\) are collected in <a href="#s37-1">§7.1</a>; the proof that the integral and series representations agree is in <a href="#s37-2">§7.2</a>.)
       </p>
       <p class="ja">
-        フェルミ統計（\(\sigma=-1\)）の側は<b>フェルミ–ディラック関数</b> \(f_\nu(z)\)、ボース統計（\(\sigma=+1\)）の側は<b>ボース–アインシュタイン関数</b> \(g_\nu(z)\) として教科書に載っている標準的な特殊関数で、ここでは両者を \(\sigma\) でまとめて \(\varphi_\nu\) と書きます。この一つの関数が、統計性による「散らばり具合」をすべて背負ってくれます。なお \(z\) の動ける範囲は統計性で異なり、ボース気体では分布の正値性から \(\mu\lt0\)、すなわち \(0\lt z\lt1\)（BEC で \(z\to1\)）に制限されます。フェルミ気体の \(z\) に上限はなく、低温では \(z\gg1\) まで育ちます。冪級数が収束するのは \(|z|\le1\) の範囲で、それより外では積分表示そのものが \(\varphi_\nu\) の定義です。
+        フェルミ統計（\(\sigma=-1\)）の側は<b>フェルミ–ディラック関数</b> \(f_\nu(z)\)、ボース統計（\(\sigma=+1\)）の側は<b>ボース–アインシュタイン関数</b> \(g_\nu(z)\) として教科書に載っている標準的な特殊関数で、ここでは両者を \(\sigma\) でまとめて \(\varphi_\nu\) と書きます。この一つの関数が、統計性による「散らばり具合」をすべて背負ってくれます。なお \(z\) の動ける範囲は統計性で異なり、ボース気体では分布の正値性から \(\mu\le\varepsilon_0=0\)——正常相では \(\mu\lt0\)（\(0\lt z\lt1\)）、熱力学極限の凝縮相では \(\mu=0\)（\(z=1\)）——に制限されます（<a href="#s35">§5</a>）。フェルミ気体の \(z\) に上限はなく、低温では \(z\gg1\) まで育ちます。冪級数が絶対収束するのは \(|z|\lt1\)。境界 \(z=1\) で収束するかは \(\nu\) 次第ですが、本文で使う \(\nu=\dfrac32,\dfrac52\) では収束します。それより外では積分表示そのものが \(\varphi_\nu\) の定義です。
       </p>
       <p class="en">
-        These are the standard special functions of the subject — the <b>Fermi–Dirac functions</b> \(f_\nu(z)\) for \(\sigma=-1\) and the <b>Bose–Einstein functions</b> \(g_\nu(z)\) for \(\sigma=+1\) — which we write jointly as \(\varphi_\nu\) using \(\sigma\). This single function carries all of the statistical content. The allowed range of \(z\) differs between the two statistics: for bosons positivity of the distribution requires \(\mu\lt0\), i.e. \(0\lt z\lt1\) (with \(z\to1\) at BEC), while for fermions \(z\) is unbounded and grows to \(z\gg1\) at low temperature. The power series converges only for \(|z|\le1\); beyond that, the integral representation itself is the definition of \(\varphi_\nu\).
+        These are the standard special functions of the subject — the <b>Fermi–Dirac functions</b> \(f_\nu(z)\) for \(\sigma=-1\) and the <b>Bose–Einstein functions</b> \(g_\nu(z)\) for \(\sigma=+1\) — which we write jointly as \(\varphi_\nu\) using \(\sigma\). This single function carries all of the statistical content. The allowed range of \(z\) differs between the two statistics: for bosons positivity of the distribution requires \(\mu\le\varepsilon_0=0\) — in the normal phase \(\mu\lt0\) (\(0\lt z\lt1\)), in the condensed phase (thermodynamic limit) \(\mu=0\), i.e. \(z=1\) (<a href="#s35">§5</a>) — while for fermions \(z\) is unbounded and grows to \(z\gg1\) at low temperature. The power series converges absolutely for \(|z|\lt1\) (at the boundary \(z=1\) convergence depends on \(\nu\); it holds for the \(\nu=\dfrac32,\dfrac52\) used here); beyond that, the integral representation itself is the definition of \(\varphi_\nu\).
       </p>
       <p class="ja">
         いま出た積分は、この定義の \(\nu=\dfrac{3}{2}\) の場合そのものです（\(x^{1/2}=x^{3/2-1}\)）。したがって \(\displaystyle\int_0^\infty\dfrac{x^{1/2}}{z^{-1}e^{x}-\sigma}\,dx=\Gamma\!\left(\dfrac{3}{2}\right)\,\varphi_{3/2}(z)\)。あとは係数の整理だけです。\(\Gamma\!\left(\dfrac{3}{2}\right)=\sqrt{\pi}/2\) を入れて、
@@ -1946,10 +1946,10 @@
         i.e. "the temperature at which the thermal wavelength equals the mean interparticle spacing per spin state." Since \(\lambda_T\propto T^{-1/2}\), we have \(\dfrac{\lambda_T^{3}}{\lambda_{T^{*}}^{3}}=\left(\dfrac{T^{*}}{T}\right)^{\!3/2}\), and — simply inserting \(\dfrac{n}{g}=\lambda_{T^{*}}^{-3}\) into the \(N\)-equation \(\dfrac{n\lambda_T^{3}}{g}=\varphi_{3/2}(z)\) — the equation fixing \(\mu\) (i.e. \(z\)) becomes a single relation free of any material constant:
       </p>
       <div class="keybox">
-        <span class="lbl ja">主方程式</span><span class="lbl en">master equation</span>
+        <span class="lbl ja">粒子数方程式</span><span class="lbl en">particle-number equation</span>
         <div class="eq" style="margin:0.2rem 0;">\begin{equation}\label{eq:master} \left(\dfrac{T^{*}}{T}\right)^{3/2} = \varphi_{3/2}(z), \qquad \mu = k_{\mathrm B} T\ln z. \end{equation}</div>
-        <p class="small ja" style="margin:0;">与えた \(\dfrac{T}{T^{*}}\) についてこの式を \(z\) について解けば \(\mu(T)\) が決まり、\(U=\dfrac32Nk_{\mathrm B}T\,\varphi_{5/2}(z)/\varphi_{3/2}(z)\)、\(S\)、\(C\) が芋づる式に出ます。<a href="#fig1">図 1</a> の全曲線が、この一本から数値的に描けます。</p>
-        <p class="small en" style="margin:0;">For a given \(\dfrac{T}{T^{*}}\), solve for \(z\) to get \(\mu(T)\); then \(U=\dfrac32Nk_{\mathrm B}T\,\varphi_{5/2}(z)/\varphi_{3/2}(z)\), \(S\), and \(C\) all follow. Every curve of <a href="#fig1">Fig. 1</a> can be drawn numerically from this one equation.</p>
+        <p class="small ja" style="margin:0;">与えた \(\dfrac{T}{T^{*}}\) についてこの式を \(z\) について解けば \(\mu(T)\) が決まり、\(U=\dfrac32Nk_{\mathrm B}T\,\varphi_{5/2}(z)/\varphi_{3/2}(z)\)、\(S\)、\(C\) が芋づる式に出ます。ただしボース気体では右辺に上限 \(\varphi_{3/2}(z)\le\varphi_{3/2}(1)=\zeta\!\left(\dfrac{3}{2}\right)\) があるため、\(z\le1\) の解が存在するのは \(T\ge T_0\) の間だけ。\(T\lt T_0\) では \(z=1\) に固定し、収まらない粒子を凝縮体として別勘定にします（<a href="#s5-2">5.2</a>）。<a href="#fig1">図 1</a> の全曲線は、この区分けに従って数値的に描いたものです。</p>
+        <p class="small en" style="margin:0;">For a given \(\dfrac{T}{T^{*}}\), solve for \(z\) to get \(\mu(T)\); then \(U=\dfrac32Nk_{\mathrm B}T\,\varphi_{5/2}(z)/\varphi_{3/2}(z)\), \(S\), and \(C\) all follow. For the Bose gas the right-hand side is capped, \(\varphi_{3/2}(z)\le\varphi_{3/2}(1)=\zeta\!\left(\dfrac{3}{2}\right)\), so a \(z\le1\) solution exists only for \(T\ge T_0\); below \(T_0\) set \(z=1\) and book the excess as condensate (<a href="#s5-2">5.2</a>). Every curve of <a href="#fig1">Fig. 1</a> is drawn numerically following this prescription.</p>
       </div>
       <p class="small ja">
         （\(\eqref{eq:eF}\) で定義するフェルミ・エネルギーは \(\varepsilon_{\mathrm F}=1.21\,k_{\mathrm B}T^{*}\)、BEC 温度は \(T_0=0.527\,T^{*}\) と、いずれも \(T^{*}\) と同じオーダーになります。）
@@ -9442,27 +9442,27 @@ z
         <button class="q-btn" id="tgHi"><span class="ja">高温展開</span><span class="en">High-T expansion</span></button>
         <button class="q-btn" id="tgLo"><span class="ja">低温展開</span><span class="en">Low-T expansion</span></button>
       </div>
-      <p class="fig-cap ja"><b>図 1.</b> 縮退温度 \(T^{*}\) を物差しにした、ボース気体（\(\sigma=+1\)）とフェルミ気体（\(\sigma=-1\)）の化学ポテンシャル \(\mu\)、内部エネルギー \(U\)、エントロピー \(S\)、熱容量 \(C\) の温度依存性。<b>実線が厳密解</b>。ボース気体の \(C\) は \(T_0\simeq0.527\,T^{*}\) で \(1.93\) のピーク（BEC）に達し、フェルミ気体の \(\mu\) は \(T\to0\) で \(\varepsilon_{\mathrm F}\simeq1.21\,k_{\mathrm B}T^{*}\) に向かいます。ボタンで、<b>一点鎖線＝古典極限</b>・<b>破線＝高温展開</b>・<b>点線＝低温展開</b>（ボース気体は \(T_0\) 以下の式、フェルミ気体はゾンマーフェルト展開）を重ねられます（初期状態はすべて非表示）。</p>
-      <p class="fig-cap en"><b>Fig. 1.</b> Temperature dependence of the chemical potential \(\mu\), internal energy \(U\), entropy \(S\) and heat capacity \(C\) of the Bose (\(\sigma=+1\)) and Fermi (\(\sigma=-1\)) gases, measured against the degeneracy temperature \(T^{*}\). <b>Solid curves are exact.</b> The Bose-gas \(C\) peaks at \(1.93\) at \(T_0\simeq0.527\,T^{*}\) (BEC); the Fermi-gas \(\mu\) tends to \(\varepsilon_{\mathrm F}\simeq1.21\,k_{\mathrm B}T^{*}\) as \(T\to0\). Toggle <b>dash-dot = classical</b>, <b>dashed = high-T expansion</b>, <b>dotted = low-T expansion</b> (below-\(T_0\) forms for the Bose gas, Sommerfeld for the Fermi gas); all off by default.</p>
+      <p class="fig-cap ja"><b>図 1.</b> 縮退温度 \(T^{*}\) を物差しにした、ボース気体（\(\sigma=+1\)）とフェルミ気体（\(\sigma=-1\)）の化学ポテンシャル \(\mu\)、内部エネルギー \(U\)、エントロピー \(S\)、熱容量 \(C\) の温度依存性。<b>実線が厳密解</b>。ボース気体の \(C\) は \(T_0\simeq0.527\,T^{*}\) で \(1.93\) の有限なカスプ（尖り。BEC の合図）に達し、フェルミ気体の \(\mu\) は \(T\to0\) で \(\varepsilon_{\mathrm F}\simeq1.21\,k_{\mathrm B}T^{*}\) に向かいます。ボタンで、<b>一点鎖線＝古典極限</b>・<b>破線＝高温展開</b>・<b>点線＝低温展開</b>（ボース気体は \(T_0\) 以下の式、フェルミ気体はゾンマーフェルト展開）を重ねられます（初期状態はすべて非表示）。</p>
+      <p class="fig-cap en"><b>Fig. 1.</b> Temperature dependence of the chemical potential \(\mu\), internal energy \(U\), entropy \(S\) and heat capacity \(C\) of the Bose (\(\sigma=+1\)) and Fermi (\(\sigma=-1\)) gases, measured against the degeneracy temperature \(T^{*}\). <b>Solid curves are exact.</b> The Bose-gas \(C\) reaches a finite cusp of \(1.93\) at \(T_0\simeq0.527\,T^{*}\) (BEC); the Fermi-gas \(\mu\) tends to \(\varepsilon_{\mathrm F}\simeq1.21\,k_{\mathrm B}T^{*}\) as \(T\to0\). Toggle <b>dash-dot = classical</b>, <b>dashed = high-T expansion</b>, <b>dotted = low-T expansion</b> (below-\(T_0\) forms for the Bose gas, Sommerfeld for the Fermi gas); all off by default.</p>
       <p class="ja">
-        主方程式を \(\dfrac{T}{T^{*}}\) の全域で解くと、化学ポテンシャル \(\mu\)、内部エネルギー \(U\)、エントロピー \(S\)、熱容量 \(C\) の温度依存性が、ボース粒子系・フェルミ粒子系それぞれについて得られます（結果は下の<a href="#fig1">図 1</a>）。定性的な要点は次の通りです。
+        粒子数方程式を \(\dfrac{T}{T^{*}}\) の全域で解くと（ボース気体の \(T\lt T_0\) では \(z=1\) の凝縮相の式に切り替えて——<a href="#s5-2">5.2</a>）、化学ポテンシャル \(\mu\)、内部エネルギー \(U\)、エントロピー \(S\)、熱容量 \(C\) の温度依存性が、ボース粒子系・フェルミ粒子系それぞれについて得られます（結果は下の<a href="#fig1">図 1</a>）。定性的な要点は次の通りです。
       </p>
       <p class="en">
-        Solving the master equation across all \(\dfrac{T}{T^{*}}\) yields the temperature dependence of the chemical potential \(\mu\), internal energy \(U\), entropy \(S\), and heat capacity \(C\), for the Bose and Fermi gases separately (the result is <a href="#fig1">Fig. 1</a> below). The qualitative points are:
+        Solving the particle-number equation across all \(\dfrac{T}{T^{*}}\) (switching to the \(z=1\) condensed-phase formulas for the Bose gas below \(T_0\) — <a href="#s5-2">5.2</a>) yields the temperature dependence of the chemical potential \(\mu\), internal energy \(U\), entropy \(S\), and heat capacity \(C\), for the Bose and Fermi gases separately (the result is <a href="#fig1">Fig. 1</a> below). The qualitative points are:
       </p>
       <p class="ja">
         <b>高温 \(T\gtrsim T^{*}\)</b> では両系とも古典理想気体（マクスウェル–ボルツマン）に漸近し、\(U\to\dfrac32Nk_{\mathrm B}T\)、\(C\to\dfrac32Nk_{\mathrm B}\)。<b>低温 \(T\lesssim T^{*}\)</b> で古典結果から大きく外れ、しかも<b>ボース粒子系とフェルミ粒子系で振る舞いが正反対</b>になります。
-        \(PV=\dfrac23U\)（式 \(\eqref{eq:PV}\)）を思い出すと、\(U\) のグラフは量子補正込みの状態方程式そのもの。フェルミ粒子系は古典より圧力が<b>増大</b>（パウリ原理由来の実効斥力）、ボース粒子系は<b>減少</b>（置換対称性由来の実効引力）します。
+        \(PV=\dfrac23U\)（式 \(\eqref{eq:PV}\)）を思い出すと、\(U\) のグラフは量子補正込みの状態方程式そのもの。フェルミ粒子系は古典より圧力が<b>増大</b>（パウリ原理由来の実効斥力）、ボース粒子系は<b>減少</b>（置換対称性由来の実効引力）します——どちらも実在の力ではなく、交換対称性が熱力学量に生む統計的な補正です。
       </p>
       <p class="en">
         <b>At high \(T\gtrsim T^{*}\)</b> both approach the classical ideal gas (Maxwell–Boltzmann): \(U\to\dfrac32Nk_{\mathrm B}T\), \(C\to\dfrac32Nk_{\mathrm B}\). <b>Below \(T\lesssim T^{*}\)</b> they depart sharply from the classical result, and <b>the Bose and Fermi gases behave oppositely</b>.
-        Recalling \(PV=\dfrac23U\) — Eq. \(\eqref{eq:PV}\) — the \(U\)-curve is the equation of state with quantum corrections: the Fermi gas has <b>higher</b> pressure than classical (an effective repulsion from the Pauli principle), the Bose gas <b>lower</b> (an effective attraction from exchange symmetry).
+        Recalling \(PV=\dfrac23U\) — Eq. \(\eqref{eq:PV}\) — the \(U\)-curve is the equation of state with quantum corrections: the Fermi gas has <b>higher</b> pressure than classical (an effective repulsion from the Pauli principle), the Bose gas <b>lower</b> (an effective attraction from exchange symmetry) — neither is a real force; both are statistical corrections that exchange symmetry imprints on thermodynamics.
       </p>
       <p class="ja">
-        エントロピーは、古典統計の非物理的な結果 \(S\to-\infty\)（\(T\to0\)）とは違い、<b>熱力学第三法則に従って \(S\to0\)</b> に落ち着きます。熱容量も \(T\to0\) でゼロへ。ボース粒子系の \(C\) は有限温度に<b>鋭いピーク</b>を作ります——これが<b>ボース–アインシュタイン凝縮（BEC）</b>の合図で、その温度以下では化学ポテンシャルが最低エネルギー \(\varepsilon_0=0\) に貼り付いたまま動きません。フェルミ粒子系の \(C\) は低温で温度に比例して消えます。以降の節で、この二つの低温極限を（ボース→フェルミの順に）解析的に詰めます。
+        エントロピーは、古典統計の非物理的な結果 \(S\to-\infty\)（\(T\to0\)）とは違い、<b>熱力学第三法則に従って \(S\to0\)</b> に落ち着きます。熱容量も \(T\to0\) でゼロへ。ボース粒子系の \(C\) は有限温度に<b>鋭いカスプ</b>を作ります（\(C\) 自体は連続で値も有限。折れるのは傾きです）——これが<b>ボース–アインシュタイン凝縮（BEC）</b>の合図で、その温度以下では化学ポテンシャルが最低エネルギー \(\varepsilon_0=0\) に貼り付いたまま動きません。フェルミ粒子系の \(C\) は低温で温度に比例して消えます。以降の節で、この二つの低温極限を（ボース→フェルミの順に）解析的に詰めます。
       </p>
       <p class="en">
-        The entropy, unlike the unphysical classical result \(S\to-\infty\) as \(T\to0\), obeys the <b>third law and tends to \(S\to0\)</b>. The heat capacity also vanishes as \(T\to0\). For bosons \(C\) develops a <b>sharp peak</b> at a finite temperature — the signal of <b>Bose–Einstein condensation (BEC)</b>, below which the chemical potential sticks to the lowest energy \(\varepsilon_0=0\) and stops moving. For fermions \(C\) dies linearly in \(T\). The next sections pin down these two cold limits analytically, bosons first.
+        The entropy, unlike the unphysical classical result \(S\to-\infty\) as \(T\to0\), obeys the <b>third law and tends to \(S\to0\)</b>. The heat capacity also vanishes as \(T\to0\). For bosons \(C\) develops a <b>sharp cusp</b> at a finite temperature (\(C\) itself stays finite and continuous; only its slope breaks) — the signal of <b>Bose–Einstein condensation (BEC)</b>, below which the chemical potential sticks to the lowest energy \(\varepsilon_0=0\) and stops moving. For fermions \(C\) dies linearly in \(T\). The next sections pin down these two cold limits analytically, bosons first.
       </p>
     </div>
   </section>
@@ -9471,10 +9471,10 @@ z
     <div class="card" id="s34">
       <h2><span class="secnum">4</span><span class="ja">高温からの展開</span><span class="en">Expansion from high temperature</span></h2>
       <p class="ja">
-        まず \(T\gg T^{*}\)、すなわち位相空間密度 \(a\equiv\dfrac{n\lambda_T^{3}}{g}=\left(\dfrac{T^{*}}{T}\right)^{\!3/2}\ll1\) の側から攻めます。主方程式 \(\eqref{eq:master}\) の右辺は、\(\eqref{eq:phinu}\) の級数を使えば \(\varphi_{3/2}(z)=z+\dfrac{\sigma z^{2}}{2^{3/2}}+O(z^{3})\)。最低次では \(z\approx a\ll1\) なので（すぐ下で確かめます）、\(z\) も小さく、級数は最初の二項で十分です：
+        まず \(T\gg T^{*}\)、すなわち位相空間密度 \(a\equiv\dfrac{n\lambda_T^{3}}{g}=\left(\dfrac{T^{*}}{T}\right)^{\!3/2}\ll1\) の側から攻めます。粒子数方程式 \(\eqref{eq:master}\) の右辺は、\(\eqref{eq:phinu}\) の級数を使えば \(\varphi_{3/2}(z)=z+\dfrac{\sigma z^{2}}{2^{3/2}}+O(z^{3})\)。最低次では \(z\approx a\ll1\) なので（すぐ下で確かめます）、\(z\) も小さく、級数は最初の二項で十分です：
       </p>
       <p class="en">
-        Start from \(T\gg T^{*}\), i.e. small phase-space density \(a\equiv\dfrac{n\lambda_T^{3}}{g}=\left(\dfrac{T^{*}}{T}\right)^{\!3/2}\ll1\). By the series \(\eqref{eq:phinu}\), the right-hand side of the master equation \(\eqref{eq:master}\) is \(\varphi_{3/2}(z)=z+\dfrac{\sigma z^{2}}{2^{3/2}}+O(z^{3})\). To lowest order \(z\approx a\ll1\) (confirmed just below), so \(z\) is small too and two terms of the series suffice:
+        Start from \(T\gg T^{*}\), i.e. small phase-space density \(a\equiv\dfrac{n\lambda_T^{3}}{g}=\left(\dfrac{T^{*}}{T}\right)^{\!3/2}\ll1\). By the series \(\eqref{eq:phinu}\), the right-hand side of the particle-number equation \(\eqref{eq:master}\) is \(\varphi_{3/2}(z)=z+\dfrac{\sigma z^{2}}{2^{3/2}}+O(z^{3})\). To lowest order \(z\approx a\ll1\) (confirmed just below), so \(z\) is small too and two terms of the series suffice:
       </p>
       <div class="eq">\[
         a=z+\frac{\sigma}{2^{3/2}}\,z^{2}+O(z^{3}).
@@ -9573,10 +9573,10 @@ z
 
       <h3 id="s5-1"><span class="ja">5.1　凝縮温度 \(T_0\)</span><span class="en">5.1　The condensation temperature \(T_0\)</span></h3>
       <p class="ja">
-        \(T_0\) の定義は「\(z\) が上限 \(1\)（\(\mu=0\)）に到達する温度」です。主方程式 \(\eqref{eq:master}\) で \(z=1\)、\(T=T_0\) と置きます。右辺は \(\eqref{eq:phinu}\) の級数に \(z=1\) を代入するだけで計算できて、
+        \(T_0\) の定義は「\(z\) が上限 \(1\)（\(\mu=0\)）に到達する温度」です。粒子数方程式 \(\eqref{eq:master}\) で \(z=1\)、\(T=T_0\) と置きます。右辺は \(\eqref{eq:phinu}\) の級数に \(z=1\) を代入するだけで計算できて、
       </p>
       <p class="en">
-        \(T_0\) is defined as the temperature at which \(z\) reaches its ceiling \(1\) (\(\mu=0\)). Set \(z=1\), \(T=T_0\) in the master equation \(\eqref{eq:master}\). The right-hand side follows by simply putting \(z=1\) in the series \(\eqref{eq:phinu}\):
+        \(T_0\) is defined as the temperature at which \(z\) reaches its ceiling \(1\) (\(\mu=0\)). Set \(z=1\), \(T=T_0\) in the particle-number equation \(\eqref{eq:master}\). The right-hand side follows by simply putting \(z=1\) in the series \(\eqref{eq:phinu}\):
       </p>
       <div class="eq">\[
         \left(\frac{T^{*}}{T_0}\right)^{\!3/2}
@@ -9601,10 +9601,10 @@ z
         k_{\mathrm B} T_0=\frac{1}{\zeta\!\left(\dfrac{3}{2}\right)^{2/3}}\,\frac{2\pi\hbar^2}{m}\left(\frac{n}{g}\right)^{\!2/3}.
       \]</div>
       <p class="ja">
-        「位相空間密度 \(\dfrac{n\lambda_T^{3}}{g}\) が \(\zeta\!\left(\dfrac{3}{2}\right)\approx2.6\) に達したところで凝縮が始まる」と読めます。ボース粒子はスピン \(0\)（\(^4\mathrm{He}\)、冷却原子）が典型なので、ここでは \(g=1\) と読むのが自然です。
+        「位相空間密度 \(\dfrac{n\lambda_T^{3}}{g}\) が \(\zeta\!\left(\dfrac{3}{2}\right)\approx2.6\) に達したところで凝縮が始まる」と読めます。ボース粒子の代表例はスピン \(0\) の \(^4\mathrm{He}\) なので、ここでは \(g=1\) と読むのが自然です（冷却原子も、単一の内部状態に偏極させて使うので実効的に \(g=1\)）。
       </p>
       <p class="en">
-        Read it as: condensation sets in once the phase-space density \(\dfrac{n\lambda_T^{3}}{g}\) reaches \(\zeta\!\left(\dfrac{3}{2}\right)\approx2.6\). Since the typical bosons are spin \(0\) (\(^4\mathrm{He}\), cold atoms), it is natural to take \(g=1\) here.
+        Read it as: condensation sets in once the phase-space density \(\dfrac{n\lambda_T^{3}}{g}\) reaches \(\zeta\!\left(\dfrac{3}{2}\right)\approx2.6\). The archetypal boson here is spin-\(0\) \(^4\mathrm{He}\), so \(g=1\) is the natural reading (cold atoms, polarised into a single internal state, are effectively \(g=1\) as well).
       </p>
 
       <details class="column">
@@ -9622,16 +9622,16 @@ z
       </div>
 
       <p class="ja">
-        1938年、カピッツァと、アレン＆マイズナー（Allen &amp; Misener——超伝導の「マイスナー効果」の W. Meißner とは別人です）が、液体 \(^4\mathrm{He}\) の粘性が \(2.17\,\mathrm K\) 以下で消えること——<b>超流動</b>——を報告します。その直後、フリッツ・ロンドンが手に取ったのが、いま <a href="#s5-1">5.1</a> で導いた式でした。\(^4\mathrm{He}\) 原子はボース粒子（<a href="#s1-2">1.2</a>）。液体の密度 \(n\approx2.2\times10^{28}\,\mathrm{m^{-3}}\)（\(g=1\)）と質量 \(m=4u\) を \(T_0\) の式に入れると \(T_0\approx3.1\,\mathrm K\)——実測の転移温度 \(T_\lambda=2.17\,\mathrm K\) に、係数まで迫る近さです。
+        1938年、カピッツァと、アレン＆マイズナー（Allen &amp; Misener——超伝導の「マイスナー効果」の W. Meißner とは別人です）が、液体 \(^4\mathrm{He}\) の粘性が \(2.17\,\mathrm K\) 以下で（測定にかからないほど）消えること——<b>超流動</b>——を報告します。その直後、フリッツ・ロンドンが手に取ったのが、いま <a href="#s5-1">5.1</a> で導いた式でした。\(^4\mathrm{He}\) 原子はボース粒子（<a href="#s1-2">1.2</a>）。液体の密度 \(n\approx2.2\times10^{28}\,\mathrm{m^{-3}}\)（\(g=1\)）と質量 \(m=4u\) を \(T_0\) の式に入れると \(T_0\approx3.1\,\mathrm K\)——実測の転移温度 \(T_\lambda=2.17\,\mathrm K\) に、係数まで迫る近さです。
       </p>
       <p class="en">
-        In 1938 Kapitza, and Allen &amp; Misener, reported that liquid \(^4\mathrm{He}\) loses its viscosity below \(2.17\,\mathrm K\) — <b>superfluidity</b>. Almost immediately Fritz London reached for the very formula of <a href="#s5-1">5.1</a>. A \(^4\mathrm{He}\) atom is a boson (<a href="#s1-2">1.2</a>); inserting the liquid density \(n\approx2.2\times10^{28}\,\mathrm{m^{-3}}\) (\(g=1\)) and mass \(m=4u\) gives \(T_0\approx3.1\,\mathrm K\) — strikingly close to the measured \(T_\lambda=2.17\,\mathrm K\).
+        In 1938 Kapitza, and Allen &amp; Misener, reported that below \(2.17\,\mathrm K\) liquid \(^4\mathrm{He}\) flows with no measurable viscosity — <b>superfluidity</b>. Almost immediately Fritz London reached for the very formula of <a href="#s5-1">5.1</a>. A \(^4\mathrm{He}\) atom is a boson (<a href="#s1-2">1.2</a>); inserting the liquid density \(n\approx2.2\times10^{28}\,\mathrm{m^{-3}}\) (\(g=1\)) and mass \(m=4u\) gives \(T_0\approx3.1\,\mathrm K\) — strikingly close to the measured \(T_\lambda=2.17\,\mathrm K\).
       </p>
       <p class="ja">
-        もちろん液体ヘリウムは理想気体ではありません。原子どうしは強く相互作用していて、中性子散乱によれば、絶対零度でも凝縮体にいる原子は全体の1割ほどです。それでも「\(\lambda\) 転移の正体は BEC だ」というロンドンの見立ては本質を突いていました。転移点で比熱がギリシャ文字の \(\lambda\) の形に尖るのが名前の由来——<a href="#fig1">図 1</a> のボース気体の \(C\) のピークの、実物版です。
+        もちろん液体ヘリウムは理想気体ではありません。原子どうしは強く相互作用していて、中性子散乱によれば、絶対零度でも凝縮体にいる原子は全体の1割ほどです。それでも「\(\lambda\) 転移の正体は BEC だ」というロンドンの見立ては本質を突いていました。転移点で比熱がギリシャ文字の \(\lambda\) の形に尖るのが名前の由来です。<a href="#fig1">図 1</a> のボース気体の \(C\) のカスプと歴史的・概念的に深くつながっていますが、強い相互作用のため、同一の臨界現象ではありません。
       </p>
       <p class="en">
-        Liquid helium is of course no ideal gas: the atoms interact strongly, and neutron scattering shows that even at absolute zero only about one atom in ten occupies the condensate. Yet London's identification — the \(\lambda\) transition is BEC — captured the essence. The name comes from the \(\lambda\)-shaped spike of the heat capacity at the transition: the real-world version of the Bose-gas peak in <a href="#fig1">Fig. 1</a>.
+        Liquid helium is of course no ideal gas: the atoms interact strongly, and neutron scattering shows that even at absolute zero only about one atom in ten occupies the condensate. Yet London's identification — the \(\lambda\) transition is BEC — captured the essence. The name comes from the \(\lambda\)-shaped spike of the heat capacity at the transition — deeply related, historically and conceptually, to the Bose-gas cusp of <a href="#fig1">Fig. 1</a>, though the strong interactions make it a different critical phenomenon.
       </p>
               <p class="credit"><span class="ja">写真：</span><span class="en">Images: </span><a href="https://commons.wikimedia.org/wiki/File:London,Fritz_1928_M%C3%BCnchen.jpg" target="_blank" rel="noopener">London (1928)</a>（GFHund, <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a>）· <a href="https://commons.wikimedia.org/wiki/File:Pyotr_Kapitza_Portrait_by_Kustodiev_1926.png" target="_blank" rel="noopener">Kapitsa (1926)</a><span class="ja">（クストーディエフ画、パブリックドメイン）</span><span class="en"> (painting by B. Kustodiev, public domain)</span> — Wikimedia Commons</p>
         </div>
@@ -9688,8 +9688,8 @@ z
       <div class="keybox">
         <span class="lbl ja">要点</span><span class="lbl en">key result</span>
         <div class="eq" style="margin:0.2rem 0;">\[ \dfrac{C}{Nk_{\mathrm B}}=\dfrac{15}{4}\,\dfrac{\zeta\!\left(\dfrac{5}{2}\right)}{\zeta\!\left(\dfrac{3}{2}\right)}\left(\dfrac{T}{T_0}\right)^{3/2}\ \xrightarrow{\,T\to T_0\,}\ \dfrac{15}{4}\times\dfrac{1.341}{2.612}=1.93. \]</div>
-        <p class="small ja" style="margin:0;">転移点での値 \(1.93\) は古典値 \(1.5\) を上回ります（\(\zeta\!\left(\dfrac{5}{2}\right)=1.341\cdots\)）。この山が、<a href="#fig1">図 1</a> のボース気体の熱容量に見える特徴的なピークです。対照的に、フェルミ気体の低温比熱は \(T\) に比例します（<a href="#s6-3">6.3</a>）。</p>
-        <p class="small en" style="margin:0;">The value \(1.93\) at the transition exceeds the classical \(1.5\) (here \(\zeta\!\left(\dfrac{5}{2}\right)=1.341\cdots\)). This bump is the characteristic peak of the Bose heat capacity in <a href="#fig1">Fig. 1</a>. By contrast, the cold Fermi gas has a heat capacity linear in \(T\) (<a href="#s6-3">6.3</a>).</p>
+        <p class="small ja" style="margin:0;">転移点での値 \(1.93\) は古典値 \(1.5\) を上回ります（\(\zeta\!\left(\dfrac{5}{2}\right)=1.341\cdots\)）。この尖りが、<a href="#fig1">図 1</a> のボース気体の熱容量に見える特徴的なカスプです（\(C\) は連続で、不連続なのは傾き——<a href="#s5-3">5.3</a>）。対照的に、フェルミ気体の低温比熱は \(T\) に比例します（<a href="#s6-3">6.3</a>）。</p>
+        <p class="small en" style="margin:0;">The value \(1.93\) at the transition exceeds the classical \(1.5\) (here \(\zeta\!\left(\dfrac{5}{2}\right)=1.341\cdots\)). This spike is the characteristic cusp of the Bose heat capacity in <a href="#fig1">Fig. 1</a> (\(C\) is continuous; it is the slope that jumps — <a href="#s5-3">5.3</a>). By contrast, the cold Fermi gas has a heat capacity linear in \(T\) (<a href="#s6-3">6.3</a>).</p>
       </div>
 
       <h3 id="s5-3"><span class="ja">5.3　\(T\gtrsim T_0\)：転移点はなめらかにつながる</span><span class="en">5.3　Just above \(T_0\): the transition joins smoothly</span></h3>
@@ -9709,10 +9709,10 @@ z
         (This expansion is derived in <a href="#s37-4">§7.4</a>.)
       </p>
       <p class="ja">
-        これを主方程式 \(\eqref{eq:master}\) に入れます。左辺は <a href="#s5-1">5.1</a> の関係 \((T^{*}/T_0)^{3/2}=\zeta\!\left(\dfrac{3}{2}\right)\) を使って \(\left(\dfrac{T^{*}}{T}\right)^{\!3/2}=\zeta\!\left(\dfrac{3}{2}\right)\,(T_0/T)^{3/2}\) と書けるので、
+        これを粒子数方程式 \(\eqref{eq:master}\) に入れます。左辺は <a href="#s5-1">5.1</a> の関係 \((T^{*}/T_0)^{3/2}=\zeta\!\left(\dfrac{3}{2}\right)\) を使って \(\left(\dfrac{T^{*}}{T}\right)^{\!3/2}=\zeta\!\left(\dfrac{3}{2}\right)\,(T_0/T)^{3/2}\) と書けるので、
       </p>
       <p class="en">
-        Insert this into the master equation \(\eqref{eq:master}\). Using the <a href="#s5-1">5.1</a> relation \((T^{*}/T_0)^{3/2}=\zeta\!\left(\dfrac{3}{2}\right)\), the left-hand side is \(\left(\dfrac{T^{*}}{T}\right)^{\!3/2}=\zeta\!\left(\dfrac{3}{2}\right)\,(T_0/T)^{3/2}\), so
+        Insert this into the particle-number equation \(\eqref{eq:master}\). Using the <a href="#s5-1">5.1</a> relation \((T^{*}/T_0)^{3/2}=\zeta\!\left(\dfrac{3}{2}\right)\), the left-hand side is \(\left(\dfrac{T^{*}}{T}\right)^{\!3/2}=\zeta\!\left(\dfrac{3}{2}\right)\,(T_0/T)^{3/2}\), so
       </p>
       <div class="eq">\[
         \zeta\!\left(\dfrac{3}{2}\right)\left(\frac{T_0}{T}\right)^{\!3/2}=\zeta\!\left(\dfrac{3}{2}\right)-2\sqrt{\pi\alpha}
@@ -9776,10 +9776,10 @@ z
         In 1924 Satyendra Nath Bose, a young physicist in Dhaka (then 30), discovered that the entire Planck radiation formula follows from one bold move: counting photons as <i>mutually indistinguishable</i> particles. The counting was so unorthodox that his paper was rejected. So Bose did something audacious — he mailed the manuscript to Einstein himself, asking in an accompanying letter that, if Einstein found it worthy, he translate it into German and submit it to the <i>Zeitschrift für Physik</i>.
       </p>
       <p class="ja">
-        アインシュタインは一読して重要性を見抜き、自ら独訳して同誌に投稿しました。さらにこの数え方を質量のある原子の気体へ拡張し、1924–25年の論文で、十分低温では巨視的な数の粒子が最低エネルギー状態へ雪崩れ込むこと——のちに言うボース–アインシュタイン凝縮——を理論的に予言します。もっとも当のアインシュタイン自身、これが現実の実験で見られるかには半信半疑だったと伝えられています。「ボース統計」「ボース粒子」の名は、この往復書簡から始まった共同作業の記念碑です。
+        アインシュタインは一読して重要性を見抜き、自ら独訳して同誌に投稿しました。さらにこの数え方を質量のある原子の気体へ拡張し、1924–25年の論文で、十分低温では巨視的な数の粒子が最低エネルギー状態へ雪崩れ込むこと——のちに言うボース–アインシュタイン凝縮——を理論的に予言します。もっとも当のアインシュタイン自身、エーレンフェスト宛の手紙に「理論は美しい。だが真実が含まれているだろうか」と書き残しています。「ボース統計」「ボース粒子」の名は、この往復書簡から始まった共同作業の記念碑です。
       </p>
       <p class="en">
-        Einstein saw the point at once, translated the paper himself, and had it published. He then extended the counting to gases of massive atoms and, in his 1924–25 papers, predicted that at sufficiently low temperature a macroscopic number of particles would avalanche into the lowest energy state — what we now call Bose–Einstein condensation. Einstein himself, it is said, doubted the effect would ever be seen in a real experiment. The names "Bose statistics" and "boson" are the monument to the collaboration that began with that letter.
+        Einstein saw the point at once, translated the paper himself, and had it published. He then extended the counting to gases of massive atoms and, in his 1924–25 papers, predicted that at sufficiently low temperature a macroscopic number of particles would avalanche into the lowest energy state — what we now call Bose–Einstein condensation. Einstein himself wrote to Ehrenfest: "the theory is pretty, but is there also some truth to it?" The names "Bose statistics" and "boson" are the monument to the collaboration that began with that letter.
       </p>
       <p class="credit"><span class="ja">写真：</span><span class="en">Photos: </span><a href="https://commons.wikimedia.org/wiki/File:SatyenBose1925.jpg" target="_blank" rel="noopener">Bose (1925)</a> · <a href="https://commons.wikimedia.org/wiki/File:Albert_Einstein_Head_cleaned.jpg" target="_blank" rel="noopener">Einstein (1947, O.&thinsp;J. Turner)</a> — Wikimedia Commons<span class="ja">（パブリックドメイン）</span><span class="en"> (public domain)</span></p>
         </div>
@@ -9815,10 +9815,10 @@ z
         Two stages of cooling made it possible. First <b>laser cooling</b>: light tuned slightly below resonance is absorbed preferentially by atoms moving against it, braking them (this technique alone earned the 1997 Nobel Prize — Chu, Cohen-Tannoudji, Phillips). That reaches microkelvins. The finish is <b>evaporative cooling</b>: lower the rim of the magnetic trap little by little, let only the hottest atoms escape, and let the rest rethermalise — the same principle as blowing on hot coffee.
       </p>
       <p class="ja">
-        1995年6月、コロラド州ボルダーの JILA で、エリック・コーネルとカール・ワイマンのチームが \(^{87}\mathrm{Rb}\) 原子およそ2000個を約 170 nK まで冷やし、世界初の希薄原子気体 BEC を観測しました。証拠となったのが、下の有名な速度分布の三連画像です。左：転移直前の熱い雲。中央：\(T_0\) を切った瞬間、分布の中心に鋭いピーク——凝縮体——が突き出す。右：さらに冷やすと、ほぼ純粋な凝縮体だけが残る。<a href="#fig1">図 1</a> で描いた「\(T_0\) 以下で凝縮率が育つ」物理が、そのまま一枚の画像になっています。
+        1995年6月、コロラド州ボルダーの JILA で、エリック・コーネルとカール・ワイマンのチームが \(^{87}\mathrm{Rb}\) 原子およそ2万個を約 170 nK まで冷やしたところで凝縮成分が現れ——世界初の希薄原子気体 BEC——さらに冷やすと、約2000個のほぼ純粋な凝縮体が残りました。証拠となったのが、下の有名な速度分布の三連画像です。左：転移直前の熱い雲。中央：\(T_0\) を切った瞬間、分布の中心に鋭いピーク——凝縮体——が突き出す。右：さらに冷やすと、ほぼ純粋な凝縮体だけが残る。<a href="#fig1">図 1</a> で描いた「\(T_0\) 以下で凝縮率が育つ」物理が、そのまま一枚の画像になっています。
       </p>
       <p class="en">
-        In June 1995, at JILA in Boulder, the team of Eric Cornell and Carl Wieman cooled roughly two thousand \(^{87}\mathrm{Rb}\) atoms to about 170 nK and observed the world's first BEC in a dilute atomic gas. The evidence is the famous triptych of velocity distributions below. Left: the hot cloud just above the transition. Centre: the moment \(T_0\) is crossed, a sharp peak — the condensate — thrusts out of the distribution. Right: cooling further leaves an almost pure condensate. The physics of <a href="#fig1">Fig. 1</a> — the condensate fraction growing below \(T_0\) — captured in a single image.
+        In June 1995, at JILA in Boulder, the team of Eric Cornell and Carl Wieman cooled some \(2\times10^{4}\) \(^{87}\mathrm{Rb}\) atoms to about 170 nK, where a condensate fraction appeared — the world's first BEC in a dilute atomic gas — and further cooling left an almost pure condensate of about 2000 atoms. The evidence is the famous triptych of velocity distributions below. Left: the hot cloud just above the transition. Centre: the moment \(T_0\) is crossed, a sharp peak — the condensate — thrusts out of the distribution. Right: cooling further leaves an almost pure condensate. The physics of <a href="#fig1">Fig. 1</a> — the condensate fraction growing below \(T_0\) — captured in a single image.
       </p>
       <figure style="margin:1rem auto 0.2rem; max-width:430px; text-align:center;">
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Bose_Einstein_condensate.png" alt="Velocity distributions of a Rb gas across the BEC transition (JILA 1995)" loading="lazy" style="width:100%; border-radius:10px; border:1px solid var(--border);">
@@ -9826,11 +9826,13 @@ z
       <p class="fig-cap ja" style="text-align:center;">JILA の速度分布データ（左→右：冷却とともに中央へ凝縮体のピークが成長する）。</p>
       <p class="fig-cap en" style="text-align:center;">Velocity-distribution data from JILA (left to right: the condensate peak grows as the gas is cooled).</p>
       <p class="credit" style="margin-top:0.15rem;"><span class="ja">画像：</span><span class="en">Image: </span><a href="https://commons.wikimedia.org/wiki/File:Bose_Einstein_condensate.png" target="_blank" rel="noopener">NIST/JILA/CU-Boulder</a> — <span class="ja">パブリックドメイン</span><span class="en">public domain</span></p>
+      <p class="small ja">なお、実験は調和トラップ中の気体です。凝縮の描像は共通ですが、転移温度や冪の具体式は、本文の一様気体とは異なります。</p>
+      <p class="small en">Note: the experiments are performed in a harmonic trap; the picture of condensation is the same, but the specific exponents and transition-temperature formula differ from the uniform gas of this note.</p>
       <p class="ja">
-        わずか4か月後、MIT のヴォルフガング・ケターレがナトリウム原子で桁違いに大きな凝縮体を実現します。のちに二つの凝縮体を重ねて<b>干渉縞</b>を観測し、凝縮体がレーザー光のように「一つの巨大な物質波」として振る舞うことを直接示しました。凝縮体をパルス状に取り出してみせる「原子レーザー」の実演もケターレのグループです。三人は2001年のノーベル物理学賞を受賞しました。
+        わずか4か月後、MIT のヴォルフガング・ケターレがナトリウム原子で桁違いに大きな凝縮体を実現します。のちに独立に用意した二つの凝縮体を重ねて<b>干渉縞</b>を観測し、凝縮体が巨視的な位相コヒーレンス——レーザー光のような「一つの物質波」性——をもつことを直接示しました。凝縮体をパルス状に取り出してみせる「原子レーザー」の実演もケターレのグループです。三人は2001年のノーベル物理学賞を受賞しました。
       </p>
       <p class="en">
-        Only four months later Wolfgang Ketterle at MIT produced condensates of sodium atoms orders of magnitude larger. His group later overlapped two condensates to observe <b>interference fringes</b> — direct proof that a condensate behaves as one giant matter wave, like laser light — and demonstrated the pulsed "atom laser". The three shared the 2001 Nobel Prize in Physics.
+        Only four months later Wolfgang Ketterle at MIT produced condensates of sodium atoms orders of magnitude larger. His group later overlapped two independently prepared condensates and observed <b>interference fringes</b> — direct evidence of macroscopic phase coherence, the matter-wave analogue of laser light — and demonstrated the pulsed "atom laser". The three shared the 2001 Nobel Prize in Physics.
       </p>
       <p class="ja">
         以来、BEC は一度きりの珍品ではなく、現代物理の実験台になりました。渦糸を立てれば超流動が見え、光格子に載せれば多体模型をまるごと量子シミュレートできます。<a href="#s35">§5</a> で解いた理想ボース気体は、その世界へ入るための最初の地図です。
@@ -9856,7 +9858,7 @@ z
 
       <h3 id="s6-1"><span class="ja">6.1　フェルミ・エネルギーとフェルミ波数</span><span class="en">6.1　Fermi energy and Fermi wavenumber</span></h3>
       <p class="ja">
-        絶対零度では、フェルミ分布は階段関数に潰れます：\(\bar n_{\mathrm F}(\varepsilon)\to\theta(\mu-\varepsilon)\)。エネルギー \(\varepsilon\le\mu\) の一粒子状態がびっしり詰まり、それ以上は空 —— <b>フェルミの海</b>です。\(T=0\) の化学ポテンシャルを<b>フェルミ・エネルギー</b> \(\varepsilon_{\mathrm F}\) と呼び、粒子数の条件 \(\displaystyle N=\int_0^{\varepsilon_{\mathrm F}}D(\varepsilon)\,d\varepsilon\)（\(\eqref{eq:NUint}\) の \(T\to0\) 極限）から決まります。\(D=A\sqrt{\varepsilon}\)（\(A\) は \(\eqref{eq:dos}\) の係数）を代入して積分すると
+        絶対零度では、フェルミ分布は階段関数に潰れます：\(\bar n_{\mathrm F}(\varepsilon)\to\theta(\mu-\varepsilon)\)。エネルギー \(\varepsilon\le\mu\) の一粒子状態がびっしり詰まり、それ以上は空 —— <b>フェルミ海</b>です。\(T=0\) の化学ポテンシャルを<b>フェルミ・エネルギー</b> \(\varepsilon_{\mathrm F}\) と呼び、粒子数の条件 \(\displaystyle N=\int_0^{\varepsilon_{\mathrm F}}D(\varepsilon)\,d\varepsilon\)（\(\eqref{eq:NUint}\) の \(T\to0\) 極限）から決まります。\(D=A\sqrt{\varepsilon}\)（\(A\) は \(\eqref{eq:dos}\) の係数）を代入して積分すると
       </p>
       <p class="en">
         At absolute zero the Fermi distribution collapses to a step, \(\bar n_{\mathrm F}(\varepsilon)\to\theta(\mu-\varepsilon)\): every state with \(\varepsilon\le\mu\) is filled, all above are empty — the <b>Fermi sea</b>. The \(T=0\) chemical potential is the <b>Fermi energy</b> \(\varepsilon_{\mathrm F}\), fixed by \(\displaystyle N=\int_0^{\varepsilon_{\mathrm F}}D(\varepsilon)\,d\varepsilon\) (the \(T\to0\) limit of \(\eqref{eq:NUint}\)). Inserting \(D=A\sqrt{\varepsilon}\) (with the coefficient \(A\) of \(\eqref{eq:dos}\)) and integrating,
@@ -10087,10 +10089,10 @@ z
         The answer is the one just derived in <a href="#s6-3">6.3</a>. As \(C\propto T\) says, only electrons within \(k_{\mathrm B}T\) of the Fermi surface can accept heat — at room temperature, well under 1% of them. Two orders of magnitude below the classical value, the electronic term hides beneath the lattice contribution. Sommerfeld showed this in 1927 by wiring the brand-new Fermi statistics into the Drude model.
       </p>
       <p class="ja">
-        ゾンマーフェルト自身は、ノーベル賞に<b>80回以上ノミネートされて一度も受賞しなかった</b>記録の持ち主です。そのかわり——と言うべきか——彼のミュンヘンの教室からは、ハイゼンベルク、パウリ、デバイ、ベーテと、博士学生だけで4人のノーベル賞受賞者が巣立ちました。アインシュタインは手紙で、若い才能を「土の中から掘り起こす」その手腕を称えています。誰にでも毒舌だったパウリが、生涯頭の上がらなかった数少ない相手だったとも伝えられています。
+        ゾンマーフェルト自身は、ノーベル賞に<b>80回以上ノミネートされて一度も受賞しなかった</b>記録の持ち主です。そのかわり——と言うべきか——彼のミュンヘンの教室からは、ハイゼンベルク、パウリ、デバイ、ベーテと、博士学生だけで4人のノーベル賞受賞者が巣立ちました。アインシュタインは手紙で、若い才能を「土の中から掘り起こす」その手腕を称えたと伝えられています。誰にでも毒舌だったパウリが、生涯頭の上がらなかった数少ない相手だったとも伝えられています。
       </p>
       <p class="en">
-        Sommerfeld himself holds a bittersweet record: <b>nominated for the Nobel Prize more than 80 times, he never won</b>. Instead, his Munich seminar raised four Nobel laureates among his doctoral students alone — Heisenberg, Pauli, Debye, Bethe. Einstein praised, in a letter, his knack for "digging young talents out of the soil"; and Pauli, whose sharp tongue spared no one, is said to have deferred to Sommerfeld alone all his life.
+        Sommerfeld himself holds a bittersweet record: <b>nominated for the Nobel Prize more than 80 times, he never won</b>. Instead, his Munich seminar raised four Nobel laureates among his doctoral students alone — Heisenberg, Pauli, Debye, Bethe. Einstein is said to have praised, in a letter, his knack for "digging young talents out of the soil"; and Pauli, whose sharp tongue spared no one, is said to have deferred to Sommerfeld alone all his life.
       </p>
               <p class="credit"><span class="ja">写真：</span><span class="en">Photo: </span><a href="https://commons.wikimedia.org/wiki/File:Sommerfeld1897.gif" target="_blank" rel="noopener">Sommerfeld (1897)</a> — Wikimedia Commons<span class="ja">（パブリックドメイン）</span><span class="en"> (public domain)</span></p>
         </div>
@@ -10114,16 +10116,16 @@ z
         Sirius B, the companion of Sirius, packs roughly a solar mass into an Earth-sized ball: mean density about \(2\times10^{9}\,\mathrm{kg/m^{3}}\) — a sugar cube weighing some two tonnes. What holds such a star up was identified at the end of 1926, months after Fermi statistics appeared, by R. H. Fowler: <b>degeneracy pressure</b>, the temperature-independent pressure born of Pauli exclusion.
       </p>
       <p class="ja">
-        中身は §6 の式そのものです。<a href="#s3-3">3.3</a> の \(PV=\dfrac23 U\) と <a href="#s6-3">6.3</a> の \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) を合わせると、\(T=0\) でも圧力 \(P=\dfrac25 n\varepsilon_{\mathrm F}\) が残ります。白色矮星の電子密度 \(n\sim10^{36}\,\mathrm{m^{-3}}\) ではフェルミ温度は \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\)。中心温度は \(10^{7}\,\mathrm K\) もありますが、比を取れば \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\)——室温の銅（0.4%）より「低温」です。<b>灼熱の星が、まるごと §6 の縮退フェルミ気体</b>なのです。
+        中身は §6 の式そのものです。<a href="#s3-3">3.3</a> の \(PV=\dfrac23 U\) と <a href="#s6-3">6.3</a> の \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) を合わせると、\(T=0\) でも圧力 \(P=\dfrac25 n\varepsilon_{\mathrm F}\) が残ります。白色矮星の電子密度 \(n\sim10^{36}\,\mathrm{m^{-3}}\) ではフェルミ温度は \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\)。中心温度は \(10^{7}\,\mathrm K\) もありますが、比を取れば \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\)——室温の銅（0.4%）より「低温」です。<b>星の質量は炭素や酸素の原子核が担い、圧力は縮退電子が担う——その電子系が、まるごと §6 の縮退フェルミ気体</b>なのです。
       </p>
       <p class="en">
-        The physics is exactly that of §6. Combining \(PV=\dfrac23 U\) of <a href="#s3-3">3.3</a> with \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) of <a href="#s6-3">6.3</a> leaves a pressure \(P=\dfrac25 n\varepsilon_{\mathrm F}\) even at \(T=0\). At the white-dwarf electron density \(n\sim10^{36}\,\mathrm{m^{-3}}\) the Fermi temperature is \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\); the core may reach \(10^{7}\,\mathrm K\), yet \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\) — "colder" than room-temperature copper (0.4%). <b>A blazing star that is, in its entirety, the degenerate Fermi gas of §6.</b>
+        The physics is exactly that of §6. Combining \(PV=\dfrac23 U\) of <a href="#s3-3">3.3</a> with \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) of <a href="#s6-3">6.3</a> leaves a pressure \(P=\dfrac25 n\varepsilon_{\mathrm F}\) even at \(T=0\). At the white-dwarf electron density \(n\sim10^{36}\,\mathrm{m^{-3}}\) the Fermi temperature is \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\); the core may reach \(10^{7}\,\mathrm K\), yet \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\) — "colder" than room-temperature copper (0.4%). <b>The carbon and oxygen nuclei carry the star's mass; the degenerate electrons carry its pressure — and that electron gas is exactly the Fermi gas of §6.</b>
       </p>
       <p class="ja">
-        1930年、19歳のチャンドラセカールは、インドから英国へ向かう船上でこの理論を相対論へ拡張します。密度が上がって \(\varepsilon_{\mathrm F}\) が電子の静止エネルギー \(m_{e}c^{2}=0.51\,\mathrm{MeV}\) に近づくと（シリウス B ですでに半分ほど）、\(\varepsilon\approx pc\) となって圧力は \(P\propto n^{5/3}\) から \(P\propto n^{4/3}\) へ弱まり、重力とちょうど同じスケーリングになる——つまり<b>約1.4太陽質量を超えると、縮退圧では支えきれない</b>。このチャンドラセカール限界は Ia 型超新星と中性子星への入り口となり、53年後の1983年、ノーベル賞で報われました。
+        1930年、19歳のチャンドラセカールは、インドから英国へ向かう船上でこの理論を相対論へ拡張します。密度が上がって \(\varepsilon_{\mathrm F}\) が電子の静止エネルギー \(m_{e}c^{2}=0.51\,\mathrm{MeV}\) に近づくと（シリウス B の平均密度から非相対論式で見積もると、すでに半分ほど）、\(\varepsilon\approx pc\) となって圧力は \(P\propto n^{5/3}\) から \(P\propto n^{4/3}\) へ弱まり、重力とちょうど同じスケーリングになる——つまり<b>約1.4太陽質量を超えると、縮退圧では支えきれない</b>。このチャンドラセカール限界は、白色矮星の熱核暴走である Ia 型超新星を理解する鍵となり、また大質量星の中心核がこの限界を超えて崩壊する先には中性子星が待っています。53年後の1983年、ノーベル賞で報われました。
       </p>
       <p class="en">
-        In 1930 the 19-year-old Chandrasekhar, on the boat from India to England, made the theory relativistic. As density grows and \(\varepsilon_{\mathrm F}\) approaches the electron rest energy \(m_{e}c^{2}=0.51\,\mathrm{MeV}\) (Sirius B is already about halfway there), \(\varepsilon\approx pc\) softens the pressure from \(P\propto n^{5/3}\) to \(P\propto n^{4/3}\) — precisely gravity's scaling. <b>Beyond about 1.4 solar masses, degeneracy pressure loses.</b> The Chandrasekhar limit opened the road to type-Ia supernovae and neutron stars, and was rewarded with the Nobel Prize 53 years later, in 1983.
+        In 1930 the 19-year-old Chandrasekhar, on the boat from India to England, made the theory relativistic. As density grows and \(\varepsilon_{\mathrm F}\) approaches the electron rest energy \(m_{e}c^{2}=0.51\,\mathrm{MeV}\) (a nonrelativistic estimate at Sirius B's mean density already puts it about halfway there), \(\varepsilon\approx pc\) softens the pressure from \(P\propto n^{5/3}\) to \(P\propto n^{4/3}\) — precisely gravity's scaling. <b>Beyond about 1.4 solar masses, degeneracy pressure loses.</b> The Chandrasekhar limit became the key to type-Ia supernovae (the thermonuclear runaway of a white dwarf), and — via the collapse of massive stellar cores that exceed it — to neutron stars; it was rewarded with the Nobel Prize 53 years later, in 1983.
       </p>
               <p class="credit"><span class="ja">写真：</span><span class="en">Photo: </span><a href="https://commons.wikimedia.org/wiki/File:Subrahmanyan_Chandrasekhar.gif" target="_blank" rel="noopener">Chandrasekhar</a>（NASA）— Wikimedia Commons<span class="ja">（パブリックドメイン）</span><span class="en"> (public domain)</span></p>
         </div>
@@ -10234,10 +10236,10 @@ z
         =\sum_{k=1}^{\infty}\sigma^{k-1}\frac{z^{k}}{k^{\nu}} .
       \]</div>
       <p class="ja">
-        項別積分が正当化できるのは、級数が絶対収束する \(|z|\le1\) の範囲です。その外側——低温フェルミ気体の \(z\gg1\)——では級数は使えず、積分表示そのものが \(\varphi_\nu\) の定義になります。<a href="#s3-4">3.4</a> で述べた注意と、ちょうど整合しています。
+        項別積分が正当化できるのは級数が絶対収束する範囲、すなわち \(|z|\lt1\) です（境界 \(z=1\) での収束は \(\nu\) に依存し、本文の \(\nu=\dfrac32,\dfrac52\) では \(z=1\) でも収束します）。その外側——低温フェルミ気体の \(z\gg1\)——では級数は使えず、積分表示そのものが \(\varphi_\nu\) の定義になります。<a href="#s3-4">3.4</a> で述べた注意と、ちょうど整合しています。
       </p>
       <p class="en">
-        Term-by-term integration is justified where the series converges absolutely, \(|z|\le1\). Outside — the cold Fermi gas with \(z\gg1\) — the series is unavailable and the integral representation itself defines \(\varphi_\nu\), in exact agreement with the caveat of <a href="#s3-4">3.4</a>.
+        Term-by-term integration is justified where the series converges absolutely, \(|z|\lt1\) (convergence at the boundary \(z=1\) depends on \(\nu\); for the \(\nu=\dfrac32,\dfrac52\) used here it does converge). Outside — the cold Fermi gas with \(z\gg1\) — the series is unavailable and the integral representation itself defines \(\varphi_\nu\), in exact agreement with the caveat of <a href="#s3-4">3.4</a>.
       </p>
 
       <h3 id="s37-3"><span class="ja">7.3　ボース型定積分と \(\varphi_\nu(1)=\zeta(\nu)\)</span><span class="en">7.3　The Bose-type integral and \(\varphi_\nu(1)=\zeta(\nu)\)</span></h3>
@@ -10305,10 +10307,10 @@ z
         \varphi_{3/2}(e^{-\alpha})=\zeta\!\left(\dfrac{3}{2}\right)-2\sqrt{\pi}\,\sqrt{\alpha}+O(\alpha).
       \]</div>
       <p class="small ja">
-        （\(\sqrt{\alpha}\) は \(\alpha\) で微分すると \(\alpha\to0\) で発散します——これが「\(z=1\) で微分不可能」の正体で、<a href="#s6-3">6.3</a> の \(\mu\propto(T-T_0)^{2}\) という振る舞いの源です。和→積分の置き換えで捨てた分は \(O(\alpha)\) 以降にしか効きません。）
+        （\(\sqrt{\alpha}\) は \(\alpha\) で微分すると \(\alpha\to0\) で発散します——これが「\(z=1\) で微分不可能」の正体で、<a href="#s5-3">5.3</a> の \(\mu\propto(T-T_0)^{2}\) という振る舞いの源です。和→積分の置き換えで捨てた分は \(O(\alpha)\) 以降にしか効きません。）
       </p>
       <p class="small en">
-        (The derivative of \(\sqrt{\alpha}\) diverges as \(\alpha\to0\) — this is the precise sense in which \(\varphi_{3/2}\) is not differentiable at \(z=1\), and the source of the \(\mu\propto(T-T_0)^{2}\) behaviour of <a href="#s6-3">6.3</a>. What the sum-to-integral replacement discards only affects order \(\alpha\) and beyond.)
+        (The derivative of \(\sqrt{\alpha}\) diverges as \(\alpha\to0\) — this is the precise sense in which \(\varphi_{3/2}\) is not differentiable at \(z=1\), and the source of the \(\mu\propto(T-T_0)^{2}\) behaviour of <a href="#s5-3">5.3</a>. What the sum-to-integral replacement discards only affects order \(\alpha\) and beyond.)
       </p>
     <h3 id="s37-5"><span class="ja">7.5　フェルミ型定積分 \(J_n\) とゼータ関数</span><span class="en">7.5　The Fermi-type integral \(J_n\) and the zeta function</span></h3>
       <p class="ja">
@@ -10412,15 +10414,15 @@ z
         <tr><td>\(g=2s+1\)</td><td><span class="ja">スピン縮退度。主な例はスピン \(\dfrac12\) で \(g=2\)。スピン \(0\) のボース粒子は \(g=1\)。</span><span class="en">spin degeneracy; main example spin \(\dfrac12\) with \(g=2\); spin-\(0\) bosons have \(g=1\).</span></td></tr>
         <tr><td>\(\sigma=\pm1\)</td><td><span class="ja">\(+1\) はボース統計、\(-1\) はフェルミ統計。</span><span class="en">\(+1\) means Bose statistics, \(-1\) Fermi statistics.</span></td></tr>
         <tr><td>\(\lambda_T=\sqrt{\dfrac{2\pi\hbar^2}{mk_{\mathrm B}T}}\)</td><td><span class="ja">熱的ド・ブロイ波長（\(\propto T^{-1/2}\)）。</span><span class="en">thermal de Broglie wavelength (\(\propto T^{-1/2}\)).</span></td></tr>
-        <tr><td>\(z=e^{\beta\mu}\)</td><td><span class="ja">フガシティ。主方程式 \(\eqref{eq:master}\) で決まる。</span><span class="en">fugacity; fixed by the master equation \(\eqref{eq:master}\).</span></td></tr>
+        <tr><td>\(z=e^{\beta\mu}\)</td><td><span class="ja">フガシティ。粒子数方程式 \(\eqref{eq:master}\) で決まる。</span><span class="en">fugacity; fixed by the particle-number equation \(\eqref{eq:master}\).</span></td></tr>
         <tr><td>\(\varphi_\nu(z)\)</td><td><span class="ja">ボース–アインシュタイン関数 \(g_\nu\)（\(\sigma=+1\)）とフェルミ–ディラック関数 \(f_\nu\)（\(\sigma=-1\)）の統一表記（定義 \(\eqref{eq:phinu}\)）。</span><span class="en">unified notation for the Bose–Einstein \(g_\nu\) (\(\sigma=+1\)) and Fermi–Dirac \(f_\nu\) (\(\sigma=-1\)) functions (defined in \(\eqref{eq:phinu}\)).</span></td></tr>
         <tr><td>\(k_{\mathrm B}T^{*}=\dfrac{2\pi\hbar^2}{m}\!\left(\dfrac{n}{g}\right)^{2/3}\)</td><td><span class="ja">縮退温度（両系共通の物差し）。\(T_0=0.527\,T^{*}\)、\(\varepsilon_{\mathrm F}=1.21\,k_{\mathrm B}T^{*}\)。</span><span class="en">degeneracy temperature (common ruler); \(T_0=0.527\,T^{*}\), \(\varepsilon_{\mathrm F}=1.21\,k_{\mathrm B}T^{*}\).</span></td></tr>
       </table>
       <p class="small ja" style="margin-top:1rem;">
-        <a href="#fig1">図 1</a> の温度依存の曲線群は、この主方程式を数値的に解いて得たものです。
+        <a href="#fig1">図 1</a> の温度依存の曲線群は、この粒子数方程式を数値的に解いて得たものです（ボース気体の \(T\lt T_0\) は \(z=1\) の式）。
       </p>
       <p class="small en" style="margin-top:1rem;">
-        The temperature-dependence curves in <a href="#fig1">Fig. 1</a> were obtained simply by solving this master equation numerically.
+        The temperature-dependence curves in <a href="#fig1">Fig. 1</a> were obtained by solving this particle-number equation numerically (with the \(z=1\) formulas for the Bose gas below \(T_0\)).
       </p>
     
 
@@ -10440,16 +10442,16 @@ z
         <b>In the Bose gas</b>, even weak repulsion turns the low-energy excitations from free-particle-like \(\varepsilon\propto k^{2}\) into sound-like \(\varepsilon\propto k\) (Bogoliubov, 1947) — the key to superfluidity (Landau's criterion). Trapped-atom BECs are well described by the Gross–Pitaevskii equation. In strongly interacting liquid \(^4\mathrm{He}\) the condensate is ~10% yet the superfluid fraction reaches 100%: <b>condensate fraction and superfluid fraction are different things.</b>
       </p>
       <p class="ja">
-        <b>フェルミ気体では</b>、逆向きの疑問が生じます。金属の電子は強くクーロン相互作用しているのに、なぜ §6 の自由電子の結果（\(C\propto T\) など）が実験と合うのか。答えがランダウの<b>フェルミ液体理論</b>です。相互作用の主な効果は、励起を質量が繰り込まれた「準粒子」に置き換えること——低温の構造は生き残り、\(C\propto T\) は保たれ、係数の \(m^{*}\) だけが変わります（重い電子系では電子の1000倍になることも）。
+        <b>フェルミ気体では</b>、逆向きの疑問が生じます。金属の電子は強くクーロン相互作用しているのに、なぜ §6 の自由電子の結果（\(C\propto T\) など）が実験と合うのか。答えがランダウの<b>フェルミ液体理論</b>です。相互作用の主な効果は、励起を質量が繰り込まれた「準粒子」に置き換えること——低温の構造は生き残り、\(C\propto T\) は保たれ、比熱の係数は \(m^{*}\) に繰り込まれます（重い電子系では電子の1000倍になることも）。ただし \(m\to m^{*}\) で済むのは主に比熱の話で、圧縮率や帯磁率などには<b>ランダウ・パラメータ</b>と呼ばれる別の係数が現れます。
       </p>
       <p class="en">
-        <b>In the Fermi gas</b> the question runs the other way: metallic electrons interact strongly via Coulomb forces — so why do the free-electron results of §6 (\(C\propto T\) and friends) fit experiments? The answer is Landau's <b>Fermi-liquid theory</b>: the main effect of interactions is to replace the excitations by "quasiparticles" with a renormalized mass. The low-temperature structure survives — \(C\propto T\) persists, and only the coefficient \(m^{*}\) changes (up to ~1000 electron masses in heavy-fermion materials).
+        <b>In the Fermi gas</b> the question runs the other way: metallic electrons interact strongly via Coulomb forces — so why do the free-electron results of §6 (\(C\propto T\) and friends) fit experiments? The answer is Landau's <b>Fermi-liquid theory</b>: the main effect of interactions is to replace the excitations by "quasiparticles" with a renormalized mass. The low-temperature structure survives — \(C\propto T\) persists with its coefficient renormalised into \(m^{*}\) (up to ~1000 electron masses in heavy-fermion materials). The simple \(m\to m^{*}\) rule covers mainly the heat capacity, though: compressibility, spin susceptibility and the like involve separate <b>Landau parameters</b>.
       </p>
       <p class="ja">
-        <b>最後は対形成です。</b>わずかな引力でフェルミ面は不安定になり、電子はクーパー対を組んで凝縮します——超伝導（BCS、1957）。対を「複合ボース粒子」（<a href="#s1-2">1.2</a>）と見れば、これもまた凝縮の物語です。冷却原子では相互作用の強さを磁場で自在に変えられ、BCS 型から BEC 型への<b>クロスオーバー</b>が実際に観測されています。
+        <b>最後は対形成です。</b>フェルミ面がある限り、どんなに弱い引力でも低温ではフェルミ面が対形成に対して不安定になり、電子はクーパー対を組んで凝縮します——超伝導（BCS、1957）。対を「複合ボース粒子」（<a href="#s1-2">1.2</a>）と<b>見立てれば</b>、これもまた凝縮の物語です（弱結合の対は互いに大きく重なり合うので、点状のボース分子の気体とは違う、あくまで見立てですが）。冷却原子では相互作用の強さを磁場で自在に変えられ、BCS 型から BEC 型への<b>クロスオーバー</b>が実際に観測されています。
       </p>
       <p class="en">
-        <b>Last, pairing.</b> The slightest attraction destabilises the Fermi surface: electrons form Cooper pairs and condense — superconductivity (BCS, 1957). Viewed as composite bosons (<a href="#s1-2">1.2</a>), this too is a condensation story. In cold atoms the interaction is magnetically tunable, and the <b>BCS–BEC crossover</b> has been observed directly.
+        <b>Last, pairing.</b> As long as a Fermi surface exists, an arbitrarily weak attraction destabilises it at low temperature: electrons form Cooper pairs and condense — superconductivity (BCS, 1957). Viewed, loosely, as composite bosons (<a href="#s1-2">1.2</a>), this too is a condensation story (in weak coupling the pairs overlap one another enormously, so this is a metaphor, not a gas of pointlike molecules). In cold atoms the interaction is magnetically tunable, and the <b>BCS–BEC crossover</b> has been observed directly.
       </p>
       <p class="ja">
         そして、相互作用がさらに強くなって「準粒子」の描像そのものが壊れる世界——電子が互いに避け合って動けなくなるモット絶縁体や、その間際の奇妙な金属——になると、このノートの延長線上の道具では届きません。そこを正面から扱う現代の手法のひとつが<b>動的平均場理論（DMFT）</b>です。気になる方は <a href="dmft.html">DMFT のノート</a>へどうぞ。
