@@ -246,19 +246,19 @@
         \Psi_\sigma(x_1,x_2)=\frac{1}{\sqrt2}\Bigl[\,\psi_a(x_1)\,\psi_b(x_2)+\sigma\,\psi_b(x_1)\,\psi_a(x_2)\,\Bigr]
       \]</div>
       <p class="ja">
-        と書けます（\(\hat P\Psi_\sigma=\sigma\Psi_\sigma\) を確かめてみてください）。ここで二つの粒子を<b>同じ状態</b>に入れてみます（\(b=a\)）。\(\sigma=+1\) なら \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) となり、何の問題もありません。ところが \(\sigma=-1\) では
+        と書けます（\(\hat P\Psi_\sigma=\sigma\Psi_\sigma\) を確かめてみてください）。ここで二つの粒子を<b>同じ状態</b>に入れてみます（\(b=a\)）。このとき「\(\psi_a\) と \(\psi_b\) が直交する」という前提は崩れるので、規格化因子 \(\dfrac{1}{\sqrt2}\) はそのままでは使えません。そこで規格化はいったん脇に置き、<b>（反）対称化した組み合わせの形</b>だけを見ます。\(\sigma=+1\) なら \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\)——形は立派に生き残るので、あらためて規格化し直せば済みます。ところが \(\sigma=-1\) では
       </p>
       <p class="en">
-        (check that \(\hat P\Psi_\sigma=\sigma\Psi_\sigma\)). Now try to put both particles in the <b>same</b> state, \(b=a\). For \(\sigma=+1\) we get \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) — perfectly fine. But for \(\sigma=-1\),
+        (check that \(\hat P\Psi_\sigma=\sigma\Psi_\sigma\)). Now try to put both particles in the <b>same</b> state, \(b=a\). The premise that \(\psi_a\) and \(\psi_b\) are orthogonal now fails, so the factor \(\dfrac{1}{\sqrt2}\) no longer normalises anything — set normalisation aside, then, and look only at the <b>shape of the (anti)symmetrised combination</b>. For \(\sigma=+1\), \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\): the shape survives, and one simply renormalises. But for \(\sigma=-1\),
       </p>
       <div class="eq">\[
-        \Psi_-(x_1,x_2)=\frac{1}{\sqrt2}\Bigl[\,\psi_a(x_1)\,\psi_a(x_2)-\psi_a(x_1)\,\psi_a(x_2)\,\Bigr]=0.
+        \Psi_-(x_1,x_2)\;\propto\;\psi_a(x_1)\,\psi_a(x_2)-\psi_a(x_1)\,\psi_a(x_2)=0.
       \]</div>
       <p class="ja">
-        状態そのものが消滅してしまいます。<b>フェルミ粒子は、同じ一粒子状態に二つ入ることができない</b>——これが<b>パウリの排他原理</b>です。何かの力が押し返しているのではなく、反対称性からの純粋に数学的な帰結である点に注意してください。
+        規格化でどう直そうにも、状態そのものが恒等的に零です。<b>フェルミ粒子は、同じ一粒子状態に二つ入ることができない</b>——これが<b>パウリの排他原理</b>です。何かの力が押し返しているのではなく、反対称性からの純粋に数学的な帰結である点に注意してください。
       </p>
       <p class="en">
-        the state itself vanishes. <b>Two fermions cannot occupy the same single-particle state</b> — this is the <b>Pauli exclusion principle</b>. Note that no force is pushing them apart: it is a purely mathematical consequence of antisymmetry.
+        the combination is identically zero — no normalisation can rescue a state that is not there. <b>Two fermions cannot occupy the same single-particle state</b> — this is the <b>Pauli exclusion principle</b>. Note that no force is pushing them apart: it is a purely mathematical consequence of antisymmetry.
       </p>
       <div class="keybox">
         <span class="lbl ja">要点</span><span class="lbl en">key result</span>
