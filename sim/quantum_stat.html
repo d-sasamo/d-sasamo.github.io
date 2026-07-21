@@ -27,13 +27,16 @@
   }
   .toy-title span {
     display: inline-block;
-    /* thick cream sticker outline + soft dark drop shadow (homage to variety-show titles) */
-    -webkit-text-stroke: 8px #f6f4ee;
-    paint-order: stroke fill;
+    /* thick cream sticker outline (shadow-ring: renders identically in all browsers)
+       + soft dark drop shadow (homage to variety-show titles) */
     text-shadow:
-      0 3px 0 rgba(120,80,40,0.26),
-      0 6px 3px rgba(0,0,0,0.20),
-      0 10px 14px rgba(0,0,0,0.28);
+      0.075em 0 0 #f6f4ee, -0.075em 0 0 #f6f4ee, 0 0.075em 0 #f6f4ee, 0 -0.075em 0 #f6f4ee,
+      0.053em 0.053em 0 #f6f4ee, -0.053em 0.053em 0 #f6f4ee, 0.053em -0.053em 0 #f6f4ee, -0.053em -0.053em 0 #f6f4ee,
+      0.069em 0.031em 0 #f6f4ee, -0.069em 0.031em 0 #f6f4ee, 0.069em -0.031em 0 #f6f4ee, -0.069em -0.031em 0 #f6f4ee,
+      0.031em 0.069em 0 #f6f4ee, -0.031em 0.069em 0 #f6f4ee, 0.031em -0.069em 0 #f6f4ee, -0.031em -0.069em 0 #f6f4ee,
+      0 0.10em 0 rgba(120,80,40,0.26),
+      0 0.13em 0.04em rgba(0,0,0,0.20),
+      0 0.17em 0.16em rgba(0,0,0,0.28);
     transform: translateY(var(--dy, 0)) rotate(var(--rot, 0deg));
     transition: transform 0.2s ease;
   }
@@ -51,13 +54,6 @@
   .c9 { color: #39639f; --rot: -5deg; --dy: 3px; }   /* 計 blue(い)    */
   @media (max-width: 520px) {
     .toy-title { font-size: clamp(1.9rem, 9.4vw, 3.2rem); }
-    .toy-title span {
-      -webkit-text-stroke-width: 4px;
-      text-shadow:
-        0 2px 0 rgba(120,80,40,0.26),
-        0 4px 2px rgba(0,0,0,0.20),
-        0 6px 8px rgba(0,0,0,0.26);
-    }
     .toy-title-wrap { padding: 1.1rem 0.2rem; margin: 1.4rem 0 0.8rem; }
     .card { padding: 1.15rem 0.95rem; }
     .card h2 { font-size: 1.22rem; }
