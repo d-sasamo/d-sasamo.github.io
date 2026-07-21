@@ -182,12 +182,10 @@
         <li><span class="secnum">7</span><a href="#s37"><span class="ja">物理数学のまとめ</span><span class="en">Mathematical appendix</span></a></li>
       </ul>
       <p class="small ja" style="margin-top:1rem;">
-        全体を通して、スピンの大きさは \(s=\dfrac12\) を主な例にとり、スピン縮退度を \(g=2s+1=2\) と書きます（同じ運動状態に \(g\) 個のスピン状態が乗る、という意味の因子です）。
-        スピン \(0\) のボース粒子（液体 \(^4\mathrm{He}\)）を扱うときは \(g=1\) と読み替えてください（冷却原子は一般にスピン \(0\) ではありませんが、単一の内部状態に偏極させて使うため、実効的に \(g=1\) です）。温度依存の熱力学量は、<a href="#s3-5">§3.5</a> の<a href="#fig1">図 1</a> に数値計算の結果としてまとめてあります。
+        全体を通して、\(g\) は<b>一粒子状態の内部縮重度</b>（同じ運動状態に乗る内部状態の数）を表します。外場がなく、すべてのスピン状態を統計に含める場合は \(g=2s+1\)——主な例はスピン \(s=\dfrac12\) の \(g=2\) です。スピン \(0\) のボース粒子（液体 \(^4\mathrm{He}\)）や、単一の内部状態に偏極させた冷却原子気体のような一成分気体では \(g=1\) とします。温度依存の熱力学量は、<a href="#s3-5">§3.5</a> の<a href="#fig1">図 1</a> に数値計算の結果としてまとめてあります。
       </p>
       <p class="small en" style="margin-top:1rem;">
-        Throughout, the main example is spin \(s=\dfrac12\), and we write the spin degeneracy as \(g=2s+1=2\) (the factor counting how many spin states ride on each orbital state).
-        Read \(g=1\) for genuine spin-\(0\) bosons (liquid \(^4\mathrm{He}\)); cold atoms are generally not spin \(0\), but are polarised into a single internal state, so effectively \(g=1\) as well. The temperature dependence of the thermodynamic quantities is collected, from the numerics, in <a href="#fig1">Fig. 1</a> of <a href="#s3-5">§3.5</a>.
+        Throughout, \(g\) denotes the <b>internal degeneracy of a single-particle state</b> (how many internal states ride on each orbital state). With no external field and all spin states included, \(g=2s+1\) — the main example being spin \(s=\dfrac12\) with \(g=2\). For spin-\(0\) bosons (liquid \(^4\mathrm{He}\)) and for one-component gases such as cold atoms polarised into a single internal state, \(g=1\). The temperature dependence of the thermodynamic quantities is collected, from the numerics, in <a href="#fig1">Fig. 1</a> of <a href="#s3-5">§3.5</a>.
       </p>
     </div>
   </section>
@@ -223,10 +221,10 @@
         \sigma^2=1 \quad\Longrightarrow\quad \sigma=\pm1
       \]</div>
       <p class="ja">
-        の二つしかありません。さらに、同種粒子系のハミルトニアンはラベルの付け替えで不変（\([\hat P,\hat H]=0\)）なので、この符号は時間が経っても変わりません。つまり自然界の同種多粒子系は、入れ替えても波動関数が変わらない \(\sigma=+1\)（<b>対称</b>）の世界か、符号だけ反転する \(\sigma=-1\)（<b>反対称</b>）の世界か、どちらかに<b>恒久的に</b>属します。
+        の二つしかありません。さらに、同種粒子系のハミルトニアンはラベルの付け替えで不変（\([\hat P,\hat H]=0\)）なので、この符号は時間が経っても変わりません。つまり、このノートで扱う通常の三次元の同種多粒子系は、入れ替えても波動関数が変わらない \(\sigma=+1\)（<b>対称</b>）の世界か、符号だけ反転する \(\sigma=-1\)（<b>反対称</b>）の世界か、どちらかに<b>恒久的に</b>属します。
       </p>
       <p class="en">
-        — only two possibilities. Moreover, the Hamiltonian of identical particles is invariant under relabelling (\([\hat P,\hat H]=0\)), so this sign never changes in time. Every system of identical particles in nature thus belongs <b>permanently</b> to one of two worlds: the \(\sigma=+1\) world, where the wavefunction is <b>symmetric</b> under exchange, or the \(\sigma=-1\) world, where it is <b>antisymmetric</b>.
+        — only two possibilities. Moreover, the Hamiltonian of identical particles is invariant under relabelling (\([\hat P,\hat H]=0\)), so this sign never changes in time. Every ordinary three-dimensional system of identical particles — the setting of this note — thus belongs <b>permanently</b> to one of two worlds: the \(\sigma=+1\) world, where the wavefunction is <b>symmetric</b> under exchange, or the \(\sigma=-1\) world, where it is <b>antisymmetric</b>.
       </p>
 
       <h3 id="s1-2"><span class="ja">1.2　どちらの世界か：スピン統計定理</span><span class="en">1.2　Which world? The spin–statistics theorem</span></h3>
@@ -273,7 +271,7 @@
         区別できない粒子の多体状態を指定するのに、「どの粒子がどの状態にいるか」を語る必要はもうありません。ラベルに意味がないのだから、意味を持つ情報は<b>「各一粒子状態 \(q\) に何個の粒子が入っているか」</b>——占有数の組 \(\{n_q\}\)——だけです。相互作用のない系のエネルギー固有状態——フォック基底の各基底状態——は \(|n_{q_1},n_{q_2},n_{q_3},\cdots\rangle\) というケットで指定できます（一般の量子状態は、これらの重ね合わせです）。そして、いま見た通り、許される \(n_q\) の値が二つの世界で違います。この「数の言葉」への乗り換えが、次節からの統計力学を驚くほど簡単にしてくれます。
       </p>
       <p class="en">
-        To specify a many-body state of indistinguishable particles we no longer need to say "which particle is in which state". Since the labels mean nothing, the only meaningful information is <b>how many particles occupy each single-particle state \(q\)</b> — the set of occupation numbers \(\{n_q\}\). The many-body state is completely specified by the ket \(|n_{q_1},n_{q_2},n_{q_3},\cdots\rangle\), and as we have just seen, the allowed values of \(n_q\) differ between the two worlds. This switch to counting language is what makes the statistical mechanics of the coming sections astonishingly simple.
+        To specify a many-body state of indistinguishable particles we no longer need to say "which particle is in which state". Since the labels mean nothing, the only meaningful information is <b>how many particles occupy each single-particle state \(q\)</b> — the set of occupation numbers \(\{n_q\}\). Each basis state of the Fock basis — each energy eigenstate of the non-interacting system — is specified by the ket \(|n_{q_1},n_{q_2},n_{q_3},\cdots\rangle\) (a general quantum state is a superposition of these), and as we have just seen, the allowed values of \(n_q\) differ between the two worlds. This switch to counting language is what makes the statistical mechanics of the coming sections astonishingly simple.
       </p>
 
       <details class="column">
@@ -281,10 +279,10 @@
         <div class="col-body">
 
       <p class="ja">
-        上の <a href="#s1-1">1.1</a> で「二回入れ替えたら<b>何もしなかったのと同じ</b>だから \(\hat P^2=1\)」と言い切りました。実はこの一手に、こっそり<b>三次元空間</b>が使われています。粒子を二回交換することは、<b>片方の粒子がもう片方の周りをぐるりと一周する</b>ことと同じです（一回目で入れ替わり、二回目で元に戻る——軌跡をつなげると一つの閉じた輪になります）。だから「二回交換＝恒等」と言うためには、<b>この輪を、相手にぶつからずに一点まで縮められる</b>必要があります。
+        <a href="#s1-1">1.1</a> で定義した \(\hat P\) は、波動関数の<b>粒子ラベル</b>を入れ替える演算子でした。これは空間次元によらず、定義から \(\hat P^2=1\) を満たします。二次元で事情が変わるのは、<b>粒子を空間の中で実際に動かして交換する操作</b>のほうです。ラベル交換と区別して、これを \(\hat B\) と書きましょう。粒子を二回交換することは、片方の粒子がもう片方の周りをぐるりと一周することと同じです（一回目で入れ替わり、二回目で元に戻る——軌跡をつなげると一つの閉じた輪になります）。「二回交換＝何もしない」と言えるのは、<b>この輪を、相手にぶつからずに一点まで縮められる</b>ときだけ。交換が波動関数に位相だけを与えるなら \(\hat B\Psi=e^{i\theta}\Psi\) と書けます——この \(\theta\) が何に縛られるかを、次の絵で見ましょう。
       </p>
       <p class="en">
-        In <a href="#s1-1">1.1</a> we declared: double exchange <b>is the same as doing nothing</b>, hence \(\hat P^2=1\). That one step secretly uses <b>three-dimensional space</b>. Exchanging two particles twice equals <b>one particle making a full loop around the other</b> (first swap exchanges them, the second brings them home — the joined trajectory is one closed loop). So "double exchange = identity" requires that <b>the loop can be shrunk to a point without ever touching the other particle</b>.
+        The operator \(\hat P\) of <a href="#s1-1">1.1</a> swaps the <b>labels</b> in the wavefunction; by its very definition it satisfies \(\hat P^2=1\) in any dimension. What changes in two dimensions is the <b>physical operation of moving the particles around each other to exchange them</b> — call it \(\hat B\), to keep it distinct from the label swap. Exchanging twice equals one particle making a full loop around the other (swap once, swap back — the joined trajectory is one closed loop), and "double exchange = doing nothing" holds only when <b>that loop can be shrunk to a point without ever touching the other particle</b>. If the exchange merely multiplies the wavefunction by a phase, we may write \(\hat B\Psi=e^{i\theta}\Psi\) — and the picture below decides what constrains this \(\theta\).
       </p>
 
       <div class="fig-box" style="padding:1rem 0.8rem 0.6rem;">
@@ -389,10 +387,10 @@
 
       <h3 id="s2-why"><span class="ja">なぜ大正準集団か</span><span class="en">Why the grand canonical ensemble</span></h3>
       <p class="ja">
-        占有数の和 \(N_\nu=\sum_q n_q\) を一定に固定すると、状態和が数学的に厄介になります。そこで粒子数を固定せず、化学ポテンシャル \(\mu\) を通じて平均的にだけ制御する<b>大正準集団</b>を使います。これは単なる技術的都合で、熱力学極限では集団の選び方によらず同じ結果になります。大分配関数は
+        占有数の和 \(N_\nu=\sum_q n_q\) を一定に固定すると、状態和が数学的に厄介になります。そこで粒子数を固定せず、化学ポテンシャル \(\mu\) を通じて平均的にだけ制御する<b>大正準集団</b>を使います。これは単なる技術的都合で、本文で扱う巨視的な平均熱力学量については、熱力学極限で集団の選び方によらず同じ結果になります。大分配関数は
       </p>
       <p class="en">
-        Fixing the total occupation \(N_\nu=\sum_q n_q\) makes the sum over states awkward. So instead of fixing the particle number we control it only on average, through a chemical potential \(\mu\): the <b>grand canonical ensemble</b>. This is a technical convenience — in the thermodynamic limit the choice of ensemble does not matter. The grand partition function is
+        Fixing the total occupation \(N_\nu=\sum_q n_q\) makes the sum over states awkward. So instead of fixing the particle number we control it only on average, through a chemical potential \(\mu\): the <b>grand canonical ensemble</b>. This is a technical convenience — for the macroscopic average quantities treated in this note, the choice of ensemble gives the same results in the thermodynamic limit. The grand partition function is
       </p>
       <div class="eq">\[
         \begin{aligned}
@@ -651,10 +649,10 @@
         \end{aligned}
       \end{equation}</div>
       <p class="ja">
-        \(\dfrac{\partial\mu}{\partial T}\) の項は、粒子数を一定に保つために \(\mu\) が温度とともに動くことの反映で、低温のボース気体でもフェルミ気体でも本質的に効いてきます。
+        \(\dfrac{\partial\mu}{\partial T}\) の項は、粒子数を一定に保つために化学ポテンシャルが温度とともに動くことの反映です。フェルミ気体と、ボース気体の正常相では、この項を忘れてはいけません。一方、理想ボース気体の凝縮相では熱力学極限で \(\mu=0\) に固定されるため、この項は消え、かわりに <a href="#s5-2">5.2</a> のように凝縮粒子数を別に扱います。
       </p>
       <p class="en">
-        The \(\dfrac{\partial\mu}{\partial T}\) term reflects the drift of \(\mu\) required to hold the particle number fixed; it matters essentially in the cold Bose and Fermi gases alike.
+        The \(\dfrac{\partial\mu}{\partial T}\) term reflects the drift of the chemical potential required to hold the particle number fixed. It must be kept for the Fermi gas and for the normal phase of the Bose gas; in the condensed phase of the ideal Bose gas, where \(\mu=0\) is pinned in the thermodynamic limit, it drops out and the condensate number is booked separately instead (<a href="#s5-2">5.2</a>).
       </p>
     
 
@@ -1812,10 +1810,10 @@
         (Both boundary terms vanish: as \(\varepsilon\to\infty\), \(\ln[1-\sigma e^{-\beta(\varepsilon-\mu)}]\approx-\sigma e^{-\beta(\varepsilon-\mu)}\) dies exponentially, beating the factor \(\varepsilon^{3/2}\); as \(\varepsilon\to0\), \(\varepsilon^{3/2}\to0\) while the logarithm stays finite — even in the Bose limit \(\mu\to0^{-}\) it diverges only like \(\ln(\beta\varepsilon)\), and \(\varepsilon^{3/2}\ln\varepsilon\to0\).)
       </p>
       <p class="ja">
-        こうして、量子・古典を問わず、また相互作用がない限り温度にもよらず、
+        こうして、この三次元・非相対論的な自由粒子系では、量子・古典を問わず、任意の温度で、
       </p>
       <p class="en">
-        So — quantum or classical, and at any temperature for a non-interacting gas —
+        So, for this three-dimensional non-relativistic free-particle system — quantum or classical, at any temperature —
       </p>
       <div class="keybox">
         <span class="lbl ja">要点</span><span class="lbl en">key result</span>
@@ -1871,10 +1869,10 @@
         (The definition and basic properties of \(\Gamma(\nu)\) are collected in <a href="#s37-1">§7.1</a>; the proof that the integral and series representations agree is in <a href="#s37-2">§7.2</a>.)
       </p>
       <p class="ja">
-        フェルミ統計（\(\sigma=-1\)）の側は<b>フェルミ–ディラック関数</b> \(f_\nu(z)\)、ボース統計（\(\sigma=+1\)）の側は<b>ボース–アインシュタイン関数</b> \(g_\nu(z)\) として教科書に載っている標準的な特殊関数で、ここでは両者を \(\sigma\) でまとめて \(\varphi_\nu\) と書きます。この一つの関数が、統計性による「散らばり具合」をすべて背負ってくれます。なお \(z\) の動ける範囲は統計性で異なり、ボース気体では分布の正値性から \(\mu\le\varepsilon_0=0\)——正常相では \(\mu\lt0\)（\(0\lt z\lt1\)）、熱力学極限の凝縮相では \(\mu=0\)（\(z=1\)）——に制限されます（<a href="#s35">§5</a>）。フェルミ気体の \(z\) に上限はなく、低温では \(z\gg1\) まで育ちます。冪級数が絶対収束するのは \(|z|\lt1\)。境界 \(z=1\) で収束するかは \(\nu\) 次第ですが、本文で使う \(\nu=\dfrac32,\dfrac52\) では収束します。それより外では積分表示そのものが \(\varphi_\nu\) の定義です。
+        フェルミ統計（\(\sigma=-1\)）の側は<b>フェルミ–ディラック関数</b> \(f_\nu(z)\)、ボース統計（\(\sigma=+1\)）の側は<b>ボース–アインシュタイン関数</b> \(g_\nu(z)\) として教科書に載っている標準的な特殊関数で、ここでは両者を \(\sigma\) でまとめて \(\varphi_\nu\) と書きます。この一つの関数が、統計性による「散らばり具合」をすべて背負ってくれます。なお \(z\) の動ける範囲は統計性で異なり、ボース気体では分布の正値性から \(\mu\le\varepsilon_0=0\)——正常相では \(\mu\lt0\)（\(0\lt z\lt1\)）、熱力学極限の凝縮相では \(\mu=0\)（\(z=1\)）——に制限されます（<a href="#s35">§5</a>）。フェルミ気体の \(z\) に上限はなく、低温では \(z\gg1\) まで育ちます。級数表示は \(|z|\lt1\) で絶対収束します。境界 \(|z|=1\) でも \(\nu\gt1\) なら絶対収束し、本文で用いる \(\nu=\dfrac32,\dfrac52\) はこれに該当します。低温フェルミ気体の \(z\gt1\) では級数表示は使えないため、積分表示を用います——そちらが \(\varphi_\nu\) の定義です。
       </p>
       <p class="en">
-        These are the standard special functions of the subject — the <b>Fermi–Dirac functions</b> \(f_\nu(z)\) for \(\sigma=-1\) and the <b>Bose–Einstein functions</b> \(g_\nu(z)\) for \(\sigma=+1\) — which we write jointly as \(\varphi_\nu\) using \(\sigma\). This single function carries all of the statistical content. The allowed range of \(z\) differs between the two statistics: for bosons positivity of the distribution requires \(\mu\le\varepsilon_0=0\) — in the normal phase \(\mu\lt0\) (\(0\lt z\lt1\)), in the condensed phase (thermodynamic limit) \(\mu=0\), i.e. \(z=1\) (<a href="#s35">§5</a>) — while for fermions \(z\) is unbounded and grows to \(z\gg1\) at low temperature. The power series converges absolutely for \(|z|\lt1\) (at the boundary \(z=1\) convergence depends on \(\nu\); it holds for the \(\nu=\dfrac32,\dfrac52\) used here); beyond that, the integral representation itself is the definition of \(\varphi_\nu\).
+        These are the standard special functions of the subject — the <b>Fermi–Dirac functions</b> \(f_\nu(z)\) for \(\sigma=-1\) and the <b>Bose–Einstein functions</b> \(g_\nu(z)\) for \(\sigma=+1\) — which we write jointly as \(\varphi_\nu\) using \(\sigma\). This single function carries all of the statistical content. The allowed range of \(z\) differs between the two statistics: for bosons positivity of the distribution requires \(\mu\le\varepsilon_0=0\) — in the normal phase \(\mu\lt0\) (\(0\lt z\lt1\)), in the condensed phase (thermodynamic limit) \(\mu=0\), i.e. \(z=1\) (<a href="#s35">§5</a>) — while for fermions \(z\) is unbounded and grows to \(z\gg1\) at low temperature. The series representation converges absolutely for \(|z|\lt1\); on the boundary \(|z|=1\) it still converges absolutely whenever \(\nu\gt1\), which covers the \(\nu=\dfrac32,\dfrac52\) used in this note. For the cold Fermi gas, \(z\gt1\), the series is unavailable and the integral representation — the definition of \(\varphi_\nu\) — takes over.
       </p>
       <p class="ja">
         いま出た積分は、この定義の \(\nu=\dfrac{3}{2}\) の場合そのものです（\(x^{1/2}=x^{3/2-1}\)）。したがって \(\displaystyle\int_0^\infty\dfrac{x^{1/2}}{z^{-1}e^{x}-\sigma}\,dx=\Gamma\!\left(\dfrac{3}{2}\right)\,\varphi_{3/2}(z)\)。あとは係数の整理だけです。\(\Gamma\!\left(\dfrac{3}{2}\right)=\sqrt{\pi}/2\) を入れて、
@@ -9559,10 +9557,10 @@ z
     <div class="card" id="s35">
       <h2><span class="secnum">5</span><span class="ja">低温の三次元自由ボース粒子系（BEC）</span><span class="en">The cold 3D free Bose gas (BEC)</span></h2>
       <p class="ja">
-        いよいよ低温 \(T\ll T^{*}\) に入ります。まずはボース粒子系（\(\sigma=+1\)）から。ボース分布 \(\bar n_q=[e^{\beta(\varepsilon_q-\mu)}-1]^{-1}\) の特異点は \(\varepsilon_q=\mu\) にあります。高温では \(\mu\) は最低エネルギー \(\varepsilon_0=0\) よりずっと下（大きく負）にいて特異点は無害ですが、温度を下げると粒子数を保つため \(\mu\) は上昇し、\(\varepsilon_0=0\) に下から近づきます。そしてある有限温度 \(T_0\) で \(\mu=0\) に達する —— このとき最低エネルギー状態に巨視的な数の粒子が落ち込みます。これが<b>ボース–アインシュタイン凝縮（BEC）</b>です。
+        いよいよ量子縮退が強くなる低温側 \(T\lesssim T^{*}\) に入ります。まずはボース粒子系（\(\sigma=+1\)）から。ボース分布 \(\bar n_q=[e^{\beta(\varepsilon_q-\mu)}-1]^{-1}\) の特異点は \(\varepsilon_q=\mu\) にあります。高温では \(\mu\) は最低エネルギー \(\varepsilon_0=0\) よりずっと下（大きく負）にいて特異点は無害ですが、温度を下げると粒子数を保つため \(\mu\) は上昇し、\(\varepsilon_0=0\) に下から近づきます。そしてある有限温度 \(T_0\) で \(\mu=0\) に達します。励起状態が収容できる粒子数はこの温度で飽和し、\(T\lt T_0\) では最低エネルギー状態の占有数が巨視的になります。これが<b>ボース–アインシュタイン凝縮（BEC）</b>です。
       </p>
       <p class="en">
-        Now we enter the cold regime \(T\ll T^{*}\), starting with bosons (\(\sigma=+1\)). The Bose distribution \(\bar n_q=[e^{\beta(\varepsilon_q-\mu)}-1]^{-1}\) has a singularity at \(\varepsilon_q=\mu\). At high \(T\) the chemical potential \(\mu\) sits far below the lowest energy \(\varepsilon_0=0\) (large and negative) and the singularity is harmless; as \(T\) drops, \(\mu\) rises to keep \(N\) fixed and approaches \(\varepsilon_0=0\) from below. At a finite temperature \(T_0\) it reaches \(\mu=0\), and a macroscopic number of particles crash into the lowest state — <b>Bose–Einstein condensation (BEC)</b>.
+        Now we enter the cold side \(T\lesssim T^{*}\), where quantum degeneracy takes over — bosons (\(\sigma=+1\)) first. The Bose distribution \(\bar n_q=[e^{\beta(\varepsilon_q-\mu)}-1]^{-1}\) has a singularity at \(\varepsilon_q=\mu\). At high \(T\) the chemical potential \(\mu\) sits far below the lowest energy \(\varepsilon_0=0\) (large and negative) and the singularity is harmless; as \(T\) drops, \(\mu\) rises to keep \(N\) fixed and approaches \(\varepsilon_0=0\) from below. At a finite temperature \(T_0\) it reaches \(\mu=0\): the number of particles the excited states can hold saturates there, and below \(T_0\) the occupation of the lowest state becomes macroscopic — <b>Bose–Einstein condensation (BEC)</b>.
       </p>
 
       <h3 id="s5-1"><span class="ja">5.1　凝縮温度 \(T_0\)</span><span class="en">5.1　The condensation temperature \(T_0\)</span></h3>
@@ -10104,16 +10102,16 @@ z
       </div>
 
       <p class="ja">
-        シリウスの伴星シリウス B は、太陽なみの質量が地球サイズに詰め込まれた星です。平均密度はおよそ \(2\times10^{9}\,\mathrm{kg/m^{3}}\)——角砂糖ひとつぶんで約2トン。この異常な星を支える力の正体を、フェルミ統計の登場からわずか数か月後の1926年末、R. H. ファウラーが見抜きました。<b>縮退圧</b>——パウリの排他原理が生む、温度によらない圧力です。
+        シリウスの伴星シリウス B は、太陽なみの質量が地球サイズに詰め込まれた星です。平均密度はおよそ \(2\times10^{9}\,\mathrm{kg/m^{3}}\)——角砂糖ひとつぶんで約2トン。この異常な星を支える力の正体を、フェルミ統計の登場からわずか数か月後の1926年末、R. H. ファウラーが見抜きました。<b>縮退圧</b>——パウリの排他原理が生む、低温では温度にほとんど依存せず、絶対零度でも残る圧力です。
       </p>
       <p class="en">
-        Sirius B, the companion of Sirius, packs roughly a solar mass into an Earth-sized ball: mean density about \(2\times10^{9}\,\mathrm{kg/m^{3}}\) — a sugar cube weighing some two tonnes. What holds such a star up was identified at the end of 1926, months after Fermi statistics appeared, by R. H. Fowler: <b>degeneracy pressure</b>, the temperature-independent pressure born of Pauli exclusion.
+        Sirius B, the companion of Sirius, packs roughly a solar mass into an Earth-sized ball: mean density about \(2\times10^{9}\,\mathrm{kg/m^{3}}\) — a sugar cube weighing some two tonnes. What holds such a star up was identified at the end of 1926, months after Fermi statistics appeared, by R. H. Fowler: <b>degeneracy pressure</b> — a pressure born of Pauli exclusion that survives even at absolute zero and, at low temperature, hardly depends on temperature at all.
       </p>
       <p class="ja">
-        中身は §6 の式そのものです。<a href="#s3-3">3.3</a> の \(PV=\dfrac23 U\) と <a href="#s6-3">6.3</a> の \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) を合わせると、\(T=0\) でも圧力 \(P=\dfrac25 n\varepsilon_{\mathrm F}\) が残ります。白色矮星の電子密度 \(n\sim10^{36}\,\mathrm{m^{-3}}\) ではフェルミ温度は \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\)。中心温度は \(10^{7}\,\mathrm K\) もありますが、比を取れば \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\)——室温の銅（0.4%）より「低温」です。<b>星の質量は炭素や酸素の原子核が担い、圧力は縮退電子が担う——その電子系が、まるごと §6 の縮退フェルミ気体</b>なのです。
+        非相対論的な第一近似では、中身は §6 の式です。<a href="#s3-3">3.3</a> の \(PV=\dfrac23 U\) と <a href="#s6-3">6.3</a> の \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) を合わせると、\(T=0\) でも圧力 \(P=\dfrac25 n\varepsilon_{\mathrm F}\) が残ります。白色矮星の電子密度 \(n\sim10^{36}\,\mathrm{m^{-3}}\) ではフェルミ温度は \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\)。中心温度は \(10^{7}\,\mathrm K\) もありますが、比を取れば \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\)——室温の銅（0.4%）より「低温」です。<b>星の質量は炭素や酸素の原子核が担い、圧力は縮退電子が担う——その電子系が、まるごと §6 の縮退フェルミ気体</b>なのです。
       </p>
       <p class="en">
-        The physics is exactly that of §6. Combining \(PV=\dfrac23 U\) of <a href="#s3-3">3.3</a> with \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) of <a href="#s6-3">6.3</a> leaves a pressure \(P=\dfrac25 n\varepsilon_{\mathrm F}\) even at \(T=0\). At the white-dwarf electron density \(n\sim10^{36}\,\mathrm{m^{-3}}\) the Fermi temperature is \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\); the core may reach \(10^{7}\,\mathrm K\), yet \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\) — "colder" than room-temperature copper (0.4%). <b>The carbon and oxygen nuclei carry the star's mass; the degenerate electrons carry its pressure — and that electron gas is exactly the Fermi gas of §6.</b>
+        In the non-relativistic first approximation, the physics is that of §6. Combining \(PV=\dfrac23 U\) of <a href="#s3-3">3.3</a> with \(U(0)=\dfrac35 N\varepsilon_{\mathrm F}\) of <a href="#s6-3">6.3</a> leaves a pressure \(P=\dfrac25 n\varepsilon_{\mathrm F}\) even at \(T=0\). At the white-dwarf electron density \(n\sim10^{36}\,\mathrm{m^{-3}}\) the Fermi temperature is \(T_{\mathrm F}\sim3\times10^{9}\,\mathrm K\); the core may reach \(10^{7}\,\mathrm K\), yet \(\dfrac{T}{T_{\mathrm F}}\sim0.3\,\%\) — "colder" than room-temperature copper (0.4%). <b>The carbon and oxygen nuclei carry the star's mass; the degenerate electrons carry its pressure — and that electron gas is exactly the Fermi gas of §6.</b>
       </p>
       <p class="ja">
         1930年、19歳のチャンドラセカールは、インドから英国へ向かう船上でこの理論を相対論へ拡張します。密度が上がって \(\varepsilon_{\mathrm F}\) が電子の静止エネルギー \(m_{e}c^{2}=0.51\,\mathrm{MeV}\) に近づくと（シリウス B の平均密度から非相対論式で見積もると、すでに半分ほど）、\(\varepsilon\approx pc\) となって圧力は \(P\propto n^{5/3}\) から \(P\propto n^{4/3}\) へ弱まり、重力とちょうど同じスケーリングになる——つまり<b>約1.4太陽質量を超えると、縮退圧では支えきれない</b>。このチャンドラセカール限界は、白色矮星の熱核暴走である Ia 型超新星を理解する鍵となり、また大質量星の中心核がこの限界を超えて崩壊する先には中性子星が待っています。53年後の1983年、ノーベル賞で報われました。
@@ -10230,10 +10228,10 @@ z
         =\sum_{k=1}^{\infty}\sigma^{k-1}\frac{z^{k}}{k^{\nu}} .
       \]</div>
       <p class="ja">
-        項別積分が正当化できるのは級数が絶対収束する範囲、すなわち \(|z|\lt1\) です（境界 \(z=1\) での収束は \(\nu\) に依存し、本文の \(\nu=\dfrac32,\dfrac52\) では \(z=1\) でも収束します）。その外側——低温フェルミ気体の \(z\gg1\)——では級数は使えず、積分表示そのものが \(\varphi_\nu\) の定義になります。<a href="#s3-4">3.4</a> で述べた注意と、ちょうど整合しています。
+        項別積分が正当化できるのは、級数が絶対収束する範囲です。級数表示は \(|z|\lt1\) で絶対収束し、境界 \(|z|=1\) でも \(\nu\gt1\) なら絶対収束します——本文で用いる \(\nu=\dfrac32,\dfrac52\) はこれに該当します。低温フェルミ気体の \(z\gt1\) では級数表示は使えないため、積分表示を用います（そちらが \(\varphi_\nu\) の定義。<a href="#s3-4">3.4</a> の注意と整合しています）。
       </p>
       <p class="en">
-        Term-by-term integration is justified where the series converges absolutely, \(|z|\lt1\) (convergence at the boundary \(z=1\) depends on \(\nu\); for the \(\nu=\dfrac32,\dfrac52\) used here it does converge). Outside — the cold Fermi gas with \(z\gg1\) — the series is unavailable and the integral representation itself defines \(\varphi_\nu\), in exact agreement with the caveat of <a href="#s3-4">3.4</a>.
+        Term-by-term integration is justified where the series converges absolutely. The series representation converges absolutely for \(|z|\lt1\); on the boundary \(|z|=1\) it still converges absolutely whenever \(\nu\gt1\), which covers the \(\nu=\dfrac32,\dfrac52\) used in this note. For the cold Fermi gas, \(z\gt1\), the series is unavailable and the integral representation — the definition of \(\varphi_\nu\) — takes over, in exact agreement with the caveat of <a href="#s3-4">3.4</a>.
       </p>
 
       <h3 id="s37-3"><span class="ja">7.3　ボース型定積分と \(\varphi_\nu(1)=\zeta(\nu)\)</span><span class="en">7.3　The Bose-type integral and \(\varphi_\nu(1)=\zeta(\nu)\)</span></h3>
@@ -10430,10 +10428,10 @@ z
         This note stayed strictly interaction-free. Three signposts for what changes in real matter.
       </p>
       <p class="ja">
-        <b>ボース気体では</b>、弱い反発があるだけで、低エネルギーの励起が自由粒子型 \(\varepsilon\propto k^{2}\) から音波型 \(\varepsilon\propto k\) に変わります（ボゴリューボフ、1947）。これが超流動の鍵です（ランダウの判定条件）。冷却原子の BEC はグロス–ピタエフスキー方程式でよく記述されます。液体 \(^4\mathrm{He}\) のように相互作用が強いと、凝縮体は1割でも超流動は 100%——<b>凝縮体分率と超流動分率は別物</b>、という大事な教訓も待っています。
+        <b>ボース気体では</b>、弱い反発があるだけで、低エネルギーの励起が自由粒子型 \(\varepsilon\propto k^{2}\) から音波型 \(\varepsilon\propto k\) に変わります（ボゴリューボフ、1947）。これが超流動の鍵です（ランダウの判定条件）。冷却原子の BEC はグロス–ピタエフスキー方程式でよく記述されます。液体 \(^4\mathrm{He}\) のように相互作用が強いと、\(T\to0\) では凝縮体分率が1割ほどにとどまる一方、超流動分率は 100% に近づきます——<b>凝縮体分率と超流動分率は別物</b>、という大事な教訓です。
       </p>
       <p class="en">
-        <b>In the Bose gas</b>, even weak repulsion turns the low-energy excitations from free-particle-like \(\varepsilon\propto k^{2}\) into sound-like \(\varepsilon\propto k\) (Bogoliubov, 1947) — the key to superfluidity (Landau's criterion). Trapped-atom BECs are well described by the Gross–Pitaevskii equation. In strongly interacting liquid \(^4\mathrm{He}\) the condensate is ~10% yet the superfluid fraction reaches 100%: <b>condensate fraction and superfluid fraction are different things.</b>
+        <b>In the Bose gas</b>, even weak repulsion turns the low-energy excitations from free-particle-like \(\varepsilon\propto k^{2}\) into sound-like \(\varepsilon\propto k\) (Bogoliubov, 1947) — the key to superfluidity (Landau's criterion). Trapped-atom BECs are well described by the Gross–Pitaevskii equation. In strongly interacting liquid \(^4\mathrm{He}\), as \(T\to0\) the condensate fraction stays near 10% while the superfluid fraction approaches 100%: <b>condensate fraction and superfluid fraction are different things.</b>
       </p>
       <p class="ja">
         <b>フェルミ気体では</b>、逆向きの疑問が生じます。金属の電子は強くクーロン相互作用しているのに、なぜ §6 の自由電子の結果（\(C\propto T\) など）が実験と合うのか。答えがランダウの<b>フェルミ液体理論</b>です。相互作用の主な効果は、励起を質量が繰り込まれた「準粒子」に置き換えること——低温の構造は生き残り、\(C\propto T\) は保たれ、比熱の係数は \(m^{*}\) に繰り込まれます（重い電子系では電子の1000倍になることも）。ただし \(m\to m^{*}\) で済むのは主に比熱の話で、圧縮率や帯磁率などには<b>ランダウ・パラメータ</b>と呼ばれる別の係数が現れます。
