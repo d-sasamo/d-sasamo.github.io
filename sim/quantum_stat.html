@@ -19,7 +19,7 @@
   .toy-title {
     font-family: 'Mochiy Pop One', 'Yusei Magic', 'Noto Sans JP', sans-serif;
     font-weight: 400;
-    font-size: clamp(2.2rem, 10.4vw, 6.3rem);
+    font-size: clamp(2.1rem, 9vw, 5.6rem);
     line-height: 1.05;
     letter-spacing: -0.045em;
     display: inline-block;
@@ -237,19 +237,19 @@
 
       <h3 id="s1-3"><span class="ja">1.3　二粒子で見る帰結：パウリの排他原理</span><span class="en">1.3　The consequence, seen with two particles: the Pauli principle</span></h3>
       <p class="ja">
-        符号 \(\sigma\) の威力は、粒子二つで既にはっきり現れます。一粒子状態 \(\psi_a\) と \(\psi_b\) に粒子を一つずつ入れた二粒子状態は、対称性の要請を満たすように
+        符号 \(\sigma\) の威力は、粒子二つで既にはっきり現れます。互いに直交する規格化された一粒子状態 \(\psi_a\) と \(\psi_b\) に粒子を一つずつ入れた二粒子状態は、対称性の要請を満たすように
       </p>
       <p class="en">
-        The power of the sign \(\sigma\) already shows with just two particles. Putting one particle in single-particle state \(\psi_a\) and one in \(\psi_b\), the two-particle state that respects the symmetry requirement is
+        The power of the sign \(\sigma\) already shows with just two particles. Putting one particle in each of two mutually orthogonal, normalised single-particle states \(\psi_a\) and \(\psi_b\), the two-particle state that respects the symmetry requirement is
       </p>
       <div class="eq">\[
         \Psi_\sigma(x_1,x_2)=\frac{1}{\sqrt2}\Bigl[\,\psi_a(x_1)\,\psi_b(x_2)+\sigma\,\psi_b(x_1)\,\psi_a(x_2)\,\Bigr]
       \]</div>
       <p class="ja">
-        と書けます（\(\hat P\Psi_\sigma=\sigma\Psi_\sigma\) を確かめてみてください）。（なお、先頭の \(\dfrac{1}{\sqrt2}\) で正しく規格化されるのは、\(\psi_a\) と \(\psi_b\) が互いに直交する場合です。）ここで二つの粒子を<b>同じ状態</b>に入れてみます（\(b=a\)）。\(\sigma=+1\) なら \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) となり、何の問題もありません。ところが \(\sigma=-1\) では
+        と書けます（\(\hat P\Psi_\sigma=\sigma\Psi_\sigma\) を確かめてみてください）。ここで二つの粒子を<b>同じ状態</b>に入れてみます（\(b=a\)）。\(\sigma=+1\) なら \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) となり、何の問題もありません。ところが \(\sigma=-1\) では
       </p>
       <p class="en">
-        (check that \(\hat P\Psi_\sigma=\sigma\Psi_\sigma\)). (The prefactor \(\dfrac{1}{\sqrt2}\) normalises the state correctly only when \(\psi_a\) and \(\psi_b\) are mutually orthogonal.) Now try to put both particles in the <b>same</b> state, \(b=a\). For \(\sigma=+1\) we get \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) — perfectly fine. But for \(\sigma=-1\),
+        (check that \(\hat P\Psi_\sigma=\sigma\Psi_\sigma\)). Now try to put both particles in the <b>same</b> state, \(b=a\). For \(\sigma=+1\) we get \(\Psi_+\propto\psi_a(x_1)\psi_a(x_2)\) — perfectly fine. But for \(\sigma=-1\),
       </p>
       <div class="eq">\[
         \Psi_-(x_1,x_2)=\frac{1}{\sqrt2}\Bigl[\,\psi_a(x_1)\,\psi_a(x_2)-\psi_a(x_1)\,\psi_a(x_2)\,\Bigr]=0.
