@@ -19,9 +19,9 @@
   .toy-title {
     font-family: 'Mochiy Pop One', 'Yusei Magic', 'Noto Sans JP', sans-serif;
     font-weight: 400;
-    font-size: clamp(2.8rem, 12vw, 6.6rem);
+    font-size: clamp(2.2rem, 10.4vw, 6.3rem);
     line-height: 1.05;
-    letter-spacing: 0.01em;
+    letter-spacing: -0.045em;
     display: inline-block;
     white-space: nowrap;
     /* hand-drawn / crayon edge roughening */
@@ -30,36 +30,28 @@
   .toy-title span {
     display: inline-block;
     /* thick cream sticker outline + soft dark drop shadow (homage to variety-show titles) */
-    -webkit-text-stroke: 8px #f6f4ee;
+    -webkit-text-stroke: 0.11em #f6f4ee;
     paint-order: stroke fill;
     text-shadow:
-      0 3px 0 rgba(120,80,40,0.26),
-      0 6px 3px rgba(0,0,0,0.20),
-      0 10px 14px rgba(0,0,0,0.28);
+      0 0.045em 0 rgba(95,62,30,0.32),
+      0 0.09em 0.10em rgba(0,0,0,0.26);
     transform: translateY(var(--dy, 0)) rotate(var(--rot, 0deg));
     transition: transform 0.2s ease;
   }
   .toy-title span:hover { transform: translateY(-8px) rotate(0deg) scale(1.08); }
   /* colours sampled from the reference logo, left to right:
      はじめての（そのまま）／ 量子統計 ← おつかい の4色 */
-  .c1 { color: #4594cc; --rot: -5deg; --dy: 2px; }   /* は cyan-blue   */
-  .c2 { color: #5eb267; --rot:  4deg; --dy: -4px; }  /* じ green       */
-  .c3 { color: #e9c730; --rot: -3deg; --dy: 3px; }   /* め gold        */
-  .c4 { color: #d44d2d; --rot:  5deg; --dy: -2px; }  /* て red         */
-  .c5 { color: #d44b77; --rot: -4deg; --dy: 4px; }   /* の pink        */
-  .c6 { color: #92338f; --rot:  3deg; --dy: -3px; }  /* 量 purple(お)  */
-  .c7 { color: #e37f33; --rot: -4deg; --dy: 2px; }   /* 子 orange(つ)  */
-  .c8 { color: #9bc734; --rot:  4deg; --dy: -4px; }  /* 統 green(か)   */
-  .c9 { color: #39639f; --rot: -5deg; --dy: 3px; }   /* 計 blue(い)    */
+  .c1 { color: #4594cc; --rot: -7deg; --dy: 4px; }   /* は cyan-blue   */
+  .c2 { color: #5eb267; --rot: 6deg; --dy: -7px; }  /* じ green       */
+  .c3 { color: #e9c730; --rot: -5deg; --dy: 5px; }   /* め gold        */
+  .c4 { color: #e0492a; --rot: 7deg; --dy: -4px; }  /* て red         */
+  .c5 { color: #d8548a; --rot: -6deg; --dy: 7px; }   /* の pink        */
+  .c6 { color: #92338f; --rot: 5deg; --dy: -6px; }  /* 量 purple(お)  */
+  .c7 { color: #e37f33; --rot: -6deg; --dy: 3px; }   /* 子 orange(つ)  */
+  .c8 { color: #9bc734; --rot: 7deg; --dy: -7px; }  /* 統 green(か)   */
+  .c9 { color: #39639f; --rot: -8deg; --dy: 5px; }   /* 計 blue(い)    */
   @media (max-width: 520px) {
     .toy-title { font-size: clamp(1.9rem, 9.4vw, 3.2rem); }
-    .toy-title span {
-      -webkit-text-stroke-width: 4px;
-      text-shadow:
-        0 2px 0 rgba(120,80,40,0.26),
-        0 4px 2px rgba(0,0,0,0.20),
-        0 6px 8px rgba(0,0,0,0.26);
-    }
     .toy-title-wrap { padding: 1.1rem 0.2rem; margin: 1.4rem 0 0.8rem; }
     .card { padding: 1.15rem 0.95rem; }
     .card h2 { font-size: 1.22rem; }
@@ -142,7 +134,7 @@
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <filter id="crayon">
     <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" seed="7" result="n"/>
-    <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
 </svg>
 
