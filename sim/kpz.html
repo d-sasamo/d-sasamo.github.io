@@ -150,14 +150,19 @@
       <p class="ja">
         つまり最初は \(W \sim t^{\beta}\) で成長し、相関長が系のサイズに達する
         \(t \sim L^{z}\) で成長が止まって \(W \sim L^{\alpha}\)
-        に飽和します（このページの設定 \(L = 1024\) では飽和は \(t \sim 3\times10^4\) 層あたりで、
-        プロット窓のすぐ外にあります）。
+        に飽和します。このページの設定 \(L = 1024\) では \(L^{z} \approx 3\times10^4\) 層ですが、
+        これは係数を無視したスケーリング評価で、実際には一桁ほど早い \(t \sim 4\times10^3\)
+        層あたりから成長の鈍りが見え始めます。プロット右端で赤い曲線が破線 \(t^{1/3}\)
+        から下に外れて寝てくるのは、まさにこの飽和クロスオーバーの入り口です。
       </p>
       <p class="en">
         That is, the width first grows as \(W \sim t^{\beta}\), and saturates at
         \(W \sim L^{\alpha}\) once the correlation length reaches the system size
-        at \(t \sim L^{z}\) (for the present \(L = 1024\),
-        saturation sits near \(t \sim 3\times10^4\) monolayers, just outside the plot window).
+        at \(t \sim L^{z}\). For the present \(L = 1024\) this gives \(L^{z} \approx 3\times10^4\)
+        monolayers, but that scaling estimate ignores prefactors: in practice the growth starts to
+        bend over about a decade earlier, around \(t \sim 4\times10^3\). The flattening of the red
+        curve below the dashed \(t^{1/3}\) guide near the right edge of the plot is precisely the
+        onset of this saturation crossover.
       </p>
       <p class="ja">
         この普遍クラスの連続記述が、KPZ（Kardar–Parisi–Zhang）方程式です。
