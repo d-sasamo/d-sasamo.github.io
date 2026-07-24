@@ -108,6 +108,16 @@ section { padding: 4.5rem 0 1rem; }
 
 /* --- Hero --- */
 .hero { padding: 6.5rem 0 3rem; }
+.hero-flex { display: flex; align-items: center; justify-content: space-between; gap: 2.5rem; }
+.hero-main { min-width: 0; }
+.hero-photo {
+  flex: 0 0 auto;
+  width: 172px; height: 172px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+}
 .hero-kicker {
   color: var(--accent2); font-size: 0.9rem; letter-spacing: 0.18em;
   text-transform: uppercase; margin-bottom: 1rem;
@@ -274,6 +284,8 @@ body.has-panels section.panel { padding-top: 3.5rem; min-height: 55vh; }
   .nav-links li { white-space: nowrap; flex: 0 0 auto; }
   .lang-btn { padding: 0.32rem 0.65rem; font-size: 0.8rem; }
   .hero-sub { font-size: 0.98rem; }
+  .hero-flex { flex-direction: column-reverse; align-items: flex-start; gap: 1.6rem; }
+  .hero-photo { width: 128px; height: 128px; align-self: center; }
   .card { padding: 1.15rem 0.95rem; }
   .card img, .card canvas { max-width: 100%; height: auto; }
   .sim-canvas-box { max-width: 100%; }
