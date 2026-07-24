@@ -112,7 +112,7 @@ section { padding: 4.5rem 0 1rem; }
 .hero-main { min-width: 0; }
 .hero-photo {
   flex: 0 0 auto;
-  width: 258px; height: 322px;
+  width: 235px; height: 357px;
   border-radius: 20px;
   object-fit: cover;
   border: 3px solid var(--border);
@@ -271,6 +271,10 @@ details.book-group .group-body .card { background: rgba(255,255,255,0.03); }
 .nav-links a.current { color: var(--text); }
 body.has-panels section.panel { padding-top: 3.5rem; min-height: 55vh; }
 
+/* --- EN nav: keep labels on one line --- */
+body.lang-en .nav-links a { white-space: nowrap; }
+body.lang-en .nav-links { gap: 1.15rem; }
+
 /* ---- mobile nav & type ---- */
 @media (max-width: 640px) {
   .nav { padding: 0.7rem 0.8rem; gap: 0.55rem; }
@@ -285,7 +289,7 @@ body.has-panels section.panel { padding-top: 3.5rem; min-height: 55vh; }
   .lang-btn { padding: 0.32rem 0.65rem; font-size: 0.8rem; }
   .hero-sub { font-size: 0.98rem; }
   .hero-flex { flex-direction: column; align-items: flex-start; gap: 1.8rem; }
-  .hero-photo { width: 190px; height: 238px; align-self: center; }
+  .hero-photo { width: 170px; height: 258px; align-self: center; }
   .card { padding: 1.15rem 0.95rem; }
   .card img, .card canvas { max-width: 100%; height: auto; }
   .sim-canvas-box { max-width: 100%; }
