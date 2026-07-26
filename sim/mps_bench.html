@@ -107,7 +107,7 @@
         およそ1桁ずつ落ちていきます。<b>(b)</b> MPS の転送行列から求めた相関長 \(\xi(\chi)\)。
         臨界点では真の相関長は無限大ですが、有限の \(\chi\) が保持できるエンタングルメントを
         頭打ちにするため、MPS は有限の相関長を持ちます。その成長は有限エンタングルメント・
-        スケーリング \(\xi \propto \chi^{\kappa}\)（破線、Ising ユニバーサリティクラス \(c = 1/2\) に対する理論値
+        スケーリング \(\xi \propto \chi^{\kappa}\)（破線、Ising ユニバーサリティクラス \(c = \dfrac{1}{2}\) に対する理論値
         \(\kappa \approx 2.034\)）によく従います。実際 \(\chi = 16 \to 32\) では \(\xi\) が 76 → 311 と、理論比
         \(2^{2.03} \approx 4.1\) 倍で伸びています。白抜きの \(\chi = 64\) の点が直線から下に
         ずれているのは、同じ反復回数では収束しきらなかったためで、臨界点近傍で MPS を
@@ -119,7 +119,7 @@
         MPS transfer matrix. At criticality the true correlation length is infinite, but a
         finite \(\chi\) caps the entanglement the state can hold, so the MPS acquires a finite \(\xi\).
         Its growth follows the finite-entanglement scaling \(\xi \propto \chi^{\kappa}\) (dashed line;
-        the theoretical value \(\kappa \approx 2.034\) for the Ising universality class, \(c = 1/2\)).
+        the theoretical value \(\kappa \approx 2.034\) for the Ising universality class, \(c = \dfrac{1}{2}\)).
         Indeed, from \(\chi = 16\) to 32, \(\xi\) grows from 76 to 311 — the predicted factor of
         \(2^{2.03} \approx 4.1\). The open \(\chi = 64\) point falls below the line because it did not
         fully converge within the same sweep budget, illustrating how steeply the cost of
@@ -165,14 +165,14 @@
       <div class="eq">\[ \langle \sigma^{x} \rangle \;=\; \left( 1 - h^{2} \right)^{1/8} \qquad (h < 1) \]</div>
       <p class="ja">
         という閉じた形を取ることが知られています。\(h_c = 1\) の量子相転移は
-        2次元古典 Ising 模型と同じユニバーサリティクラス（セントラルチャージ \(c = 1/2\) の共形場理論）に属します。
+        2次元古典 Ising 模型と同じユニバーサリティクラス（セントラルチャージ \(c = \dfrac{1}{2}\) の共形場理論）に属します。
         つまりこの模型では、比べるべき「正解」がすべて手元にある——数値手法のベンチマークとして
         理想的な舞台です。
       </p>
       <p class="en">
         The quantum phase transition at \(h_c = 1\) belongs to the same
         universality class as the 2D classical Ising model — a conformal field theory with
-        central charge \(c = 1/2\). In other words, every "right answer" is available in
+        central charge \(c = \dfrac{1}{2}\). In other words, every "right answer" is available in
         closed form, making this model the ideal benchmark stage for a numerical method.
       </p>
 
@@ -229,7 +229,7 @@
         accommodate. Yet even here the MPS does not break — it fails gracefully. The
         entanglement cap acts as an effective cutoff on the correlation length,
       </p>
-      <div class="eq">\[ \xi(\chi) \;\propto\; \chi^{\kappa}, \qquad \kappa \;=\; \frac{6}{c\left( \sqrt{12/c} + 1 \right)} \;\approx\; 2.034 \quad (c = 1/2) \]</div>
+      <div class="eq">\[ \xi(\chi) \;\propto\; \chi^{\kappa}, \qquad \kappa \;=\; \frac{6}{c\left( \sqrt{12/c} + 1 \right)} \;\approx\; 2.034 \quad (c = \dfrac{1}{2}) \]</div>
       <p class="ja">
         という有限エンタングルメント・スケーリングに従います（Pollmann らによる 2009 年の結果）。
         図3(b) はまさにこの法則を示しており、逆に言えば、\(\chi\) を系統的に変えて外挿することで
