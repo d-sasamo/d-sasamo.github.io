@@ -9917,14 +9917,14 @@ z
         (multiply numerator and denominator by \(e^{-(\varepsilon-\mu)/k_{\mathrm B}T}\) to check in one line). So the deviation below \(\mu\) takes the same Fermi-function shape as above. Cut the integral at \(\varepsilon=\mu\) and substitute \(\varepsilon=\mu-k_{\mathrm B}T\,x\) below and \(\varepsilon=\mu+k_{\mathrm B}T\,x\) above:
       </p>
       <div class="eq">\[
-        \Delta I=-k_{\mathrm B}T\!\int_0^{\dfrac{\mu}{k_{\mathrm B}T}}\!\frac{g(\mu-k_{\mathrm B}T\,x)}{e^{x}+1}\,dx
+        \Delta I=-k_{\mathrm B}T\!\int_0^{\frac{\mu}{k_{\mathrm B}T}}\!\frac{g(\mu-k_{\mathrm B}T\,x)}{e^{x}+1}\,dx
         \;+\;k_{\mathrm B}T\!\int_0^{\infty}\!\frac{g(\mu+k_{\mathrm B}T\,x)}{e^{x}+1}\,dx .
       \]</div>
       <p class="ja">
-        第一項の積分上限は本来 \(\dfrac{\mu}{k_{\mathrm B}T}\) ですが、被積分関数は \(e^{-x}\) で潰れるので、低温（\(\dfrac{\mu}{k_{\mathrm B}T}\gg1\)）では上限を \(\infty\) に伸ばしても誤差は \(e^{-\dfrac{\mu}{k_{\mathrm B}T}}\) 程度——これから拾うどの冪の項よりも小さい、指数関数的に小さい誤差です。伸ばしてしまえば二つの積分が同じ形にそろい、
+        第一項の積分上限は本来 \(\dfrac{\mu}{k_{\mathrm B}T}\) ですが、被積分関数は \(e^{-x}\) で潰れるので、低温（\(\dfrac{\mu}{k_{\mathrm B}T}\gg1\)）では上限を \(\infty\) に伸ばしても誤差は \(e^{-\frac{\mu}{k_{\mathrm B}T}}\) 程度——これから拾うどの冪の項よりも小さい、指数関数的に小さい誤差です。伸ばしてしまえば二つの積分が同じ形にそろい、
       </p>
       <p class="en">
-        The first integral really stops at \(\dfrac{\mu}{k_{\mathrm B}T}\), but the integrand dies off like \(e^{-x}\), so at low temperature (\(\dfrac{\mu}{k_{\mathrm B}T}\gg1\)) extending the limit to \(\infty\) costs only \(\sim e^{-\dfrac{\mu}{k_{\mathrm B}T}}\) — exponentially small, below every power we are about to keep. With both limits at \(\infty\) the two integrals combine:
+        The first integral really stops at \(\dfrac{\mu}{k_{\mathrm B}T}\), but the integrand dies off like \(e^{-x}\), so at low temperature (\(\dfrac{\mu}{k_{\mathrm B}T}\gg1\)) extending the limit to \(\infty\) costs only \(\sim e^{-\frac{\mu}{k_{\mathrm B}T}}\) — exponentially small, below every power we are about to keep. With both limits at \(\infty\) the two integrals combine:
       </p>
       <div class="eq">\[
         \Delta I\approx k_{\mathrm B}T\int_0^{\infty}\frac{g(\mu+k_{\mathrm B}T\,x)-g(\mu-k_{\mathrm B}T\,x)}{e^{x}+1}\,dx .
