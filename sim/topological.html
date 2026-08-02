@@ -246,7 +246,7 @@
             \frac{1}{4\pi}\int_{S} K(\boldsymbol r)\,dA \;=\; 1-g .
           \]</div>
           <p class="ja">
-            これが<b>ガウス・ボネの定理</b>です。右辺は種数 \(g\)（穴の数）だけで決まる整数。左辺の被積分関数 \(K(\boldsymbol r)\) は場所ごとに好き勝手な値をとるのに、足し合わせた総量は決して変わりません。たとえば半径 \(R\) の球面では \(K=1/R^{2}\)、面積は \(4\pi R^{2}\) なので、積分は \(R\) によらず \(4\pi\times\frac{1}{4\pi}=1\)、すなわち \(g=0\)。球をどんなにへこませても、へこみで減った曲率は必ずどこかの出っ張りが補います。
+            これが<b>ガウス・ボネの定理</b>です。右辺は種数 \(g\)（穴の数）だけで決まる整数。左辺の被積分関数 \(K(\boldsymbol r)\) は場所ごとに好き勝手な値をとるのに、足し合わせた総量は決して変わりません。たとえば半径 \(R\) の球面では \(K=1/R^{2}\)、面積は \(4\pi R^{2}\) なので、積分は \(R\) によらず \(4\pi\times\dfrac{1}{4\pi}=1\)、すなわち \(g=0\)。球をどんなにへこませても、へこみで減った曲率は必ずどこかの出っ張りが補います。
           </p>
           <p class="en">
             This is the <b>Gauss–Bonnet theorem</b>. The right-hand side is an integer determined solely by the genus \(g\). The integrand \(K(\boldsymbol r)\) can take arbitrary values from place to place, yet its total never changes. For a sphere of radius \(R\), for instance, \(K=1/R^{2}\) and the area is \(4\pi R^{2}\), so the integral equals \(1\) independently of \(R\) — hence \(g=0\). Dent the sphere however you like: whatever curvature the dent removes, some bulge elsewhere restores.
@@ -262,17 +262,17 @@
 
       <h3><span class="ja">1.3 このノートの歩き方</span><span class="en">1.3 How to walk through this note</span></h3>
       <p class="ja">
-        このノートは、量子力学の初歩（状態ベクトル、シュレーディンガー方程式、スピン）だけを仮定して、トポロジカル物性の主要な景色をゼロから組み立てます。道順は、村上修一先生（東京科学大学）が慶應義塾大学の大学院講義「物性物理学特論A」として行い、動画公開されている一連の講義の流れをお手本にしました（§11 の参考文献にリンクがあります）。§2 の<b>ベリー位相</b>がすべての土台です。そこから §3 で電子の運動へ、§4 で量子ホール効果へと登り、§5–§7 でスピンホール効果とトポロジカル絶縁体、§8 で分極の現代理論、§9 でワイル半金属とマヨラナ粒子へ進み、最後に §10 の<b>対称性による 10 クラス分類</b>（tenfold way）——「トポロジカル物質の周期表」——で全体を見渡します。
+        このノートは、量子力学の初歩（状態ベクトル、シュレーディンガー方程式、スピン）だけを仮定して、トポロジカル物性の主要な景色をゼロから組み立てます。道順は、村上修一先生（現・東京大学）が慶應義塾大学の大学院講義「物性物理学特論A」として行い、動画公開されている一連の講義の流れをお手本にしました（§11 の参考文献にリンクがあります）。村上先生には齊藤英治先生との共著『スピン流とトポロジカル絶縁体』（後半のトポロジカル物性の章を村上先生が執筆）もあり、本ノートの §5–§7 と特に重なりが大きいので、併読をおすすめします。§2 の<b>ベリー位相</b>がすべての土台です。そこから §3 で電子の運動へ、§4 で量子ホール効果へと登り、§5–§7 でスピンホール効果とトポロジカル絶縁体、§8 で分極の現代理論、§9 でワイル半金属とマヨラナ粒子へ進み、最後に §10 の<b>対称性による 10 クラス分類</b>（tenfold way）——「トポロジカル物質の周期表」——で全体を見渡します。
       </p>
       <p class="en">
-        Assuming only elementary quantum mechanics (state vectors, the Schrödinger equation, spin), this note builds the main landscape of topological condensed-matter physics from scratch. The route follows the publicly available video series of graduate lectures ("Advanced Condensed Matter Physics A") delivered at Keio University by Prof. Shuichi Murakami (Institute of Science Tokyo) — linked in the references of §11. The <b>Berry phase</b> in §2 is the foundation of everything. From there we climb to electron dynamics in §3 and the quantum Hall effect in §4, proceed through the spin Hall effect and topological insulators in §5–§7, the modern theory of polarization in §8, Weyl semimetals and Majorana fermions in §9, and finally survey the whole landscape with the <b>tenfold way</b> — the "periodic table of topological matter" — in §10.
+        Assuming only elementary quantum mechanics (state vectors, the Schrödinger equation, spin), this note builds the main landscape of topological condensed-matter physics from scratch. The route follows the publicly available video series of graduate lectures ("Advanced Condensed Matter Physics A") delivered at Keio University by Prof. Shuichi Murakami (now at the University of Tokyo) — linked in the references of §11. Prof. Murakami also co-authored, with Prof. Eiji Saitoh, the book <i>Spin Current and Topological Insulators</i> (its topological chapters are Murakami's); it overlaps especially with §5–§7 of this note and makes an excellent companion. The <b>Berry phase</b> in §2 is the foundation of everything. From there we climb to electron dynamics in §3 and the quantum Hall effect in §4, proceed through the spin Hall effect and topological insulators in §5–§7, the modern theory of polarization in §8, Weyl semimetals and Majorana fermions in §9, and finally survey the whole landscape with the <b>tenfold way</b> — the "periodic table of topological matter" — in §10.
       </p>
       <p class="ja">
-        本文中の図はすべて、このノートのために書いたコードによる数値計算の結果です。また、姉妹ページの
+        本文中の図はすべて数値計算で作成したものです。また、姉妹ページの
         <a href="ssh.html">SSH 模型</a>・<a href="kanemele.html">Kane–Mele 模型</a>・<a href="hofstadter.html">Hofstadter バタフライ</a>では、ここで学ぶ模型をブラウザ上で対話的に動かせます。あわせてお使いください。
       </p>
       <p class="en">
-        Every figure in this note is the result of numerical calculations written specifically for it. The companion pages —
+        Every figure in this note is numerically computed. The companion pages —
         <a href="ssh.html">the SSH model</a>, <a href="kanemele.html">the Kane–Mele model</a>, and <a href="hofstadter.html">the Hofstadter butterfly</a> — let you play with the models interactively in your browser; use them alongside the text.
       </p>
 
@@ -372,7 +372,7 @@
         Hence \(e^{i\gamma_n[C]}\) is a <b>gauge-invariant observable</b>. The seemingly awkward property of being "defined modulo \(2\pi\)" is precisely the origin of the integer invariants (Chern numbers) to come.
       </p>
 
-      <h3><span class="ja">2.3 ベリー曲率——k 空間の「磁場」</span><span class="en">2.3 Berry curvature — a "magnetic field" in parameter space</span></h3>
+      <h3><span class="ja">2.3 ベリー曲率——\(\boldsymbol k\) 空間の「磁場」</span><span class="en">2.3 Berry curvature — a "magnetic field" in parameter space</span></h3>
       <p class="ja">
         電磁気学で \(\boldsymbol B(\boldsymbol r)=\nabla\times\boldsymbol A(\boldsymbol r)\) がゲージ不変であるように、ベリー接続の回転
       </p>
@@ -549,10 +549,10 @@
       <div class="keybox">
         <div class="lbl"><span class="ja">この章の要点</span><span class="en">Key points</span></div>
         <p class="ja" style="margin:0.4rem 0 0.6rem;">
-          パラメータをゆっくり一周させると、状態は動力学位相のほかに、経路の幾何だけで決まるベリー位相 \(\gamma_n[C]=\oint_C\boldsymbol{\mathcal A}_n(\boldsymbol R)\cdot d\boldsymbol R\) を獲得する。接続 \(\boldsymbol{\mathcal A}_n(\boldsymbol R)\) はゲージ依存だが、\(e^{i\gamma_n[C]}\) と曲率 \(\boldsymbol\Omega_n(\boldsymbol R)\) は観測可能。縮退点は曲率のモノポールであり、それを囲む閉曲面の曲率フラックスは \(2\pi\times\)整数（チャーン数）に量子化される。
+          パラメータをゆっくり一周させると、状態は動力学位相のほかに、経路の幾何だけで決まるベリー位相 \(\gamma_n[C]=\displaystyle\oint_C\boldsymbol{\mathcal A}_n(\boldsymbol R)\cdot d\boldsymbol R\) を獲得する。接続 \(\boldsymbol{\mathcal A}_n(\boldsymbol R)\) はゲージ依存だが、\(e^{i\gamma_n[C]}\) と曲率 \(\boldsymbol\Omega_n(\boldsymbol R)\) は観測可能。縮退点は曲率のモノポールであり、それを囲む閉曲面の曲率フラックスは \(2\pi\times\)整数（チャーン数）に量子化される。
         </p>
         <p class="en" style="margin:0.4rem 0 0.6rem;">
-          Carried slowly around a loop, a state acquires — besides the dynamical phase — a Berry phase \(\gamma_n[C]=\oint_C\boldsymbol{\mathcal A}_n(\boldsymbol R)\cdot d\boldsymbol R\) fixed by the geometry of the path alone. The connection \(\boldsymbol{\mathcal A}_n(\boldsymbol R)\) is gauge dependent, but \(e^{i\gamma_n[C]}\) and the curvature \(\boldsymbol\Omega_n(\boldsymbol R)\) are observable. Degeneracy points are curvature monopoles, and the flux through any surface enclosing one is quantized to \(2\pi\times\)integer — the Chern number.
+          Carried slowly around a loop, a state acquires — besides the dynamical phase — a Berry phase \(\gamma_n[C]=\displaystyle\oint_C\boldsymbol{\mathcal A}_n(\boldsymbol R)\cdot d\boldsymbol R\) fixed by the geometry of the path alone. The connection \(\boldsymbol{\mathcal A}_n(\boldsymbol R)\) is gauge dependent, but \(e^{i\gamma_n[C]}\) and the curvature \(\boldsymbol\Omega_n(\boldsymbol R)\) are observable. Degeneracy points are curvature monopoles, and the flux through any surface enclosing one is quantized to \(2\pi\times\)integer — the Chern number.
         </p>
       </div>
     </div>
@@ -655,10 +655,10 @@
         \qquad\text{（空間反転 / inversion）}.
       \]</div>
       <p class="ja">
-        両方が揃うと \(\boldsymbol\Omega_n(\boldsymbol k)\equiv\boldsymbol 0\)：ベリー曲率は全滅します。つまりベリー曲率の物理を見たければ、<b>時間反転か空間反転のどちらかを壊す</b>必要があります。時間反転を壊す代表が磁性体（この章の異常ホール効果）、空間反転を壊す代表が GaAs のような閃亜鉛鉱型結晶や表面・界面です（§5, §9 で活躍します）。なお時間反転対称な系でも \(\boldsymbol k\) ごとの曲率は有限でありえます——奇関数なので BZ 全体で足すとゼロになるだけです。この「隠れた」曲率が §5 のスピンホール効果の資源になります。
+        両方が揃うと \(\boldsymbol\Omega_n(\boldsymbol k)\equiv\boldsymbol 0\)：ベリー曲率は全滅します。つまりベリー曲率の物理を見たければ、<b>時間反転か空間反転のどちらかを壊す</b>必要があります。時間反転を壊す代表が磁性体（この章の異常ホール効果）、空間反転を壊す代表が \(\mathrm{GaAs}\) のような閃亜鉛鉱型結晶や表面・界面です（§5, §9 で活躍します）。なお時間反転対称な系でも \(\boldsymbol k\) ごとの曲率は有限でありえます——奇関数なので BZ 全体で足すとゼロになるだけです。この「隠れた」曲率が §5 のスピンホール効果の資源になります。
       </p>
       <p class="en">
-        If both are present, \(\boldsymbol\Omega_n(\boldsymbol k)\equiv\boldsymbol 0\): the curvature is wiped out entirely. To see Berry-curvature physics, one must therefore <b>break either time reversal or inversion</b>. Magnets break the former (this section's anomalous Hall effect); zinc-blende crystals such as GaAs, and surfaces or interfaces, break the latter (they star in §5 and §9). Note that even in a time-reversal-symmetric system the curvature can be finite at each \(\boldsymbol k\) — being odd, it merely sums to zero over the BZ. This "hidden" curvature is the resource behind the spin Hall effect of §5.
+        If both are present, \(\boldsymbol\Omega_n(\boldsymbol k)\equiv\boldsymbol 0\): the curvature is wiped out entirely. To see Berry-curvature physics, one must therefore <b>break either time reversal or inversion</b>. Magnets break the former (this section's anomalous Hall effect); zinc-blende crystals such as \(\mathrm{GaAs}\), and surfaces or interfaces, break the latter (they star in §5 and §9). Note that even in a time-reversal-symmetric system the curvature can be finite at each \(\boldsymbol k\) — being odd, it merely sums to zero over the BZ. This "hidden" curvature is the resource behind the spin Hall effect of §5.
       </p>
 
       <h3><span class="ja">3.4 内因性異常ホール効果</span><span class="en">3.4 The intrinsic anomalous Hall effect</span></h3>
@@ -743,10 +743,10 @@
         R_{xy}=\frac{1}{\nu}\,\frac{h}{e^{2}},\qquad \nu=1,2,3,\dots
       \]</div>
       <p class="ja">
-        で、しかもプラトー上では縦抵抗が \(R_{xx}\to 0\)（無散逸伝導！）。試料の形・サイズ・不純物濃度・母材（GaAs でも Si でもグラフェンでも）を一切問わず、同じ値が出ます。この普遍性は §1 の言葉でいえば「トポロジカル不変量が測られている」ことの証拠です。では、その不変量の正体は何か。
+        で、しかもプラトー上では縦抵抗が \(R_{xx}\to 0\)（無散逸伝導！）。試料の形・サイズ・不純物濃度・母材（\(\mathrm{GaAs}\) でも \(\mathrm{Si}\) でもグラフェンでも）を一切問わず、同じ値が出ます。この普遍性は §1 の言葉でいえば「トポロジカル不変量が測られている」ことの証拠です。では、その不変量の正体は何か。
       </p>
       <p class="en">
-        while on each plateau the longitudinal resistance vanishes, \(R_{xx}\to 0\) — dissipationless transport! The values are independent of sample shape, size, impurity content, and host material (GaAs, Si, graphene alike). In the language of §1, this universality is evidence that <em>a topological invariant is being measured</em>. What is that invariant?
+        while on each plateau the longitudinal resistance vanishes, \(R_{xx}\to 0\) — dissipationless transport! The values are independent of sample shape, size, impurity content, and host material (\(\mathrm{GaAs}\), \(\mathrm{Si}\), graphene alike). In the language of §1, this universality is evidence that <em>a topological invariant is being measured</em>. What is that invariant?
       </p>
 
       <h3><span class="ja">4.2 ランダウ準位——強磁場が作る平坦バンド</span><span class="en">4.2 Landau levels — flat bands made by a strong field</span></h3>
@@ -5550,7 +5550,7 @@ z
       <div class="keybox">
         <div class="lbl"><span class="ja">この章の要点</span><span class="en">Key points</span></div>
         <p class="ja" style="margin:0.4rem 0 0.6rem;">
-          ギャップのある 2 次元系のホール伝導度は \(\sigma_{xy}=-(e^{2}/h)\sum_{n\in\mathrm{occ}}C_n\)、チャーン数 \(C_n\) は BZ（トーラス）上のベリー曲率の総フラックス \(\div 2\pi\) で、必ず整数。ラフリンの磁束挿入はこれを「量子化された電荷ポンプ」として、バルク・エッジ対応は「端のカイラルチャネルの本数」として言い換える。三つの見方はすべて同じ整数を指している。
+          ギャップのある 2 次元系のホール伝導度は \(\sigma_{xy}=-(e^{2}/h)\sum_{n\in\mathrm{occ}}C_n\)、チャーン数 \(C_n\) は BZ（トーラス）上のベリー曲率の総フラックスを \(2\pi\) で割ったもので、必ず整数。ラフリンの磁束挿入はこれを「量子化された電荷ポンプ」として、バルク・エッジ対応は「端のカイラルチャネルの本数」として言い換える。三つの見方はすべて同じ整数を指している。
         </p>
         <p class="en" style="margin:0.4rem 0 0.6rem;">
           The Hall conductivity of a gapped 2D system is \(\sigma_{xy}=-(e^{2}/h)\sum_{n\in\mathrm{occ}}C_n\), where the Chern number \(C_n\) — total Berry-curvature flux through the BZ torus over \(2\pi\) — is necessarily an integer. Laughlin's flux insertion restates it as a quantized charge pump; bulk–edge correspondence restates it as the number of chiral edge channels. All three viewpoints point at the same integer.
@@ -5605,10 +5605,10 @@ z
         \tag{5.1}
       \]</div>
       <p class="ja">
-        つまり<b>上向きスピンには上向きの、下向きスピンには下向きの「\(\boldsymbol k\) 空間磁場」が見えている</b>わけです。この内因性スピンホール効果は 2003 年に村上・永長・Zhang（\(p\) 型 GaAs のラッティンジャー模型）と Sinova ら（ラシュバ型 2 次元電子系）によって理論的に提唱されました。散乱時間によらず、バンド構造だけで決まる点は §3.4 の内因性異常ホール効果と同じです。もちろん現実には、不純物によるスキュー散乱とサイドジャンプ（§3 コラムの 3 兄弟）もスピンホール効果を生みます。物質ごとにどの機構が支配的かを腑分けするのが、この分野の実験と理論の腕の見せ所です。
+        つまり<b>上向きスピンには上向きの、下向きスピンには下向きの「\(\boldsymbol k\) 空間磁場」が見えている</b>わけです。この内因性スピンホール効果は 2003 年に村上・永長・Zhang（\(p\) 型 \(\mathrm{GaAs}\) のラッティンジャー模型）と Sinova ら（ラシュバ型 2 次元電子系）によって理論的に提唱されました。散乱時間によらず、バンド構造だけで決まる点は §3.4 の内因性異常ホール効果と同じです。もちろん現実には、不純物によるスキュー散乱とサイドジャンプ（§3 コラムの 3 兄弟）もスピンホール効果を生みます。物質ごとにどの機構が支配的かを腑分けするのが、この分野の実験と理論の腕の見せ所です。
       </p>
       <p class="en">
-        In other words, <b>up spins see an upward "\(\boldsymbol k\)-space magnetic field," down spins a downward one</b>. This intrinsic spin Hall effect was proposed theoretically in 2003 by Murakami, Nagaosa and Zhang (Luttinger model of \(p\)-type GaAs) and by Sinova et al. (Rashba 2D electron gas). Like the intrinsic anomalous Hall effect of §3.4, it involves no scattering time — band structure alone. In reality, skew scattering and side jump (the three brothers of the §3 column) also generate spin Hall currents, and dissecting which mechanism dominates in which material is where experiment and theory show their skill.
+        In other words, <b>up spins see an upward "\(\boldsymbol k\)-space magnetic field," down spins a downward one</b>. This intrinsic spin Hall effect was proposed theoretically in 2003 by Murakami, Nagaosa and Zhang (Luttinger model of \(p\)-type \(\mathrm{GaAs}\)) and by Sinova et al. (Rashba 2D electron gas). Like the intrinsic anomalous Hall effect of §3.4, it involves no scattering time — band structure alone. In reality, skew scattering and side jump (the three brothers of the §3 column) also generate spin Hall currents, and dissecting which mechanism dominates in which material is where experiment and theory show their skill.
       </p>
       <p class="ja small">
         正直な注意をひとつ：スピンはスピン軌道相互作用の下では保存量ではないので、「スピン流」の定義自体に任意性があります（式 (5.1) の \(\hbar/2e\) は慣用の規格化です）。この微妙さは今も専門家を悩ませますが、次章で見る量子スピンホール相では、スピン流の代わりに \(\mathbb Z_2\) 不変量という定義の明確な量が主役になるため、問題は回避されます。
@@ -5619,10 +5619,10 @@ z
 
       <h3><span class="ja">5.3 実験——見えないスピン流を見る</span><span class="en">5.3 Experiments — seeing the invisible spin current</span></h3>
       <p class="ja">
-        スピン流は電圧計に直接はかかりません。突破口は 2004 年、Kato らが GaAs 細線で、電流を流したときに<b>試料の左右の縁に逆向きのスピンが溜まる</b>様子を磁気光学カー効果で画像化したことでした（横に曲げられたスピンは、端に行き着いて溜まるしかありません）。翌 2005 年には Wunderlich らが 2 次元正孔系で発光の円偏光からスピン蓄積を検出し、こちらは内因性機構が支配的と解釈されています。さらに決定的だったのが<b>逆スピンホール効果</b>（ISHE）です。スピン流を白金などの重金属に注入すると、同じスピン軌道相互作用が今度はスピン流を電荷流に変換し、普通の電圧として測れます（齊藤英治ら、2006 年）。順・逆の変換対が揃ったことで、スピンホール効果は「珍しい現象」から「スピン流の発生器・検出器」という<b>実験室の標準工具</b>に変わりました。現在では、スピンホール効果で生じたスピン流のトルクで磁気メモリの磁化を反転させる技術（スピン軌道トルク）が実用段階にあります。
+        スピン流は電圧計に直接はかかりません。突破口は 2004 年、Kato らが \(\mathrm{GaAs}\) 細線で、電流を流したときに<b>試料の左右の縁に逆向きのスピンが溜まる</b>様子を磁気光学カー効果で画像化したことでした（横に曲げられたスピンは、端に行き着いて溜まるしかありません）。翌 2005 年には Wunderlich らが 2 次元正孔系で発光の円偏光からスピン蓄積を検出し、こちらは内因性機構が支配的と解釈されています。さらに決定的だったのが<b>逆スピンホール効果</b>（ISHE）です。スピン流を白金などの重金属に注入すると、同じスピン軌道相互作用が今度はスピン流を電荷流に変換し、普通の電圧として測れます（齊藤英治ら、2006 年）。順・逆の変換対が揃ったことで、スピンホール効果は「珍しい現象」から「スピン流の発生器・検出器」という<b>実験室の標準工具</b>に変わりました。現在では、スピンホール効果で生じたスピン流のトルクで磁気メモリの磁化を反転させる技術（スピン軌道トルク）が実用段階にあります。
       </p>
       <p class="en">
-        A voltmeter cannot read a spin current directly. The breakthrough came in 2004, when Kato et al. imaged, via the magneto-optical Kerr effect, <b>opposite spins piling up at the two edges</b> of a current-carrying GaAs channel — spins bent sideways have nowhere to go but the edges. In 2005 Wunderlich et al. detected spin accumulation in a 2D hole gas through circularly polarized luminescence, a case interpreted as intrinsic-dominated. Decisive, too, was the <b>inverse spin Hall effect</b> (ISHE): inject a spin current into a heavy metal such as \(\mathrm{Pt}\) and the same spin–orbit coupling converts it into a charge current — an ordinary voltage (Saitoh et al., 2006). With generation and detection in hand, the spin Hall effect turned from a curiosity into a <b>standard laboratory tool</b>; today, spin–orbit-torque switching of magnetic memory built on it is at the practical stage.
+        A voltmeter cannot read a spin current directly. The breakthrough came in 2004, when Kato et al. imaged, via the magneto-optical Kerr effect, <b>opposite spins piling up at the two edges</b> of a current-carrying \(\mathrm{GaAs}\) channel — spins bent sideways have nowhere to go but the edges. In 2005 Wunderlich et al. detected spin accumulation in a 2D hole gas through circularly polarized luminescence, a case interpreted as intrinsic-dominated. Decisive, too, was the <b>inverse spin Hall effect</b> (ISHE): inject a spin current into a heavy metal such as \(\mathrm{Pt}\) and the same spin–orbit coupling converts it into a charge current — an ordinary voltage (Saitoh et al., 2006). With generation and detection in hand, the spin Hall effect turned from a curiosity into a <b>standard laboratory tool</b>; today, spin–orbit-torque switching of magnetic memory built on it is at the practical stage.
       </p>
 
       <h3><span class="ja">5.4 絶縁体でもできないか？——次章への橋</span><span class="en">5.4 Could an insulator do this? — bridge to the next section</span></h3>
@@ -5650,10 +5650,10 @@ z
     <div class="card" id="s6">
       <h2><span class="secnum">6.</span><span class="ja">&#8484;&#8322; トポロジカル絶縁体——量子スピンホール効果</span><span class="en">&#8484;&#8322; topological insulators — the quantum spin Hall effect</span></h2>
       <p class="ja">
-        §5 の夢——時間反転を保ったまま、トポロジカルに保護された何かを作れないか——は、2005 年に Kane と Mele によって実現します。ただしチャーン数は使えません。時間反転対称ならベリー曲率は奇関数で、\(C=\frac{1}{2\pi}\int_{\mathrm{BZ}}d^2k\,\Omega_z(\boldsymbol k)\) は必ずゼロになるからです。彼らが見つけたのは、チャーン数が死んだ後にも生き残る、<b>2 値の不変量 \(\nu\in\{0,1\}\)</b>——\(\mathbb Z_2\) 不変量でした。「偶か奇か」しか区別しないこの控えめな整数が、トポロジカル絶縁体という新物質群の身分証明書になります。
+        §5 の夢——時間反転を保ったまま、トポロジカルに保護された何かを作れないか——は、2005 年に Kane と Mele によって実現します。ただしチャーン数は使えません。時間反転対称ならベリー曲率は奇関数で、\(C=\dfrac{1}{2\pi}\displaystyle\int_{\mathrm{BZ}}d^2k\,\Omega_z(\boldsymbol k)\) は必ずゼロになるからです。彼らが見つけたのは、チャーン数が死んだ後にも生き残る、<b>2 値の不変量 \(\nu\in\{0,1\}\)</b>——\(\mathbb Z_2\) 不変量でした。「偶か奇か」しか区別しないこの控えめな整数が、トポロジカル絶縁体という新物質群の身分証明書になります。
       </p>
       <p class="en">
-        The dream of §5 — something topologically protected with time reversal intact — came true in 2005 through Kane and Mele. The Chern number is of no use here: with time reversal, the Berry curvature is odd and \(C=\frac{1}{2\pi}\int_{\mathrm{BZ}}d^2k\,\Omega_z(\boldsymbol k)\) vanishes identically. What they found instead is a <b>two-valued invariant \(\nu\in\{0,1\}\)</b> — a \(\mathbb Z_2\) invariant — that survives after the Chern number dies. This modest integer, distinguishing only "even or odd," became the identity card of a new class of materials: topological insulators.
+        The dream of §5 — something topologically protected with time reversal intact — came true in 2005 through Kane and Mele. The Chern number is of no use here: with time reversal, the Berry curvature is odd and \(C=\dfrac{1}{2\pi}\displaystyle\int_{\mathrm{BZ}}d^2k\,\Omega_z(\boldsymbol k)\) vanishes identically. What they found instead is a <b>two-valued invariant \(\nu\in\{0,1\}\)</b> — a \(\mathbb Z_2\) invariant — that survives after the Chern number dies. This modest integer, distinguishing only "even or odd," became the identity card of a new class of materials: topological insulators.
       </p>
 
       <h3><span class="ja">6.1 作り方——チャーン絶縁体を 2 枚、逆向きに重ねる</span><span class="en">6.1 The construction — two Chern insulators, stacked with opposite signs</span></h3>
@@ -5694,12 +5694,12 @@ z
         \(\nu=1\) is the <b>topological phase</b> (quantum spin Hall), \(\nu=0\) the trivial insulator. In bulk language, \(\nu\) is a \(\mathbb Z_2\) invariant built from the time-reversal structure of the occupied bands (counting the parity of how gauges are "sewn together" at the TRIM — see the column). The bulk–edge correspondence is isomorphic to the Chern case: <b>at the boundary between insulators with different \(\nu\), an odd number of helical edge pairs must appear</b>.
       </p>
 
-      <h3><span class="ja">6.3 BHZ 模型と HgTe——理論から実験まで 1 年</span><span class="en">6.3 The BHZ model and HgTe — from theory to experiment in one year</span></h3>
+      <h3><span class="ja">6.3 BHZ 模型と \(\mathrm{HgTe}\)——理論から実験まで 1 年</span><span class="en">6.3 The BHZ model and \(\mathrm{HgTe}\) — from theory to experiment in one year</span></h3>
       <p class="ja">
-        グラフェンのスピン軌道ギャップは小さすぎました（\(\sim\mu\mathrm{eV}\)：観測不能）。突破口は 2006 年、Bernevig・Hughes・Zhang（BHZ）による <b>HgTe/CdTe 量子井戸</b>の提案です。\(\mathrm{HgTe}\) は強いスピン軌道相互作用のために \(s\) 的バンドと \(p\) 的バンドの順序が「逆転」した物質で、量子井戸の厚さ \(d\) を変えると、臨界厚 \(d_c\approx 6.3\,\mathrm{nm}\) でバンドの正逆が入れ替わります。BHZ 模型はこの物理を \(4\times 4\)（クラマース対 \(\times\) 2 軌道）の最小模型に蒸留したものです：
+        グラフェンのスピン軌道ギャップは小さすぎました（\(\sim\mu\mathrm{eV}\)：観測不能）。突破口は 2006 年、Bernevig・Hughes・Zhang（BHZ）による <b>\(\mathrm{HgTe}/\mathrm{CdTe}\) 量子井戸</b>の提案です。\(\mathrm{HgTe}\) は強いスピン軌道相互作用のために \(s\) 的バンドと \(p\) 的バンドの順序が「逆転」した物質で、量子井戸の厚さ \(d\) を変えると、臨界厚 \(d_c\approx 6.3\,\mathrm{nm}\) でバンドの正逆が入れ替わります。BHZ 模型はこの物理を \(4\times 4\)（クラマース対 \(\times\) 2 軌道）の最小模型に蒸留したものです：
       </p>
       <p class="en">
-        Graphene's spin–orbit gap turned out hopelessly small (\(\sim\mu\mathrm{eV}\)). The breakthrough came in 2006 with the <b>HgTe/CdTe quantum well</b> proposal of Bernevig, Hughes and Zhang (BHZ). In \(\mathrm{HgTe}\), strong spin–orbit coupling <em>inverts</em> the ordering of the \(s\)-like and \(p\)-like bands; tuning the well thickness \(d\) swaps the ordering back at a critical thickness \(d_c\approx 6.3\,\mathrm{nm}\). The BHZ model distils this into a minimal \(4\times4\) Hamiltonian (Kramers pair \(\times\) two orbitals):
+        Graphene's spin–orbit gap turned out hopelessly small (\(\sim\mu\mathrm{eV}\)). The breakthrough came in 2006 with the <b>\(\mathrm{HgTe}/\mathrm{CdTe}\) quantum well</b> proposal of Bernevig, Hughes and Zhang (BHZ). In \(\mathrm{HgTe}\), strong spin–orbit coupling <em>inverts</em> the ordering of the \(s\)-like and \(p\)-like bands; tuning the well thickness \(d\) swaps the ordering back at a critical thickness \(d_c\approx 6.3\,\mathrm{nm}\). The BHZ model distils this into a minimal \(4\times4\) Hamiltonian (Kramers pair \(\times\) two orbitals):
       </p>
       <div class="eq">\[
         H_{\mathrm{BHZ}}(\boldsymbol k)=
@@ -13146,10 +13146,10 @@ z
       <div class="keybox">
         <div class="lbl"><span class="ja">この章の要点</span><span class="en">Key points</span></div>
         <p class="ja" style="margin:0.4rem 0 0.6rem;">
-          時間反転対称な 2 次元絶縁体は \(\mathbb Z_2\) 不変量 \(\nu\in\{0,1\}\) で分類される。\(\nu=1\)（量子スピンホール相）のエッジには、スピンと進行方向が結びついたヘリカルエッジ状態が奇数対現れ、クラマース定理が交差点のギャップ形成と非磁性不純物による後方散乱を禁止する。BHZ 模型＝QWZ 模型 \(\oplus\) その時間反転コピーであり、HgTe 量子井戸の \(2e^{2}/h\) がその実験的確認である。
+          時間反転対称な 2 次元絶縁体は \(\mathbb Z_2\) 不変量 \(\nu\in\{0,1\}\) で分類される。\(\nu=1\)（量子スピンホール相）のエッジには、スピンと進行方向が結びついたヘリカルエッジ状態が奇数対現れ、クラマース定理が交差点のギャップ形成と非磁性不純物による後方散乱を禁止する。BHZ 模型＝QWZ 模型 \(\oplus\) その時間反転コピーであり、\(\mathrm{HgTe}\) 量子井戸の \(2e^{2}/h\) がその実験的確認である。
         </p>
         <p class="en" style="margin:0.4rem 0 0.6rem;">
-          Time-reversal-symmetric 2D insulators are classified by \(\nu\in\{0,1\}\). At the edge of a \(\nu=1\) (quantum spin Hall) insulator, an odd number of helical pairs appears, with Kramers' theorem forbidding both gap opening at the crossing and backscattering off nonmagnetic impurities. The BHZ model is the QWZ model \(\oplus\) its time-reversed copy; the \(2e^{2}/h\) of HgTe quantum wells is its experimental confirmation.
+          Time-reversal-symmetric 2D insulators are classified by \(\nu\in\{0,1\}\). At the edge of a \(\nu=1\) (quantum spin Hall) insulator, an odd number of helical pairs appears, with Kramers' theorem forbidding both gap opening at the crossing and backscattering off nonmagnetic impurities. The BHZ model is the QWZ model \(\oplus\) its time-reversed copy; the \(2e^{2}/h\) of \(\mathrm{HgTe}\) quantum wells is its experimental confirmation.
         </p>
       </div>
     </div>
@@ -24306,7 +24306,7 @@ z
         最初の 3 次元トポロジカル絶縁体は \(\mathrm{Bi}_{1-x}\mathrm{Sb}_x\) 合金でした（Fu–Kane のパリティ判定法による予言を受け、2008 年に Hsieh らが角度分解光電子分光で表面状態を確認）。ただし表面バンドは 5 本も絡む複雑なものでした。決定版は 2009 年の \(\mathrm{Bi}_2\mathrm{Se}_3\)・\(\mathrm{Bi}_2\mathrm{Te}_3\)・\(\mathrm{Sb}_2\mathrm{Te}_3\) 一族です。表面コーンはただ 1 個、バルクギャップは \(\mathrm{Bi}_2\mathrm{Se}_3\) で約 \(0.3\ \mathrm{eV}\)（室温の熱エネルギーの 10 倍以上）、しかも組成が単純で良質な単結晶が育つ——教科書どおりの舞台が現実に見つかりました。スピン分解 ARPES はフェルミ円上のスピンが実際に巻いている様子まで直接撮像しています（この分野では東北大のグループが世界を牽引しました。参考文献の佐藤宇史さんの解説が詳しいです）。
       </p>
       <p class="en">
-        The first 3D topological insulator was the alloy \(\mathrm{Bi}_{1-x}\mathrm{Sb}_x\) (predicted via the Fu–Kane parity criterion and confirmed by angle-resolved photoemission by Hsieh et al. in 2008), though its five intertwined surface bands were complicated. The definitive platform arrived in 2009 with the \(\mathrm{Bi}_2\mathrm{Se}_3\), \(\mathrm{Bi}_2\mathrm{Te}_3\), \(\mathrm{Sb}_2\mathrm{Te}_3\) family: a single surface cone, a bulk gap of \(\sim0.3\ \mathrm{eV}\) in \(\mathrm{Bi}_2\mathrm{Se}_3\) (over ten times room temperature), and simple compositions growing into high-quality crystals. Spin-resolved ARPES has directly imaged the spin winding around the Fermi circle — a field led notably by groups at Tohoku University (see U. Sato's review in the references).
+        The first 3D topological insulator was the alloy \(\mathrm{Bi}_{1-x}\mathrm{Sb}_x\) (predicted via the Fu–Kane parity criterion and confirmed by angle-resolved photoemission by Hsieh et al. in 2008), though its five intertwined surface bands were complicated. The definitive platform arrived in 2009 with the \(\mathrm{Bi}_2\mathrm{Se}_3\), \(\mathrm{Bi}_2\mathrm{Te}_3\), \(\mathrm{Sb}_2\mathrm{Te}_3\) family: a single surface cone, a bulk gap of \(\sim0.3\ \mathrm{eV}\) in \(\mathrm{Bi}_2\mathrm{Se}_3\) (over ten times room temperature), and simple compositions growing into high-quality crystals. Spin-resolved ARPES has directly imaged the spin winding around the Fermi circle — a field led notably by groups at Tohoku University (see T. Sato's review in the references).
       </p>
       <p class="ja">
         正直な注意もひとつ。実際の \(\mathrm{Bi}_2\mathrm{Se}_3\) は \(\mathrm{Se}\) 欠損のためにバルクが電子ドープされがちで、「絶縁体のはずがバルクも流れる」問題が長く悩みの種でした。組成調整（\(\mathrm{Bi}_2\mathrm{Te}_2\mathrm{Se}\) や BSTS 系）でバルク絶縁性を高める物質開発が進み、表面支配の輸送が実現しています。「トポロジカルに保護される」のは表面状態の<b>存在</b>であって、実験のしやすさまでは保護してくれない——物質科学の腕の見せ所は残っているのです。
@@ -24394,10 +24394,10 @@ z
         \tag{8.1}
       \]</div>
       <p class="ja">
-        \(\gamma_{\mathrm{Zak}}\) は、ブリルアンゾーン（円周！）を一周する閉経路のベリー位相で、<b>ザック位相</b>と呼ばれます。§2.2 で見たとおり、閉経路のベリー位相はゲージ変換で \(2\pi\times\)整数だけ動けます。対応して \(P\) は \(e\)（単位胞あたり電荷 1 個分）を単位に多価です——が、これも欠陥ではありません。「単位胞の区切り方で電子 1 個分ずれる」という 8.1 節の曖昧さを、理論が正直に映しているだけです。観測量である差 \(\Delta P\) は一意に定まります。等価な言い換えとして、\(P\) は<b>ワニエ中心</b>（バンドの電子を単位胞ごとに局在させた「電子の居場所」\(\bar x=\frac{a}{2\pi}\gamma_{\mathrm{Zak}}\)）の位置に \(-e\) を置いた双極子です。姉妹ページ「<a href="ssh.html">SSH 模型</a>」では、このワニエ中心とザック位相を対話的に計算できます。反転対称性がある鎖では \(\gamma_{\mathrm{Zak}}\) は \(0\) か \(\pi\) の 2 値に量子化され、SSH 模型の 2 つの相を区別する \(\mathbb Z_2\) 的な指標になります。
+        \(\gamma_{\mathrm{Zak}}\) は、ブリルアンゾーン（円周！）を一周する閉経路のベリー位相で、<b>ザック位相</b>と呼ばれます。§2.2 で見たとおり、閉経路のベリー位相はゲージ変換で \(2\pi\times\)整数だけ動けます。対応して \(P\) は \(e\)（単位胞あたり電荷 1 個分）を単位に多価です——が、これも欠陥ではありません。「単位胞の区切り方で電子 1 個分ずれる」という 8.1 節の曖昧さを、理論が正直に映しているだけです。観測量である差 \(\Delta P\) は一意に定まります。等価な言い換えとして、\(P\) は<b>ワニエ中心</b>（バンドの電子を単位胞ごとに局在させた「電子の居場所」\(\bar x=\dfrac{a}{2\pi}\gamma_{\mathrm{Zak}}\)）の位置に \(-e\) を置いた双極子です。姉妹ページ「<a href="ssh.html">SSH 模型</a>」では、このワニエ中心とザック位相を対話的に計算できます。反転対称性がある鎖では \(\gamma_{\mathrm{Zak}}\) は \(0\) か \(\pi\) の 2 値に量子化され、SSH 模型の 2 つの相を区別する \(\mathbb Z_2\) 的な指標になります。
       </p>
       <p class="en">
-        \(\gamma_{\mathrm{Zak}}\) — the <b>Zak phase</b> — is the Berry phase around the Brillouin zone, which is a closed circle. As §2.2 showed, a loop Berry phase is gauge-ambiguous by \(2\pi\times\)integer; correspondingly \(P\) is multivalued in units of \(e\) (one charge per cell). Again a feature: the theory honestly reflects the cell-cutting ambiguity of §8.1, while the observable difference \(\Delta P\) is unique. Equivalently, \(P\) is the dipole of a charge \(-e\) sitting at the <b>Wannier centre</b> \(\bar x=\frac{a}{2\pi}\gamma_{\mathrm{Zak}}\), the localized "home address" of the band's electron in each cell. The companion page "<a href="ssh.html">the SSH model</a>" computes Wannier centres and Zak phases interactively; with inversion symmetry \(\gamma_{\mathrm{Zak}}\) quantizes to \(0\) or \(\pi\), the \(\mathbb Z_2\)-like index distinguishing the two phases of the SSH chain.
+        \(\gamma_{\mathrm{Zak}}\) — the <b>Zak phase</b> — is the Berry phase around the Brillouin zone, which is a closed circle. As §2.2 showed, a loop Berry phase is gauge-ambiguous by \(2\pi\times\)integer; correspondingly \(P\) is multivalued in units of \(e\) (one charge per cell). Again a feature: the theory honestly reflects the cell-cutting ambiguity of §8.1, while the observable difference \(\Delta P\) is unique. Equivalently, \(P\) is the dipole of a charge \(-e\) sitting at the <b>Wannier centre</b> \(\bar x=\dfrac{a}{2\pi}\gamma_{\mathrm{Zak}}\), the localized "home address" of the band's electron in each cell. The companion page "<a href="ssh.html">the SSH model</a>" computes Wannier centres and Zak phases interactively; with inversion symmetry \(\gamma_{\mathrm{Zak}}\) quantizes to \(0\) or \(\pi\), the \(\mathbb Z_2\)-like index distinguishing the two phases of the SSH chain.
       </p>
 
       <h3><span class="ja">8.3 サウレスポンプ——「分極の 1 周」はチャーン数</span><span class="en">8.3 The Thouless pump — one lap of the polarization is a Chern number</span></h3>
@@ -33376,10 +33376,10 @@ z
         <div class="fig-cap en"><b>Fig. 5</b>: a two-band Weyl-semimetal lattice model (Weyl points at \(k_z=\pm\pi/2\)). (a) Bulk bands along \(k_z\) with chiralities \(\chi\); the fixed-\(k_z\) slice Chern number jumps by \(\chi\) across each node (verified numerically). (b) Fermi arcs on the top and bottom slab surfaces (surface states with \(|E|<0.06\)); dots — projected Weyl points. In this model the arcs run on the \(|k_z|>\pi/2\) side, across the zone boundary.</div>
       </div>
       <p class="ja">
-        (a) 格子模型（ワイル点を \(k_z=\pm\pi/2\) に置いた 2 バンド模型）のバンドを \(k_z\) 軸に沿って見たものです。\(\pm\pi/2\) の線形接触点がワイル点で、数値計算したスライスチャーン数は接触点を横切るたびに \(0\to\pm1\) と跳び、その跳び幅がカイラリティに一致します。(b) はスラブの上面・下面それぞれの「フェルミアーク」を \((k_z,k_x)\) 平面にマップしたもの（丸印がワイル点の射影）。上面と下面のアークは<b>互いに反対側</b>を通ってワイル点対をつなぎます——2 つの弧を合わせるとようやく閉曲線になる、という辻褄の合わせ方です（この模型ではアークは \(|k_z|&gt;\pi/2\) 側、つまりゾーン境界をまたぐ側を走ります）。実物質では 2015 年、TaAs で ARPES によりアークが直接観測され、ワイル半金属の存在が確定しました。磁場と電場を平行にかけるとカイラリティ間で電荷が汲み出される<b>カイラル異常</b>（負の縦磁気抵抗などに寄与）も、この分野の看板現象です。
+        (a) 格子模型（ワイル点を \(k_z=\pm\pi/2\) に置いた 2 バンド模型）のバンドを \(k_z\) 軸に沿って見たものです。\(\pm\pi/2\) の線形接触点がワイル点で、数値計算したスライスチャーン数は接触点を横切るたびに \(0\to\pm1\) と跳び、その跳び幅がカイラリティに一致します。(b) はスラブの上面・下面それぞれの「フェルミアーク」を \((k_z,k_x)\) 平面にマップしたもの（丸印がワイル点の射影）。上面と下面のアークは<b>互いに反対側</b>を通ってワイル点対をつなぎます——2 つの弧を合わせるとようやく閉曲線になる、という辻褄の合わせ方です（この模型ではアークは \(|k_z|&gt;\pi/2\) 側、つまりゾーン境界をまたぐ側を走ります）。実物質では 2015 年、\(\mathrm{TaAs}\) で ARPES によりアークが直接観測され、ワイル半金属の存在が確定しました。磁場と電場を平行にかけるとカイラリティ間で電荷が汲み出される<b>カイラル異常</b>（負の縦磁気抵抗などに寄与）も、この分野の看板現象です。
       </p>
       <p class="en">
-        Panel (a): the bands of a lattice model (two-band model with Weyl points at \(k_z=\pm\pi/2\)) along the \(k_z\) axis. The linear touchings at \(\pm\pi/2\) are the Weyl points; the numerically computed slice Chern number jumps by exactly the chirality each time a touching is crossed. Panel (b) maps the Fermi arcs of the top and bottom surfaces of a slab in the \((k_z,k_x)\) plane (dots: projected Weyl points). The two arcs connect the pair <b>along opposite routes</b> — only their union forms a closed curve (in this model the arcs run through the \(|k_z|&gt;\pi/2\) side, across the zone boundary). In real materials, ARPES observed the arcs directly in TaAs in 2015, settling the existence of Weyl semimetals. The <b>chiral anomaly</b> — charge pumped between chiralities by parallel electric and magnetic fields, contributing e.g. a negative longitudinal magnetoresistance — is the field's other signature phenomenon.
+        Panel (a): the bands of a lattice model (two-band model with Weyl points at \(k_z=\pm\pi/2\)) along the \(k_z\) axis. The linear touchings at \(\pm\pi/2\) are the Weyl points; the numerically computed slice Chern number jumps by exactly the chirality each time a touching is crossed. Panel (b) maps the Fermi arcs of the top and bottom surfaces of a slab in the \((k_z,k_x)\) plane (dots: projected Weyl points). The two arcs connect the pair <b>along opposite routes</b> — only their union forms a closed curve (in this model the arcs run through the \(|k_z|&gt;\pi/2\) side, across the zone boundary). In real materials, ARPES observed the arcs directly in \(\mathrm{TaAs}\) in 2015, settling the existence of Weyl semimetals. The <b>chiral anomaly</b> — charge pumped between chiralities by parallel electric and magnetic fields, contributing e.g. a negative longitudinal magnetoresistance — is the field's other signature phenomenon.
       </p>
 
       <h3><span class="ja">9.3 超伝導体のトポロジー——キタエフ鎖</span><span class="en">9.3 Topology in superconductors — the Kitaev chain</span></h3>
@@ -40900,10 +40900,10 @@ z
         Panel (a): the spectrum of an open 60-site chain versus \(\mu\). Throughout \(|\mu|&lt;2t\), an <b>exactly zero-energy state</b> (purple) runs through the middle of the bulk gap (numerically \(|E_0|\sim10^{-16}\) — the very limit of double precision). Panel (b): the zero mode's probability density — two exponentially localized "half electrons," one at each end. These are <b>Majorana end states</b>. Particle–hole symmetry pairs \(E\) with \(-E\), so a state at exactly \(E=0\) cannot move alone: it is pinned to zero as long as the bulk gap stays open — the "discrete, therefore immovable" logic of the Chern number, now enforced by a spectral symmetry.
       </p>
       <p class="ja">
-        実験では、強いスピン軌道相互作用をもつ半導体ナノワイヤ（InSb、InAs）に超伝導体（Al）を近接させ磁場をかける系が、式 (9.2) の実効的な実現として追究されてきました。2012 年の Mourik らのゼロバイアス電導ピークが先駆けです。ただし正直に述べると、ゼロバイアスピークは乱れ由来のアンドレーエフ束縛状態でも生じうるため、「マヨラナの決定的証拠」については現在も慎重な検証が続いています。トポロジカル量子計算への期待（コラム）とあわせ、現在進行形の最前線です。
+        実験では、強いスピン軌道相互作用をもつ半導体ナノワイヤ（\(\mathrm{InSb}\)、\(\mathrm{InAs}\)）に超伝導体（\(\mathrm{Al}\)）を近接させ磁場をかける系が、式 (9.2) の実効的な実現として追究されてきました。2012 年の Mourik らのゼロバイアス電導ピークが先駆けです。ただし正直に述べると、ゼロバイアスピークは乱れ由来のアンドレーエフ束縛状態でも生じうるため、「マヨラナの決定的証拠」については現在も慎重な検証が続いています。トポロジカル量子計算への期待（コラム）とあわせ、現在進行形の最前線です。
       </p>
       <p class="en">
-        Experimentally, semiconductor nanowires with strong spin–orbit coupling (InSb, InAs) proximitized by a superconductor (Al) in a magnetic field have been pursued as effective realizations of Eq. (9.2), pioneered by the zero-bias conductance peaks of Mourik et al. (2012). In honesty, though: zero-bias peaks can also arise from disorder-induced Andreev bound states, and the search for definitive Majorana evidence remains under careful scrutiny — an actively unfolding frontier, tied to the hopes of topological quantum computation (see column).
+        Experimentally, semiconductor nanowires with strong spin–orbit coupling (\(\mathrm{InSb}\), \(\mathrm{InAs}\)) proximitized by a superconductor (\(\mathrm{Al}\)) in a magnetic field have been pursued as effective realizations of Eq. (9.2), pioneered by the zero-bias conductance peaks of Mourik et al. (2012). In honesty, though: zero-bias peaks can also arise from disorder-induced Andreev bound states, and the search for definitive Majorana evidence remains under careful scrutiny — an actively unfolding frontier, tied to the hopes of topological quantum computation (see column).
       </p>
 
       <details class="column">
@@ -40998,10 +40998,10 @@ z
 
       <h3><span class="ja">10.3 表の外側——この先の風景</span><span class="en">10.3 Outside the table — the landscape beyond</span></h3>
       <p class="ja">
-        この 10 クラス分類は「自由フェルミオン＋内部対称性 3 種＋ギャップあり」という前提の下での<b>完成形</b>です。だからこそ、その外側が現在の研究最前線になります。第一に<b>結晶対称性</b>：鏡映や回転を加えると分類はさらに細かくなり、トポロジカル結晶絶縁体（SnTe が代表例）や、角・稜にだけギャップレス状態をもつ<b>高次トポロジカル絶縁体</b>が現れます。第二に<b>ギャップレス系</b>：§9 のワイル半金属のように、バンド接触そのものを分類する枠組みへ拡張されます。第三に<b>相互作用</b>：電子間相互作用があると分類自体が変わることがあり（有名な例では、ある 1 次元超伝導体クラスの \(\mathbb Z\) が \(\mathbb Z_8\) に縮む）、分数量子ホール効果のような「トポロジカル秩序」はそもそも自由フェルミオンの表の外の住人です。地図は完成しましたが、大陸はまだ広がり続けています。
+        この 10 クラス分類は「自由フェルミオン＋内部対称性 3 種＋ギャップあり」という前提の下での<b>完成形</b>です。だからこそ、その外側が現在の研究最前線になります。第一に<b>結晶対称性</b>：鏡映や回転を加えると分類はさらに細かくなり、トポロジカル結晶絶縁体（\(\mathrm{SnTe}\) が代表例）や、角・稜にだけギャップレス状態をもつ<b>高次トポロジカル絶縁体</b>が現れます。第二に<b>ギャップレス系</b>：§9 のワイル半金属のように、バンド接触そのものを分類する枠組みへ拡張されます。第三に<b>相互作用</b>：電子間相互作用があると分類自体が変わることがあり（有名な例では、ある 1 次元超伝導体クラスの \(\mathbb Z\) が \(\mathbb Z_8\) に縮む）、分数量子ホール効果のような「トポロジカル秩序」はそもそも自由フェルミオンの表の外の住人です。地図は完成しましたが、大陸はまだ広がり続けています。
       </p>
       <p class="en">
-        The tenfold way is the <b>completed form</b> under its premises: free fermions, the three internal symmetries, and a gap. Precisely for that reason, today's frontiers lie outside it. First, <b>crystalline symmetries</b>: adding mirrors and rotations refines the classification, yielding topological crystalline insulators (SnTe the archetype) and <b>higher-order topological insulators</b> with gapless states only at corners or hinges. Second, <b>gapless systems</b>: frameworks classifying band touchings themselves, as for the Weyl semimetals of §9. Third, <b>interactions</b>: electron–electron interactions can change the classification itself (famously collapsing a 1D superconductor class's \(\mathbb Z\) to \(\mathbb Z_8\)), and topologically ordered states like the fractional quantum Hall effect live outside the free-fermion table altogether. The map is complete; the continent keeps growing.
+        The tenfold way is the <b>completed form</b> under its premises: free fermions, the three internal symmetries, and a gap. Precisely for that reason, today's frontiers lie outside it. First, <b>crystalline symmetries</b>: adding mirrors and rotations refines the classification, yielding topological crystalline insulators (\(\mathrm{SnTe}\) the archetype) and <b>higher-order topological insulators</b> with gapless states only at corners or hinges. Second, <b>gapless systems</b>: frameworks classifying band touchings themselves, as for the Weyl semimetals of §9. Third, <b>interactions</b>: electron–electron interactions can change the classification itself (famously collapsing a 1D superconductor class's \(\mathbb Z\) to \(\mathbb Z_8\)), and topologically ordered states like the fractional quantum Hall effect live outside the free-fermion table altogether. The map is complete; the continent keeps growing.
       </p>
 
       <div class="keybox">
@@ -41038,8 +41038,8 @@ z
         <tr><td>\(|u_n(\boldsymbol k)\rangle,\ \varepsilon_n(\boldsymbol k)\)</td><td><span class="ja">ブロッホ状態の周期部分とバンドエネルギー（\(H(\boldsymbol k)\) の固有対）</span><span class="en">periodic part of the Bloch state and band energy (eigenpair of \(H(\boldsymbol k)\))</span></td></tr>
         <tr><td>\(\boldsymbol{\mathcal A}_n(\boldsymbol R)=i\langle u_n(\boldsymbol R)|\nabla_{\boldsymbol R}u_n(\boldsymbol R)\rangle\)</td><td><span class="ja">ベリー接続（ゲージ依存・実ベクトル場）</span><span class="en">Berry connection (gauge dependent, real)</span></td></tr>
         <tr><td>\(\boldsymbol\Omega_n(\boldsymbol R)=\nabla_{\boldsymbol R}\times\boldsymbol{\mathcal A}_n(\boldsymbol R)\)</td><td><span class="ja">ベリー曲率（ゲージ不変）</span><span class="en">Berry curvature (gauge invariant)</span></td></tr>
-        <tr><td>\(\gamma_n[C]=\oint_C\boldsymbol{\mathcal A}_n(\boldsymbol R)\cdot d\boldsymbol R\)</td><td><span class="ja">ベリー位相（mod \(2\pi\) で観測可能）</span><span class="en">Berry phase (observable mod \(2\pi\))</span></td></tr>
-        <tr><td>\(C_n=\frac{1}{2\pi}\int_{\mathrm{BZ}}d^2k\,\Omega_{n,z}(\boldsymbol k)\)</td><td><span class="ja">チャーン数（整数）。\(\sigma_{xy}=-(e^2/h)\sum_{\mathrm{occ}}C_n\)</span><span class="en">Chern number (integer); \(\sigma_{xy}=-(e^2/h)\sum_{\mathrm{occ}}C_n\)</span></td></tr>
+        <tr><td>\(\gamma_n[C]=\displaystyle\oint_C\boldsymbol{\mathcal A}_n(\boldsymbol R)\cdot d\boldsymbol R\)</td><td><span class="ja">ベリー位相（mod \(2\pi\) で観測可能）</span><span class="en">Berry phase (observable mod \(2\pi\))</span></td></tr>
+        <tr><td>\(C_n=\dfrac{1}{2\pi}\displaystyle\int_{\mathrm{BZ}}d^2k\,\Omega_{n,z}(\boldsymbol k)\)</td><td><span class="ja">チャーン数（整数）。\(\sigma_{xy}=-(e^2/h)\sum_{\mathrm{occ}}C_n\)</span><span class="en">Chern number (integer); \(\sigma_{xy}=-(e^2/h)\sum_{\mathrm{occ}}C_n\)</span></td></tr>
         <tr><td>\(\nu\in\{0,1\}\)</td><td><span class="ja">\(\mathbb Z_2\) 不変量（2 次元 QSH／3 次元は \((\nu_0;\nu_1\nu_2\nu_3)\)）</span><span class="en">\(\mathbb Z_2\) invariant (2D QSH; in 3D \((\nu_0;\nu_1\nu_2\nu_3)\))</span></td></tr>
         <tr><td>\(\gamma_{\mathrm{Zak}}\)</td><td><span class="ja">ザック位相（BZ 一周のベリー位相）。分極 \(P=-e\gamma_{\mathrm{Zak}}/2\pi\)（mod \(e\)）</span><span class="en">Zak phase (Berry phase around the BZ); \(P=-e\gamma_{\mathrm{Zak}}/2\pi\) (mod \(e\))</span></td></tr>
         <tr><td>TRIM</td><td><span class="ja">時間反転不変運動量（\(\boldsymbol k\equiv-\boldsymbol k\) となる点。2 次元 4 点・3 次元 8 点）</span><span class="en">time-reversal-invariant momenta (\(\boldsymbol k\equiv-\boldsymbol k\); 4 in 2D, 8 in 3D)</span></td></tr>
@@ -41049,10 +41049,10 @@ z
       </table>
 
       <p class="ja small" style="margin-top:1rem;">
-        規約について：本ノートは全体を通して \(\boldsymbol{\mathcal A}_n=i\langle u_n|\nabla u_n\rangle\)、\(\gamma_n=\oint\boldsymbol{\mathcal A}_n\cdot d\boldsymbol R\)、電子の電荷 \(-e\)（\(e&gt;0\)）で統一しています。文献によっては接続や曲率の符号、BZ の向きが逆に取られ、チャーン数や \(\sigma_{xy}\) の符号が反転して見えることがあります。物理的内容（量子化・整数の変化・エッジの本数）は規約によりません。本文の図はすべて、このノートのために書いた数値計算コード（ベリー曲率とチャーン数は Fukui–Hatsugai–Suzuki の格子法、ワニエ中心はウィルソンループ法）の出力です。
+        規約について：本ノートは全体を通して \(\boldsymbol{\mathcal A}_n=i\langle u_n|\nabla u_n\rangle\)、\(\gamma_n=\displaystyle\oint\boldsymbol{\mathcal A}_n\cdot d\boldsymbol R\)、電子の電荷 \(-e\)（\(e&gt;0\)）で統一しています。文献によっては接続や曲率の符号、BZ の向きが逆に取られ、チャーン数や \(\sigma_{xy}\) の符号が反転して見えることがあります。物理的内容（量子化・整数の変化・エッジの本数）は規約によりません。本文の図はすべて数値計算によるものです（ベリー曲率とチャーン数は Fukui–Hatsugai–Suzuki の格子法、ワニエ中心はウィルソンループ法で計算）。
       </p>
       <p class="en small" style="margin-top:1rem;">
-        Conventions: throughout this note \(\boldsymbol{\mathcal A}_n=i\langle u_n|\nabla u_n\rangle\), \(\gamma_n=\oint\boldsymbol{\mathcal A}_n\cdot d\boldsymbol R\), and the electron charge is \(-e\) (\(e&gt;0\)). Some references choose opposite signs for the connection, curvature or BZ orientation, flipping the apparent signs of Chern numbers and \(\sigma_{xy}\); the physics (quantization, integer jumps, edge counting) is convention independent. All figures are outputs of numerical code written for this note (Berry curvatures and Chern numbers via the Fukui–Hatsugai–Suzuki lattice method; Wannier centres via Wilson loops).
+        Conventions: throughout this note \(\boldsymbol{\mathcal A}_n=i\langle u_n|\nabla u_n\rangle\), \(\gamma_n=\displaystyle\oint\boldsymbol{\mathcal A}_n\cdot d\boldsymbol R\), and the electron charge is \(-e\) (\(e&gt;0\)). Some references choose opposite signs for the connection, curvature or BZ orientation, flipping the apparent signs of Chern numbers and \(\sigma_{xy}\); the physics (quantization, integer jumps, edge counting) is convention independent. All figures are numerically computed (Berry curvatures and Chern numbers via the Fukui–Hatsugai–Suzuki lattice method; Wannier centres via Wilson loops).
       </p>
 
       <h3><span class="ja">参考文献</span><span class="en">References</span></h3>
@@ -41068,6 +41068,7 @@ z
       </p>
       <p class="small ja">
         <b>教科書</b><br>
+        ・<a href="https://www.amazon.co.jp/dp/4320035216" target="_blank" rel="noopener" style="color:var(--accent2);">齊藤英治・村上修一 著『スピン流とトポロジカル絶縁体――量子物性とスピントロニクスの発展』</a>（共立出版「基本法則から読み解く物理学最前線」、2014）——前半のスピン流を齊藤さん、後半のトポロジカル絶縁体を村上さんが執筆。本ノートの §5–§7 と重なりが大きく、次に読む一冊として最適です。<br>
         ・安藤陽一『トポロジカル絶縁体入門』（講談社、2014）——実験・物質に強い和書の定番。<br>
         ・J. K. Asbóth, L. Oroszlány, and A. Pályi, <i>A Short Course on Topological Insulators</i> (Springer, 2016)——SSH 模型から始める最短コース。無料の arXiv 版もあります。<br>
         ・B. A. Bernevig with T. L. Hughes, <i>Topological Insulators and Topological Superconductors</i> (Princeton Univ. Press, 2013)。<br>
@@ -41101,6 +41102,7 @@ z
       </p>
       <p class="small en">
         <b>Textbooks</b><br>
+        ・<a href="https://www.amazon.co.jp/dp/4320035216" target="_blank" rel="noopener" style="color:var(--accent2);">E. Saitoh and S. Murakami, <i>Spin Current and Topological Insulators — Developments in Quantum Matter and Spintronics</i></a> (Kyoritsu, series "Frontiers of Physics from Fundamental Laws," 2014, in Japanese) — the spin-current half by Saitoh, the topological half by Murakami; overlaps strongly with §5–§7 of this note.<br>
         ・Y. Ando, <i>Introduction to Topological Insulators</i> (Kodansha, 2014, in Japanese) — the standard Japanese text, strong on experiments and materials.<br>
         ・J. K. Asbóth, L. Oroszlány, and A. Pályi, <i>A Short Course on Topological Insulators</i> (Springer, 2016) — the shortest route, starting from the SSH model; a free arXiv version exists.<br>
         ・B. A. Bernevig with T. L. Hughes, <i>Topological Insulators and Topological Superconductors</i> (Princeton Univ. Press, 2013).<br>
