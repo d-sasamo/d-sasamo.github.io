@@ -387,10 +387,17 @@
     typeset(first);
     return true;
   }
-  var curPw=null, TTL=10*60*1000;
+  var curPw=null, TTL=5*60*1000;
   function saveGrace(){ if(curPw){ try{ localStorage.setItem('abinit_gate',JSON.stringify({p:curPw,t:Date.now()})); }catch(e){} } }
-  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') saveGrace(); });
+  function relockCheck(){
+    try{
+      var g=JSON.parse(localStorage.getItem('abinit_gate')||'null');
+      if(curPw && g && g.t && (Date.now()-g.t)>=TTL){ curPw=null; localStorage.removeItem('abinit_gate'); location.reload(); }
+    }catch(e){}
+  }
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='hidden') saveGrace(); else relockCheck(); });
   window.addEventListener('pagehide',saveGrace);
+  window.addEventListener('pageshow',function(e){ if(e.persisted) relockCheck(); });
   var btn=document.getElementById('pw-btn'), inp=document.getElementById('pw-input');
   if(btn) btn.addEventListener('click',function(){unlock(inp.value,false);});
   if(inp) inp.addEventListener('keydown',function(e){if(e.key==='Enter')unlock(inp.value,false);});
