@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://d-sasamo.github.io/</loc><lastmod>2026-07-25</lastmod></url>
-  <url><loc>https://d-sasamo.github.io/research.html</loc><lastmod>2026-07-25</lastmod></url>
+  <url><loc>https://d-sasamo.github.io/</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://d-sasamo.github.io/research.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://d-sasamo.github.io/sim/abinitio.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://d-sasamo.github.io/sim/topological.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://d-sasamo.github.io/sim/pathintegral.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://d-sasamo.github.io/sim/quantum_stat.html</loc><lastmod>2026-08-08</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/dmft.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/hofstadter.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/ising.html</loc><lastmod>2026-07-25</lastmod></url>
@@ -11,7 +15,6 @@
   <url><loc>https://d-sasamo.github.io/sim/moire.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/mps_bench.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/percolation.html</loc><lastmod>2026-07-25</lastmod></url>
-  <url><loc>https://d-sasamo.github.io/sim/quantum_stat.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/ssh.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/tebd.html</loc><lastmod>2026-07-25</lastmod></url>
   <url><loc>https://d-sasamo.github.io/sim/xy.html</loc><lastmod>2026-07-25</lastmod></url>
