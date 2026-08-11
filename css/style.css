@@ -46,7 +46,12 @@ body {
 
 /* --- Language toggle visibility --- */
 body.lang-ja .en { display: none !important; }
-body.lang-en .ja { display: none !important; }
+/* 「おすすめ論文・おすすめ教科書・ノート」(#papers/#books/#notes)は
+   見出し・タブ含めて英語モードでも日本語のまま表示する。
+   英語コンテンツはHTMLに残っているので、下2行を
+   「body.lang-en .ja { display: none !important; }」に戻せば英語表示が復活します。 */
+body.lang-en .ja:not(:is(#papers, #books, #notes) .ja) { display: none !important; }
+body.lang-en :is(#papers, #books, #notes) .en { display: none !important; }
 
 /* --- Background glow --- */
 .bg-glow {
@@ -131,6 +136,11 @@ section { padding: 4.5rem 0 1rem; }
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .hero-sub { color: var(--text-dim); font-size: 1.05rem; max-width: 620px; }
+.hero-links { color: var(--text-dim); font-size: 1.05rem; margin-top: 1.4rem; line-height: 1.9; }
+.hero-links a { white-space: nowrap; }
+.hero-links .hl-row { display: flex; align-items: baseline; }
+.hero-links .hl-label { flex: 0 0 auto; white-space: nowrap; }
+.hero-links .hl-body { min-width: 0; }
 .hero-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.6rem; }
 .tag {
   font-size: 0.8rem; color: var(--text);
@@ -288,6 +298,7 @@ body.lang-en .nav-links { gap: 1.15rem; }
   .nav-links li { white-space: nowrap; flex: 0 0 auto; }
   .lang-btn { padding: 0.32rem 0.65rem; font-size: 0.8rem; }
   .hero-sub { font-size: 0.98rem; }
+  .hero-links { font-size: 0.98rem; }
   .hero-flex { flex-direction: column; align-items: flex-start; gap: 1.8rem; }
   .hero-photo { width: 170px; height: 258px; align-self: center; }
   .card { padding: 1.15rem 0.95rem; }
