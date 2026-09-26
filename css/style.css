@@ -176,6 +176,8 @@ section { padding: 4.5rem 0 1rem; }
 
 /* --- Publications --- */
 .pub-list { list-style: none; counter-reset: pub; }
+/* 業績の本人下線：<u>の標準下線は文字に近すぎるため、那須研ページと同じborder-bottom方式で少し離す */
+.pub-list u { text-decoration: none; border-bottom: 1px solid currentColor; }
 .pub-list li {
   padding: 1rem 0; border-bottom: 1px solid var(--border);
   color: var(--text-dim); font-size: 0.95rem;
