@@ -175,7 +175,10 @@ section { padding: 4.5rem 0 1rem; }
 .timeline .when { color: var(--accent2); font-size: 0.85rem; display: block; }
 
 /* --- Publications --- */
-.pub-list { list-style: none; counter-reset: pub; }
+/* 業績リスト：<ol reversed> で新しい順に大きい番号（先頭＝総数）。那須研ページと同じ流儀 */
+.pub-list { list-style: decimal; list-style-position: outside; padding-left: 2.4rem; }
+.pub-list li::marker { color: var(--accent2); font-weight: 600; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .pub-list { padding-left: 1.9rem; } }
 /* 業績の本人下線：<u>の標準下線は文字に近すぎるため、那須研ページと同じborder-bottom方式で少し離す */
 .pub-list u { text-decoration: none; border-bottom: 1px solid currentColor; }
 .pub-list li {
