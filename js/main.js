@@ -43,6 +43,26 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ===== Mobile nav (hamburger) for side-nav layout =====
+  var hdr = document.getElementById("siteHeader");
+  var tgl = document.getElementById("navToggle");
+  if (hdr && tgl) {
+    var closeNav = function () {
+      hdr.classList.remove("open");
+      tgl.setAttribute("aria-expanded", "false");
+    };
+    tgl.addEventListener("click", function () {
+      var open = hdr.classList.toggle("open");
+      tgl.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    document.querySelectorAll("#navMenu a").forEach(function (a) {
+      a.addEventListener("click", closeNav);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeNav();
+    });
+  }
+
   // ===== Email (assembled to avoid scrapers; displayed with "_at_" instead of "@") =====
   var el = document.getElementById("emailLink");
   if (el) {

@@ -30,24 +30,33 @@
 <script>if(!Object.hasOwn){Object.defineProperty(Object,'hasOwn',{value:function(o,k){return Object.prototype.hasOwnProperty.call(o,k)},writable:true,configurable:true});}window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global', displayOverflow: 'linebreak', linebreaks: { inline: false } } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js" async></script>
 </head>
-<body class="lang-ja light">
+<body class="lang-ja light side-nav">
 <div class="bg-glow"></div>
 
-<header>
+<header id="siteHeader">
   <nav class="nav">
-    <a class="nav-logo" href="index.html">D. Sasamoto</a>
-    <ul class="nav-links">
-      <li><a href="#home"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
-      <li><a href="#about"><span class="ja">自己紹介</span><span class="en">About</span></a></li>
-      <li><a href="#research"><span class="ja">研究</span><span class="en">Research</span></a></li>
-      <li><a href="#publications"><span class="ja">業績</span><span class="en">Publications</span></a></li>
-      <li><a href="#papers"><span class="ja">論文</span><span class="en">Papers</span></a></li>
-      <li><a href="#books"><span class="ja">教科書</span><span class="en">Textbooks</span></a></li>
-      <li><a href="#notes"><span class="ja">ノート</span><span class="en">Notes</span></a></li>
-      <li><a href="#access"><span class="ja">アクセス・連絡先</span><span class="en">Contact</span></a></li>
-      <li><button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button></li>
-      <li><button class="lang-btn" id="langBtn">English</button></li>
-    </ul>
+    <div class="nav-top">
+      <a class="nav-logo" href="index.html">D. Sasamoto</a>
+      <button class="nav-toggle" id="navToggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="navMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-links">
+        <li><a href="#home"><span class="ja">ホーム</span><span class="en">Home</span></a></li>
+        <li><a href="#about"><span class="ja">自己紹介</span><span class="en">About</span></a></li>
+        <li><a href="#research"><span class="ja">研究</span><span class="en">Research</span></a></li>
+        <li><a href="#publications"><span class="ja">業績</span><span class="en">Publications</span></a></li>
+        <li><a href="#papers"><span class="ja">論文</span><span class="en">Papers</span></a></li>
+        <li><a href="#books"><span class="ja">教科書</span><span class="en">Textbooks</span></a></li>
+        <li><a href="#notes"><span class="ja">ノート</span><span class="en">Notes</span></a></li>
+        <li><a href="#access"><span class="ja">アクセス・連絡先</span><span class="en">Contact</span></a></li>
+      </ul>
+      <div class="nav-tools">
+        <button class="lang-btn" id="themeBtn" aria-label="テーマ切替">☀</button>
+        <button class="lang-btn" id="langBtn">English</button>
+      </div>
+    </div>
   </nav>
 </header>
 

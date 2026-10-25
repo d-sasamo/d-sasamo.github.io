@@ -307,3 +307,93 @@ body.lang-en .nav-links { gap: 1.15rem; }
   .card img, .card canvas { max-width: 100%; height: auto; }
   .sim-canvas-box { max-width: 100%; }
 }
+
+/* =====================================================================
+   Side navigation (index.html only: <body class="... side-nav">)
+   - ≥ 900px : 固定の左サイドバー（縦メニュー）。項目を増やしても縦に伸びるだけ。
+   - < 900px : 上部バー＋ハンバーガー。押すと縦リストのメニューが開く。
+   下層ページ（research / sim / blog）は従来のトップバーのまま。
+   ===================================================================== */
+:root { --sidew: 236px; }
+
+/* 共通：ハンバーガーはデフォルト非表示、nav-tools は横並び */
+.nav-top { display: flex; align-items: center; justify-content: space-between; min-width: 0; }
+.nav-toggle { display: none; }
+.nav-menu { display: contents; }               /* 非 side-nav ページでは透明なラッパー */
+.nav-tools { display: flex; align-items: center; gap: 0.5rem; }
+
+@media (min-width: 900px) {
+  body.side-nav { padding-left: var(--sidew); }
+  body.side-nav header {
+    position: fixed; top: 0; left: 0; bottom: 0; width: var(--sidew);
+    border-bottom: none; border-right: 1px solid var(--border);
+    background: rgba(11, 15, 26, 0.55);
+    overflow-y: auto; overscroll-behavior: contain;
+  }
+  body.side-nav.light header { background: rgba(244, 246, 250, 0.72); }
+  body.side-nav .nav {
+    max-width: none; margin: 0; height: 100%;
+    flex-direction: column; align-items: stretch; justify-content: flex-start;
+    padding: 1.75rem 1.1rem 1.4rem; gap: 1.5rem;
+  }
+  body.side-nav .nav-logo { font-size: 1.3rem; padding: 0.1rem 0.75rem; }
+  body.side-nav .nav-menu { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+  body.side-nav .nav-links {
+    flex-direction: column; align-items: stretch; gap: 0.2rem; padding: 0;
+  }
+  body.side-nav .nav-links a {
+    display: block; padding: 0.6rem 0.85rem; border-radius: 10px;
+    font-size: 0.97rem; line-height: 1.5; white-space: normal;
+    border-left: 2px solid transparent;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+  }
+  body.side-nav .nav-links a:hover { background: var(--card); color: var(--text); }
+  body.side-nav .nav-links a.current {
+    color: var(--text); background: var(--card); border-left-color: var(--accent2);
+  }
+  body.side-nav .nav-tools {
+    margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--border);
+    justify-content: flex-start;
+  }
+  body.side-nav .hero { padding-top: 4.5rem; }
+  body.side-nav.lang-en .nav-links { gap: 0.2rem; }
+}
+
+@media (max-width: 899.98px) {
+  body.side-nav header { position: sticky; top: 0; }
+  body.side-nav .nav {
+    flex-direction: column; align-items: stretch; gap: 0;
+    padding: 0.7rem 1rem;
+  }
+  body.side-nav .nav-toggle {
+    display: inline-flex; flex-direction: column; justify-content: center; gap: 5px;
+    width: 42px; height: 38px; padding: 0 10px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--card); cursor: pointer;
+  }
+  body.side-nav .nav-toggle span {
+    display: block; height: 2px; border-radius: 2px; background: var(--text);
+    transition: transform 0.25s, opacity 0.2s;
+  }
+  body.side-nav header.open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  body.side-nav header.open .nav-toggle span:nth-child(2) { opacity: 0; }
+  body.side-nav header.open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  body.side-nav .nav-menu {
+    display: none; flex-direction: column; gap: 0.6rem;
+    padding: 0.8rem 0 0.4rem; border-top: 1px solid var(--border); margin-top: 0.7rem;
+  }
+  body.side-nav header.open .nav-menu { display: flex; animation: fadeUp 0.25s ease both; }
+  body.side-nav .nav-links {
+    flex-direction: column; align-items: stretch; gap: 0.1rem;
+    overflow: visible; padding: 0; margin: 0;
+  }
+  body.side-nav .nav-links li { flex: none; }
+  body.side-nav .nav-links a {
+    display: block; padding: 0.65rem 0.75rem; border-radius: 10px;
+    font-size: 1rem; white-space: normal; border-left: 2px solid transparent;
+  }
+  body.side-nav .nav-links a.current { background: var(--card); border-left-color: var(--accent2); }
+  body.side-nav .nav-tools { padding: 0.4rem 0.75rem 0.3rem; }
+  body.side-nav .hero { padding-top: 2.6rem; }
+}
