@@ -399,3 +399,11 @@ body.lang-en .nav-links { gap: 1.15rem; }
   body.side-nav .nav-tools { padding: 0.4rem 0.75rem 0.3rem; }
   body.side-nav .hero { padding-top: 2.6rem; }
 }
+
+/* --- 業績ページ先頭のジャンプリンク（論文 ｜ 学会発表・セミナー） --- */
+.pub-jump { font-size: 0.92rem; color: var(--text-dim); margin: -0.5rem 0 1.8rem; }
+.pub-jump a { color: var(--accent2); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.pub-jump a:hover { border-bottom-color: var(--accent2); }
+.pub-jump .sep { margin: 0 0.55rem; }
+#publications h3[id] { scroll-margin-top: 1.5rem; }
+@media (max-width: 899.98px) { body.side-nav #publications h3[id] { scroll-margin-top: 5rem; } }

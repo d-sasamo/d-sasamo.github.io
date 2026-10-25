@@ -96,8 +96,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
       if (!target) target = document.getElementById("home");
-      panels.forEach(function (p) { p.classList.remove("active"); });
-      if (target) target.classList.add("active");
+      // 同じパネル内のジャンプ（例: #pub-talks）では再アニメーションさせない
+      if (target && !target.classList.contains("active")) {
+        panels.forEach(function (p) { p.classList.remove("active"); });
+        target.classList.add("active");
+      }
       document.querySelectorAll(".nav-links a").forEach(function (a) {
         var href = a.getAttribute("href") || "";
         a.classList.toggle("current", href === "#" + (target ? target.id : ""));
