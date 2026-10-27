@@ -411,3 +411,9 @@ body.lang-en .nav-links { gap: 1.15rem; }
   body.side-nav .nav-tools .lang-btn { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
   body.side-nav .hero { padding-top: 2.6rem; }
 }
+
+/* スマホ幅：所属リンク（2行目）は1行1リンクで表示し、区切りの「/」は隠す */
+@media (max-width: 640px) {
+  .hero-links .hl-row:nth-of-type(2) .hl-body a { display: block; overflow-wrap: anywhere; }
+  .hero-links .hl-row:nth-of-type(2) .sep { display: none; }
+}
