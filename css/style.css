@@ -356,8 +356,13 @@ body.lang-en .nav-links { gap: 1.15rem; }
   body.side-nav .nav-links a.current {
     color: var(--text); background: var(--card); border-left-color: var(--accent2);
   }
+  /* nav-top は HTML 上ではロゴ・ツール・ハンバーガーの横並びだが、
+     サイドバーでは display:contents で解体し、order でロゴ→メニュー→ツール（最下部）に並べ替える */
+  body.side-nav .nav-top { display: contents; }
+  body.side-nav .nav-logo { order: 0; }
+  body.side-nav .nav-menu { order: 1; }
   body.side-nav .nav-tools {
-    margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--border);
+    order: 2; margin-top: auto; padding-top: 1.1rem; border-top: 1px solid var(--border);
     justify-content: flex-start;
   }
   body.side-nav .hero { padding-top: 4.5rem; }
@@ -399,6 +404,10 @@ body.lang-en .nav-links { gap: 1.15rem; }
     font-size: 1rem; white-space: normal; border-left: 2px solid transparent;
   }
   body.side-nav .nav-links a.current { background: var(--card); border-left-color: var(--accent2); }
-  body.side-nav .nav-tools { padding: 0.4rem 0.75rem 0.3rem; }
+  /* スマホ：テーマ／言語ボタンは上部バーに常時表示（ロゴ ｜ ☾ English ｜ ≡） */
+  body.side-nav .nav-top { gap: 0.5rem; }
+  body.side-nav .nav-top .nav-logo { flex: 1 1 auto; min-width: 0; }
+  body.side-nav .nav-tools { gap: 0.4rem; margin-right: 0.35rem; }
+  body.side-nav .nav-tools .lang-btn { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
   body.side-nav .hero { padding-top: 2.6rem; }
 }
