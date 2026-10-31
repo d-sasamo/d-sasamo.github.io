@@ -63,6 +63,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // ===== Talks & Posters: すべて／スライド／ポスター の絞り込み =====
+  var fbtns = document.querySelectorAll(".mat-filter button");
+  if (fbtns.length) {
+    fbtns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var f = b.getAttribute("data-filter");
+        fbtns.forEach(function (x) { x.classList.toggle("on", x === b); });
+        document.querySelectorAll(".mat-card").forEach(function (c) {
+          c.classList.toggle("hide", f !== "all" && c.getAttribute("data-kind") !== f);
+        });
+      });
+    });
+  }
+
   // ===== Email (assembled to avoid scrapers; displayed with "_at_" instead of "@") =====
   var el = document.getElementById("emailLink");
   if (el) {

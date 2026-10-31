@@ -1,0 +1,117 @@
+/* =====================================================================
+   Talks & Posters — 閲覧専用ビューア（talks/<item>/index.html）
+   - スライド: 16:9 ステージ、前後ボタン／キーボード／スワイプ／サムネイル
+   - ポスター: 全体表示 ⇄ 幅いっぱい（スクロール）
+   - 共通: 全画面、右クリック・ドラッグ抑止（保存ボタンは置かない）
+   ===================================================================== */
+.viewer-main { max-width: 1040px; margin: 0 auto; padding: 2.6rem 1.5rem 0; }
+.viewer-head { margin-bottom: 1.3rem; }
+.viewer-title { font-size: 1.42rem; line-height: 1.45; margin: 0.55rem 0 0.55rem; font-weight: 700; }
+.viewer-sub { color: var(--text-dim); font-size: 0.95rem; line-height: 1.75; }
+
+/* --- stage --- */
+.stage {
+  position: relative; background: #0b0f1a;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; outline: none;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.12);
+}
+.stage .frame { position: relative; }
+.stage img {
+  display: block; pointer-events: none;
+  -webkit-user-drag: none; user-select: none;
+}
+.stage .shield { position: absolute; inset: 0; }      /* 右クリック／ドラッグ保存の抑止用の透明レイヤ */
+
+/* slides */
+.stage.slides { aspect-ratio: 16 / 9; }
+.stage.slides .frame { position: absolute; inset: 0; }
+.stage.slides img { width: 100%; height: 100%; object-fit: contain; }
+.stage.slides .shield { cursor: pointer; }
+
+/* poster: fit（全体） ⇄ zoom（幅いっぱい・縦スクロール） */
+.stage.poster { max-height: 82vh; overflow: auto; display: flex; justify-content: center; align-items: flex-start; }
+.stage.poster .frame { display: inline-block; max-width: 100%; }
+.stage.poster img { width: auto; max-width: 100%; height: auto; max-height: 82vh; }
+.stage.poster .shield { cursor: zoom-in; }
+.stage.poster.zoom { display: block; }
+.stage.poster.zoom .frame { display: block; width: 100%; }
+.stage.poster.zoom img { width: 100%; max-height: none; }
+.stage.poster.zoom .shield { cursor: zoom-out; }
+
+/* nav buttons（スライドのみ） */
+.navbtn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(11,15,26,0.55); color: #fff;
+  font-size: 1.75rem; line-height: 1; padding: 0 0 0.18rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity 0.2s, background 0.2s;
+}
+.navbtn.prev { left: 14px; }
+.navbtn.next { right: 14px; }
+.stage:hover .navbtn, .stage:focus .navbtn, .stage:focus-within .navbtn { opacity: 1; }
+.navbtn:hover { background: rgba(124,108,246,0.78); }
+.navbtn:disabled { visibility: hidden; }
+@media (hover: none) { .navbtn { opacity: 1; } }
+
+/* bar */
+.viewer-bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 0.8rem;
+  margin-top: 0.8rem; color: var(--text-dim); font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+.viewer-tools { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: flex-end; }
+.viewer-hint { font-size: 0.8rem; }
+@media (max-width: 640px) { .viewer-hint { display: none; } }
+
+/* thumbnails */
+.thumbs {
+  display: flex; gap: 0.5rem; overflow-x: auto;
+  margin-top: 0.9rem; padding: 0.2rem 0.1rem 0.5rem;
+  scrollbar-width: thin;
+}
+.thumbs img {
+  height: 58px; aspect-ratio: 16 / 9; object-fit: cover; flex: 0 0 auto;
+  border-radius: 6px; border: 2px solid transparent; background: #0b0f1a;
+  opacity: 0.55; cursor: pointer; transition: opacity 0.2s, border-color 0.2s;
+  -webkit-user-drag: none; user-select: none;
+}
+.thumbs img:hover { opacity: 0.9; }
+.thumbs img.on { opacity: 1; border-color: var(--accent2); }
+
+/* note */
+.viewer-note {
+  margin-top: 1.5rem; color: var(--text-dim); font-size: 0.86rem; line-height: 1.8;
+  border: 1px dashed var(--border); border-radius: var(--radius); padding: 0.9rem 1.2rem;
+}
+.viewer-links { margin-top: 1rem; color: var(--text-dim); font-size: 0.9rem; }
+.viewer-links a { color: var(--accent2); text-decoration: none; }
+
+/* --- fullscreen（ネイティブ／iOS 用の擬似全画面 .fsfake 共通） --- */
+.stage:fullscreen, .stage.fsfake {
+  border: none; border-radius: 0; box-shadow: none; background: #000;
+  width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto;
+}
+.stage.fsfake { position: fixed; inset: 0; z-index: 1000; }
+.stage.slides:fullscreen .frame, .stage.slides.fsfake .frame { position: absolute; inset: 0; }
+.stage.poster:fullscreen, .stage.poster.fsfake { display: flex; align-items: center; justify-content: center; overflow: auto; }
+.stage.poster:fullscreen img, .stage.poster.fsfake img { max-height: 100vh; }
+.stage.poster.zoom:fullscreen, .stage.poster.zoom.fsfake { display: block; }
+.stage.poster.zoom:fullscreen img, .stage.poster.zoom.fsfake img { max-height: none; width: 100%; }
+.fs-close {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25); background: rgba(11,15,26,0.6); color: #fff;
+  font-size: 1.3rem; line-height: 1; cursor: pointer; display: none;
+}
+.stage:fullscreen .fs-close, .stage.fsfake .fs-close { display: block; }
+.fs-count {
+  position: absolute; bottom: 14px; right: 18px; z-index: 2;
+  color: rgba(255,255,255,0.75); font-size: 0.85rem; font-variant-numeric: tabular-nums; display: none;
+}
+.stage.slides:fullscreen .fs-count, .stage.slides.fsfake .fs-count { display: block; }
+body.fs-lock { overflow: hidden; }

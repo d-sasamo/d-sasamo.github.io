@@ -26,7 +26,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261027">
+<link rel="stylesheet" href="css/style.css?v=20261031">
 <script>if(!Object.hasOwn){Object.defineProperty(Object,'hasOwn',{value:function(o,k){return Object.prototype.hasOwnProperty.call(o,k)},writable:true,configurable:true});}window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global', displayOverflow: 'linebreak', linebreaks: { inline: false } } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js" async></script>
 </head>
@@ -51,6 +51,7 @@
         <li><a href="#about"><span class="ja">自己紹介</span><span class="en">About</span></a></li>
         <li><a href="#research"><span class="ja">研究</span><span class="en">Research</span></a></li>
         <li><a href="#publications"><span class="ja">業績</span><span class="en">Publications</span></a></li>
+        <li><a href="#talks"><span class="ja">発表資料</span><span class="en">Talks &amp; Posters</span></a></li>
         <li><a href="#papers"><span class="ja">論文メモ</span><span class="en">Paper Notes</span></a></li>
         <li><a href="#books"><span class="ja">本棚</span><span class="en">Bookshelf</span></a></li>
         <li><a href="#notes"><span class="ja">ノート</span><span class="en">Notes</span></a></li>
@@ -299,6 +300,9 @@
         many-body perturbation theory beyond parton mean-field theory. I am also interested
         in thermal responses originating from the band topology of fractionalized quasiparticles.
       </p>
+      <p style="margin-top:0.9rem;">
+        <a class="back-link" href="#talks"><span class="ja">このテーマの講演スライド・ポスターを見る →</span><span class="en">Slides and posters on this topic →</span></a>
+      </p>
     </div>
     <div class="card">
       <h3><span class="ja">量子情報</span><span class="en">Quantum Information</span></h3>
@@ -354,6 +358,9 @@
   <!-- ===== Publications ===== -->
   <section id="publications" class="panel">
     <h2 class="section-title"><span class="ja">業績</span><span class="en">Publications &amp; Talks</span></h2>
+    <p style="margin-bottom:1.4rem;">
+      <a class="back-link" href="#talks"><span class="ja">講演スライド・ポスターは「発表資料」で閲覧できます →</span><span class="en">Slides and posters are available under Talks &amp; Posters →</span></a>
+    </p>
     <!-- ★ 新しい業績は各リスト（<ol>）の一番上に <li> を追加してください。常に新しい順を保つ運用です -->
     <h3 id="pub-papers" style="margin-bottom:0.4rem;"><span class="ja">プレプリント</span><span class="en">Preprints</span></h3>
     <ol class="pub-list" reversed>
@@ -526,6 +533,60 @@
         CMT Group Seminar, Institute for Theoretical Physics, University of Cologne, Germany, April 17, 2026
       </li>
     </ol>
+  </section>
+
+  <!-- ===== Talks & Posters（発表資料） =====
+       各カードは talks/<日付-会議名>/ の閲覧専用ビューアに飛びます。
+       ★ 新しい資料ほど上に追加（新着順）。サムネイルはスライド1枚目／ポスター画像をそのまま使います。 -->
+  <section id="talks" class="panel">
+    <h2 class="section-title"><span class="ja">発表資料</span><span class="en">Talks &amp; Posters</span></h2>
+    <p style="color:var(--text-dim); margin-bottom:1.4rem;">
+      <span class="ja">講演スライドとポスターを閲覧用に公開しています。いずれも公開済みの論文・プレプリントに基づく内容です。資料の転載・再配布はご遠慮ください。</span>
+      <span class="en">Slides and posters from my talks, available for viewing. All are based on published papers or preprints. Please do not reproduce or redistribute them.</span>
+    </p>
+    <div class="mat-filter" role="group" aria-label="filter">
+      <button class="lang-btn on" data-filter="all"><span class="ja">すべて</span><span class="en">All</span></button>
+      <button class="lang-btn" data-filter="slides"><span class="ja">スライド</span><span class="en">Slides</span></button>
+      <button class="lang-btn" data-filter="poster"><span class="ja">ポスター</span><span class="en">Posters</span></button>
+    </div>
+    <div class="mat-grid">
+      <a class="mat-card" href="talks/2026-10-20-cems-chirality/" data-kind="poster">
+        <div class="mat-thumb poster" data-cta="View →"><img src="talks/2026-10-20-cems-chirality/poster.svg" alt="" loading="lazy"></div>
+        <div class="mat-body">
+          <div class="mat-meta"><span class="mat-badge poster">Poster</span><span class="mat-date">2026.10.20</span></div>
+          <div class="mat-title">Chiral quantum spin liquids with bosonic excitations in higher-spin Kitaev magnets</div>
+          <div class="mat-authors"><u>Daiki Sasamoto</u> and Joji Nasu</div>
+          <div class="mat-event"><span class="ja">CEMS Topical Meeting on Chirality in Condensed Matter Physics（理化学研究所・和光）</span><span class="en">CEMS Topical Meeting on Chirality in Condensed Matter Physics, RIKEN, Wako</span></div>
+        </div>
+      </a>
+      <a class="mat-card" href="talks/2026-10-15-oist/" data-kind="slides">
+        <div class="mat-thumb" data-cta="View →"><img src="talks/2026-10-15-oist/s01.svg" alt="" loading="lazy"></div>
+        <div class="mat-body">
+          <div class="mat-meta"><span class="mat-badge">Slides</span><span class="mat-badge alt"><span class="ja">招待講演</span><span class="en">Invited talk</span></span><span class="mat-date">2026.10.15</span></div>
+          <div class="mat-title">Spin dynamics beyond parton mean-field theory: perturbative approaches with fermionic and bosonic partons</div>
+          <div class="mat-authors"><u>Daiki Sasamoto</u></div>
+          <div class="mat-event"><span class="ja">Dynamics, Fluctuations, and Entanglement in Quantum Materials and Many-Body Systems（沖縄科学技術大学院大学 OIST）</span><span class="en">Dynamics, Fluctuations, and Entanglement in Quantum Materials and Many-Body Systems, OIST, Okinawa</span></div>
+        </div>
+      </a>
+      <a class="mat-card" href="talks/2026-10-07-yitp-kagome/" data-kind="poster">
+        <div class="mat-thumb poster" data-cta="View →"><img src="talks/2026-10-07-yitp-kagome/poster.svg" alt="" loading="lazy"></div>
+        <div class="mat-body">
+          <div class="mat-meta"><span class="mat-badge poster">Poster</span><span class="mat-date">2026.10.07</span></div>
+          <div class="mat-title">Dynamical spin correlations in kagome antiferromagnets: Comparison of the Abrikosov fermion and Schwinger boson approaches beyond mean field</div>
+          <div class="mat-authors"><u>Daiki Sasamoto</u> and Joji Nasu</div>
+          <div class="mat-event"><span class="ja">Novel Physics in Kagome Lattice Materials（京都大学基礎物理学研究所）</span><span class="en">Novel Physics in Kagome Lattice Materials, YITP, Kyoto University</span></div>
+        </div>
+      </a>
+      <a class="mat-card" href="talks/2025-10-20-ttqm/" data-kind="poster">
+        <div class="mat-thumb poster" data-cta="View →"><img src="talks/2025-10-20-ttqm/poster.svg" alt="" loading="lazy"></div>
+        <div class="mat-body">
+          <div class="mat-meta"><span class="mat-badge poster">Poster</span><span class="mat-date">2025.10.20</span></div>
+          <div class="mat-title">Schwinger boson theory for \(S=1\) Kitaev quantum spin liquids</div>
+          <div class="mat-authors"><u>Daiki Sasamoto</u> and Joji Nasu</div>
+          <div class="mat-event"><span class="ja">Trends in the Theory of Quantum Materials 2025（TTQM2025、埼玉大学）</span><span class="en">Trends in the Theory of Quantum Materials 2025 (TTQM2025), Saitama University</span></div>
+        </div>
+      </a>
+    </div>
   </section>
 
   <!-- ===== Papers (おすすめ論文) ===== -->
@@ -2389,6 +2450,6 @@
   <p>© 2026 Daiki Sasamoto</p>
 </footer>
 
-<script src="js/main.js?v=20261027"></script>
+<script src="js/main.js?v=20261031"></script>
 </body>
 </html>

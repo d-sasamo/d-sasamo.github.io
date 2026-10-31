@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c6cf6"/><stop offset="1" stop-color="#38cfe0"/></linearGradient>
+<radialGradient id="r" cx="15%" cy="0%" r="60%"><stop offset="0" stop-color="#7c6cf6" stop-opacity=".28"/><stop offset="1" stop-color="#0b0f1a" stop-opacity="0"/></radialGradient></defs>
+<rect width="1920" height="1080" fill="#0b0f1a"/><rect width="1920" height="1080" fill="url(#r)"/>
+<text x="140" y="170" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="54" font-weight="700" fill="#e5e9f0">Perturbative corrections to spin correlations</text>
+<rect x="140" y="200" width="90" height="6" rx="3" fill="url(#g)"/>
+<circle cx="160" cy="308" r="7" fill="#38cfe0"/>
+<text x="195" y="320" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="34" fill="#c8d0dc">Diagrammatic expansion around the saddle point</text>
+<circle cx="160" cy="398" r="7" fill="#38cfe0"/>
+<text x="195" y="410" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="34" fill="#c8d0dc">Dynamical spin structure factor S(q, ω)</text>
+<circle cx="160" cy="488" r="7" fill="#38cfe0"/>
+<text x="195" y="500" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="34" fill="#c8d0dc">Comparison with numerics</text>
+<rect x="1080" y="290" width="700" height="520" rx="18" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)"/>
+<polyline points="1150,720 1250,650 1350,560 1450,470 1550,420 1650,390 1720,380" fill="none" stroke="url(#g)" stroke-width="6"/>
+<line x1="1150" y1="730" x2="1740" y2="730" stroke="#9aa5b5" stroke-width="2"/><line x1="1150" y1="730" x2="1150" y2="340" stroke="#9aa5b5" stroke-width="2"/>
+<text x="1430" y="790" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="22" fill="#9aa5b5" text-anchor="middle">Figure placeholder</text>
+<text x="1800" y="1020" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="24" fill="#5b6678" text-anchor="end">4 / 6</text>
+<text x="120" y="1020" font-family="Inter, Noto Sans JP, Helvetica, Arial, sans-serif" font-size="22" fill="#5b6678">SAMPLE — placeholder slide (差し替え予定)</text>
+</svg>
