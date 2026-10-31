@@ -8,6 +8,7 @@
 .viewer-head { margin-bottom: 1.3rem; }
 .viewer-title { font-size: 1.42rem; line-height: 1.45; margin: 0.55rem 0 0.55rem; font-weight: 700; }
 .viewer-sub { color: var(--text-dim); font-size: 0.95rem; line-height: 1.75; }
+.viewer-sub u { text-decoration: none; border-bottom: 1px solid currentColor; }
 
 /* --- stage --- */
 .stage {
