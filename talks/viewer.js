@@ -53,8 +53,11 @@
     var base = v.getAttribute("data-base") || "s";
     var ext = v.getAttribute("data-ext") || "webp";
     var pad = parseInt(v.getAttribute("data-pad") || "2", 10);
+    var tbase = v.getAttribute("data-thumb") || base;   // サムネイル帯用の軽量画像（例: t01.webp）。無ければ本体画像を流用
     var cur = 0;
-    var src = function (i) { var s = String(i); while (s.length < pad) s = "0" + s; return base + s + "." + ext; };
+    var num = function (i) { var s = String(i); while (s.length < pad) s = "0" + s; return s; };
+    var src = function (i) { return base + num(i) + "." + ext; };
+    var tsrc = function (i) { return tbase + num(i) + "." + ext; };
     var preload = function (i) { if (i >= 1 && i <= n) { var im = new Image(); im.src = src(i); } };
     var tEls = [];
 
@@ -86,7 +89,7 @@
       for (var k = 1; k <= n; k++) {
         (function (k) {
           var t = document.createElement("img");
-          t.src = src(k); t.alt = "Slide " + k; t.loading = "lazy"; t.draggable = false;
+          t.src = tsrc(k); t.alt = "Slide " + k; t.loading = "lazy"; t.draggable = false;
           t.addEventListener("click", function () { show(k); });
           thumbs.appendChild(t); tEls.push(t);
         })(k);
