@@ -457,7 +457,3 @@ body.lang-en .nav-links { gap: 1.15rem; }
 .mat-event { color: var(--text-dim); font-size: 0.85rem; line-height: 1.6; }
 .mat-authors { color: var(--text-dim); font-size: 0.85rem; }
 .mat-authors u { text-decoration: none; border-bottom: 1px solid currentColor; }
-.mat-filter { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0 0 1.3rem; }
-.mat-filter button { cursor: pointer; }
-.mat-filter button.on { border-color: var(--accent2); color: var(--accent2); }
-.mat-card.hide { display: none; }

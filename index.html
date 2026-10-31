@@ -26,7 +26,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261031">
+<link rel="stylesheet" href="css/style.css?v=20261031b">
 <script>if(!Object.hasOwn){Object.defineProperty(Object,'hasOwn',{value:function(o,k){return Object.prototype.hasOwnProperty.call(o,k)},writable:true,configurable:true});}window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global', displayOverflow: 'linebreak', linebreaks: { inline: false } } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js" async></script>
 </head>
@@ -544,11 +544,20 @@
       <span class="ja">講演スライドとポスターを閲覧用に公開しています。いずれも公開済みの論文・プレプリントに基づく内容です。資料の転載・再配布はご遠慮ください。</span>
       <span class="en">Slides and posters from my talks, available for viewing. All are based on published papers or preprints. Please do not reproduce or redistribute them.</span>
     </p>
-    <div class="mat-filter" role="group" aria-label="filter">
-      <button class="lang-btn on" data-filter="all"><span class="ja">すべて</span><span class="en">All</span></button>
-      <button class="lang-btn" data-filter="slides"><span class="ja">スライド</span><span class="en">Slides</span></button>
-      <button class="lang-btn" data-filter="poster"><span class="ja">ポスター</span><span class="en">Posters</span></button>
+    <!-- ★ 並び：スライド → ポスター。各グループ内は新しい順（新しいものを各 .mat-grid の先頭に追加） -->
+    <h3 style="margin:0 0 0.8rem;"><span class="ja">スライド</span><span class="en">Slides</span></h3>
+    <div class="mat-grid">
+      <a class="mat-card" href="talks/2026-10-15-oist/" data-kind="slides">
+        <div class="mat-thumb" data-cta="View →"><img src="talks/2026-10-15-oist/s01.svg" alt="" loading="lazy"></div>
+        <div class="mat-body">
+          <div class="mat-meta"><span class="mat-badge">Slides</span><span class="mat-badge alt"><span class="ja">招待講演</span><span class="en">Invited talk</span></span><span class="mat-date">2026.10.15</span></div>
+          <div class="mat-title">Spin dynamics beyond parton mean-field theory: perturbative approaches with fermionic and bosonic partons</div>
+          <div class="mat-authors"><u>Daiki Sasamoto</u></div>
+          <div class="mat-event"><span class="ja">Dynamics, Fluctuations, and Entanglement in Quantum Materials and Many-Body Systems（沖縄科学技術大学院大学 OIST）</span><span class="en">Dynamics, Fluctuations, and Entanglement in Quantum Materials and Many-Body Systems, OIST, Okinawa</span></div>
+        </div>
+      </a>
     </div>
+    <h3 style="margin:2.2rem 0 0.8rem;"><span class="ja">ポスター</span><span class="en">Posters</span></h3>
     <div class="mat-grid">
       <a class="mat-card" href="talks/2026-10-20-cems-chirality/" data-kind="poster">
         <div class="mat-thumb poster" data-cta="View →"><img src="talks/2026-10-20-cems-chirality/thumb.webp" alt="" loading="lazy"></div>
@@ -557,15 +566,6 @@
           <div class="mat-title">Chiral quantum spin liquids with bosonic excitations in higher-spin Kitaev magnets</div>
           <div class="mat-authors"><u>Daiki Sasamoto</u> and Joji Nasu</div>
           <div class="mat-event"><span class="ja">CEMS Topical Meeting on Chirality in Condensed Matter Physics（理化学研究所・和光）</span><span class="en">CEMS Topical Meeting on Chirality in Condensed Matter Physics, RIKEN, Wako</span></div>
-        </div>
-      </a>
-      <a class="mat-card" href="talks/2026-10-15-oist/" data-kind="slides">
-        <div class="mat-thumb" data-cta="View →"><img src="talks/2026-10-15-oist/s01.svg" alt="" loading="lazy"></div>
-        <div class="mat-body">
-          <div class="mat-meta"><span class="mat-badge">Slides</span><span class="mat-badge alt"><span class="ja">招待講演</span><span class="en">Invited talk</span></span><span class="mat-date">2026.10.15</span></div>
-          <div class="mat-title">Spin dynamics beyond parton mean-field theory: perturbative approaches with fermionic and bosonic partons</div>
-          <div class="mat-authors"><u>Daiki Sasamoto</u></div>
-          <div class="mat-event"><span class="ja">Dynamics, Fluctuations, and Entanglement in Quantum Materials and Many-Body Systems（沖縄科学技術大学院大学 OIST）</span><span class="en">Dynamics, Fluctuations, and Entanglement in Quantum Materials and Many-Body Systems, OIST, Okinawa</span></div>
         </div>
       </a>
       <a class="mat-card" href="talks/2026-10-07-yitp-kagome/" data-kind="poster">
@@ -2450,6 +2450,6 @@
   <p>© 2026 Daiki Sasamoto</p>
 </footer>
 
-<script src="js/main.js?v=20261031"></script>
+<script src="js/main.js?v=20261031b"></script>
 </body>
 </html>
