@@ -71,8 +71,11 @@
       tEls.forEach(function (t, k) {
         t.classList.toggle("on", k + 1 === cur);
       });
-      if (tEls[cur - 1] && tEls[cur - 1].scrollIntoView) {
-        tEls[cur - 1].scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+      // サムネイル帯だけを横スクロール（scrollIntoView はページ全体が縦に動いてしまうので使わない）
+      var tt = tEls[cur - 1];
+      if (tt && thumbs) {
+        var left = tt.offsetLeft - (thumbs.clientWidth - tt.clientWidth) / 2;
+        if (thumbs.scrollTo) thumbs.scrollTo({ left: left, behavior: "smooth" }); else thumbs.scrollLeft = left;
       }
       if (!keepHash && history.replaceState) history.replaceState(null, "", "#" + cur);
       preload(cur + 1); preload(cur - 1);
