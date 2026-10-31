@@ -129,23 +129,46 @@
     // ---- poster
     img.src = v.getAttribute("data-src");
     img.alt = v.getAttribute("data-alt") || "Poster";
+    // 0: 全体表示 / 1: 幅いっぱい / 2: 200%。クリック位置を中心に拡大する
+    var level = 0;
+    var labels = [["拡大（幅いっぱい）", "Zoom (fit width)"], ["さらに拡大（200%）", "Zoom in (200%)"], ["全体を表示", "Fit to screen"]];
     var setZoomLabel = function () {
       if (!zoomBtn) return;
-      var z = stage.classList.contains("zoom");
-      zoomBtn.querySelector(".ja").textContent = z ? "全体を表示" : "拡大（幅いっぱい）";
-      zoomBtn.querySelector(".en").textContent = z ? "Fit to screen" : "Zoom (fit width)";
+      zoomBtn.querySelector(".ja").textContent = labels[level][0];
+      zoomBtn.querySelector(".en").textContent = labels[level][1];
     };
-    var toggleZoom = function () {
-      stage.classList.toggle("zoom");
-      if (!stage.classList.contains("zoom")) stage.scrollTop = 0;
+    var setLevel = function (lv, fx, fy) {
+      level = (lv + 3) % 3;
+      stage.classList.toggle("zoom", level === 1);
+      stage.classList.toggle("zoom2", level === 2);
+      if (level === 0) { stage.scrollTop = 0; stage.scrollLeft = 0; }
+      else {
+        // fx, fy: 画像内の相対位置 (0..1)。指定が無ければ現在の中心を維持
+        var fr = stage.querySelector(".frame");
+        if (typeof fx !== "number") fx = 0.5;
+        if (typeof fy !== "number") fy = 0;
+        stage.scrollLeft = fx * fr.scrollWidth - stage.clientWidth / 2;
+        stage.scrollTop = fy * fr.scrollHeight - stage.clientHeight / 2;
+      }
       setZoomLabel();
     };
-    if (zoomBtn) zoomBtn.addEventListener("click", toggleZoom);
-    shield.addEventListener("click", toggleZoom);
+    shield.addEventListener("click", function (e) {
+      var r = img.getBoundingClientRect();
+      var fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+      setLevel(level + 1, fx, fy);
+    });
+    if (zoomBtn) zoomBtn.addEventListener("click", function () {
+      // 現在見えている中心を保つ
+      var fr = stage.querySelector(".frame");
+      var fx = fr.scrollWidth ? (stage.scrollLeft + stage.clientWidth / 2) / fr.scrollWidth : 0.5;
+      var fy = fr.scrollHeight ? (stage.scrollTop + stage.clientHeight / 2) / fr.scrollHeight : 0;
+      setLevel(level + 1, level === 0 ? 0.5 : fx, level === 0 ? 0 : fy);
+    });
     document.addEventListener("keydown", function (e) {
       if (e.key === "f" || e.key === "F") { isFs() ? exitFs() : enterFs(); }
       if (e.key === "Escape" && stage.classList.contains("fsfake")) exitFs();
-      if (e.key === "z" || e.key === "Z") toggleZoom();
+      if (e.key === "z" || e.key === "Z") setLevel(level + 1);
+      if (e.key === "0") setLevel(0);
     });
     setZoomLabel();
   }

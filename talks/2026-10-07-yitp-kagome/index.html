@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../css/style.css?v=20261031">
-<link rel="stylesheet" href="../viewer.css?v=20261031">
+<link rel="stylesheet" href="../viewer.css?v=20261031c">
 <script>if(!Object.hasOwn){Object.defineProperty(Object,'hasOwn',{value:function(o,k){return Object.prototype.hasOwnProperty.call(o,k)},writable:true,configurable:true});}window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };</script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js" async></script>
 </head>
@@ -34,7 +34,7 @@
     <p class="viewer-sub"><u>Daiki Sasamoto</u> and Joji Nasu<br>Novel Physics in Kagome Lattice Materials, Yukawa Institute for Theoretical Physics, Kyoto University, Japan, October 5&ndash;8, 2026</p>
   </div>
 
-  <div class="viewer" id="viewer" data-kind="poster" data-src="poster.svg" data-alt="Poster">
+  <div class="viewer" id="viewer" data-kind="poster" data-src="poster.webp" data-alt="Poster">
     <div class="stage poster" id="stage" tabindex="0" aria-label="Poster">
       <div class="frame">
         <img id="stageImg" alt="" draggable="false">
@@ -43,7 +43,7 @@
       <button class="fs-close" id="fsClose" aria-label="全画面を終了 / Exit fullscreen">&#10005;</button>
     </div>
     <div class="viewer-bar">
-      <div class="viewer-count"><span class="ja">ポスターをクリックで拡大／縮小</span><span class="en">Click the poster to zoom in / out</span></div>
+      <div class="viewer-count"><span class="ja">クリックした場所を中心に拡大（全体 → 幅いっぱい → 200%）</span><span class="en">Click to zoom in around that point (fit → width → 200%)</span></div>
       <div class="viewer-tools">
         <button class="lang-btn" id="zoomBtn">&#x1F50D;&nbsp;<span class="ja">拡大（幅いっぱい）</span><span class="en">Zoom (fit width)</span></button>
         <button class="lang-btn" id="fsBtn">&#x26F6;&nbsp;<span class="ja">全画面</span><span class="en">Fullscreen</span></button>
@@ -64,6 +64,6 @@
 </footer>
 
 <script src="../../js/main.js?v=20261031"></script>
-<script src="../viewer.js?v=20261031b"></script>
+<script src="../viewer.js?v=20261031c"></script>
 </body>
 </html>
